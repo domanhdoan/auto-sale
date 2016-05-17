@@ -7,6 +7,7 @@
         "desc":".p_img a div",
         "price": ".p_gia .gia_ban",
         "discount":".p_gia .gia_giam",
-        "percent":".p_gia .gia_giam"
+        "percent":".p_gia .gia_giam",
+        "details":".p_img a"
     }
 }

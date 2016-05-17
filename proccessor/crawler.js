@@ -1,6 +1,14 @@
+require('string.prototype.startswith');
 var models = require("../models/product_model.js");
 var cheerio = require("cheerio");
-var home_page = "";
+var cur_home_page = "";
+
+function insert_prefix_homepage(current_link, home_page) {
+      if (!current_link.startsWith('http')) {
+            current_link = home_page + current_link;
+      }
+      return current_link;
+}
 
 function load_pattern(crawl_pattern) {
       var pattern = JSON.parse(require('fs').readFileSync(crawl_pattern, 'utf8'));
@@ -16,6 +24,9 @@ function extract_menu_item_link(web_content, product_pattern, orm_manager) {
             var product_desc = $(this).find(product_pattern.desc).text();
 
             if (product_thumbnail != undefined && product_title != undefined) {
+                  var product_details = $(this).find(product_pattern.details).attr('href');
+                  product_details = insert_prefix_homepage(product_details, cur_home_page);
+
                   process.stdout.write("============ START ===========================\n");
 
                   if (product_desc == "") {
@@ -45,6 +56,7 @@ function extract_menu_item_link(web_content, product_pattern, orm_manager) {
                   process.stdout.write("Price  = " + product_price + "\n");
                   process.stdout.write("Discount  = " + product_discount + "\n");
                   process.stdout.write("Discount Percent  = " + product_percent + "\n");
+                  process.stdout.write("Details = " + product_details + "\n");
 
                   // var product_code = "";
                   // ProductionInfo.build({
@@ -75,13 +87,14 @@ exports.extract_webcontent = function (home_page, web_content, crawl_pattern, or
 
       var menu = $(product_pattern.product_menu.panel);
       var menu_items = menu.find(product_pattern.product_menu.item);
+      cur_home_page = home_page;
+      
       menu_items.each(function (i, product) {
             var item_link = $(this).attr("href");
-            if (item_link.indexOf("http://") < 0) {
-                  item_link = home_page + item_link;
-            }
+            item_link = insert_prefix_homepage(item_link, cur_home_page);
             menu_item_links.push(item_link);
       });
+
 
       menu_item_links.forEach(function (link) {
             var request = require("request");

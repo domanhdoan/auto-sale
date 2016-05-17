@@ -1,10 +1,10 @@
 var analyzer = require("./proccessor/crawler.js");
 // var url = "http://giaynam.com/giay-buoc-day/";
 // var product_pattern	= "./pattern/giaytot.json";
-var url = "http://zeisicmienbac.com/san-pham";
-var product_pattern	= "./pattern/zesiccamera.json";
-// var url = "https://bibomart.com.vn";
-// var product_pattern = "./pattern/bibomart.json";
+// var url = "http://zeisicmienbac.com";
+// var product_pattern	= "./pattern/zesiccamera.json";
+var url = "https://bibomart.com.vn";
+var product_pattern = "./pattern/bibomart.json";
 var orm_manager = require("./db_management/db_manager.js");
 var request = require("request");
 

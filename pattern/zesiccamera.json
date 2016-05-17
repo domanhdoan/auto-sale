@@ -11,7 +11,8 @@
         "desc": "",
         "price": ".list-content .list-content-box .list-content-body .product-price-all .product-price .pricetext",
         "discount": "",
-        "percent": ""
+        "percent": "",
+        "details":".list-content .list-content-box .list-content-img a"
     },
     "product_pages": ""
 }

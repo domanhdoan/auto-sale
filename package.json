@@ -8,14 +8,15 @@
   },
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "node app.js"
   },
   "licenses": [],
   "dependencies": {
     "node.io": ">=0.5.1",
     "request": ">=2.21.0",
     "cheerio": ">=0.11.0",
-	"sequelize": ">=3.23.1",
-	"mysql": ">=2.10.0"
+    "sequelize": ">=3.23.1",
+    "mysql": ">=2.10.0",
+    "prototypes": ">=1.2.1"
 	}	
 }
