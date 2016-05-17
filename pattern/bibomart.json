@@ -1,0 +1,17 @@
+{
+    "product_menu":{
+        "panel": "ul#menu_home_root",
+        "item": "li a"
+    },
+    "product_info":{
+        "product_list":".product-item",
+        "code": "",
+        "title": "div div .product_title a h3",
+        "thumbnail":"div div div a img",
+        "desc":"",
+        "price": ".row .price",
+        "discount":".row .old_price",
+        "percent":".percent"
+    },
+    "product_pages": ""
+}

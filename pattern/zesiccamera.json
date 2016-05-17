@@ -1,0 +1,17 @@
+{
+    "product_menu": {
+        "panel": "ul .has-sub",
+        "item": "li a"
+    },        
+    "product_info": {
+        "product_list": ".list-item",
+        "code": "",
+        "title": ".list-content .list-content-box .list-content-body .list-content-title a",
+        "thumbnail": ".list-content .list-content-box .list-content-img a img",
+        "desc": "",
+        "price": ".list-content .list-content-box .list-content-body .product-price-all .product-price .pricetext",
+        "discount": "",
+        "percent": ""
+    },
+    "product_pages": ""
+}
