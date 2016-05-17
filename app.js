@@ -1,4 +1,3 @@
-// var link_crawler = require("js-crawler");
 var analyzer = require("./proccessor/crawler.js");
 // var url = "http://giaynam.com/giay-buoc-day/";
 // var product_pattern	= "./pattern/giaytot.json";
