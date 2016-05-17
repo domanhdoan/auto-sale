@@ -12,7 +12,7 @@
         "price": ".row .price",
         "discount":".row .old_price",
         "percent":".percent",
-        "details":"div div div a",
+        "detail_link":"div div div a",
         "sale_off":"",
         "new_sale":""
     },

@@ -8,6 +8,6 @@
         "price": ".p_gia .gia_ban",
         "discount":".p_gia .gia_giam",
         "percent":".p_gia .gia_giam",
-        "details":".p_img a"
+        "detail_link":".p_img a"
     }
 }
