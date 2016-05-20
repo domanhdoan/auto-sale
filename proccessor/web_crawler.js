@@ -14,6 +14,8 @@ function insert_prefix_homepage(current_link, home_page) {
 }
 
 function extract_productlist_from_link(link, handle_paging) {
+      var productlist = [];
+
       request(link, function (error, response, body) {
             if (error) {
                   console.log("Couldn’t get page " + link + " because of error: " + error);
@@ -54,15 +56,23 @@ function extract_productlist_from_link(link, handle_paging) {
                               product_percent = 0;
                         }
 
-                        process.stdout.write("============ START ===========================\n");
-                        process.stdout.write("title  = " + product_title.trim() + "\n");
-                        process.stdout.write("thumbnail  = " + product_thumbnail.trim() + "\n");
-                        process.stdout.write("description  = " + product_desc.trim() + "\n");
-                        process.stdout.write("Price  = " + product_price + "\n");
-                        process.stdout.write("Discount  = " + product_discount + "\n");
-                        process.stdout.write("Discount Percent  = " + product_percent + "\n");
-                        process.stdout.write("Details = " + product_detail_link + "\n");
-                        process.stdout.write("============ END ===========================\n");
+                        // process.stdout.write("============ START ===========================\n");
+                        // process.stdout.write("title  = " + product_title.trim() + "\n");
+                        // process.stdout.write("thumbnail  = " + product_thumbnail.trim() + "\n");
+                        // process.stdout.write("description  = " + product_desc.trim() + "\n");
+                        // process.stdout.write("Price  = " + product_price + "\n");
+                        // process.stdout.write("Discount  = " + product_discount + "\n");
+                        // process.stdout.write("Discount Percent  = " + product_percent + "\n");
+                        // process.stdout.write("Details = " + product_detail_link + "\n");
+                        // process.stdout.write("============ END ===========================\n");
+
+                        var product = {};
+                        product.title = product_title.trim();
+                        product.subtle = product_desc.trim();
+                        product.thumbnail = product_thumbnail.trim();
+                        product.link = product_detail_link;
+                        productlist.push(product);
+
                   } else {
                         process.stdout.write("Skipped this HTML element\n");
                   }
@@ -76,7 +86,8 @@ function extract_productlist_from_link(link, handle_paging) {
                               var link = $(this).attr('href');
                               link = insert_prefix_homepage(link, cur_home_page);
                               console.log("Start Page: " + link + "");
-                              extract_productlist_from_link(link, false);
+                              var products = extract_productlist_from_link(link, false);
+                              productlist.push(products);
                               console.log("End Page: " + link + "");
                         });
                   } else {
@@ -86,9 +97,10 @@ function extract_productlist_from_link(link, handle_paging) {
 
             }
       });
+      return productlist;
 }
 
-exports.init = function (crawl_pattern, orm_manager){
+exports.init = function (crawl_pattern, orm_manager) {
       g_crawl_pattern = crawl_pattern;
       g_orm_manager = orm_manager;
 }
@@ -113,6 +125,7 @@ exports.crawl_alink_indepth = function (home_page, web_content) {
       });
 }
 
-exports.crawl_alink_nodepth = function (link){
-      extract_productlist_from_link(link, true);
+exports.crawl_alink_nodepth = function (link) {
+      var products = extract_productlist_from_link(link, true);
+      return products;
 }

@@ -33,7 +33,7 @@ crawler.init(product_pattern, orm_manager);
 // 		console.log( "Couldn’t get page because of error: " + error);
 // 		return;
 // 	}
-// 	crawler.extract_content(url, body, product_pattern, orm_manager);
+// 	crawler.crawl_alink_indepth(url, body, product_pattern, orm_manager);
 // });
 auto_sale_bot.set_crawler(crawler);
 auto_sale_bot.init(8000, url + '' + product_pattern.product_search);
