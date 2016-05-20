@@ -7,6 +7,24 @@ var home_page = "";
 var g_search_path = "";
 var g_crawler = null;
 
+function createProductInfoTemplate(){
+    var template = {
+        "title": "",
+        "subtitle": "",
+        "image_url": "",
+        "buttons": [{
+            "type": "",
+            "url": "",
+            "title": ""
+        }, {
+                "type": "",
+                "title": "",
+                "payload": "",
+            }],
+    };
+    return template;
+}
+
 server.post('/search/', function (req, res) {
     res.send('hello');
     //console.log(req.body.content);

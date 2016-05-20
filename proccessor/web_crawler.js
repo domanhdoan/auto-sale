@@ -13,7 +13,7 @@ function insert_prefix_homepage(current_link, home_page) {
       return current_link;
 }
 
-function extract_product_list_from_link(link, handle_paging) {
+function extract_productlist_from_link(link, handle_paging) {
       request(link, function (error, response, body) {
             if (error) {
                   console.log("Couldn’t get page " + link + " because of error: " + error);
@@ -76,7 +76,7 @@ function extract_product_list_from_link(link, handle_paging) {
                               var link = $(this).attr('href');
                               link = insert_prefix_homepage(link, cur_home_page);
                               console.log("Start Page: " + link + "");
-                              extract_product_list_from_link(link, false);
+                              extract_productlist_from_link(link, false);
                               console.log("End Page: " + link + "");
                         });
                   } else {
@@ -93,7 +93,7 @@ exports.init = function (crawl_pattern, orm_manager){
       g_orm_manager = orm_manager;
 }
 
-exports.extract_content = function (home_page, web_content) {
+exports.crawl_alink_indepth = function (home_page, web_content) {
       // load the web_content of the page into Cheerio so we can traverse the DOM
       var $ = cheerio.load(web_content);
       var menu_item_links = [];
@@ -109,10 +109,10 @@ exports.extract_content = function (home_page, web_content) {
       });
 
       menu_item_links.forEach(function (link) {
-            extract_product_list_from_link(link, true);
+            extract_productlist_from_link(link, true);
       });
 }
 
-exports.extract_alink = function (link){
-      extract_product_list_from_link(link, true);
+exports.crawl_alink_nodepth = function (link){
+      extract_productlist_from_link(link, true);
 }
