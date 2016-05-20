@@ -17,6 +17,8 @@
     "cheerio": ">=0.11.0",
     "sequelize": ">=3.23.1",
     "mysql": ">=2.10.0",
-    "prototypes": ">=1.2.1"
+    "prototypes": ">=1.2.1",
+    "express": "4.13.4",
+    "body-parser": "1.15.1"
 	}	
 }

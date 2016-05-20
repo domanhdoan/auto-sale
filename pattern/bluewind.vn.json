@@ -22,5 +22,12 @@
             "page_list": "div.wp-pagenavi",
             "page_link": "a.page.larger"
         }
-    }
+    },
+    "product_search": "/?s=",
+    "keywords":[
+        "giay",
+        "nam",
+        "nu",
+        "gia re", 
+        "the thao"]
 }
