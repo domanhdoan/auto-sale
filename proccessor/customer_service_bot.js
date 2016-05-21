@@ -31,9 +31,9 @@ server.post('/search/', function (req, res) {
     // Work dividor and search
     //var word_list = req.body.split(" ");
     var text_search = "giay";
-    console.log(g_search_path+text_search);
-    var products = g_crawler.crawl_alink_nodepth(g_search_path+text_search);
-    console.log(products);
+    //console.log(g_search_path+text_search);
+    //var products = g_crawler.crawl_alink_nodepth(g_search_path+text_search);
+    //console.log(products);
 });
 
 
