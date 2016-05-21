@@ -112,23 +112,30 @@ exports.init = function (crawl_pattern, orm_manager) {
       g_orm_manager = orm_manager;
 }
 
-exports.crawl_alink_indepth = function (home_page, web_content) {
-      // load the web_content of the page into Cheerio so we can traverse the DOM
-      var $ = cheerio.load(web_content);
-      var menu_item_links = [];
+exports.crawl_alink_indepth = function (home_page) {
+      request(home_page, function (error, response, body) {
+            var web_content = body;
+            if (error) {
+                  console.log("Couldn’t get page because of error: " + error);
+                  return;
+            }
+            // load the web_content of the page into Cheerio so we can traverse the DOM
+            var $ = cheerio.load(web_content);
+            var menu_item_links = [];
 
-      var menu = $(g_crawl_pattern.product_menu.panel);
-      var menu_items = menu.find(g_crawl_pattern.product_menu.item);
-      cur_home_page = home_page;
+            var menu = $(g_crawl_pattern.product_menu.panel);
+            var menu_items = menu.find(g_crawl_pattern.product_menu.item);
+            cur_home_page = home_page;
 
-      menu_items.each(function (i, product) {
-            var item_link = $(this).attr("href");
-            item_link = insert_prefix_homepage(item_link, cur_home_page);
-            menu_item_links.push(item_link);
-      });
+            menu_items.each(function (i, product) {
+                  var item_link = $(this).attr("href");
+                  item_link = insert_prefix_homepage(item_link, cur_home_page);
+                  menu_item_links.push(item_link);
+            });
 
-      menu_item_links.forEach(function (link) {
-            extract_productlist_from_link(link, true);
+            menu_item_links.forEach(function (link) {
+                  extract_productlist_from_link(link, true);
+            });
       });
 }
 
