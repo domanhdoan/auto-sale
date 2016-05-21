@@ -21,6 +21,7 @@ function extract_productlist_from_link(link, handle_paging) {
                   console.log("Couldn’t get page " + link + " because of error: " + error);
                   return;
             }
+
             console.log("Sub-category: " + link + "");
             var $ = cheerio.load(body);
             var product_pattern = g_crawl_pattern.product_info;
@@ -57,7 +58,7 @@ function extract_productlist_from_link(link, handle_paging) {
                         }
 
                         // process.stdout.write("============ START ===========================\n");
-                        // process.stdout.write("title  = " + product_title.trim() + "\n");
+                        process.stdout.write("title  = " + product_title.trim() + "\n");
                         // process.stdout.write("thumbnail  = " + product_thumbnail.trim() + "\n");
                         // process.stdout.write("description  = " + product_desc.trim() + "\n");
                         // process.stdout.write("Price  = " + product_price + "\n");
@@ -67,11 +68,17 @@ function extract_productlist_from_link(link, handle_paging) {
                         // process.stdout.write("============ END ===========================\n");
 
                         var product = {};
-                        product.title = product_title.trim();
-                        product.subtle = product_desc.trim();
-                        product.thumbnail = product_thumbnail.trim();
-                        product.link = product_detail_link;
-                        productlist.push(product);
+                        console.log("Product price = " + parseInt(product_price));
+                        if(parseInt(product_price) > 0){                              
+                              product.title = product_title.trim();
+                              product.subtle = product_desc.trim();
+                              product.thumbnail = product_thumbnail.trim();
+                              product.link = product_detail_link;
+                              productlist.push(product);
+                              console.log("products = " + JSON.stringify(product));
+                        }else{
+                              console.log("Not save product which not have price\n");
+                        }
 
                   } else {
                         process.stdout.write("Skipped this HTML element\n");
