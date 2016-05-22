@@ -1,8 +1,9 @@
 "use strict";
-
+var logger = require("../util/logger.js");
 var fs = require("fs");
 var path = require("path");
 var Sequelize = require("sequelize");
+
 var sequelize = new Sequelize('product_crawl', 'doan', 'colen123', {
     host: '127.0.0.1',
     dialect: 'mysql',
@@ -15,6 +16,7 @@ var sequelize = new Sequelize('product_crawl', 'doan', 'colen123', {
         min: 0,
         idle: 10000
     },
+    logging: logger.info
 });
 
 var db = {};

@@ -1,4 +1,5 @@
 require('string.prototype.startswith');
+var logger = require("../util/logger.js");
 
 var cheerio = require("cheerio");
 var request = require("request");
@@ -19,11 +20,11 @@ function extract_productlist_from_link(saved_store, saved_category, link, handle
 
       request(link, function (error, response, body) {
             if (error) {
-                  console.log("Couldn’t get page " + link + " because of error: " + error);
+                  logger.error("Couldn’t get page " + link + " because of error: " + error);
                   return;
             }
 
-            console.log("Sub-category: " + link + "");
+            logger.info("Sub-category: " + link + "");
             var $ = cheerio.load(body);
             var product_pattern = g_crawl_pattern.product_info;
             var product_list = $(product_pattern.product_list);
@@ -59,6 +60,7 @@ function extract_productlist_from_link(saved_store, saved_category, link, handle
                               product_percent = 0;
                         }
                         if (parseInt(product_price) > 0) {
+                              logger.info ("Price = " + product_price.trim());
                               g_orm_manager.Product
                                     .build({
                                           title: product_title,
@@ -72,12 +74,14 @@ function extract_productlist_from_link(saved_store, saved_category, link, handle
                                           brand: ""
                                     }).save()
                                     .then(function (saved_product) {
-                                          console.log(" Save new product successfully");
+                                          logger.info(" Save new product successfully");
                                           saved_product.setCategory(saved_category);
                                           saved_product.setStore(saved_store);
+                                    }).catch(function (error) {
+                                          logger.error(error);
                                     });
                         } else {
-                              console.log("Not save product which not have price\n");
+                              logger.info("Not save product which not have price\n");
                         }
                   } else {
                         process.stdout.write("Skipped this HTML element\n");
@@ -91,13 +95,13 @@ function extract_productlist_from_link(saved_store, saved_category, link, handle
                         page_list.each(function (i, page) {
                               var link = $(this).attr('href');
                               link = insert_prefix_homepage(link, cur_home_page);
-                              console.log("Start Page: " + link + "");
+                              logger.info("Start Page: " + link + "");
                               var products = extract_productlist_from_link(saved_store, saved_category, link, false);
                               productlist.push(products);
-                              console.log("End Page: " + link + "");
+                              logger.info("End Page: " + link + "");
                         });
                   } else {
-                        console.log("ONLY have ONE page");
+                        logger.info("ONLY have ONE page");
                   }
             } else {
 
@@ -113,7 +117,6 @@ function extract_productlist_from_category(saved_store, menu_items) {
             var category = $(this).text();
             if (category != null) {
                   g_orm_manager.Category.findAndCountAll({
-                        attributes: [[g_orm_manager.sequelize.fn('COUNT')]],
                         where: {
                               name: category
                         }
@@ -127,14 +130,16 @@ function extract_productlist_from_category(saved_store, menu_items) {
                                     .then(function (saved_category) {
                                           saved_category.setStore(saved_store);
                                           extract_productlist_from_link(saved_store, saved_category, item_link, true);
+                                    }).catch(function (error) {
+                                          logger.error(error);
                                     });
                         } else {
-                              console.log("Not save existing category");
-                              extract_productlist_from_link(saved_store, results[0], item_link, true);
+                              logger.info("Not save existing category");
+                              extract_productlist_from_link(saved_store, results.rows[0], item_link, true);
                         }
                   });
             } else {
-                  console.log("Will not extract product list for null category");
+                  logger.info("Will not extract product list for null category");
             }
       });
 }
@@ -148,7 +153,7 @@ exports.crawl_alink_withdepth = function (home_page) {
       request(home_page, function (error, response, body) {
             var web_content = body;
             if (error) {
-                  console.log("Couldn’t get page because of error: " + error);
+                  logger.error("Couldn’t get page because of error: " + error);
                   return;
             }
             // load the web_content of the page into Cheerio so we can traverse the DOM
@@ -169,14 +174,16 @@ exports.crawl_alink_withdepth = function (home_page) {
                               })
                               .save()
                               .then(function (saved_store) {
-                                    console.log("Saved " + saved_store);
+                                    logger.info("Saved " + saved_store);
                                     extract_productlist_from_category(saved_store, menu_items);
+                              }).catch(function (error) {
+                                    logger.error(error);
                               });
                   } else if (store.count > 0) {
-                        console.log("Not add new store that existed\n");
-                        extract_productlist_from_category(store[0], menu_items);
+                        logger.info("Not add new store that existed\n");
+                        extract_productlist_from_category(store.rows[0], menu_items);
                   } else {
-                        console.log("Not add new store that have emtpy home page\n");
+                        logger.info("Not add new store that have emtpy home page\n");
                   }
             });
       });

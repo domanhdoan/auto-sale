@@ -37,7 +37,16 @@ module.exports = {
         size: {
           type: Sequelize.STRING
         },
-        category_id: {
+        StoreId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Store',
+            key: 'id'
+          },
+          onUpdate: 'cascade',
+          onDelete: 'cascade'
+        },
+        CategoryId: {
           type: Sequelize.INTEGER,
           references: {
             model: 'Category',

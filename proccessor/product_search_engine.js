@@ -1,4 +1,5 @@
 var g_orm_manager = null;
+var logger = require("../util/logger.js");
 
 exports.init = function (orm_manager) {
     g_orm_manager = orm_manager;
@@ -17,7 +18,7 @@ exports.findAllCategories = function (store_name, callback) {
                 }
             }).then(function (categories) {
                 categories.forEach(function (category) {
-                    console.log(category.name);
+                    logger.info(category.name);
                 });
             });
         }else{

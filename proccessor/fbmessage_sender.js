@@ -1,5 +1,6 @@
 var request = require('request');
 var token = "EAANYeoVPMJcBAEc6wWojalF4prTtZAXNfAwit6Mr0awLGQh6LlTYoJNDoO21wZBGvc0wMEmSx0SVaVOFmlbRx1STBhwYT1jbHr0okvDfgsFOZB8KOWUE2ZCYpbvlZBHyDGtEVu6s1Tj3tRRiPvyIaXvk2YPpNRntZBPA50FHjFpAZDZD";
+var logger = require("../util/logger.js");
 
 function sendDataViaFBMessenger(token, sender, data){
     request({
@@ -12,9 +13,9 @@ function sendDataViaFBMessenger(token, sender, data){
         }
     }, function (error, response, body) {
         if (error) {
-            console.log('Error sending message: ', error);
+            logger.error('Error sending message: ', error);
         } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
+            logger.error('Error: ', response.body.error);
         }
     });
 }
