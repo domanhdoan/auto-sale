@@ -14,7 +14,7 @@ function insert_prefix_homepage(current_link, home_page) {
       return current_link;
 }
 
-function extract_productlist_from_link(saved_category, link, handle_paging) {
+function extract_productlist_from_link(saved_store, saved_category, link, handle_paging) {
       var productlist = [];
 
       request(link, function (error, response, body) {
@@ -37,6 +37,7 @@ function extract_productlist_from_link(saved_category, link, handle_paging) {
                   if (product_thumbnail != "" && product_title != "") {
                         var product_detail_link = $(this).find(product_pattern.detail_link).attr('href');
                         product_detail_link = insert_prefix_homepage(product_detail_link, cur_home_page);
+                        product_thumbnail = insert_prefix_homepage(product_thumbnail, cur_home_page)
 
                         if (product_desc == "") {
                               product_desc = product_title;
@@ -73,6 +74,7 @@ function extract_productlist_from_link(saved_category, link, handle_paging) {
                                     .then(function (saved_product) {
                                           console.log(" Save new product successfully");
                                           saved_product.setCategory(saved_category);
+                                          saved_product.setStore(saved_store);
                                     });
                         } else {
                               console.log("Not save product which not have price\n");
@@ -90,7 +92,7 @@ function extract_productlist_from_link(saved_category, link, handle_paging) {
                               var link = $(this).attr('href');
                               link = insert_prefix_homepage(link, cur_home_page);
                               console.log("Start Page: " + link + "");
-                              var products = extract_productlist_from_link(link, false);
+                              var products = extract_productlist_from_link(saved_store, saved_category, link, false);
                               productlist.push(products);
                               console.log("End Page: " + link + "");
                         });
@@ -123,12 +125,12 @@ function extract_productlist_from_category(saved_store, menu_items) {
                                     })
                                     .save()
                                     .then(function (saved_category) {
-                                          console.log("Saved " + saved_category);
                                           saved_category.setStore(saved_store);
-                                          extract_productlist_from_link(saved_category, item_link, true);
+                                          extract_productlist_from_link(saved_store, saved_category, item_link, true);
                                     });
                         } else {
                               console.log("Not save existing category");
+                              extract_productlist_from_link(saved_store, results[0], item_link, true);
                         }
                   });
             } else {
@@ -155,7 +157,6 @@ exports.crawl_alink_withdepth = function (home_page) {
             var menu = $(g_crawl_pattern.product_menu.panel);
             var menu_items = menu.find(g_crawl_pattern.product_menu.item);
             var existing_store = g_orm_manager.Store.findAndCountAll({
-                  attributes: [[g_orm_manager.sequelize.fn('COUNT')]],
                   where: {
                         home: cur_home_page
                   }
@@ -171,8 +172,9 @@ exports.crawl_alink_withdepth = function (home_page) {
                                     console.log("Saved " + saved_store);
                                     extract_productlist_from_category(saved_store, menu_items);
                               });
-                  } else if (store.count > 0){
+                  } else if (store.count > 0) {
                         console.log("Not add new store that existed\n");
+                        extract_productlist_from_category(store[0], menu_items);
                   } else {
                         console.log("Not add new store that have emtpy home page\n");
                   }

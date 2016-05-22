@@ -21,8 +21,7 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false
         },
-        //foreign key usage
-        store_id: {
+       store_id: {
           type: Sequelize.INTEGER,
           references: {
             model: 'Store',

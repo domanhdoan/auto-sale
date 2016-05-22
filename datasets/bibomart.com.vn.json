@@ -22,5 +22,6 @@
             "page_list": ".pager .yiiPager",
             "page_link": "li.page a"
         }
-    }
+    },
+    "store_type":"mom & kids"
 }

@@ -1,11 +1,12 @@
 var bodyParser = require('body-parser');
-var messenger = require('./fbmessage_sender.js');
 var express = require('express');
 var server = express();
+var messenger = require('./fbmessage_sender.js');
+var products_search = require('./product_search_engine.js');
 
 var home_page = "";
 var g_search_path = "";
-var g_crawler = null;
+var g_products_finder = null;
 
 function createProductInfoTemplate(){
     var template = {
@@ -26,14 +27,12 @@ function createProductInfoTemplate(){
 }
 
 server.post('/search/', function (req, res) {
-    res.send('hello');
-    //console.log(req.body.content);
     // Work dividor and search
-    //var word_list = req.body.split(" ");
     var text_search = "giay";
-    //console.log(g_search_path+text_search);
-    //var products = g_crawler.crawl_alink_nodepth(g_search_path+text_search);
-    //console.log(products);
+    var url = "http://bluewind.vn";
+    g_products_finder.findAllCategories(url, function(){
+        
+    });
 });
 
 
@@ -60,7 +59,8 @@ server.post('/webhook/', function (req, res) {
 });
 
 module.exports = {
-    init: function (port, search_path) {
+    start: function (port, search_path, products_finder) {
+        g_products_finder = products_finder;
         g_search_path = search_path;
         server.use(bodyParser.urlencoded({ extended: false }));
         server.use(bodyParser.json());
@@ -68,8 +68,5 @@ module.exports = {
         server.listen(port, function () {
             console.log('ready to go!');
         });
-    },
-    set_crawler: function (crawler){
-        g_crawler = crawler;
     }
 }

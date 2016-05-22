@@ -2,7 +2,7 @@
     "product_menu": {
         "panel": "ul .has-sub",
         "item": "li a"
-    },        
+    },
     "product_info": {
         "product_list": ".list-item",
         "code": "",
@@ -12,7 +12,16 @@
         "price": ".list-content .list-content-box .list-content-body .product-price-all .product-price .pricetext",
         "discount": "",
         "percent": "",
-        "detail_link":".list-content .list-content-box .list-content-img a"
+        "detail_link": ".list-content .list-content-box .list-content-img a",
+        "details": {
+            "brand": "",
+            "size": "",
+            "stock_status": ""
+        },
+        "product_paging": {
+            "page_list": "div.wp-pagenavi",
+            "page_link": "a.page.larger"
+        }
     },
-    "product_pages": ""
+    "store_type": "camera"
 }

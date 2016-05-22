@@ -34,17 +34,20 @@ Object.keys(db).forEach(function (modelName) {
 
 db.Store.hasMany(db.Category, { as: "Store", foreignKeyConstraint:true});
 db.Category.belongsTo(db.Store);
+db.Store.hasMany(db.Product, { as: "Store", foreignKeyConstraint:true});
+db.Product.belongsTo(db.Store);
 
 db.Category.hasMany(db.Product, { as: "Category", foreignKeyConstraint:true});
 db.Product.belongsTo(db.Category);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-db.sequelize
-    .sync({ force: true })
-    .then(function () { 
-    })
-    .catch(function (error) {
-        console.log('Unable to connect to the database: ', error);
-    });
+//This piece of code will reset DB each startup time
+// db.sequelize
+//     .sync({ force: true })
+//     .then(function () { 
+//     })
+//     .catch(function (error) {
+//         console.log('Unable to connect to the database: ', error);
+//     });
 module.exports = db;

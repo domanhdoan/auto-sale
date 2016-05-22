@@ -11,7 +11,7 @@ module.exports = function (Sequelize, DataTypes) {
             type: DataTypes.STRING
         },
         desc: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING(128),
         },
         price: {
             type: DataTypes.STRING

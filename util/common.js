@@ -7,7 +7,7 @@ module.exports.load_crawl_pattern = function (url){
 	} else {
 
 	}
-	product_pattern = './pattern/' + product_pattern + ".json";
+	product_pattern = './datasets/' + product_pattern + ".json";
 	var pattern = JSON.parse(require('fs').readFileSync(product_pattern, 'utf8'));
 	return pattern;
 }
