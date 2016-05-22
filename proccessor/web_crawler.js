@@ -1,10 +1,11 @@
 require('string.prototype.startswith');
-var models = require("../models/product_model.js");
+
 var cheerio = require("cheerio");
 var request = require("request");
 var cur_home_page = "";
 var g_crawl_pattern = null;
 var g_orm_manager = null;
+var $ = null;
 
 function insert_prefix_homepage(current_link, home_page) {
       if (!current_link.startsWith('http')) {
@@ -13,7 +14,7 @@ function insert_prefix_homepage(current_link, home_page) {
       return current_link;
 }
 
-function extract_productlist_from_link(link, handle_paging) {
+function extract_productlist_from_link(saved_category, link, handle_paging) {
       var productlist = [];
 
       request(link, function (error, response, body) {
@@ -56,30 +57,26 @@ function extract_productlist_from_link(link, handle_paging) {
                         if (product_percent == undefined || product_percent == "") {
                               product_percent = 0;
                         }
-
-                        // process.stdout.write("============ START ===========================\n");
-                        process.stdout.write("title  = " + product_title.trim() + "\n");
-                        // process.stdout.write("thumbnail  = " + product_thumbnail.trim() + "\n");
-                        // process.stdout.write("description  = " + product_desc.trim() + "\n");
-                        // process.stdout.write("Price  = " + product_price + "\n");
-                        // process.stdout.write("Discount  = " + product_discount + "\n");
-                        // process.stdout.write("Discount Percent  = " + product_percent + "\n");
-                        // process.stdout.write("Details = " + product_detail_link + "\n");
-                        // process.stdout.write("============ END ===========================\n");
-
-                        var product = {};
-                        console.log("Product price = " + parseInt(product_price));
-                        if(parseInt(product_price) > 0){                              
-                              product.title = product_title.trim();
-                              product.subtle = product_desc.trim();
-                              product.thumbnail = product_thumbnail.trim();
-                              product.link = product_detail_link;
-                              productlist.push(product);
-                              console.log("products = " + JSON.stringify(product));
-                        }else{
+                        if (parseInt(product_price) > 0) {
+                              g_orm_manager.Product
+                                    .build({
+                                          title: product_title,
+                                          thumbnail: product_thumbnail,
+                                          desc: product_desc,
+                                          price: product_price,
+                                          discount: product_discount,
+                                          percent: product_percent,
+                                          link: product_detail_link,
+                                          size: "",
+                                          brand: ""
+                                    }).save()
+                                    .then(function (saved_product) {
+                                          console.log(" Save new product successfully");
+                                          saved_product.setCategory(saved_category);
+                                    });
+                        } else {
                               console.log("Not save product which not have price\n");
                         }
-
                   } else {
                         process.stdout.write("Skipped this HTML element\n");
                   }
@@ -107,12 +104,45 @@ function extract_productlist_from_link(link, handle_paging) {
       return productlist;
 }
 
+function extract_productlist_from_category(saved_store, menu_items) {
+      menu_items.each(function (i, product) {
+            var item_link = $(this).attr("href");
+            item_link = insert_prefix_homepage(item_link, cur_home_page);
+            var category = $(this).text();
+            if (category != null) {
+                  g_orm_manager.Category.findAndCountAll({
+                        attributes: [[g_orm_manager.sequelize.fn('COUNT')]],
+                        where: {
+                              name: category
+                        }
+                  }).then(function (results) {
+                        if (results.count == 0) {
+                              g_orm_manager.Category
+                                    .build({
+                                          name: category,
+                                    })
+                                    .save()
+                                    .then(function (saved_category) {
+                                          console.log("Saved " + saved_category);
+                                          saved_category.setStore(saved_store);
+                                          extract_productlist_from_link(saved_category, item_link, true);
+                                    });
+                        } else {
+                              console.log("Not save existing category");
+                        }
+                  });
+            } else {
+                  console.log("Will not extract product list for null category");
+            }
+      });
+}
+
 exports.init = function (crawl_pattern, orm_manager) {
       g_crawl_pattern = crawl_pattern;
       g_orm_manager = orm_manager;
 }
 
-exports.crawl_alink_indepth = function (home_page) {
+exports.crawl_alink_withdepth = function (home_page) {
       request(home_page, function (error, response, body) {
             var web_content = body;
             if (error) {
@@ -120,21 +150,32 @@ exports.crawl_alink_indepth = function (home_page) {
                   return;
             }
             // load the web_content of the page into Cheerio so we can traverse the DOM
-            var $ = cheerio.load(web_content);
-            var menu_item_links = [];
-
+            cur_home_page = home_page;
+            $ = cheerio.load(web_content);
             var menu = $(g_crawl_pattern.product_menu.panel);
             var menu_items = menu.find(g_crawl_pattern.product_menu.item);
-            cur_home_page = home_page;
-
-            menu_items.each(function (i, product) {
-                  var item_link = $(this).attr("href");
-                  item_link = insert_prefix_homepage(item_link, cur_home_page);
-                  menu_item_links.push(item_link);
-            });
-
-            menu_item_links.forEach(function (link) {
-                  extract_productlist_from_link(link, true);
+            var existing_store = g_orm_manager.Store.findAndCountAll({
+                  attributes: [[g_orm_manager.sequelize.fn('COUNT')]],
+                  where: {
+                        home: cur_home_page
+                  }
+            }).then(function (store) {
+                  if (store.count == 0 && cur_home_page != null) {
+                        g_orm_manager.Store
+                              .build({
+                                    home: cur_home_page,
+                                    type: g_crawl_pattern.store_type
+                              })
+                              .save()
+                              .then(function (saved_store) {
+                                    console.log("Saved " + saved_store);
+                                    extract_productlist_from_category(saved_store, menu_items);
+                              });
+                  } else if (store.count > 0){
+                        console.log("Not add new store that existed\n");
+                  } else {
+                        console.log("Not add new store that have emtpy home page\n");
+                  }
             });
       });
 }

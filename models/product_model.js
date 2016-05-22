@@ -1,33 +1,40 @@
-module.exports = function(Sequelize)  {
-    var ProductInfo = Sequelize.define('product_info', {
-            code: {
-                type: Sequelize.STRING,
-            },
-            title: {
-                type: Sequelize.STRING,
-            },
-            thumbnail: {
-                type: Sequelize.STRING
-            },
-            desc: {
-                type: Sequelize.STRING
-            },
-            price: {
-                type: Sequelize.INTEGER
-            },
-            discount: {
-                type: Sequelize.INTEGER
-            },
-            percentage: {
-                type: Sequelize.STRING
-            }
-        }, 
-        {
-            freezeTableName: true, // Model tableName will be the same as the model name
-        });
-    ProductInfo.sync({force: true}).then(function () {
-        return ProductInfo.create({
-        });
+'use strict';
+module.exports = function (Sequelize, DataTypes) {
+    var Product = Sequelize.define('Product', {
+        // code: { 
+        //     type: DataTypes.STRING,
+        // },
+        title: {
+            type: DataTypes.STRING,
+        },
+        thumbnail: {
+            type: DataTypes.STRING
+        },
+        desc: {
+            type: DataTypes.STRING
+        },
+        price: {
+            type: DataTypes.STRING
+        },
+        discount: {
+            type: DataTypes.STRING
+        },
+        percentage: {
+            type: DataTypes.STRING
+        },
+        link: {
+            type: DataTypes.STRING
+        },
+        brand: {
+            type: DataTypes.STRING
+        },
+        size: {
+            type: DataTypes.STRING
+        }
+    },
+    {
+        freezeTableName: true
     });
-    return ProductInfo;
+
+    return Product;
 }
