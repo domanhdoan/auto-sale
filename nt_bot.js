@@ -48,10 +48,10 @@ request({
 	 console.log("\n LOAD DATA COMPLETED");
 });
 
-app.get('/hello/', function (req, res) {
+app.get('/search/', function (req, res) {
 
   res.send('hello world');
-  console.log('hello world');
+  console.log('hello world = ' + req.body);
 });
 
 
@@ -106,7 +106,7 @@ app.post('/webhook/', function (req, res) {
 });
 
 app.use(bodyParser.json());
-app.listen(80, function(){
+app.listen(8000, function(){
   console.log("Ready to go");
 });
 

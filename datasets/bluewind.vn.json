@@ -5,7 +5,6 @@
     },
     "product_info": {
         "product_list": "ul.list-tax",
-        "code": "",
         "title": ".title a",
         "thumbnail": ".img a img",
         "desc": "",
@@ -14,8 +13,10 @@
         "percent": "",
         "detail_link": ".img a",
         "details": {
+            "code": "p.masp",
+            "color": "dd.mausac",
+            "size": "dd.size",
             "brand": "",
-            "size": "",
             "stock_status": ""
         },
         "product_paging": {
@@ -23,12 +24,18 @@
             "page_link": "a.page.larger"
         }
     },
-    "product_search": "/?s=",
-    "keywords":[
-        "giay",
-        "nam",
-        "nu",
-        "gia re", 
-        "the thao"],
+    "product_search": "/?",
+    "keywords": {
+        "category": "",
+        "usage_purpose":"",
+        "gender": "",
+        "brand": "",
+        "size": "",
+        "color": "",
+        "price": "",
+        "hot_trend":"",
+        "sale":""
+    },
+    
      "store_type":"shoes"
 }

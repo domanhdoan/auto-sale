@@ -25,7 +25,11 @@ fs.readdirSync(__dirname).filter(function (file) {
     return (file.indexOf(".") !== 0) && (file !== "db_manager.js") && (file !== "index.js");
 }).forEach(function (file) {
     var model = sequelize["import"](path.join(__dirname, file));
-    db[model.name] = model;
+    if (model != null) {
+        db[model.name] = model;
+    }else{
+        logger.warn("Not import empty model");
+    }
 });
 
 Object.keys(db).forEach(function (modelName) {

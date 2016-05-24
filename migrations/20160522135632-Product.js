@@ -20,10 +20,10 @@ module.exports = {
           type: Sequelize.STRING(128)
         },
         price: {
-          type: Sequelize.INTEGER
+          type: Sequelize.STRING
         },
         discount: {
-          type: Sequelize.INTEGER
+          type: Sequelize.STRING
         },
         percentage: {
           type: Sequelize.STRING

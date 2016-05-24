@@ -15,7 +15,7 @@ function insert_prefix_homepage(current_link, home_page) {
       return current_link;
 }
 
-function extract_productlist_from_link(saved_store, saved_category, link, handle_paging) {
+function extract_productlist_from_link(saved_store, saved_category, link, handle_paging, save_to_db, callback) {
       var productlist = [];
 
       request(link, function (error, response, body) {
@@ -29,7 +29,8 @@ function extract_productlist_from_link(saved_store, saved_category, link, handle
             var product_pattern = g_crawl_pattern.product_info;
             var product_list = $(product_pattern.product_list);
             var remain_pages = $(product_pattern.product_paging.page_list);
-
+            var crawl_product_list = [];
+            
             product_list.each(function (i, product) {
                   var product_title = $(this).find(product_pattern.title).text();
                   var product_thumbnail = $(this).find(product_pattern.thumbnail).attr('src');
@@ -59,17 +60,17 @@ function extract_productlist_from_link(saved_store, saved_category, link, handle
                         if (product_percent == undefined || product_percent == "") {
                               product_percent = 0;
                         }
-                        if (parseInt(product_price) > 0) {
-                              logger.info ("Price = " + product_price.trim());
+                        // logger.info("Title = " + product_title.trim());
+                        if (parseInt(product_price) > 0 && save_to_db) {
                               g_orm_manager.Product
                                     .build({
                                           title: product_title,
-                                          thumbnail: product_thumbnail,
+                                          thumbnail: product_thumbnail.replaceAll('-', '%%'),
                                           desc: product_desc,
                                           price: product_price,
                                           discount: product_discount,
                                           percent: product_percent,
-                                          link: product_detail_link,
+                                          link: product_detail_link.replaceAll('-', '%%'),
                                           size: "",
                                           brand: ""
                                     }).save()
@@ -80,6 +81,12 @@ function extract_productlist_from_link(saved_store, saved_category, link, handle
                                     }).catch(function (error) {
                                           logger.error(error);
                                     });
+                        } else if (parseInt(product_price) > 0) {
+                              var product_data = {};
+                              product_data.title = product_title;
+                              product_data.thunbnail = product_thumbnail;
+                              product_data.price = product_price;
+                              crawl_product_list.push(product_data);              
                         } else {
                               logger.info("Not save product which not have price\n");
                         }
@@ -87,7 +94,11 @@ function extract_productlist_from_link(saved_store, saved_category, link, handle
                         process.stdout.write("Skipped this HTML element\n");
                   }
             });
-
+            
+            if(callback != null){
+                  callback(crawl_product_list);
+            }
+            
             // Extract data from remain pages
             if (remain_pages.length > 0 && handle_paging) {
                   var page_list = remain_pages.find(product_pattern.product_paging.page_link);
@@ -96,7 +107,8 @@ function extract_productlist_from_link(saved_store, saved_category, link, handle
                               var link = $(this).attr('href');
                               link = insert_prefix_homepage(link, cur_home_page);
                               logger.info("Start Page: " + link + "");
-                              var products = extract_productlist_from_link(saved_store, saved_category, link, false);
+                              var products = extract_productlist_from_link(saved_store, saved_category,
+                                    link, false, save_to_db, callback);
                               productlist.push(products);
                               logger.info("End Page: " + link + "");
                         });
@@ -129,13 +141,15 @@ function extract_productlist_from_category(saved_store, menu_items) {
                                     .save()
                                     .then(function (saved_category) {
                                           saved_category.setStore(saved_store);
-                                          extract_productlist_from_link(saved_store, saved_category, item_link, true);
+                                          extract_productlist_from_link(saved_store, saved_category,
+                                                item_link, true, true, null);
                                     }).catch(function (error) {
                                           logger.error(error);
                                     });
                         } else {
                               logger.info("Not save existing category");
-                              extract_productlist_from_link(saved_store, results.rows[0], item_link, true);
+                              extract_productlist_from_link(saved_store, results.rows[0],
+                                    item_link, true, true, null);
                         }
                   });
             } else {
@@ -189,7 +203,6 @@ exports.crawl_alink_withdepth = function (home_page) {
       });
 }
 
-exports.crawl_alink_nodepth = function (link) {
-      var products = extract_productlist_from_link(link, true);
-      return products;
+exports.crawl_alink_nodepth = function (link, callback) {
+      extract_productlist_from_link(null, null, link, true, false, callback);
 }
