@@ -1,7 +1,7 @@
 var bodyParser = require('body-parser');
 var express = require('express');
 var server = express();
-var intent_extractor = require('./shoes_sale_witbot.js');
+var intent_extractor = require('./shoes_saleman_witbot.js');
 
 var home_page = "";
 var g_search_path = "";
@@ -28,7 +28,7 @@ var request = require('request');
 var token = "EAANYeoVPMJcBAEc6wWojalF4prTtZAXNfAwit6Mr0awLGQh6LlTYoJNDoO21wZBGvc0wMEmSx0SVaVOFmlbRx1STBhwYT1jbHr0okvDfgsFOZB8KOWUE2ZCYpbvlZBHyDGtEVu6s1Tj3tRRiPvyIaXvk2YPpNRntZBPA50FHjFpAZDZD";
 var logger = require("../util/logger.js");
 
-function sendDataViaFBMessenger(token, sender, data){
+function sendDataToFBMessenger(token, sender, data){
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: { access_token: token },
@@ -50,7 +50,7 @@ function functionsendTextMessage(sender, simple_text) {
     messageData = {
         text: simple_text
     }
-    sendDataViaFBMessenger(token, sender, messageData);
+    sendDataToFBMessenger(token, sender, messageData);
 }
 
 function sendGenericMessage(sender, rich_data) {
@@ -63,7 +63,7 @@ function sendGenericMessage(sender, rich_data) {
             }
         }
     };
-    sendDataViaFBMessenger(token, sender, messageData);
+    sendDataToFBMessenger(token, sender, messageData);
 }
 
 const sessions = {};

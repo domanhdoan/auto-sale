@@ -22,15 +22,19 @@ const actions = {
         cb();
     },
     merge(sessionId, context, entities, message, cb) {
-        console.log(entities);
+        //console.log(entities);
+        for(var i = 0; i < entities.length; i++){
+           console.log("entities[" + i+ "] = " + entities[i]); 
+        }
         cb(context);
     },
     error(sessionId, context, error) {
         console.log(error.message);
     },
 };
-const client = new Wit(token, actions, logger);
-//client.interactive();
+//const client = new Wit(token, actions, logger);
+const client = new Wit(token, actions);
+client.interactive();
 const context = {};
 
 module.exports.extract_intent = function(sessionId, msg, all_user_session){

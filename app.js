@@ -1,6 +1,6 @@
 require('string.prototype.startswith');
 var crawler         = require("./proccessor/web_crawler");
-var auto_order_bot  = require("./proccessor/saleman_bot");
+var auto_order_bot  = require("./proccessor/saleman_fbbot");
 var product_finder  = require('./proccessor/product_finder.js');
 var orm_manager     = require("./models/db_manager.js");
 var common = require("./util/common");
