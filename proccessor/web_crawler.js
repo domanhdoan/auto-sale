@@ -15,7 +15,8 @@ function insert_prefix_homepage(current_link, home_page) {
       return current_link;
 }
 
-function extract_productlist_from_link(saved_store, saved_category, link, handle_paging, save_to_db, callback) {
+function extract_productlist_from_link(saved_store, saved_category, 
+      link, handle_paging, save_to_db, callback) {
       var productlist = [];
 
       request(link, function (error, response, body) {
@@ -163,6 +164,10 @@ exports.init = function (crawl_pattern, orm_manager) {
       g_orm_manager = orm_manager;
 }
 
+exports.crawl_alink_nodepth = function (link, callback) {
+      extract_productlist_from_link(null, null, link, true, false, callback);
+}
+
 exports.crawl_alink_withdepth = function (home_page) {
       request(home_page, function (error, response, body) {
             var web_content = body;
@@ -201,8 +206,4 @@ exports.crawl_alink_withdepth = function (home_page) {
                   }
             });
       });
-}
-
-exports.crawl_alink_nodepth = function (link, callback) {
-      extract_productlist_from_link(null, null, link, true, false, callback);
 }

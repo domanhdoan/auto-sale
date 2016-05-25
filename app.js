@@ -1,8 +1,8 @@
 require('string.prototype.startswith');
 var crawler         = require("./proccessor/web_crawler");
-var auto_order_bot  = require("./proccessor/customer_service_bot");
+var auto_order_bot  = require("./proccessor/saleman_bot");
+var product_finder  = require('./proccessor/product_finder.js');
 var orm_manager     = require("./models/db_manager.js");
-var product_finder = require('./proccessor/product_finder.js');
 var common = require("./util/common");
 var logger = require("./util/logger");
 
@@ -14,7 +14,7 @@ if (crawl_source != null) {
         var product_pattern = common.load_crawl_pattern(link);
         crawler.init(product_pattern, orm_manager);
         //crawler.crawl_alink_withdepth(link);
-        auto_order_bot.start(8000, link + '' + product_pattern.product_search, product_finder);
+        auto_order_bot.start(8080, link + '' + product_pattern.product_search, product_finder);
     })
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");

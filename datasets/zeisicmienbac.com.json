@@ -23,5 +23,6 @@
             "page_link": "a.page.larger"
         }
     },
+    "product_search": "/tim-kiem?q",
     "store_type": "camera"
 }
