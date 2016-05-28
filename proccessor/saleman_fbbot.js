@@ -180,6 +180,8 @@ function execute_saleflow_simple(sessionId, text){
     if (text.toLowerCase() === "huy") {
         sendTextMessage(sessions[sessionId].fid, common.pls_reset_buying);
         sessions[sessionId].last_action = common.say_greetings;
+        sendTextMessage(sessions[sessionId].fid, common.pls_select_product);
+
     } else if (sessions[sessionId].last_action == common.say_greetings) {
         sendTextMessage(sessions[sessionId].fid, common.pls_select_product);
         sessions[sessionId].last_action = common.pls_select_product;
@@ -193,6 +195,16 @@ function execute_saleflow_simple(sessionId, text){
                 logger.info(product.dataValues.price);
                 logger.info(product.dataValues.desc);
                 sendTextMessage(sessions[sessionId].fid, common.pls_select_product_color);
+                g_products_finder.getProductColors(product.dataValues.id,
+                    function (colors) {
+                    if(colors != null){
+                        for(var i = 0; i < colors.length; i++){
+                            logger.info("Available Color: " + colors[i].dataValues.name);
+                        }
+                    }else{
+                        
+                    }
+                });
             } else {
                 logger.debug("Product not found");
                 sendTextMessage(sessions[sessionId].fid, common.notify_product_notfound);
@@ -205,6 +217,16 @@ function execute_saleflow_simple(sessionId, text){
                     sessions[sessionId].last_action = common.select_product_color;
                     sendTextMessage(sessions[sessionId].fid, common.notify_product_found);
                     sendTextMessage(sessions[sessionId].fid, common.pls_select_product_size);
+                    g_products_finder.getProductSizes(sessions[sessionId].last_product_id,
+                        function (sizes) {
+                            if (sizes != null) {
+                                for (var i = 0; i < sizes.length; i++) {
+                                    logger.info("Available Size: " + sizes[i].dataValues.value);
+                                }
+                            } else {
+
+                            }
+                    });
                 } else {
                     logger.debug("Product not found");
                     sendTextMessage(sessions[sessionId].fid, common.notify_product_notfound);
