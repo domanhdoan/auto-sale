@@ -10,6 +10,9 @@ module.exports = {
           primaryKey: true,
           autoIncrement: true
         },
+        code: {
+          type: Sequelize.STRING,
+        },
         title: {
           type: Sequelize.STRING
         },

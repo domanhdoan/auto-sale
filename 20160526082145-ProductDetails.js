@@ -10,24 +10,35 @@ module.exports = {
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
     return queryInterface.createTable(
-      'Category',
+      'FashionProductDetails',
       {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true
         },
-        name: {
-          type: Sequelize.STRING,
-          allowNull: false
-        },
-        cover: {
-          type: Sequelize.STRING,
-        },
-       StoreId: {
+        ProductId: {
           type: Sequelize.INTEGER,
           references: {
-            model: 'Store',
+            model: 'Product',
+            key: 'id'
+          },
+          onUpdate: 'cascade',
+          onDelete: 'cascade'
+        },
+        ColorId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Color',
+            key: 'id'
+          },
+          onUpdate: 'cascade',
+          onDelete: 'cascade'
+        },
+        SizeId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Size',
             key: 'id'
           },
           onUpdate: 'cascade',
@@ -48,7 +59,7 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
     */
-    queryInterface.dropTable('Category');
+    return queryInterface.dropTable('ProductDetails');
 
   }
 };

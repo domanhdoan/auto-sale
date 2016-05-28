@@ -1,3 +1,33 @@
+module.exports = {
+    say_greetings: "Xin vui kính chào quý khách",
+    pls_select_category: "Xin vui lòng chọn 1 danh mục sản phẩm",
+    pls_select_product: "Xin vui lòng chọn sản phẩm (nhập code hoặc upload ảnh)",
+    pls_select_product_color: "Xin vui lòng chọn màu sản phẩm",
+    pls_select_product_size: "Xin vui lòng chọn size sản phẩm",
+    pls_enter_quantity: "Xin vui lòng chọn số lượng sản phẩm",
+    pls_enter_name: "Xin vui lòng nhập tên người nhận",
+    pls_enter_address: "Xin vui nhập địa chỉ ngưởi nhận",
+    pls_enter_phone: "Xin vui lòng nhập số điện thoại",
+    pls_enter_email: "Xin vui lòng nhập email người nhận",
+    pls_enter_delivery_date: "Xin vui lòng nhập ngày nhận hàng",
+    pls_reset_buying: "Hủy đơn hàng. Xin vui lòng bắt đầu lại quá trình đặt hàng",
+    pls_end_buying: "Kết thúc đặt hàng. Xin vui lòng nhập OK để bắt đầu đơn hàng mới",
+    find_categories: "find_categories",
+    find_product: "find_product",
+    find_details: "find_details", // ask about size, color and in-stock status
+    select_product: "select_product",
+    select_product_color: "select_product_color",
+    select_product_size: "select_product_size",
+    set_quantity: "set_quantity",
+    set_recipient_name: "set_recipient_name",
+    set_address: "set_address",
+    set_phone: "set_phone",
+    set_email: "set_email",
+    set_delivery_date: "set_delivery_date",
+    notify_product_found: "Sản phẩm còn hàng",
+    notify_product_notfound: "Sản phẩm không tìm thấy. Xin vui lòng nhập lại thông tin"
+}
+
 module.exports.load_json = function (path) {
     var json_object = JSON.parse(require('fs').readFileSync(path, 'utf8'));
     return json_object;

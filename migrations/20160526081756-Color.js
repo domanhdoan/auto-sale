@@ -2,15 +2,8 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.createTable('users', { id: Sequelize.INTEGER });
-    */
     return queryInterface.createTable(
-      'Category',
+      'Color',
       {
         id: {
           type: Sequelize.INTEGER,
@@ -21,13 +14,13 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false
         },
-        cover: {
+        value: {
           type: Sequelize.STRING,
         },
-       StoreId: {
+        ProductId: {
           type: Sequelize.INTEGER,
           references: {
-            model: 'Store',
+            model: 'Product',
             key: 'id'
           },
           onUpdate: 'cascade',
@@ -41,14 +34,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.dropTable('users');
-    */
-    queryInterface.dropTable('Category');
-
+    return queryInterface.dropTable('Color');
   }
 };

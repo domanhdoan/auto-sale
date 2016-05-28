@@ -13,18 +13,18 @@
         "percent": "",
         "detail_link": ".img a",
         "details": {
-            "code": "p.masp",
-            "color": "dd.mausac",
-            "size": "dd.size",
+            "code": "p.masp strong",
+            "color": "dd.mausac a",
+            "size": "dd.size span",
             "brand": "",
-            "stock_status": ""
+            "instock": "del"
         },
         "product_paging": {
             "page_list": "div.wp-pagenavi",
             "page_link": "a.page.larger"
         }
     },
-    "product_search": "/?",
+    "product_search": "/?s=",
     "keywords": {
         "category": "",
         "usage_purpose":"",

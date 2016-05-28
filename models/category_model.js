@@ -4,6 +4,9 @@ module.exports = function(Sequelize, DataTypes)  {
         name: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        cover: {
+            type: DataTypes.STRING,
         }
     },
     {
