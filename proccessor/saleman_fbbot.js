@@ -25,20 +25,20 @@ var FB_PAGE_ID = 123456789;
 // Methods for sending message to target user FB messager
 // =================================================================
 
-function createGenericMessage(title, subtitle, thumbnail_url) {
+function createGenericElement(title, subtitle, thumbnail_url, link) {
     var template = {
         "title": title,
         "subtitle": subtitle,
         "image_url": thumbnail_url,
         "buttons": [{
-            "type": "",
-            "url": "",
-            "title": ""
+            "type": "web_url",
+            "url": link,
+            "title": "Xem chi tiết"
         },
         {
-            "type": "",
-            "title": "",
-            "payload": "",
+            "type": "postback",
+            "title": "Đặt hàng",
+            "payload": "payload",
         }],
     };
     return template;
@@ -85,6 +85,7 @@ function sendGenericMessage(sender, rich_data) {
             }
         }
     };
+    //messageData.attachment.payload.elements.push(rich_data);
     sendDataToFBMessenger(token, sender, messageData);
 }
 
@@ -163,9 +164,19 @@ function find_products_by_keywords(sessionId, message) {
     g_products_finder.findProductsByKeywords("", results['giay'].replaceAll(" ", "%%"), function (products) {
         var product_count = (products.length > 5) ? 5 : products.length;
         if (products != null) {
-            sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product_color);
+            user_sessions[sessionId].last_action = common.find_product;
+            // user_sessions[sessionId].last_product_id = product.dataValues.id;
+            // sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product_color);
+            var found_products = [];
             for (var i = 0; i < product_count; i++) {
-                console.log(JSON.stringify(products[i]));
+                //console.log(JSON.stringify(products[i]));
+                var product_object = createGenericElement(
+                        products[i].dataValues.title, 
+                        products[i].dataValues.desc,
+                        products[i].dataValues.thumbnail.replaceAll("%%", "-"),
+                        products[i].dataValues.link.replaceAll("%%", "-"));
+                found_products.push(product_object);
+                sendGenericMessage(user_sessions[sessionId].fbid, found_products);
             }
         } else {
             console.log("product not found");
@@ -179,9 +190,14 @@ function find_products_by_code(sessionId, message) {
         if (product != null) {
             user_sessions[sessionId].last_action = common.find_product;
             user_sessions[sessionId].last_product_id = product.dataValues.id;
-            logger.info(product.dataValues.title);
-            logger.info(product.dataValues.price);
-            logger.info(product.dataValues.desc);
+            var found_products = [];
+            var product_object = createGenericElement(
+                product.dataValues.title,
+                product.dataValues.desc,
+                product.dataValues.thumbnail.replaceAll("%%", "-"),
+                product.dataValues.link.replaceAll("%%", "-"));
+            found_products.push(product_object);
+            sendGenericMessage(user_sessions[sessionId].fbid, found_products);
             sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product_color);
             g_products_finder.getProductColors(product.dataValues.id,
                 function (colors) {

@@ -4,7 +4,6 @@ var product_finder = require('./proccessor/product_finder.js');
 var common = require("./util/common");
 var logger = require("./util/logger");
 var orm_manager = require("./models/db_manager.js");
-// var dummy_fbserver = require('./util/dummy_fbserver.js');
 
 require('string.prototype.startswith');
 
