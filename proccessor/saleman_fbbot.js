@@ -3,31 +3,43 @@ var express = require('express');
 var server = express();
 var store_id = "";
 var common = require("../util/common");
+var validator = require("email-validator");
+var translator = require('speakingurl').createSlug({
+    maintainCase: true,
+    separator: " "
+});
 
 // var intent_extractor = require('./weather_witbot.js');
-var wit_bot = require('./shoes_saleman_witbot.js');
+// var wit_bot = require('./shoes_saleman_witbot.js');
 
 var home_page = "";
 var g_search_path = "";
 var g_products_finder = null;
 var request = require('request');
-var token = "EAANYeoVPMJcBAEc6wWojalF4prTtZAXNfAwit6Mr0awLGQh6LlTYoJNDoO21wZBGvc0wMEmSx0SVaVOFmlbRx1STBhwYT1jbHr0okvDfgsFOZB8KOWUE2ZCYpbvlZBHyDGtEVu6s1Tj3tRRiPvyIaXvk2YPpNRntZBPA50FHjFpAZDZD";
 var logger = require("../util/logger.js");
+var token = "EAANYeoVPMJcBAEc6wWojalF4prTtZAXNfAwit6Mr0awLGQh6LlTYoJNDoO21wZBGvc0wMEmSx0SVaVOFmlbRx1STBhwYT1jbHr0okvDfgsFOZB8KOWUE2ZCYpbvlZBHyDGtEVu6s1Tj3tRRiPvyIaXvk2YPpNRntZBPA50FHjFpAZDZD";
+const user_sessions = {};
+var FB_PAGE_ID = 123456789;
 
-function createFBMsgTemplate() {
+// =================================================================
+// Methods for sending message to target user FB messager
+// =================================================================
+
+function createGenericMessage(title, subtitle, thumbnail_url) {
     var template = {
-        "title": "",
-        "subtitle": "",
-        "image_url": "",
+        "title": title,
+        "subtitle": subtitle,
+        "image_url": thumbnail_url,
         "buttons": [{
             "type": "",
             "url": "",
             "title": ""
-        }, {
-                "type": "",
-                "title": "",
-                "payload": "",
-            }],
+        },
+        {
+            "type": "",
+            "title": "",
+            "payload": "",
+        }],
     };
     return template;
 }
@@ -76,8 +88,9 @@ function sendGenericMessage(sender, rich_data) {
     sendDataToFBMessenger(token, sender, messageData);
 }
 
-const sessions = {};
-var FB_PAGE_ID = 123456789;
+// =================================================================
+// Methods for managing user sessions
+// =================================================================
 // https://developers.facebook.com/docs/messenger-platform/webhook-reference
 const getFirstMessagingEntry = (body) => {
     const val = body.object == 'page' &&
@@ -96,8 +109,8 @@ const getFirstMessagingEntry = (body) => {
 const findOrCreateSession = (fbid) => {
     let sessionId;
     // Let's see if we already have a session for the user fbid
-    Object.keys(sessions).forEach(k => {
-        if (sessions[k].fbid === fbid) {
+    Object.keys(user_sessions).forEach(k => {
+        if (user_sessions[k].fbid === fbid) {
             // Yep, got it!
             sessionId = k;
         }
@@ -105,7 +118,7 @@ const findOrCreateSession = (fbid) => {
     if (!sessionId) {
         // No session found for user fbid, let's create a new one
         sessionId = new Date().toISOString();
-        sessions[sessionId] = {
+        user_sessions[sessionId] = {
             fbid: fbid, context: {},
             conversion: [],
             last_action: common.say_greetings,
@@ -114,166 +127,173 @@ const findOrCreateSession = (fbid) => {
     }
     return sessionId;
 };
+
 function deteleSession(sessionId) {
-    delete sessions[sessionId];
+    delete user_sessions[sessionId];
 }
-
-function decide_next_action(sessionId) {
-    var current_session = sessions[sessionId];
-    if (current_session.last_action == common.say_greetings) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_select_category);
-    } else if (current_session.last_action == common.find_categories) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_select_category);
-    } else if (current_session.last_action == common.find_product) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_select_product);
-    } else if (current_session.last_action == common.select_product) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_select_product_color);
-    } else if (current_session.last_action == common.select_product_color) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_select_product_size);
-    } else if (current_session.last_action == common.select_product_size) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_quantity);
-
-    } else if (current_session.last_action == common.set_quantity) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_name);
-    } else if (current_session.last_action == common.set_recipient_name) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_phone);
-    } else if (current_session.last_action == common.set_phone) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_address);
-    } else if (current_session.last_action == common.set_address) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_email);
-    } else if (current_session.last_action == common.set_email) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_delivery_date);
-    } else if (current_session.last_action == common.set_delivery_date) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_end_buying);
-    } else {
-        logger.info("Can not decide next action from las action " + current_session.last_action);
+// =================================================================
+// Methods for handling user request
+// =================================================================
+function parse_keywords(word_list) {
+    var keywords = ['giay', 'mau', 'size', 'co'];
+    var result = {};
+    var temp = "";
+    var last_keyword = null;
+    for (var i = 0; i <= word_list.length; i++) {
+        if (keywords.indexOf(word_list[i]) >= 0 || i == word_list.length) {
+            if (last_keyword != null) {
+                console.log("key = " + last_keyword + " value = " + temp);
+                result[last_keyword] = temp.trim();
+            }
+            temp = "";
+            last_keyword = word_list[i];
+        } else {
+            temp += " " + word_list[i];
+        }
     }
+    return result;
 }
 
-function findcategories_cb(sessionId) {
+function find_products_by_keywords(sessionId, message) {
+    var trans_message = translator(message);
+    var word_list = trans_message.split(" ");
+    var results = parse_keywords(word_list);
+    console.log(results);
+
+    g_products_finder.findProductsByKeywords("", results['giay'].replaceAll(" ", "%%"), function (products) {
+        var product_count = (products.length > 5) ? 5 : products.length;
+        if (products != null) {
+            sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product_color);
+            for (var i = 0; i < product_count; i++) {
+                console.log(JSON.stringify(products[i]));
+            }
+        } else {
+            console.log("product not found");
+            sendTextMessage(user_sessions[sessionId].fid, common.notify_product_notfound);
+        }
+    });
+}
+
+function find_products_by_code(sessionId, message) {
+    g_products_finder.findProductsByCode(text, function (product) {
+        if (product != null) {
+            user_sessions[sessionId].last_action = common.find_product;
+            user_sessions[sessionId].last_product_id = product.dataValues.id;
+            logger.info(product.dataValues.title);
+            logger.info(product.dataValues.price);
+            logger.info(product.dataValues.desc);
+            sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product_color);
+            g_products_finder.getProductColors(product.dataValues.id,
+                function (colors) {
+                    if (colors != null) {
+                        for (var i = 0; i < colors.length; i++) {
+                            logger.info("Available Color: " + colors[i].dataValues.name);
+                        }
+                    } else {
+                        logger.info("No Available Color for Product");
+                    }
+                });
+        } else {
+            logger.debug("Product not found");
+            sendTextMessage(user_sessions[sessionId].fid, common.notify_product_notfound);
+        }
+    });
+}
+
+function find_categories(sessionId) {
     g_products_finder.findCategoriesByStoreId(store_id, function (categories) {
         for (var i = 0; i < categories.length; i++) {
             console.log(categories[i].dataValues.name.trim());
         }
-        sessions[sessionId].last_action = common.find_categories;
+        user_sessions[sessionId].last_action = common.find_categories;
         decide_next_action(sessionId);
     });
 }
 
-function findproduct_bycategory_cb(sessionId, keywords) {
-    g_products_finder.findProductsByKeywords(home_page + ""
-        + g_search_path, keywords, function (products) {
-            var length = products.length;
-            for (var i = 0; i < length; i++) {
-                console.log(products[i]);
-            }
-            if (length >= 1) {
-                sessions[sessionId].last_action = common.find_product;
-                decide_next_action(sessionId);
-            } else {
-
-            }
-        });
-}
-
-function execute_saleflow_simple(sessionId, text){
+function execute_saleflow_simple(sessionId, text) {
     if (text.toLowerCase() === "huy") {
-        sendTextMessage(sessions[sessionId].fid, common.pls_reset_buying);
-        sessions[sessionId].last_action = common.say_greetings;
-        sendTextMessage(sessions[sessionId].fid, common.pls_select_product);
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_reset_buying);
+        user_sessions[sessionId].last_action = common.say_greetings;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product);
+    } else if (user_sessions[sessionId].last_action == common.say_greetings) {
+        //     sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product);
+        //     user_sessions[sessionId].last_action = common.pls_select_product;
+        // } else if (user_sessions[sessionId].last_action == common.pls_select_product) {
+        sendTextMessage(user_sessions[sessionId].fid, common.say_waiting_message);
 
-    } else if (sessions[sessionId].last_action == common.say_greetings) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_select_product);
-        sessions[sessionId].last_action = common.pls_select_product;
-    } else if (sessions[sessionId].last_action == common.pls_select_product) {
         // Search products
-        g_products_finder.findProductsByCode(text, function (product) {
-            if (product != null) {
-                sessions[sessionId].last_action = common.find_product;
-                sessions[sessionId].last_product_id = product.dataValues.id;
-                logger.info(product.dataValues.title);
-                logger.info(product.dataValues.price);
-                logger.info(product.dataValues.desc);
-                sendTextMessage(sessions[sessionId].fid, common.pls_select_product_color);
-                g_products_finder.getProductColors(product.dataValues.id,
-                    function (colors) {
-                    if(colors != null){
-                        for(var i = 0; i < colors.length; i++){
-                            logger.info("Available Color: " + colors[i].dataValues.name);
-                        }
-                    }else{
-                        
-                    }
-                });
-            } else {
-                logger.debug("Product not found");
-                sendTextMessage(sessions[sessionId].fid, common.notify_product_notfound);
-            }
-        });
-    } else if (sessions[sessionId].last_action == common.find_product) {
-        g_products_finder.checkProductByColor(sessions[sessionId].last_product_id,
+        if (text.trim().indexOf(" ") > 0) {
+            find_products_by_keywords(sessionId, text);
+        } else {
+            find_products_by_code(sessionId, text);
+        }
+    } else if (user_sessions[sessionId].last_action == common.find_product) {
+        g_products_finder.checkProductByColor(user_sessions[sessionId].last_product_id,
             text, function (color) {
                 if (color != null) {
-                    sessions[sessionId].last_action = common.select_product_color;
-                    sendTextMessage(sessions[sessionId].fid, common.notify_product_found);
-                    sendTextMessage(sessions[sessionId].fid, common.pls_select_product_size);
-                    g_products_finder.getProductSizes(sessions[sessionId].last_product_id,
+                    user_sessions[sessionId].last_action = common.select_product_color;
+                    sendTextMessage(user_sessions[sessionId].fid, common.notify_product_found);
+                    sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product_size);
+                    g_products_finder.getProductSizes(user_sessions[sessionId].last_product_id,
                         function (sizes) {
                             if (sizes != null) {
                                 for (var i = 0; i < sizes.length; i++) {
                                     logger.info("Available Size: " + sizes[i].dataValues.value);
                                 }
                             } else {
-
+                                logger.info("No Available Size for Product");
                             }
-                    });
+                        });
                 } else {
                     logger.debug("Product not found");
-                    sendTextMessage(sessions[sessionId].fid, common.notify_product_notfound);
+                    sendTextMessage(user_sessions[sessionId].fid, common.notify_product_notfound);
                 }
             });
-    } else if (sessions[sessionId].last_action == common.select_product_color) {
-        g_products_finder.checkProductBySize(sessions[sessionId].last_product_id,
+    } else if (user_sessions[sessionId].last_action == common.select_product_color) {
+        g_products_finder.checkProductBySize(user_sessions[sessionId].last_product_id,
             text, function (size) {
                 if (size != null) {
-                    sessions[sessionId].last_action = common.select_product_size;
-                    sendTextMessage(sessions[sessionId].fid, common.notify_product_found);
-                    sendTextMessage(sessions[sessionId].fid, common.pls_enter_quantity);
+                    user_sessions[sessionId].last_action = common.select_product_size;
+                    sendTextMessage(user_sessions[sessionId].fid, common.notify_product_found);
+                    sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_quantity);
                 } else {
                     logger.debug("Product not found");
-                    sendTextMessage(sessions[sessionId].fid, common.notify_product_notfound);
+                    sendTextMessage(user_sessions[sessionId].fid, common.notify_product_notfound);
                 }
             });
-    } else if (sessions[sessionId].last_action == common.select_product_size) {
+    } else if (user_sessions[sessionId].last_action == common.select_product_size) {
         logger.debug("Order Quantity: " + text);
-        sessions[sessionId].last_action = common.set_quantity;
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_name);
-
-    } else if (sessions[sessionId].last_action == common.set_quantity) {
+        user_sessions[sessionId].last_action = common.set_quantity;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_name);
+    } else if (user_sessions[sessionId].last_action == common.set_quantity) {
         logger.debug("Name: " + text);
-        sessions[sessionId].last_action = common.set_recipient_name;
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_phone);
-    } else if (sessions[sessionId].last_action == common.set_recipient_name) {
+        user_sessions[sessionId].last_action = common.set_recipient_name;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_phone);
+    } else if (user_sessions[sessionId].last_action == common.set_recipient_name) {
         logger.debug("Phone: " + text);
-        sessions[sessionId].last_action = common.set_phone;
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_address);
-    } else if (sessions[sessionId].last_action == common.set_phone) {
+        user_sessions[sessionId].last_action = common.set_phone;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_address);
+    } else if (user_sessions[sessionId].last_action == common.set_phone) {
         logger.debug("Address: " + text);
-        sessions[sessionId].last_action = common.set_address;
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_email);
-    } else if (sessions[sessionId].last_action == common.set_address) {
+        user_sessions[sessionId].last_action = common.set_address;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_email);
+    } else if (user_sessions[sessionId].last_action == common.set_address) {
         logger.debug("Email: " + text);
-        sessions[sessionId].last_action = common.set_email;
-        sendTextMessage(sessions[sessionId].fid, common.pls_enter_delivery_date);
-    } else if (sessions[sessionId].last_action == common.set_email) {
+        var is_valid_email = validator.validate(text);
+        if (is_valid_email) {
+            user_sessions[sessionId].last_action = common.set_email;
+            sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_delivery_date);
+        } else {
+            sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_email);
+        }
+    } else if (user_sessions[sessionId].last_action == common.set_email) {
         logger.debug("Delivery: " + text);
-        sessions[sessionId].last_action = common.set_delivery_date;
-    } else if (sessions[sessionId].last_action == common.set_delivery_date) {
-        sendTextMessage(sessions[sessionId].fid, common.pls_end_buying);
+        user_sessions[sessionId].last_action = common.set_delivery_date;
+    } else if (user_sessions[sessionId].last_action == common.set_delivery_date) {
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_end_buying);
     } else {
 
     }
-    logger.info("Session ID = " + sessionId);
 }
 
 server.get('/webhook/', bodyParser.json(), function (req, res) {
@@ -305,10 +325,12 @@ server.post('/webhook/', bodyParser.json(), function (req, res) {
                 console.log("Word list = " + word_list);
 
                 // Flow 1: user not send product image and work with WIT
+                // execute_saleflow_wit(sessionId, text, user_sessions);
 
                 // Flow 2: simple and popular used in communicating 
                 // between shopper and buyer
                 execute_saleflow_simple(sessionId, text);
+
             }
         }
         res.sendStatus(200);
@@ -332,7 +354,7 @@ module.exports = {
             store_id = store.dataValues.id;
         });
 
-        wit_bot.set_findcategories_cb(findcategories_cb);
-        wit_bot.set_findproducts_cb(findproduct_bycategory_cb);
+        //wit_bot.set_findcategories_cb(find_categories_cb);
+        //wit_bot.set_findproducts_cb(find_product_bykeywords);
     }
 }

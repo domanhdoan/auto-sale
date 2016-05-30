@@ -23,3 +23,8 @@ if (crawl_source != null) {
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
 }
+
+// var phone = require('phone');
+// var vn_phone = phone('+849775160566', 'VNM');
+// console.log(vn_phone);
+

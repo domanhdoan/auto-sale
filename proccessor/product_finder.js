@@ -35,12 +35,21 @@ exports.findCategoriesByName = function (store_name, keyword) {
 }
 
 exports.findProductsByKeywords = function (search_path, keywords, callback) {
-    g_web_crawler.crawl_alink_nodepth(search_path + "" + keywords, callback);
+    //g_web_crawler.crawl_alink_nodepth(search_path + "" + keywords, callback);
+    g_orm_manager.Product.findAll({
+        where: {
+            link: {
+                $like: "%" + keywords + "%"
+            }
+        }
+    }).then(function (products) {
+        callback(products);
+    });
 }
 
-exports.findProductsByKeywords = function (search_path, keywords, callback) {
-    g_web_crawler.crawl_alink_nodepth(search_path + "" + keywords, callback);
-}
+// exports.findProductsByKeywords = function (search_path, keywords, callback) {
+//     g_web_crawler.crawl_alink_nodepth(search_path + "" + keywords, callback);
+// }
 
 exports.findProductsByCategory = function (home_page, category_name, callback) {
     g_orm_manager.Category.findOne({

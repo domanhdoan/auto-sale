@@ -22,11 +22,13 @@
     "request": ">=2.21.0",
     "sequelize": ">=3.23.1",
     "sequelize-cli": "^2.4.0",
-    "google-image-search": "0.1.0",
+    "email-validator": ">=1.0.4",
     "node-wit": "3.3.2",
-    "connect": "3.4.1",
     "uri-js": "2.1.1",
-    "winston": "2.2.0"
+    "winston": "2.2.0",
+    "string.prototype.startswith":"0.2.0",
+    "phone": ">=1.0.7",
+    "speakingurl": "9.0.0"
   },
   "devDependencies": {
     "gulp-sequelize": "0.0.2"

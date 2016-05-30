@@ -6,8 +6,8 @@ const token = "KC3O6APRJCWSBOTU4GFRSIG5TKS4E4TI"; //Doan
 const logger = new Logger(levels.DEBUG);
 var common = require("../util/common");
 
-var find_categories_cb  = null;
-var find_products_cb    = null;
+var find_categories_cb = null;
+var find_products_cb = null;
 var g_all_user_session = null;
 
 const firstEntityValue = (entities, entity) => {
@@ -30,8 +30,17 @@ const actions = {
     },
     merge(sessionId, context, entities, message, cb) {
         cb(context);
-        var seach_entitites = (entities.local_search_query != null)? entities.local_search_query:entities.search_query; 
-        search_entities[sessionId] = seach_entitites;
+        // var seach_entitites = (entities.local_search_query != null)? entities.local_search_query:entities.search_query; 
+        // search_entities[sessionId] = seach_entitites;
+        // if(seach_entitites != null){            
+        //     for (var i = 0; i < seach_entitites.length; i++) {
+        //         console.log(JSON.stringify(seach_entitites[i]));
+        //     }
+        // }else{}
+        var keySet = Object.keys(entities);
+        for (var key in keySet) {
+            console.log(JSON.stringify(entities[keySet[key]][0]));
+        }
     },
     error(sessionId, context, error) {
         console.log(error.message);
@@ -68,7 +77,7 @@ module.exports.extract_intent = function (sessionId, msg, all_user_session) {
     // Let's forward the message to the Wit.ai Bot Engine
     // This will run all actions until our bot has nothing left to do
     g_all_user_session = all_user_session;
-    
+
     client.runActions(
         sessionId, // the user's current session
         msg, // the user's message 
@@ -95,10 +104,10 @@ module.exports.extract_intent = function (sessionId, msg, all_user_session) {
     );
 }
 
-module.exports.set_findcategories_cb = function(callback){
+module.exports.set_findcategories_cb = function (callback) {
     find_categories_cb = callback;
 }
 
-module.exports.set_findproducts_cb = function(callback){
+module.exports.set_findproducts_cb = function (callback) {
     find_products_cb = callback;
 }

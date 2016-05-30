@@ -1,5 +1,6 @@
 module.exports = {
     say_greetings: "Xin vui kính chào quý khách",
+    say_waiting_message: "Hệ thống đang tìm kiếm theo mã sản phẩm hoặc từ khóa. Xin vui lòng đợi trong giây lát",
     pls_select_category: "Xin vui lòng chọn 1 danh mục sản phẩm",
     pls_select_product: "Xin vui lòng chọn sản phẩm (nhập code hoặc upload ảnh)",
     pls_select_product_color: "Xin vui lòng chọn màu sản phẩm",
