@@ -352,22 +352,18 @@ server.post('/webhook/', bodyParser.json(), function (req, res) {
             event = req.body.entry[0].messaging[i];
             sender = event.sender.id;
             var attachments = event.message.attachments;
+            text = event.message.text;
             
             const sessionId = findOrCreateSession(sender);
             if (event.message && event.message.text) {
                 // We retrieve the user's current session, or create one if it doesn't exist
                 // This is needed for our bot to figure out the conversation history
-
-                text = event.message.text;
-                // Work dividor and search
-                var word_list = text.split(" ");
-                console.log("Word list = " + word_list);
-
+                
                 // Flow 1: user not send product image and work with WIT
                 // execute_saleflow_wit(sessionId, text, user_sessions);
 
                 // Flow 2: simple and popular used in communicating 
-                // between shopper and buyer
+                // between shopper and buyer (just use texting)
                 execute_saleflow_simple(sessionId, text, false)
             } else if (attachments != null) {
                 for (var i = 0; i < attachments.length; i++) {
