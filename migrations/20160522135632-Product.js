@@ -37,7 +37,7 @@ module.exports = {
         brand: {
           type: Sequelize.STRING
         },
-        size: {
+        finger: {
           type: Sequelize.STRING
         },
         StoreId: {

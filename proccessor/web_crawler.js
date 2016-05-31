@@ -1,5 +1,6 @@
 require('string.prototype.startswith');
 var logger = require("../util/logger.js");
+var common = require("../util/common.js");
 
 var cheerio = require("cheerio");
 var request = require("request");
@@ -17,7 +18,9 @@ function insert_prefix_homepage(current_link, home_page) {
       return current_link;
 }
 
-function extract_next_pages(product_pattern, handle_paging) {
+function extract_next_pages(page_object, saved_store, saved_category, 
+      product_pattern, handle_paging, save_to_db) {
+      var $ = page_object;
       // Extract data from remain pages
       if (handle_paging) {
             var remain_pages = $(product_pattern.product_paging.page_list);
@@ -47,6 +50,7 @@ function extract_product_detail(product_pattern, saved_product) {
                   return;
             }
             var $ = cheerio.load(body);
+            
             var size_list = $(product_pattern.details.size);
             var color_list = $(product_pattern.details.color);
             var colors = [];
@@ -58,10 +62,8 @@ function extract_product_detail(product_pattern, saved_product) {
                   if (instock.length > 0) {
                         console.log("Size out of stock = " + instock.text().trim());
                   }else{
-                        //sizes.push(size_value);
                         g_model_factory.create_product_size(saved_product, size_value,
                               function (save_size) {
-
                        });
                   }
             });
@@ -72,7 +74,6 @@ function extract_product_detail(product_pattern, saved_product) {
                   colors.push($(color).text().trim());
                   g_model_factory.create_product_color(saved_product, color_name,
                         color_value, function (save_size) {
-
                   });
             });
             
@@ -118,27 +119,29 @@ function extract_productlist_from_link(saved_store, saved_category,
                         var product_discount = $(this).find(product_pattern.discount).text();
                         var product_percent = $(this).find(product_pattern.percent).text();
 
-                        if (product_price == undefined || product_price == "") {
+                        if (product_price == null || product_price == "") {
                               product_price = product_discount;
                         }
 
-                        if (product_discount == undefined || product_discount == "") {
+                        if (product_discount == null || product_discount == "") {
                               product_discount = 0;
                         }
 
-                        if (product_percent == undefined || product_percent == "") {
+                        if (product_percent == null || product_percent == "") {
                               product_percent = 0;
                         }
                         // logger.info("Title = " + product_title.trim());
                         if (parseInt(product_price) > 0 && save_to_db) {
-                              g_model_factory.create_product(
-                                    saved_store, saved_category,
-                                    product_title, product_thumbnail,
-                                    product_desc, product_price,
-                                    product_discount, product_percent,
-                                    product_detail_link, "", "", function (saved_product) {
-                                          extract_product_detail(product_pattern, saved_product);
-                                    });
+                              common.generate_remoteimg_hash(product_thumbnail, function(finger){                                 
+                                    g_model_factory.create_product(
+                                          saved_store, saved_category,
+                                          product_title, product_thumbnail,
+                                          product_desc, product_price,
+                                          product_discount, product_percent,
+                                          product_detail_link, finger, "", function (saved_product) {
+                                                extract_product_detail(product_pattern, saved_product);
+                                          });
+                              });
                         } else if (parseInt(product_price) > 0 && !save_to_db) {
                               var product_data = {};
                               product_data.title = product_title;
@@ -156,12 +159,13 @@ function extract_productlist_from_link(saved_store, saved_category,
             if (callback != null) {
                   callback(crawl_product_list);
             }
-            extract_next_pages(product_pattern, handle_paging);
+            extract_next_pages($, product_pattern, handle_paging);
       });
       return productlist;
 }
 
-function extract_productlist_from_category(saved_store, menu_items) {
+function extract_productlist_from_category(home_page_object, saved_store, menu_items) {
+      var $ = home_page_object;
       menu_items.each(function (i, product) {
             var item_link = $(this).children('a').attr("href");
             item_link = insert_prefix_homepage(item_link, cur_home_page);
@@ -196,7 +200,7 @@ exports.crawl_alink_withdepth = function (home_page) {
             }
             // load the web_content of the page into Cheerio so we can traverse the DOM
             cur_home_page = home_page;
-            $ = cheerio.load(web_content);
+            var $ = cheerio.load(web_content);
             var menu = $(g_crawl_pattern.product_menu.panel);
             // var menu_items = menu.find(g_crawl_pattern.product_menu.item);
             var menu_items = menu.children();
@@ -214,13 +218,13 @@ exports.crawl_alink_withdepth = function (home_page) {
                               .save()
                               .then(function (saved_store) {
                                     logger.info("Saved " + saved_store);
-                                    extract_productlist_from_category(saved_store, menu_items);
+                                    extract_productlist_from_category($, saved_store, menu_items);
                               }).catch(function (error) {
                                     logger.error(error);
                               });
                   } else if (store.count > 0) {
                         logger.info("Not add new store that existed\n");
-                        extract_productlist_from_category(store.rows[0], menu_items);
+                        extract_productlist_from_category($, store.rows[0], menu_items);
                   } else {
                         logger.info("Not add new store that have emtpy home page\n");
                   }

@@ -80,10 +80,19 @@ exports.findProductsByCode = function (code, callback) {
     });
 }
 
-exports.findProductsByImage = function (image_path, callback) {
-    // Send request to google image seach engine
-    // var giSearch = require('google-image-search');
-    // giSearch('logo google').pipe(fs.createWriteStream(image_path));
+exports.findProductByFinger = function (finger, callback) {
+    g_orm_manager.Product.findOne({
+        where: {
+            finger: finger
+        }
+    }).then(function (product) {
+        if (product != null) {
+            logger.info(product.dataValues.title);
+            callback(product);
+        } else {
+            logger.debug("Product not found");
+        }
+    });
 }
 
 exports.findProductByThumbnail = function (thumbnail_link, callback) {

@@ -43,7 +43,7 @@ module.exports.create_product = function (
     product_discount,
     product_percent,
     product_detail_link,
-    product_size,
+    product_finger,
     product_brand,
     callback
 ) {
@@ -56,7 +56,7 @@ module.exports.create_product = function (
             discount: product_discount,
             percent: product_percent,
             link: product_detail_link.replaceAll('-', '%%'),
-            size: product_size,
+            finger: product_finger,
             brand: product_brand
         }).save()
         .then(function (saved_product) {

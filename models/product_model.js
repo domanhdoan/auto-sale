@@ -28,7 +28,7 @@ module.exports = function (Sequelize, DataTypes) {
         brand: {
             type: DataTypes.STRING
         },
-        size: {
+        finger: {
             type: DataTypes.STRING
         }
     },
