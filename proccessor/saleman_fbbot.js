@@ -159,8 +159,14 @@ function find_products_by_keywords(sessionId, message) {
     var trans_message = translator(message);
     var word_list = trans_message.split(" ");
     var results = parse_keywords(word_list);
+    var count = Object.keys(results).length;
     console.log(results);
-
+    
+    if(count == 0){
+        sendTextMessage(user_sessions[sessionId].fbid, common.pls_select_product);
+        return;
+    }
+    
     g_product_finder.findProductsByKeywords("", results['giay'].replaceAll(" ", "%%"), function (products) {
         var product_count = (products.length > 5) ? 5 : products.length;
         if (products != null) {
@@ -227,11 +233,7 @@ function find_categories(sessionId) {
 }
 
 function execute_orderflow(sessionId, text) {
-    if (text.toLowerCase() === "huy") {
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_reset_buying);
-        user_sessions[sessionId].last_action = common.say_greetings;
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product);
-    } else if (user_sessions[sessionId].last_action == common.select_product_size) {
+    if (user_sessions[sessionId].last_action == common.select_product_size) {
         logger.debug("Order Quantity: " + text);
         user_sessions[sessionId].last_action = common.set_quantity;
         sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_name);
@@ -266,15 +268,20 @@ function execute_orderflow(sessionId, text) {
     }
 }
 
-function execute_saleflow_simple(sessionId, text, image_search) {
-    if (text.toLowerCase() === "huy") {
+function execute_saleflow_simple(sessionId, text, image_search_flag) {
+    var user_req = translator(text).toLowerCase();
+    if (user_req.indexOf(common.cmd_terminate_order) >= 0) {
         sendTextMessage(user_sessions[sessionId].fid, common.pls_reset_buying);
+        user_sessions[sessionId].last_action = common.say_greetings;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product);
+    } else if (user_req.indexOf(common.cmd_continue_search) >= 0)  {
+        sendTextMessage(user_sessions[sessionId].fid, common.say_search_continue_message);
         user_sessions[sessionId].last_action = common.say_greetings;
         sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product);
     } else if (user_sessions[sessionId].last_action == common.say_greetings) {
         sendTextMessage(user_sessions[sessionId].fid, common.say_waiting_message);
         // Search products
-        if (image_search) {
+        if (image_search_flag) {
             common.generate_remoteimg_hash(text,
                 function (hash) {
                     g_product_finder.findProductByFinger(hash, function (product) {
@@ -366,6 +373,7 @@ server.post('/webhook/', bodyParser.json(), function (req, res) {
                 // between shopper and buyer (just use texting)
                 execute_saleflow_simple(sessionId, text, false)
             } else if (attachments != null) {
+                // handle the case when user send an image for searching product
                 for (var i = 0; i < attachments.length; i++) {
                     if (attachments[i].type === 'image') {
                         execute_saleflow_simple(sessionId, attachments[i].payload.url, true);

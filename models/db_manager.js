@@ -22,7 +22,8 @@ var sequelize = new Sequelize('product_crawl', 'doan', 'colen123', {
 var db = {};
 
 fs.readdirSync(__dirname).filter(function (file) {
-    return (file.indexOf(".") !== 0) && (file !== "db_manager.js") && (file !== "model_factory.js");
+    return (file.indexOf(".") !== 0) && (file !== "db_manager.js") 
+        && (file !== "model_factory.js");
 }).forEach(function (file) {
     var model = sequelize["import"](path.join(__dirname, file));
     if (model != null) {

@@ -3,6 +3,7 @@ const imghash = require('imghash');
 module.exports = {
     say_greetings: "Xin vui kính chào quý khách",
     say_waiting_message: "Hệ thống đang tìm kiếm theo mã sản phẩm hoặc từ khóa. Xin vui lòng đợi trong giây lát",
+    say_search_continue_message: "Xin vui lòng tiếp tục tìm kiếm nếu bạn chưa tìm thấy sản phẩm như kì vọng",
     pls_select_category: "Xin vui lòng chọn 1 danh mục sản phẩm",
     pls_select_product: "Xin vui lòng chọn sản phẩm (nhập code hoặc upload ảnh)",
     pls_select_product_color: "Xin vui lòng chọn màu sản phẩm",
@@ -28,7 +29,9 @@ module.exports = {
     set_email: "set_email",
     set_delivery_date: "set_delivery_date",
     notify_product_found: "Sản phẩm còn hàng",
-    notify_product_notfound: "Sản phẩm không tìm thấy. Xin vui lòng nhập lại thông tin"
+    notify_product_notfound: "Sản phẩm không tìm thấy. Xin vui lòng nhập lại thông tin",
+    cmd_terminate_order: "huy",
+    cmd_continue_search: "tim kiem",
 }
 
 module.exports.load_json = function (path) {
