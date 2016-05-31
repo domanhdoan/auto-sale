@@ -1,3 +1,5 @@
+const imghash = require('imghash');
+
 module.exports = {
     say_greetings: "Xin vui kính chào quý khách",
     say_waiting_message: "Hệ thống đang tìm kiếm theo mã sản phẩm hoặc từ khóa. Xin vui lòng đợi trong giây lát",
@@ -81,16 +83,42 @@ String.prototype.replaceAll = function (token, newToken, ignoreCase) {
     return str;
 };
 
-module.exports.get_img_fingerprint = function (image_uri, target_url, callback) {
-    var request = require('request');
-    var req = request.post(target_url, function (err, resp, body) {
-        if (err) {
-            console.log('Error!');
-        } else {
-            console.log('URL: ' + body);
-        }
-    });
-    var form = req.form();
-    var fs = require('fs');
-    form.append('file', fs.createReadStream(image_uri));
+module.exports.generate_remoteimg_hash = function(url, callback) {
+    var http = require('http')
+        , fs = require('fs')
+        , options
+
+    var request = http.get(url, function (res) {
+        var imagedata = ''
+        res.setEncoding('binary')
+        var contentType = res.headers['content-type'];
+
+        res.on('data', function (chunk) {
+            imagedata += chunk
+        })
+
+        res.on('end', function () {
+            var crypto = require('crypto');
+            var hash = crypto.createHash('md5').update(url).digest('hex');            
+            var fileName = "./temp/" + hash + "." + contentType.replaceAll('/',".");
+            fs.writeFile(fileName, imagedata, 'binary', function (err) {
+                if (err) throw err
+                imghash
+                    .hash(fileName)
+                    .then((hash) => {
+                        console.log(hash);
+                        callback(hash);
+                    });
+            })
+        })
+    })
+}
+
+module.exports.generate_localimg_hash = function(path, callback) {
+    imghash
+        .hash(path)
+        .then((hash) => {
+            console.log(hash);
+            callback(hash);
+        });
 }
