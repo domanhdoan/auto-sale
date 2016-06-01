@@ -9,8 +9,6 @@ var g_crawl_pattern = null;
 var g_orm_manager = null;
 var g_model_factory = require("../models/model_factory.js");
 
-var $ = null;
-
 function insert_prefix_homepage(current_link, home_page) {
       if (!current_link.startsWith('http')) {
             current_link = home_page + current_link;

@@ -125,3 +125,29 @@ module.exports.create_product_size = function (saved_product, size, callback) {
         }
     });
 }
+
+module.exports.create_empty_invoice = function (fbid, callback) {
+    g_orm_manager.Invoice
+        .build({
+            fbid:fbid
+        })
+        .save()
+        .then(function (saved_invoice) {
+            callback(saved_invoice);
+        }).catch(function (error) {
+            logger.error(error);
+        });
+}
+
+module.exports.create_fashion_item = function (quantity, saved_invoice, saved_product, saved_color, saved_size, callback) {
+    g_orm_manager.FashionItem
+        .build({
+            
+        })
+        .save()
+        .then(function (saved_invoice) {
+            callback(saved_invoice);
+        }).catch(function (error) {
+            logger.error(error);
+        });
+}

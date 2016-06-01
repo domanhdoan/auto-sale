@@ -64,6 +64,15 @@ db.Size.belongsTo(db.Product);
 // db.Color.sync({force: true});
 // db.Size.sync({force: true});
 
+db.Color.hasMany(db.FashionItem, { as: "Color", foreignKeyConstraint:true});
+db.Size.hasMany(db.FashionItem, { as: "Size", foreignKeyConstraint:true});
+db.Product.hasMany(db.FashionItem, { as: "Product", foreignKeyConstraint:true});
+db.Invoice.hasMany(db.FashionItem, { as: "Invoice", foreignKeyConstraint:true});
+db.FashionItem.belongsTo(db.Color);
+db.FashionItem.belongsTo(db.Size);
+db.FashionItem.belongsTo(db.Product);
+db.FashionItem.belongsTo(db.Invoice);
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 //This piece of code will reset DB each startup time
