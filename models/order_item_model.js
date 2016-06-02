@@ -4,6 +4,10 @@ module.exports = function(Sequelize, DataTypes)  {
         quantity: {
             type: DataTypes.INTEGER,
             allowNull: true
+        },
+        charge: {
+            type: DataTypes.INTEGER,
+            allowNull: true
         }
     },
     {
