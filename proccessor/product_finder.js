@@ -8,7 +8,7 @@ const common = require('../util/common.js');
 //================= SHOE finding ====================//
 //===================================================//
 var keywords = ['giay', 'mau', 'size'];
-function parse_keywords (keywords, word_list) {
+function parse_keywords(keywords, word_list) {
     var result = {};
     var temp = "";
     var last_keyword = null;
@@ -54,12 +54,18 @@ function parse_keywords_calibration(keywords, word_list) {
 }
 
 function generate_shoesfind_query(keywords) {
-    var query = " Select * from product as P"
-        + " inner join color as C on P.id = C.id"
-        + " inner join size as S on P.id = S.id"
+    var query = " Select P.id, P.title, P.desc, P.thumbnail, P.code, P.link, C.name, S.value "
+        + " from product as P"
+        + " inner join color as C on P.id = C.ProductId"
+        + " inner join size as S on P.id = S.ProductId"
         + " where P.link like '%" + keywords[0] + "%'"
-        + " and C.name = '" + keywords[1] + "'"
-        + " and S.value = '" + keywords[2] + "'";
+    if (keywords[1].length > 0) {
+        query += " and C.name = '" + keywords[1] + "'"
+    }
+    if (keywords[2].length > 0) {
+        query += " and S.value = '" + keywords[2] + "'";
+    }
+        
     return query;
 }
 //===================================================//
@@ -94,30 +100,18 @@ exports.findCategoriesByStoreId = function (store_id, callback) {
     });
 }
 
-exports.findCategoriesByName = function (store_name, keyword) {
+exports.findInvoiceById = function (invoice_id, callback) {
+    g_orm_manager.Invoice.findOne({
+        where: {
+            id: invoice_id
+        }
+    }).then(function (invoice) {
+        callback(invoice);
+    });
 }
 
 // Keyword order: shoes -> color -> size
 exports.findShoesByKeywords = function (user_message, callback) {
-    // g_web_crawler.crawl_alink_nodepth(search_path + "" + keywords, callback);
-    // g_orm_manager.Product.findAll({
-    //     where: {
-    //         link: {
-    //             $like: "%" + keywords + "%"
-    //         },
-    //         // include: [{
-    //         //     model: g_orm_manager.Color,
-    //         //     where: {  
-    //         //         id: { $eq:g_orm_manager.Product.id }, 
-    //         //         name: "hongphan" 
-    //         //     }
-    //         // }],
-    //     },
-    //     limit: 5
-    // }).then(function (products) {
-    //     callback(products);
-    // });
-
     var products = [];
     var word_list = user_message.split(" ");
     var keywords_value = parse_keywords_calibration(keywords, word_list);
@@ -143,23 +137,6 @@ exports.findShoesByKeywords = function (user_message, callback) {
 // exports.findProductsByKeywords = function (search_path, keywords, callback) {
 //     g_web_crawler.crawl_alink_nodepth(search_path + "" + keywords, callback);
 // }
-
-exports.findProductsByCategory = function (home_page, category_name, callback) {
-    g_orm_manager.Category.findOne({
-        where: {
-            name: {
-                $like: "%" + code + "%"
-            }
-        }
-    }).then(function (product) {
-        if (product != null) {
-            logger.info(product.dataValues.title);
-            callback(product);
-        } else {
-            logger.debug("Product not found");
-        }
-    });
-}
 
 exports.findProductsByCode = function (code, callback) {
     g_orm_manager.Product.findOne({

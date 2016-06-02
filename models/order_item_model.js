@@ -4,7 +4,7 @@ module.exports = function(Sequelize, DataTypes)  {
         quantity: {
             type: DataTypes.INTEGER,
             allowNull: true
-        },
+        }
     },
     {
         freezeTableName: true

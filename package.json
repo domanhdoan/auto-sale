@@ -34,7 +34,8 @@
     "jpeg-js": "0.1.2",
     "imghash":"0.0.2",
     "crypto": "0.0.3",
-    "mkdirp": "0.5.1"
+    "mkdirp": "0.5.1",
+    "moment":"2.13.0"
   },
   "devDependencies": {
     "gulp-sequelize": "0.0.2"

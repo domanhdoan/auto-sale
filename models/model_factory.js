@@ -1,11 +1,12 @@
 var g_orm_manager = null;
 var logger = require('../util/logger.js');
+var moment = require('moment');
 
-module.exports.init = function (orm_manager){
+module.exports.init = function (orm_manager) {
     g_orm_manager = orm_manager;
 }
 
-module.exports.create_category = function(store_object, name, callback){
+module.exports.create_category = function (store_object, name, callback) {
     g_orm_manager.Category.findOne({
         where: {
             name: name,
@@ -129,7 +130,8 @@ module.exports.create_product_size = function (saved_product, size, callback) {
 module.exports.create_empty_invoice = function (fbid, callback) {
     g_orm_manager.Invoice
         .build({
-            fbid:fbid
+            fbid: fbid,
+            creation_date: moment.now()
         })
         .save()
         .then(function (saved_invoice) {
@@ -139,14 +141,34 @@ module.exports.create_empty_invoice = function (fbid, callback) {
         });
 }
 
-module.exports.create_fashion_item = function (quantity, saved_invoice, saved_product, saved_color, saved_size, callback) {
+module.exports.update_invoice = function (invoice_info, callback) {
+    g_orm_manager.Invoice.findOne({ where: { id: invoice_info.id } }).then(function (invoice) {
+        if (invoice) { // if the record exists in the db
+            invoice.updateAttributes({
+                name: invoice_info.name,
+                phone: invoice_info.phone,
+                address: invoice_info.address,
+                email: invoice_info.email,
+                plan_delivery_date: invoice_info.delivery,
+                status: invoice_info.status
+            });
+        }else{}
+    })
+}
+
+module.exports.create_fashion_item = function (quantity, saved_invoice,
+    saved_product, saved_color, saved_size, callback) {
     g_orm_manager.FashionItem
         .build({
-            
+            quantity: quantity,
+            InvoiceId: saved_invoice,
+            ProductId: saved_product,
+            ColorId: saved_color,
+            SizeId: saved_size
         })
         .save()
-        .then(function (saved_invoice) {
-            callback(saved_invoice);
+        .then(function (saved_item) {
+            callback(saved_item);
         }).catch(function (error) {
             logger.error(error);
         });

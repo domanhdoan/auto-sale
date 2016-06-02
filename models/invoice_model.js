@@ -3,12 +3,13 @@ module.exports = function(Sequelize, DataTypes)  {
     return Sequelize.define('Invoice', {
         fbid: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: false
         },
         creation_date: {
-            type: DataTypes.DATE,
-            defaultValue: Sequelize.NOW,
-            allowNull: true
+            //type: DataTypes.DATE,
+            type: DataTypes.STRING,
+            //defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+            allowNull: false
         },
         name: {
             type: DataTypes.STRING,
@@ -16,35 +17,37 @@ module.exports = function(Sequelize, DataTypes)  {
         },
         phone: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         address: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         plan_delivery_date: {
-            type: DataTypes.DATEONLY,
+            //type: DataTypes.DATEONLY,
+            type: DataTypes.STRING,
             allowNull: true
         },
         actual_delivery_date: {
-            type: DataTypes.DATEONLY,
-            allowNull: false
+            //type: DataTypes.DATEONLY,
+            type: DataTypes.STRING,
+            allowNull: true
         },
         total_vat: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         total_payment: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         status:{
             type: DataTypes.STRING,
-            allowNull: false 
+            allowNull: true 
         }
     },
     {

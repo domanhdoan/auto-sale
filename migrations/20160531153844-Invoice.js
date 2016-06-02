@@ -16,46 +16,57 @@ module.exports = {
         autoIncrement: true
       },
       creation_date: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-        allowNull: true
+        //type: Sequelize.DATE,
+        //defaultValue: Sequelize.NOW,
+        type: Sequelize.STRING,
+        allowNull: false
       },
       name: {
         type: Sequelize.STRING,
+        defaultValue: "",
         allowNull: true
       },
       phone: {
         type: Sequelize.STRING,
-        allowNull: false
+        defaultValue: "",
+        allowNull: true
       },
       address: {
         type: Sequelize.STRING,
-        allowNull: false
+        defaultValue: "",
+        allowNull: true
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: false
+         defaultValue:"",
+        allowNull: true
       },
       plan_delivery_date: {
-        type: Sequelize.DATEONLY,
+        //type: DataTypes.DATEONLY,
+        type: Sequelize.STRING,
         allowNull: true
       },
       actual_delivery_date: {
-        type: Sequelize.DATEONLY,
-        allowNull: false
+        //type: DataTypes.DATEONLY,
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      total_vat: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       total_payment: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       },
       status: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       }
     },
-    {
-      charset: 'utf8' // default: null
-    });
+      {
+        charset: 'utf8' // default: null
+      });
   },
 
   down: function (queryInterface, Sequelize) {

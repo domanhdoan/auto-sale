@@ -32,6 +32,7 @@ module.exports = {
     notify_product_notfound: "Sản phẩm không tìm thấy. Xin vui lòng nhập lại thông tin",
     cmd_terminate_order: "huy",
     cmd_continue_search: "tim kiem",
+    cmd_confirm_order: "ok",
 }
 
 module.exports.load_json = function (path) {
