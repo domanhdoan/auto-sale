@@ -1,9 +1,10 @@
 const imghash = require('imghash');
+var Enum = require('enum');
 
 module.exports = {
     say_greetings: "Xin vui kính chào quý khách",
     say_waiting_message: "Hệ thống đang tìm kiếm theo mã sản phẩm hoặc từ khóa. Xin vui lòng đợi trong giây lát",
-    say_search_continue_message: "Xin vui lòng tiếp tục tìm kiếm nếu bạn chưa tìm thấy sản phẩm như kì vọng",
+    say_search_continue_message: "Xin vui lòng tiếp tục tìm kiếm nếu bạn chưa tìm thấy hay tìm kiếm sản phẩm mới",
     pls_select_category: "Xin vui lòng chọn 1 danh mục sản phẩm",
     pls_select_product: "Xin vui lòng chọn sản phẩm (nhập code hoặc upload ảnh)",
     pls_select_product_color: "Xin vui lòng chọn màu sản phẩm",
@@ -16,6 +17,7 @@ module.exports = {
     pls_enter_delivery_date: "Xin vui lòng nhập ngày nhận hàng",
     pls_reset_buying: "Hủy đơn hàng. Xin vui lòng bắt đầu lại quá trình đặt hàng",
     pls_end_buying: "Kết thúc đặt hàng. Xin vui lòng nhập OK để bắt đầu đơn hàng mới",
+    start_order_process: "Bắt đầu quá trình đặt hàng",
     find_categories: "find_categories",
     find_product: "find_product",
     find_details: "find_details", // ask about size, color and in-stock status
@@ -31,9 +33,28 @@ module.exports = {
     notify_product_found: "Sản phẩm còn hàng",
     notify_product_notfound: "Sản phẩm không tìm thấy. Xin vui lòng nhập lại thông tin",
     cmd_terminate_order: "huy",
-    cmd_continue_search: "tim kiem",
+    cmd_continue_search: "search",
+    cmd_order: "order",
     cmd_confirm_order: "ok",
 }
+
+module.exports.sale_steps = new Enum([
+    "say_greetings",
+    
+    "find_product",
+    // Select product with details
+    "select_product",
+    "select_product_color",
+    "select_product_size",
+    "set_quantity",
+    "select_next_product",
+    // Order product
+    "set_recipient_name",
+    "set_address",
+    "set_phone",
+    "set_email",
+    "set_delivery_date"
+]);
 
 module.exports.load_json = function (path) {
     var json_object = JSON.parse(require('fs').readFileSync(path, 'utf8'));

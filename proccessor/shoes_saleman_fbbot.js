@@ -34,14 +34,36 @@ function createProductElement(title, subtitle, thumbnail_url, link, code, id) {
             "url": link,
             "title": "Xem chi tiết"
         },
-            {
-                "type": "postback",
-                "title": "Đặt hàng",
-                "payload": {
-                    code: code,
-                    id: id
-                },
-            }],
+        {
+            "type": "postback",
+            "title": "Chọn hàng",
+            "payload": {
+                code: code,
+                id: id
+            },
+        }],
+    };
+    return template;
+}
+
+function createSearchOrPurchaseElement(title, subtitle) {
+    var template = {
+        "title": title,
+        "subtitle": subtitle,
+        "buttons": [{
+            "type": "postback",
+            "title": "Tiếp tục tìm kiếm",
+            "payload": {
+                action: "search"
+            },
+        },
+        {
+            "type": "postback",
+            "title": "Đặt hàng",
+            "payload": {
+                action: "order"
+            },
+        }],
     };
     return template;
 }
@@ -205,65 +227,7 @@ function find_categories(sessionId) {
     });
 }
 
-function execute_product_order(sessionId, text) {
-    if (user_sessions[sessionId].last_action == common.select_product_size) {
-        logger.debug("Order Quantity: " + text);
-        g_model_factory.create_fashion_item(parseInt(text),
-            user_sessions[sessionId].last_invoice.id,
-            user_sessions[sessionId].last_product.id,
-            user_sessions[sessionId].last_product.color,
-            user_sessions[sessionId].last_product.size,
-            function (saved_item) {
-                logger.info("saved_item: " + saved_item);
-            });
-
-        user_sessions[sessionId].last_action = common.set_quantity;
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_name);
-    } else if (user_sessions[sessionId].last_action == common.set_quantity) {
-        logger.debug("Name: " + text);
-        user_sessions[sessionId].last_action = common.set_recipient_name;
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_phone);
-        user_sessions[sessionId].last_invoice.name = text;
-    } else if (user_sessions[sessionId].last_action == common.set_recipient_name) {
-        logger.debug("Phone: " + text);
-        user_sessions[sessionId].last_action = common.set_phone;
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_address);
-        user_sessions[sessionId].last_invoice.phone = text;
-    } else if (user_sessions[sessionId].last_action == common.set_phone) {
-        logger.debug("Address: " + text);
-        user_sessions[sessionId].last_action = common.set_address;
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_email);
-        user_sessions[sessionId].last_invoice.address = text;
-    } else if (user_sessions[sessionId].last_action == common.set_address) {
-        logger.debug("Email: " + text);
-        var is_valid_email = validator.validate(text);
-        if (is_valid_email) {
-            user_sessions[sessionId].last_invoice.email = text;
-            user_sessions[sessionId].last_action = common.set_email;
-            sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_delivery_date);
-        } else {
-            sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_email);
-        }
-    } else if (user_sessions[sessionId].last_action == common.set_email) {
-        logger.debug("Delivery: " + text);
-        user_sessions[sessionId].last_action = common.set_delivery_date;
-        user_sessions[sessionId].last_invoice.delivery = text;
-    } else if (user_sessions[sessionId].last_action == common.set_delivery_date) {
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_end_buying);
-        user_sessions[sessionId].last_action = common.pls_end_buying;
-    } else if (user_sessions[sessionId].last_action == common.pls_end_buying) {
-        if(text.toLowerCase() === common.cmd_confirm_order){           
-            user_sessions[sessionId].last_invoice.status = "confirm";
-            g_model_factory.update_invoice(user_sessions[sessionId].last_invoice, function (invoice) {
-                logger.info(invoice);
-            });
-        }
-    } else {
-
-    }
-}
-
-function execute_product_search(sessionId, text, image_search_flag){
+function execute_search_product(sessionId, text, image_search_flag) {
     sendTextMessage(user_sessions[sessionId].fid, common.say_waiting_message);
     // Search products
     if (image_search_flag) {
@@ -290,31 +254,11 @@ function execute_product_search(sessionId, text, image_search_flag){
         find_products_by_code(sessionId, text);
     }
 }
-function execute_saleflow_simple(sessionId, text, image_search_flag) {
+
+function execute_select_product(sessionId, text) {
     var user_req_trans = translator(text).toLowerCase();
-    if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
-        user_sessions[sessionId].last_product.id = -1;
-        user_sessions[sessionId].last_invoice.id = -1;
-        user_sessions[sessionId].last_invoice.status = "cancel";
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_reset_buying);
-        user_sessions[sessionId].last_action = common.say_greetings;
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product);
-    } else if (user_sessions[sessionId].last_action == common.say_greetings) {
-        execute_product_search(sessionId, user_req_trans, image_search_flag);
-    } else if (user_req_trans.indexOf(common.cmd_continue_search) >= 0) {
-        sendTextMessage(user_sessions[sessionId].fid, common.say_search_continue_message);
-        user_sessions[sessionId].last_action = common.say_greetings;
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product);
-    } if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
-        user_sessions[sessionId].last_product.id = -1;
-        user_sessions[sessionId].last_invoice.id = -1;
-        user_sessions[sessionId].last_invoice.status = "cancel";
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_reset_buying);
-        user_sessions[sessionId].last_action = common.say_greetings;
-        sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product);
-    } else if (user_sessions[sessionId].last_action == common.select_product) {
+    if (user_sessions[sessionId].last_action == common.select_product) {
         var color_keyword = user_req_trans.replaceAll("mau", "").replaceAll(" ", "");
-        
         g_product_finder.checkProductByColor(user_sessions[sessionId].last_product.id,
             color_keyword, function (color) {
                 if (color != null) {
@@ -351,8 +295,107 @@ function execute_saleflow_simple(sessionId, text, image_search_flag) {
                     sendTextMessage(user_sessions[sessionId].fid, common.notify_product_notfound);
                 }
             });
+    } else if (user_sessions[sessionId].last_action == common.select_product_size) {
+        logger.debug("Order Quantity: " + text);
+        g_model_factory.create_fashion_item(parseInt(text),
+            user_sessions[sessionId].last_invoice.id,
+            user_sessions[sessionId].last_product.id,
+            user_sessions[sessionId].last_product.color,
+            user_sessions[sessionId].last_product.size,
+            function (saved_item) {
+                logger.info("saved_item: " + saved_item);
+            });
+
+        user_sessions[sessionId].last_action = common.say_search_continue_message;
+        var confirm_buttons = createSearchOrPurchaseElement("", "");
+        sendGenericMessage(user_sessions[sessionId].fid, confirm_buttons);
+    }
+}
+
+function execute_order_product(sessionId, text) {
+    if (user_sessions[sessionId].last_action == common.set_quantity) {
+        logger.debug("Name: " + text);
+        user_sessions[sessionId].last_action = common.set_recipient_name;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_phone);
+        user_sessions[sessionId].last_invoice.name = text;
+    } else if (user_sessions[sessionId].last_action == common.set_recipient_name) {
+        logger.debug("Phone: " + text);
+        user_sessions[sessionId].last_action = common.set_phone;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_address);
+        user_sessions[sessionId].last_invoice.phone = text;
+    } else if (user_sessions[sessionId].last_action == common.set_phone) {
+        logger.debug("Address: " + text);
+        user_sessions[sessionId].last_action = common.set_address;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_email);
+        user_sessions[sessionId].last_invoice.address = text;
+    } else if (user_sessions[sessionId].last_action == common.set_address) {
+        logger.debug("Email: " + text);
+        var is_valid_email = validator.validate(text);
+        if (is_valid_email) {
+            user_sessions[sessionId].last_invoice.email = text;
+            user_sessions[sessionId].last_action = common.set_email;
+            sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_delivery_date);
+        } else {
+            sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_email);
+        }
+    } else if (user_sessions[sessionId].last_action == common.set_email) {
+        logger.debug("Delivery: " + text);
+        user_sessions[sessionId].last_action = common.set_delivery_date;
+        user_sessions[sessionId].last_invoice.delivery = text;
+    } else if (user_sessions[sessionId].last_action == common.set_delivery_date) {
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_end_buying);
+        user_sessions[sessionId].last_action = common.pls_end_buying;
+    } else if (user_sessions[sessionId].last_action == common.pls_end_buying) {
+        if (text.toLowerCase() === common.cmd_confirm_order) {
+            user_sessions[sessionId].last_invoice.status = "confirm";
+            g_model_factory.update_invoice(user_sessions[sessionId].last_invoice, function (invoice) {
+                logger.info(invoice);
+            });
+        }
     } else {
-        execute_product_order(sessionId, text);
+
+    }
+}
+
+function execute_saleflow_simple(sessionId, text, image_search_flag) {
+    var user_req_trans = translator(text).toLowerCase();
+    var last_action_key = user_sessions[sessionId].last_action;
+    var last_action = common.sale_steps.get(last_action_key);
+    
+    if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
+        var invoice_id = user_sessions[sessionId].last_invoice.id;
+        var status = "cancel";
+        g_model_factory.cancel_invoice(invoice_id, status,
+            function (invoice) {
+                user_sessions[sessionId].last_invoice.id = -1;
+                user_sessions[sessionId].last_product.id = -1;
+                user_sessions[sessionId].last_invoice.id = -1;
+                user_sessions[sessionId].last_invoice.status = "cancel";
+                sendTextMessage(user_sessions[sessionId].fid, common.pls_reset_buying);
+                user_sessions[sessionId].last_action = common.sale_steps.say_greetings;
+                sendTextMessage(user_sessions[sessionId].fid, common.say_greetings);        
+        });
+    } else if (user_req_trans.indexOf(common.cmd_continue_search) >= 0) {
+        sendTextMessage(user_sessions[sessionId].fid, common.say_search_continue_message);
+        user_sessions[sessionId].last_action = common.sale_steps.say_greetings;
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product);
+    } else if (last_action_key == common.say_greetings) {
+        if(user_sessions[sessionId].last_invoice.id == -1){            
+            g_model_factory.create_empty_invoice(user_sessions[sessionId].fbid,
+                function (invoice) {
+                    user_sessions[sessionId].last_invoice.id = invoice.id;
+                });
+        }else{}
+        execute_search_product(sessionId, user_req_trans, image_search_flag);
+    } else if ((last_action >= common.sale_steps.get(common.select_product)) 
+        && (last_action <= common.sale_steps.get(common.select_product_size))) {
+        execute_select_product(sessionId, text);
+    } else if (user_req_trans.indexOf(common.cmd_order) >= 0){
+        user_sessions[sessionId].last_action = common.set_quantity;
+        sendTextMessage(user_sessions[sessionId].fid, common.start_order_process);
+        sendTextMessage(user_sessions[sessionId].fid, common.pls_enter_phone);
+    } else {
+        execute_order_product(sessionId, text);
     }
 }
 
@@ -387,7 +430,7 @@ server.post('/webhook/', bodyParser.json(), function (req, res) {
 
                 // Flow 2: simple and popular used in communicating 
                 // between shopper and buyer (just use texting)
-                execute_saleflow_simple(sessionId, text, false)
+                execute_saleflow_simple(sessionId, text, false);
             } else if (event.message && event.message.attachments != null) {
                 var attachments = event.message.attachments;
                 // handle the case when user send an image for searching product
@@ -402,10 +445,6 @@ server.post('/webhook/', bodyParser.json(), function (req, res) {
                 if (event.postback.payload.id != null) {
                     user_sessions[sessionId].last_product.id = event.postback.payload.id;
                     user_sessions[sessionId].last_action = common.select_product;
-                    g_model_factory.create_empty_invoice(user_sessions[sessionId].fbid,
-                        function (invoice) {
-                            user_sessions[sessionId].last_invoice.id = invoice.id;
-                        });
                     g_product_finder.getProductColors(event.postback.payload.id,
                         function (colors) {
                             if (colors != null) {
@@ -417,9 +456,11 @@ server.post('/webhook/', bodyParser.json(), function (req, res) {
                             }
                         });
                     sendTextMessage(user_sessions[sessionId].fid, common.pls_select_product_color);
-
-                } else {
+                } else if(event.postback.payload.action != null){ 
+                        execute_saleflow_simple(sessionId, event.postback.payload.action, false);
+                } else{
                     // handle delivery time or address
+                    
                 }
             } else if (event.delivery) {
 

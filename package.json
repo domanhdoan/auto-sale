@@ -17,7 +17,6 @@
     "express": "4.13.4",
     "mysql": ">=2.10.0",
     "node.io": ">=0.5.1",
-    "pg": "^4.4.3",
     "prototypes": ">=1.2.1",
     "request": ">=2.21.0",
     "sequelize": ">=3.23.1",
@@ -29,13 +28,13 @@
     "string.prototype.startswith":"0.2.0",
     "phone": ">=1.0.7",
     "speakingurl": "9.0.0",
-    "blockhash": "0.2.0",
     "png-js": "0.1.1",
     "jpeg-js": "0.1.2",
     "imghash":"0.0.2",
     "crypto": "0.0.3",
     "mkdirp": "0.5.1",
-    "moment":"2.13.0"
+    "moment":"2.13.0",
+    "enum": "2.3.0"
   },
   "devDependencies": {
     "gulp-sequelize": "0.0.2"

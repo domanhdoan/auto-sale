@@ -131,7 +131,8 @@ module.exports.create_empty_invoice = function (fbid, callback) {
     g_orm_manager.Invoice
         .build({
             fbid: fbid,
-            creation_date: moment.now()
+            creation_date: moment.now(),
+            status: "created"
         })
         .save()
         .then(function (saved_invoice) {
@@ -139,6 +140,16 @@ module.exports.create_empty_invoice = function (fbid, callback) {
         }).catch(function (error) {
             logger.error(error);
         });
+}
+
+module.exports.cancel_invoice = function (id, status, callback) {
+    g_orm_manager.Invoice.findOne({ where: { id: id } }).then(function (invoice) {
+        if (invoice) { // if the record exists in the db
+            invoice.updateAttributes({
+                status: "cancel"
+            });
+        } else { }
+    })
 }
 
 module.exports.update_invoice = function (invoice_info, callback) {
