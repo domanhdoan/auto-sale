@@ -2,16 +2,16 @@ const imghash = require('imghash');
 var Enum = require('enum');
 
 module.exports = {
-    say_greetings: "Xin vui kính chào quý khách",
-    say_waiting_message: "Hệ thống đang tìm kiếm theo mã sản phẩm hoặc từ khóa. Xin vui lòng đợi trong giây lát",
+    say_greetings: "Xin kính chào quý khách",
+    say_waiting_message: "Hệ thống đang tìm kiếm ...",
     say_search_continue_message: "Xin vui lòng tiếp tục tìm kiếm nếu bạn chưa tìm thấy hay tìm kiếm sản phẩm mới",
     pls_select_category: "Xin vui lòng chọn 1 danh mục sản phẩm",
-    pls_select_product: "Xin vui lòng chọn sản phẩm (nhập code hoặc upload ảnh)",
-    pls_select_product_color: "Xin vui lòng chọn màu sản phẩm",
-    pls_select_product_size: "Xin vui lòng chọn size sản phẩm",
-    pls_enter_quantity: "Xin vui lòng chọn số lượng sản phẩm",
+    pls_select_product: "Xin vui lòng chọn sản phẩm (nhập mã sản phẩm hoặc upload ảnh)",
+    pls_select_product_color: "Xin vui lòng chọn màu",
+    pls_select_product_size: "Xin vui lòng chọn size",
+    pls_enter_quantity: "Xin vui lòng chọn số lượng",
     pls_enter_name: "Xin vui lòng nhập tên người nhận",
-    pls_enter_address: "Xin vui nhập địa chỉ ngưởi nhận",
+    pls_enter_address: "Xin vui nhập địa chỉ người nhận",
     pls_enter_phone: "Xin vui lòng nhập số điện thoại",
     pls_enter_email: "Xin vui lòng nhập email người nhận",
     pls_enter_delivery_date: "Xin vui lòng nhập ngày nhận hàng",
@@ -40,7 +40,7 @@ module.exports = {
 
 module.exports.sale_steps = new Enum([
     "say_greetings",
-    
+
     "find_product",
     // Select product with details
     "select_product",
@@ -55,6 +55,14 @@ module.exports.sale_steps = new Enum([
     "set_email",
     "set_delivery_date"
 ]);
+
+var color_vn = {do:"Đỏ", den: "Đen", xam: "Xám", xanhlam: "Xanh lam", 
+    hongphan: "Hồng phấn", trang: "Trắng", xanhtimthan: "Xanh tím than",
+    ghi: "Ghi", tim: "Tím"};
+
+module.exports.get_color_vn = function (value) {
+    return color_vn[value];
+}
 
 module.exports.load_json = function (path) {
     var json_object = JSON.parse(require('fs').readFileSync(path, 'utf8'));
@@ -108,7 +116,7 @@ String.prototype.replaceAll = function (token, newToken, ignoreCase) {
     return str;
 };
 
-module.exports.generate_remoteimg_hash = function(url, callback) {
+module.exports.generate_remoteimg_hash = function (url, callback) {
     var http = require('http')
         , fs = require('fs')
         , options
@@ -124,8 +132,8 @@ module.exports.generate_remoteimg_hash = function(url, callback) {
 
         res.on('end', function () {
             var crypto = require('crypto');
-            var hash = crypto.createHash('md5').update(url).digest('hex');            
-            var fileName = "./temp/" + hash + "." + contentType.replaceAll('/',".");
+            var hash = crypto.createHash('md5').update(url).digest('hex');
+            var fileName = "./temp/" + hash + "." + contentType.replaceAll('/', ".");
             fs.writeFile(fileName, imagedata, 'binary', function (err) {
                 if (err) throw err
                 imghash
@@ -139,7 +147,7 @@ module.exports.generate_remoteimg_hash = function(url, callback) {
     })
 }
 
-module.exports.generate_localimg_hash = function(path, callback) {
+module.exports.generate_localimg_hash = function (path, callback) {
     imghash
         .hash(path)
         .then((hash) => {

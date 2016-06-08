@@ -22,8 +22,8 @@ if (crawl_source != null) {
     crawl_source.links.forEach(function (link) {
         var product_pattern = common.load_crawl_pattern(link);
         //crawler.init(product_pattern, orm_manager);
-        // crawler.crawl_alink_withdepth(link);
-        auto_order_bot.start(8080, link, product_pattern.product_search, product_finder, model_factory);
+        //crawler.crawl_alink_withdepth(link);
+        auto_order_bot.start(5000, link, product_pattern.product_search, product_finder, model_factory);
     });
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");

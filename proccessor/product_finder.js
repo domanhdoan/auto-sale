@@ -54,11 +54,11 @@ function parse_keywords_calibration(keywords, word_list) {
 }
 
 function generate_shoesfind_query(keywords) {
-    var query = " Select P.id, P.title, P.desc, P.thumbnail, P.code, P.link, C.name, S.value "
+    var query = " Select P.id, P.title, P.price, P.thumbnail, P.code, P.link, C.name, S.value "
         + " from product as P"
         + " inner join color as C on P.id = C.ProductId"
         + " inner join size as S on P.id = S.ProductId"
-        + " where P.link like '%" + keywords[0] + "%'"
+        + " where P.link like '%" + keywords[0] + "%' LIMIT 5"
     if (keywords[1].length > 0) {
         query += " and C.name = '" + keywords[1] + "'"
     }
