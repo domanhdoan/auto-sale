@@ -222,7 +222,7 @@ function find_products_by_code(session, message) {
                 product.dataValues.id);
             found_products.push(product_object);
             sendGenericMessage(session.fbid, found_products);
-            sendTextMessage(session.fbid, common.pls_select_product_color);
+            //sendTextMessage(session.fbid, common.pls_select_product_color);
         } else {
             logger.debug("Product not found");
             sendTextMessage(session.fbid, common.notify_product_notfound);
@@ -280,16 +280,18 @@ function execute_select_product(session, text) {
                     sendTextMessage(session.fbid, common.pls_select_product_size);
                     g_product_finder.getProductSizes(session.last_product.id,
                         function (sizes) {
-                            if (sizes != null) {
+                            if (sizes != null && sizes.length > 0) {
                                 var available_sizes = "";
                                 for (var i = 0; i < (sizes.length - 1); i++) {
                                     logger.info("Available Size: " + sizes[i].dataValues.value);
                                     available_sizes += sizes[i].dataValues.value + ", ";
                                 }
                                 available_sizes += sizes[(sizes.length - 1)].dataValues.value;
-                                sendTextMessage(session.fbid, "Size có sẵn: " + available_sizes.trim());
+                                sendTextMessage(session.fbid, "Size có sẵn: " + available_sizes);
                             } else {
                                 logger.info("No Available Size for Product");
+                                sendTextMessage(session.fbid, common.notify_product_notfound);
+                                session.last_action = common.say_greetings;
                             }
                         });
                 } else {
@@ -391,7 +393,7 @@ function execute_saleflow_simple(session, user_msg, action_details) {
             session.last_action = common.select_product;
             g_product_finder.getProductColors(session.last_product.id,
                 function (colors) {
-                    if (colors != null) {
+                    if (colors != null && colors.length > 0) {
                         var available_colors = "";
                         for (var i = 0; i < (colors.length - 1); i++) {
                             available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
@@ -400,8 +402,9 @@ function execute_saleflow_simple(session, user_msg, action_details) {
                         sendTextMessage(session.fbid, "Màu có sẵn: " + available_colors);
                         sendTextMessage(session.fbid, common.pls_select_product_color);
                     } else {
-                        sendTextMessage(session.fbid, "Rất tiếc không còn sản phẩm hết hàng. Xin vui lòng chọn sản phẩm khác");
+                        sendTextMessage(session.fbid, common.notify_product_notfound);
                         session.last_action = common.say_search_continue_message;
+                        session.last_action = common.say_greetings;
                     }
                 });
         } else if (user_msg.indexOf(common.action_order) >= 0) {
