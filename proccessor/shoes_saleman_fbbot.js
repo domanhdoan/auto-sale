@@ -16,7 +16,7 @@ var g_model_factory = require("../models/model_factory.js");
 
 var request = require('request');
 var logger = require("../util/logger.js");
-var g_token =  "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD";
+var g_token = "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD";
 const user_sessions = {};
 var FB_PAGE_ID = 123456789;
 
@@ -28,6 +28,7 @@ function createProductElement(title, price, thumbnail_url, link, code, id) {
     var payload = {};
     payload.id = id;
     payload.code = code;
+    payload.action = "select";
     var template = {
         "title": translator(title),
         "subtitle": translator(price),
@@ -37,11 +38,11 @@ function createProductElement(title, price, thumbnail_url, link, code, id) {
             "url": link,
             "title": "Chi tiết"
         },
-        {
-            "type": "postback",
-            "title": "Đặt hàng",
-            "payload": JSON.stringify(payload),
-        }],
+            {
+                "type": "postback",
+                "title": "Đặt hàng",
+                "payload": JSON.stringify(payload),
+            }],
     };
     return template;
 }
@@ -52,10 +53,10 @@ function createSearchOrPurchaseElement() {
     search_action.action = "search";
     order_action.action = "order";
     var template = [{
-            "type": "postback",
-            "title": "Thêm sản phẩm",
-            "payload": JSON.stringify(search_action),
-        },
+        "type": "postback",
+        "title": "Thêm sản phẩm",
+        "payload": JSON.stringify(search_action),
+    },
         {
             "type": "postback",
             "title": "Đặt hàng",
@@ -91,7 +92,7 @@ function sendTextMessage(sender, simple_text) {
     messageData = {
         text: simple_text
     }
-	console.log("Sender = " + sender);
+    console.log("Sender = " + sender);
     sendDataToFBMessenger(sender, messageData);
 }
 
@@ -113,7 +114,7 @@ function sendConfirmMessage(sender, buttons) {
         "attachment": {
             "type": "template",
             "payload": {
-                "template_type":"button",
+                "template_type": "button",
                 "text": "Bạn muốn tiếp tục chọn thêm sản phẩm khác?",
                 "buttons": buttons
             }
@@ -161,7 +162,7 @@ const findOrCreateSession = (fbid) => {
                 size: -1
             },
             last_action: common.say_greetings,
-            timestamp:0,
+            timestamp: 0,
             last_invoice: {
                 id: -1,
                 name: "",
@@ -370,43 +371,66 @@ function execute_order_product(session, text) {
     }
 }
 
-function execute_saleflow_simple(current_session, text) {
-    var user_req_trans = translator(text).toLowerCase();
-    var last_action_key = current_session.last_action;
+function execute_saleflow_simple(session, user_msg, action_details) {
+    var user_req_trans = translator(user_msg).toLowerCase();
+    var last_action_key = session.last_action;
     var last_action = common.sale_steps.get(last_action_key);
-    if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
-        var invoice_id = current_session.last_invoice.id;
+    
+    if (action_details != null){
+        if (user_msg.indexOf(common.action_continue_search) >= 0) {
+            session.last_action = common.say_greetings;
+            sendTextMessage(session.fbid, common.say_search_continue_message);
+            sendTextMessage(session.fbid, common.pls_select_product);
+        } else if (user_msg.indexOf(common.action_order) >= 0) {
+            session.last_action = common.set_quantity;
+            sendTextMessage(session.fbid, common.start_order_process);
+            sendTextMessage(session.fbid, common.pls_enter_name);
+        } else if (user_msg.indexOf(common.action_select) >= 0) {
+            session.last_product.id = action_details.id;
+            session.last_action = common.select_product;
+            g_product_finder.getProductColors(session.last_product.id,
+                function (colors) {
+                    if (colors != null) {
+                        var available_colors = "";
+                        for (var i = 0; i < colors.length; i++) {
+                            available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
+                        }
+                        sendTextMessage(session.fbid, "Màu có sẵn: " + available_colors);
+                        sendTextMessage(session.fbid, common.pls_select_product_color);
+                    } else {
+                        sendTextMessage(session.fbid, "Rất tiếc không còn sản phẩm hết hàng. Xin vui lòng chọn sản phẩm khác");
+                        session.last_action = common.say_search_continue_message;
+                    }
+                });
+        } else {
+
+        }
+    } else if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
+        var invoice_id = session.last_invoice.id;
         var status = "cancel";
         g_model_factory.cancel_invoice(invoice_id, status,
             function (invoice) {
-                current_session.last_invoice.id = -1;
-                current_session.last_product.id = -1;
-                current_session.last_invoice.id = -1;
-                current_session.last_invoice.status = "cancel";
-        });
-        sendTextMessage(current_session.fbid, common.pls_reset_buying);
-        current_session.last_action = common.sale_steps.say_greetings;
-    } else if (user_req_trans.indexOf(common.cmd_continue_search) >= 0) {
-        current_session.last_action = common.say_greetings;
-        sendTextMessage(current_session.fbid, common.say_search_continue_message);
-        sendTextMessage(current_session.fbid, common.pls_select_product);
+                session.last_invoice.id = -1;
+                session.last_product.id = -1;
+                session.last_invoice.id = -1;
+                session.last_invoice.status = "cancel";
+            });
+        sendTextMessage(session.fbid, common.pls_reset_buying);
+        session.last_action = common.say_greetings;
+        sendTextMessage(session.fbid, common.pls_select_product);
     } else if (last_action_key == common.say_greetings) {
-        if(current_session.last_invoice.id == -1){            
-            g_model_factory.create_empty_invoice(current_session.fbid,
+        if (session.last_invoice.id == -1) {
+            g_model_factory.create_empty_invoice(session.fbid,
                 function (invoice) {
-                    current_session.last_invoice.id = invoice.id;
+                    session.last_invoice.id = invoice.id;
                 });
-        }else{}
-        execute_search_product(current_session, text, user_req_trans);
-    } else if ((last_action >= common.sale_steps.get(common.select_product)) 
+        } else { }
+        execute_search_product(session, user_msg, user_req_trans);
+    } else if ((last_action >= common.sale_steps.get(common.select_product))
         && (last_action <= common.sale_steps.get(common.select_product_size))) {
-        execute_select_product(current_session, text);
-    } else if (user_req_trans.indexOf(common.cmd_order) >= 0){
-        current_session.last_action = common.set_quantity;
-        sendTextMessage(current_session.fbid, common.start_order_process);
-        sendTextMessage(current_session.fbid, common.pls_enter_name);
+        execute_select_product(session, user_msg);
     } else {
-        execute_order_product(current_session, text);
+        execute_order_product(session, user_msg);
     }
 }
 
@@ -418,14 +442,9 @@ server.get('/joyboxwebhook/', bodyParser.json(), function (req, res) {
 });
 
 server.post('/joyboxwebhook/', bodyParser.json(), function (req, res) {
-    if (req.body == null) {
-        res.sendStatus(404);
-    } else {
-
+    if (req.body != null) {
         messaging_events = req.body.entry[0].messaging;
-
         const messaging = getFirstMessagingEntry(req.body);
-
         for (i = 0; i < messaging_events.length; i++) {
             event = req.body.entry[0].messaging[i];
             sender = event.sender.id;
@@ -442,13 +461,13 @@ server.post('/joyboxwebhook/', bodyParser.json(), function (req, res) {
 
                 // Flow 2: simple and popular used in communicating 
                 // between shopper and buyer (just use texting)
-                execute_saleflow_simple(current_session, text);
+                execute_saleflow_simple(current_session, text, null);
             } else if (event.message && event.message.attachments != null) {
                 var attachments = event.message.attachments;
                 // handle the case when user send an image for searching product
                 for (var i = 0; i < attachments.length; i++) {
                     if (attachments[i].type === 'image') {
-                        execute_saleflow_simple(current_session, attachments[i].payload.url);
+                        execute_saleflow_simple(current_session, attachments[i].payload.url, null);
                     } else {
                         logger.info("Skipp to handle attachment");
                     }
@@ -456,30 +475,11 @@ server.post('/joyboxwebhook/', bodyParser.json(), function (req, res) {
             } else if (event.postback) {
                 var postback = JSON.parse(event.postback.payload);
                 var delta = event.timestamp - current_session.timestamp;
-                if (postback.id != null && current_session.last_product.id != postback.id 
-                    && delta > 100 /*avoid double click*/) {
+                if (delta > 100 /*avoid double click*/) {
                     current_session.timestamp = event.timestamp;
-                    current_session.last_product.id = postback.id;
-                    current_session.last_action = common.select_product;
-                    g_product_finder.getProductColors(postback.id,
-                        function (colors) {
-                            if (colors != null) {
-                                var available_colors = "";
-                                for (var i = 0; i < colors.length; i++) {
-                                    available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
-                                }
-                                sendTextMessage(current_session.fbid, "Màu có sẵn: " + available_colors);
-                                sendTextMessage(current_session.fbid, common.pls_select_product_color);
-                            } else {
-                                sendTextMessage(current_session.fbid, "Rất tiếc không còn sản phẩm hết hàng. Xin vui lòng chọn sản phẩm khác");
-                                current_session.last_action = common.say_search_continue_message;
-                            }
-                        });
-                } else if(postback.action != null){ 
-                        execute_saleflow_simple(current_session, postback.action);
-                } else{
-                    // handle delivery time or address
-                    
+                    execute_saleflow_simple(current_session, postback.action, postback);
+                } else {
+                    logger.info("Skipp to handle double click");
                 }
             } else if (event.delivery) {
 
@@ -490,6 +490,8 @@ server.post('/joyboxwebhook/', bodyParser.json(), function (req, res) {
             }
         }
         res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
     }
 });
 

@@ -33,8 +33,9 @@ module.exports = {
     notify_product_found: "Sản phẩm còn hàng",
     notify_product_notfound: "Sản phẩm không tìm thấy. Xin vui lòng nhập lại thông tin",
     cmd_terminate_order: "huy",
-    cmd_continue_search: "tim kiem",
-    cmd_order: "order",
+    action_continue_search: "search",
+    action_order: "order",
+    action_select: "select",
     cmd_confirm_order: "ok",
 }
 
