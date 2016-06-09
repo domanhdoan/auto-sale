@@ -284,9 +284,9 @@ function execute_select_product(session, text) {
                                 var available_sizes = "";
                                 for (var i = 0; i < sizes.length; i++) {
                                     logger.info("Available Size: " + sizes[i].dataValues.value);
-                                    available_sizes += sizes[i].dataValues.value + ", ";
+                                    available_sizes += sizes[i].dataValues.value + " ";
                                 }
-                                sendTextMessage(session.fbid, "Size có sẵn: " + available_sizes);
+                                sendTextMessage(session.fbid, "Size có sẵn: " + available_sizes.trim());
                             } else {
                                 logger.info("No Available Size for Product");
                             }
@@ -354,18 +354,22 @@ function execute_order_product(session, text) {
         }
     } else if (session.last_action == common.set_email) {
         logger.debug("Delivery: " + text);
-        session.last_action = common.set_delivery_date;
         session.last_invoice.delivery = text;
+        session.last_action = common.set_delivery_date;
     } else if (session.last_action == common.set_delivery_date) {
         sendTextMessage(session.fbid, common.pls_end_buying);
         session.last_action = common.pls_end_buying;
     } else if (session.last_action == common.pls_end_buying) {
-        if (text.toLowerCase() === common.cmd_confirm_order) {
+        if (text.toLowerCase() === common.action_confirm_order) {
             session.last_invoice.status = "confirm";
             g_model_factory.update_invoice(session.last_invoice, function (invoice) {
                 logger.info(invoice);
             });
+        }else{
+
         }
+        session.last_action = common.say_greetings;
+        sendTextMessage(session.fbid, common.pls_select_product);
     } else {
 
     }
@@ -376,15 +380,11 @@ function execute_saleflow_simple(session, user_msg, action_details) {
     var last_action_key = session.last_action;
     var last_action = common.sale_steps.get(last_action_key);
 
-    if (action_details != null){
+    if (action_details != null){ /*Handle call-to-action buttons*/ 
         if (user_msg.indexOf(common.action_continue_search) >= 0) {
             session.last_action = common.say_greetings;
             sendTextMessage(session.fbid, common.say_search_continue_message);
             sendTextMessage(session.fbid, common.pls_select_product);
-        } else if (user_msg.indexOf(common.action_order) >= 0) {
-            session.last_action = common.set_quantity;
-            sendTextMessage(session.fbid, common.start_order_process);
-            sendTextMessage(session.fbid, common.pls_enter_name);
         } else if (user_msg.indexOf(common.action_select) >= 0) {
             session.last_product.id = action_details.id;
             session.last_action = common.select_product;
@@ -393,15 +393,19 @@ function execute_saleflow_simple(session, user_msg, action_details) {
                     if (colors != null) {
                         var available_colors = "";
                         for (var i = 0; i < colors.length; i++) {
-                            available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
+                            available_colors += common.get_color_vn(colors[i].dataValues.name) + " ";
                         }
-                        sendTextMessage(session.fbid, "Màu có sẵn: " + available_colors);
+                        sendTextMessage(session.fbid, "Màu có sẵn: " + available_colors.trim());
                         sendTextMessage(session.fbid, common.pls_select_product_color);
                     } else {
                         sendTextMessage(session.fbid, "Rất tiếc không còn sản phẩm hết hàng. Xin vui lòng chọn sản phẩm khác");
                         session.last_action = common.say_search_continue_message;
                     }
                 });
+        } else if (user_msg.indexOf(common.action_order) >= 0) {
+            session.last_action = common.set_quantity;
+            //sendTextMessage(session.fbid, common.start_order_process);
+            sendTextMessage(session.fbid, common.pls_enter_name);
         } else {
 
         }
@@ -418,6 +422,7 @@ function execute_saleflow_simple(session, user_msg, action_details) {
         sendTextMessage(session.fbid, common.pls_reset_buying);
         session.last_action = common.say_greetings;
         sendTextMessage(session.fbid, common.pls_select_product);
+    /*Handle what user send to fanpage*/
     } else if (last_action_key == common.say_greetings) {
         if (session.last_invoice.id == -1) {
             g_model_factory.create_empty_invoice(session.fbid,
