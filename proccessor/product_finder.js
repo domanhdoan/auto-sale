@@ -10,15 +10,17 @@ const common = require('../util/common.js');
 var keywords = ['giay', 'mau', 'size'];
 function parse_keywords(keywords, word_list) {
     var result = {};
-    var temp = "";
+    var temp = '';
     var last_keyword = null;
     for (var i = 0; i <= word_list.length; i++) {
         if (keywords.indexOf(word_list[i]) >= 0 || i == word_list.length) {
             if (last_keyword != null) {
                 console.log("key = " + last_keyword + " value = " + temp);
                 result[last_keyword] = temp.trim();
+                temp = '';
+            }else{
+                result['giay'] = temp;
             }
-            temp = "";
             last_keyword = word_list[i];
         } else {
             temp += " " + word_list[i];
