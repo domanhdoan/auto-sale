@@ -17,9 +17,8 @@ var g_model_factory = require("../models/model_factory.js");
 
 var request = require('request');
 var logger = require("../util/logger.js");
-var g_token = "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD";
+// var g_token = "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD";
 const user_sessions = {};
-var FB_PAGE_ID = 123456789;
 
 // =================================================================
 // Methods for sending message to target user FB messager
@@ -71,7 +70,7 @@ function sendDataToFBMessenger(sender, data) {
 
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: g_token },
+        qs: { access_token: config.network.fb_token},
         method: 'POST',
         json: true,
         body: {
@@ -134,7 +133,7 @@ const getFirstMessagingEntry = (body) => {
         Array.isArray(body.entry) &&
         body.entry.length > 0 &&
         body.entry[0] &&
-        body.entry[0].id === FB_PAGE_ID &&
+        // body.entry[0].id === FB_PAGE_ID &&
         body.entry[0].messaging &&
         Array.isArray(body.entry[0].messaging) &&
         body.entry[0].messaging.length > 0 &&

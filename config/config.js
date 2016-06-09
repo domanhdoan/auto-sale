@@ -18,7 +18,8 @@ config.db = {
 
 config.network = {
     port: 5000,
-    webhook: "/joyboxwebhook/"
+    webhook: "/joyboxwebhook/",
+    fb_token: "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD"
 };
 
 config.develop = {
