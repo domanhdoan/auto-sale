@@ -375,7 +375,7 @@ function execute_saleflow_simple(session, user_msg, action_details) {
     var user_req_trans = translator(user_msg).toLowerCase();
     var last_action_key = session.last_action;
     var last_action = common.sale_steps.get(last_action_key);
-    
+
     if (action_details != null){
         if (user_msg.indexOf(common.action_continue_search) >= 0) {
             session.last_action = common.say_greetings;
@@ -475,7 +475,7 @@ server.post('/joyboxwebhook/', bodyParser.json(), function (req, res) {
             } else if (event.postback) {
                 var postback = JSON.parse(event.postback.payload);
                 var delta = event.timestamp - current_session.timestamp;
-                if (delta > 100 /*avoid double click*/) {
+                if (delta > 150 /*avoid double click*/) {
                     current_session.timestamp = event.timestamp;
                     execute_saleflow_simple(current_session, postback.action, postback);
                 } else {
