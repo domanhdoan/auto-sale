@@ -286,7 +286,7 @@ function execute_select_product(session, text) {
                                     logger.info("Available Size: " + sizes[i].dataValues.value);
                                     available_sizes += sizes[i].dataValues.value + ", ";
                                 }
-                                available_sizes += sizes[i].dataValues.value;
+                                available_sizes += sizes[(sizes.length - 1)].dataValues.value;
                                 sendTextMessage(session.fbid, "Size có sẵn: " + available_sizes.trim());
                             } else {
                                 logger.info("No Available Size for Product");
@@ -396,7 +396,7 @@ function execute_saleflow_simple(session, user_msg, action_details) {
                         for (var i = 0; i < (colors.length - 1); i++) {
                             available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
                         }
-                        available_colors += common.get_color_vn(colors[i].dataValues.name);
+                        available_colors += common.get_color_vn(colors[(colors.length - 1)].dataValues.name);
                         sendTextMessage(session.fbid, "Màu có sẵn: " + available_colors);
                         sendTextMessage(session.fbid, common.pls_select_product_color);
                     } else {
