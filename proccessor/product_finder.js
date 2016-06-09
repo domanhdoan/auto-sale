@@ -58,13 +58,14 @@ function generate_shoesfind_query(keywords) {
         + " from product as P"
         + " inner join color as C on P.id = C.ProductId"
         + " inner join size as S on P.id = S.ProductId"
-        + " where P.link like '%" + keywords[0] + "%' LIMIT 5"
+        + " where P.link like '%" + keywords[0]+ "%'"
     if (keywords[1].length > 0) {
         query += " and C.name = '" + keywords[1] + "'"
     }
     if (keywords[2].length > 0) {
         query += " and S.value = '" + keywords[2] + "'";
     }
+     query += " LIMIT 5;";
         
     return query;
 }

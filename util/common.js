@@ -33,7 +33,7 @@ module.exports = {
     notify_product_found: "Sản phẩm còn hàng",
     notify_product_notfound: "Sản phẩm không tìm thấy. Xin vui lòng nhập lại thông tin",
     cmd_terminate_order: "huy",
-    cmd_continue_search: "search",
+    cmd_continue_search: "tim kiem",
     cmd_order: "order",
     cmd_confirm_order: "ok",
 }
@@ -67,6 +67,14 @@ module.exports.get_color_vn = function (value) {
 module.exports.load_json = function (path) {
     var json_object = JSON.parse(require('fs').readFileSync(path, 'utf8'));
     return json_object;
+}
+
+module.exports.is_url = function(text){
+    var is_url_flag = false;
+    if (text.startsWith('http')) {
+        is_url_flag = true;
+    }
+    return is_url_flag;
 }
 
 module.exports.load_crawl_pattern = function (url) {
