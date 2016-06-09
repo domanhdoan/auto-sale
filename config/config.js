@@ -4,6 +4,11 @@
 
 var config = {};
 
+config.submodule = {
+    crawler: false,
+    salebot: true
+};
+
 config.crawler = {
     temp_dir: './temp'
 };
