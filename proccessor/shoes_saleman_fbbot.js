@@ -70,7 +70,7 @@ function sendDataToFBMessenger(sender, data) {
 
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: config.network.fb_token},
+        qs: { access_token: config.network.fb_token },
         method: 'POST',
         json: true,
         body: {
@@ -282,10 +282,11 @@ function execute_select_product(session, text) {
                         function (sizes) {
                             if (sizes != null) {
                                 var available_sizes = "";
-                                for (var i = 0; i < sizes.length; i++) {
+                                for (var i = 0; i < (sizes.length - 1); i++) {
                                     logger.info("Available Size: " + sizes[i].dataValues.value);
-                                    available_sizes += sizes[i].dataValues.value + " ";
+                                    available_sizes += sizes[i].dataValues.value + ", ";
                                 }
+                                available_sizes += sizes[i].dataValues.value;
                                 sendTextMessage(session.fbid, "Size có sẵn: " + available_sizes.trim());
                             } else {
                                 logger.info("No Available Size for Product");
@@ -365,7 +366,7 @@ function execute_order_product(session, text) {
             g_model_factory.update_invoice(session.last_invoice, function (invoice) {
                 logger.info(invoice);
             });
-        }else{
+        } else {
 
         }
         session.last_action = common.say_greetings;
@@ -380,7 +381,7 @@ function execute_saleflow_simple(session, user_msg, action_details) {
     var last_action_key = session.last_action;
     var last_action = common.sale_steps.get(last_action_key);
 
-    if (action_details != null){ /*Handle call-to-action buttons*/ 
+    if (action_details != null) { /*Handle call-to-action buttons*/
         if (user_msg.indexOf(common.action_continue_search) >= 0) {
             session.last_action = common.say_greetings;
             sendTextMessage(session.fbid, common.say_search_continue_message);
@@ -392,10 +393,11 @@ function execute_saleflow_simple(session, user_msg, action_details) {
                 function (colors) {
                     if (colors != null) {
                         var available_colors = "";
-                        for (var i = 0; i < colors.length; i++) {
-                            available_colors += common.get_color_vn(colors[i].dataValues.name) + " ";
+                        for (var i = 0; i < (colors.length - 1); i++) {
+                            available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
                         }
-                        sendTextMessage(session.fbid, "Màu có sẵn: " + available_colors.trim());
+                        available_colors += common.get_color_vn(colors[i].dataValues.name);
+                        sendTextMessage(session.fbid, "Màu có sẵn: " + available_colors);
                         sendTextMessage(session.fbid, common.pls_select_product_color);
                     } else {
                         sendTextMessage(session.fbid, "Rất tiếc không còn sản phẩm hết hàng. Xin vui lòng chọn sản phẩm khác");
@@ -422,7 +424,7 @@ function execute_saleflow_simple(session, user_msg, action_details) {
         sendTextMessage(session.fbid, common.pls_reset_buying);
         session.last_action = common.say_greetings;
         sendTextMessage(session.fbid, common.pls_select_product);
-    /*Handle what user send to fanpage*/
+        /*Handle what user send to fanpage*/
     } else if (last_action_key == common.say_greetings) {
         if (session.last_invoice.id == -1) {
             g_model_factory.create_empty_invoice(session.fbid,
