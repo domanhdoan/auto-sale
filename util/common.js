@@ -81,13 +81,13 @@ module.exports.is_url = function(text){
 }
 
 module.exports.extract_product_code = function(text, pattern){
-    var word_list = text.split(' ');
+    var upper = text.toUpperCase();
     var ret = {
         is_code: false,
         code: ""
     };
     var myRe = new RegExp(pattern);
-    var results = text.match(myRe) //matches "2 chapters"
+    var results = upper.match(myRe) //matches "2 chapters"
 
     if (results.length > 0) {
         ret.is_code = true;
