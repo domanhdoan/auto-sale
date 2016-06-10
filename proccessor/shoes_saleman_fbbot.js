@@ -123,13 +123,9 @@ function sendConfirmMessage(sender, buttons) {
     sendDataToFBMessenger(sender, messageData);
 }
 
-function createProductElement(title, desc, price, quantity, thumbnail_url) {
-    var payload = {};
-    payload.id = id;
-    payload.code = code;
-    payload.action = "select";
+function createOrderItemElement(title, desc, price, quantity, thumbnail_url) {
     var template = {
-        "title": "Classic White T-Shirt",
+        "title": title,
         "subtitle": desc,
         "quantity": quantity,
         "price": price,
