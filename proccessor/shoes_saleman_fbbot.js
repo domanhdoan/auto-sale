@@ -294,7 +294,7 @@ function find_categories(store_id) {
 }
 
 function execute_search_product(session, user_msg, user_msg_trans) {
-    sendTextMessage(session.fbid, common.say_waiting_message);
+    //sendTextMessage(session.fbid, common.say_waiting_message);
     // Search products
     if (common.is_url(user_msg)) {
         common.generate_remoteimg_hash(user_msg,
