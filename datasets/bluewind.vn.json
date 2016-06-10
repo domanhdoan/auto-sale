@@ -24,7 +24,7 @@
             "page_link": "a.page.larger"
         }
     },
-    "product_search": "/?s=",
+    "product_code_pattern": "BW(\\d+)",
     "keywords": {
         "category": "",
         "usage_purpose":"",
@@ -34,7 +34,8 @@
         "color": "",
         "price": "",
         "hot_trend":"",
-        "sale":""
+        "sale":"",
+        "code": "bw*"
     },
     
      "store_type":"shoes"

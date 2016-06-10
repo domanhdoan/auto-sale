@@ -80,6 +80,22 @@ module.exports.is_url = function(text){
     return is_url_flag;
 }
 
+module.exports.extract_product_code = function(text, pattern){
+    var word_list = text.split(' ');
+    var ret = {
+        is_code: false,
+        code: ""
+    };
+    var myRe = new RegExp(pattern);
+    var results = text.match(myRe) //matches "2 chapters"
+
+    if (results.length > 0) {
+        ret.is_code = true;
+        ret.code = results[0];
+    }
+    return ret;
+}
+
 module.exports.load_crawl_pattern = function (url) {
     var product_pattern = url;
     if (product_pattern.startsWith('http://')) {

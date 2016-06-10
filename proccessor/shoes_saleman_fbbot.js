@@ -1,22 +1,23 @@
 var bodyParser = require('body-parser');
 var express = require('express');
 var server = express();
-var store_id = "";
-var common = require("../util/common");
 var validator = require("email-validator");
+var request = require('request');
 var translator = require('speakingurl').createSlug({ maintainCase: true, separator: " " });
+var common = require("../util/common");
 var config = require("../config/config.js");
+var logger = require("../util/logger.js");
 
 // var wit_bot = require('./weather_witbot.js');
 // var wit_bot = require('./shoes_saleman_witbot.js');
 
-var home_page = "";
+var g_store_id = "";
+var g_home_page = "";
 var g_search_path = "";
 var g_product_finder = null;
 var g_model_factory = require("../models/model_factory.js");
+var g_product_code_pattern = "";
 
-var request = require('request');
-var logger = require("../util/logger.js");
 // var g_token = "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD";
 const user_sessions = {};
 
@@ -296,6 +297,7 @@ function find_categories(store_id) {
 function execute_search_product(session, user_msg, user_msg_trans) {
     //sendTextMessage(session.fbid, common.say_waiting_message);
     // Search products
+    var result = common.extract_product_code(user_msg, g_product_code_pattern);
     if (common.is_url(user_msg)) {
         common.generate_remoteimg_hash(user_msg,
             function (hash) {
@@ -314,10 +316,10 @@ function execute_search_product(session, user_msg, user_msg_trans) {
                     sendGenericMessage(session.fbid, found_products);
                 });
             });
-    } else if (user_msg_trans.trim().indexOf(" ") > 0) {
-        find_products_by_keywords(session, user_msg_trans);
+    } else if (result.is_code) {
+        find_products_by_code(session, result.code);
     } else {
-        find_products_by_code(session, user_msg);
+        find_products_by_keywords(session, user_msg_trans);
     }
 }
 
@@ -562,25 +564,23 @@ server.post(config.network.webhook, bodyParser.json(), function (req, res) {
 });
 
 module.exports = {
-    start: function (port, home_page, search_prefix, products_finder, model_factory) {
+    start: function (port, home_page, product_code_pattern, 
+        products_finder, model_factory) {
 
         g_product_finder = products_finder;
-        g_search_path = home_page + search_prefix;
-        this.home_page = home_page;
+        g_home_page = home_page;
+        g_product_code_pattern = product_code_pattern;
 
         server.use(bodyParser.urlencoded({ extended: true }));
-
         server.listen(port, function () {
             console.log('FB BOT ready to go!');
         });
 
-        g_product_finder.findStoreByLink(home_page, function (store) {
-            store_id = store.dataValues.id;
+        g_product_finder.findStoreByLink(home_page, 
+            function (store) {
+            g_store_id = store.dataValues.id;
         });
 
         g_model_factory = model_factory;
-
-        //wit_bot.set_findcategories_cb(find_categories_cb);
-        //wit_bot.set_findproducts_cb(find_product_bykeywords);
     }
 }

@@ -29,7 +29,7 @@ if (crawl_source != null) {
 
         if(config.submodule.salebot){
             auto_order_bot.start(config.network.port, link, 
-                product_pattern.product_search, product_finder, model_factory);
+                product_pattern.product_code_pattern, product_finder, model_factory);
         }
     });
 } else {
