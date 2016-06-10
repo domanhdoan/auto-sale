@@ -224,7 +224,8 @@ const findOrCreateSession = (fbid) => {
                 address: "",
                 delivery: "",
                 email: "",
-                status: ""
+                status: "",
+                is_ordering:false
             }
         };
     }
@@ -423,6 +424,7 @@ function execute_order_product(session, text) {
         } else {
 
         }
+        session.last_invoice.is_ordering = false;
         session.last_action = common.say_greetings;
         sendTextMessage(session.fbid, common.pls_select_product);
     } else {
@@ -438,7 +440,7 @@ function execute_saleflow_simple(session, user_msg, action_details) {
     if (action_details != null) { /*Handle call-to-action buttons*/
         if (user_msg.indexOf(common.action_continue_search) >= 0) {
             session.last_action = common.say_greetings;
-            sendTextMessage(session.fbid, common.say_search_continue_message);
+            //sendTextMessage(session.fbid, common.say_search_continue_message);
             sendTextMessage(session.fbid, common.pls_select_product);
         } else if (user_msg.indexOf(common.action_select) >= 0) {
             session.last_product.id = action_details.id;
@@ -461,7 +463,7 @@ function execute_saleflow_simple(session, user_msg, action_details) {
                 });
         } else if (user_msg.indexOf(common.action_order) >= 0) {
             session.last_action = common.set_quantity;
-            //sendTextMessage(session.fbid, common.start_order_process);
+            session.last_invoice.is_ordering = true;
             sendTextMessage(session.fbid, common.pls_enter_name);
         } else {
 
@@ -469,6 +471,7 @@ function execute_saleflow_simple(session, user_msg, action_details) {
     } else if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
         var invoice_id = session.last_invoice.id;
         var status = "cancel";
+        session.last_invoice.is_ordering = false;
         g_model_factory.cancel_invoice(invoice_id, status,
             function (invoice) {
                 session.last_invoice.id = -1;
