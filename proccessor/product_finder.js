@@ -19,7 +19,7 @@ function parse_keywords(keywords, word_list) {
                 result[last_keyword] = temp.trim();
                 temp = '';
             }else{
-                result['giay'] = temp;
+                result['giay'] = temp.trim();
             }
             last_keyword = word_list[i];
         } else {
