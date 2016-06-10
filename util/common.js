@@ -89,7 +89,7 @@ module.exports.extract_product_code = function(text, pattern){
     var myRe = new RegExp(pattern);
     var results = upper.match(myRe) //matches "2 chapters"
 
-    if (results.length > 0) {
+    if (results != null && results.length > 0) {
         ret.is_code = true;
         ret.code = results[0];
     }
