@@ -135,7 +135,7 @@ function createOrderItemElement(title, desc, price, quantity, thumbnail_url) {
     return template;
 }
 
-function sendReceiptMessage(sender, order_items, invoice_details){
+function sendReceiptMessage(sender, order_items, invoice_details) {
     var messageData = {
         "attachment": {
             "type": "template",
@@ -225,7 +225,7 @@ const findOrCreateSession = (fbid) => {
                 delivery: "",
                 email: "",
                 status: "",
-                is_ordering:false
+                is_ordering: false
             }
         };
     }
@@ -438,7 +438,8 @@ function execute_saleflow_simple(session, user_msg, action_details) {
     var last_action = common.sale_steps.get(last_action_key);
 
     if (action_details != null) { /*Handle call-to-action buttons*/
-        if (user_msg.indexOf(common.action_continue_search) >= 0) {
+        if (session.last_invoice.is_ordering &&
+            (user_msg.indexOf(common.action_continue_search) >= 0)) {
             session.last_action = common.say_greetings;
             //sendTextMessage(session.fbid, common.say_search_continue_message);
             sendTextMessage(session.fbid, common.pls_select_product);
