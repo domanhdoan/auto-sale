@@ -38,6 +38,7 @@ module.exports = {
     action_order: "order",
     action_select: "select",
     action_confirm_order: "ok",
+	product_search_max:10
 }
 
 module.exports.sale_steps = new Enum([

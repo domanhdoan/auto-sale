@@ -67,7 +67,7 @@ function generate_shoesfind_query(keywords) {
     if (keywords[2].length > 0) {
         query += " and S.value = '" + keywords[2] + "'";
     }
-     query += " LIMIT 5;";
+     query += " LIMIT " + common.product_search_max + ";";
         
     return query;
 }

@@ -241,7 +241,7 @@ function deteleSession(sessionId) {
 
 function find_products_by_keywords(session, message) {
     g_product_finder.findShoesByKeywords(message, function (products) {
-        var product_count = (products.length > 5) ? 5 : products.length;
+        var product_count = (products.length > common.product_search_max) ? common.product_search_max : products.length;
         if (products.length > 0) {
             // user_sessions[sessionId].last_action = common.find_product;
             var found_products = [];
