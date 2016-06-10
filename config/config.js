@@ -18,13 +18,18 @@ config.db = {
     db_name: "product_crawl",
     db_user: "doan",
     db_pass: "colen123",
-    engine : 'mysql'
+    engine: 'mysql'
 };
 
 config.network = {
+    ai_port: 7000,
+    ai_token: "324d2b5845214d5f91cc6c89b3550929",
+    ai_webhook: "/aiwebhook/",
+    ai_lang: "en",
     port: 5000,
-    webhook: "/joyboxwebhook/",
-    fb_token: "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD"
+    fb_webhook: "/joyboxwebhook/",
+    fb_verify_token: "verify_me",
+    fb_page_token: "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD"
 };
 
 config.develop = {

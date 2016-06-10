@@ -506,14 +506,14 @@ function execute_saleflow_simple(session, user_msg, action_details) {
     }
 }
 
-server.get(config.network.webhook, bodyParser.json(), function (req, res) {
+server.get(config.network.fb_webhook, bodyParser.json(), function (req, res) {
     if (req.query['hub.verify_token'] === 'verify_me') {
         res.send(req.query['hub.challenge']);
     }
     res.send('Error, wrong validation token');
 });
 
-server.post(config.network.webhook, bodyParser.json(), function (req, res) {
+server.post(config.network.fb_webhook, bodyParser.json(), function (req, res) {
     if (req.body != null) {
         messaging_events = req.body.entry[0].messaging;
         const messaging = getFirstMessagingEntry(req.body);
