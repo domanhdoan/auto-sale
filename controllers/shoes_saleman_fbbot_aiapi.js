@@ -691,7 +691,7 @@ ai_webhook.post(config.network.ai_webhook, function (req, res) {
     console.log("request action: ", action);
 
     if (action == 'searchproduct') {
-        
+
     }
 
 });
@@ -701,14 +701,14 @@ doSubscribeRequest();
 //=====================================================================//
 
 module.exports = {
-    start: function (port, home_page, product_code_pattern,
+    start: function (home_page, product_code_pattern,
         products_finder, model_factory) {
         g_product_finder = products_finder;
         g_home_page = home_page;
         g_product_code_pattern = product_code_pattern;
 
         server.use(bodyParser.urlencoded({ extended: true }));
-        server.listen(port, function () {
+        server.listen(config.network.port, function () {
             console.log('FB BOT ready to go!');
         });
 

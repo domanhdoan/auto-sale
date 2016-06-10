@@ -28,8 +28,8 @@ if (crawl_source != null) {
         }
 
         if(config.submodule.salebot){
-            shoes_salebot.start(config.network.port, link, 
-                product_pattern.product_code_pattern, product_finder, model_factory);
+            shoes_salebot.start(link, product_pattern.product_code_pattern,
+                product_finder, model_factory);
         }
     });
 } else {
