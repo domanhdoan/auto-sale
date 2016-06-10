@@ -76,7 +76,7 @@ function sendDataToFBMessenger(sender, data) {
 
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: config.network.fb_token },
+        qs: { access_token: config.network.fb_page_token },
         method: 'POST',
         json: true,
         body: {
@@ -542,9 +542,9 @@ function processTextByAI(text, sender) {
                 // facebook API limit for text length is 320,
                 // so we split message if needed
                 var splittedText = splitResponse(responseText);
-                // async.eachSeries(splittedText, (textPart, callback) => {
-                //     sendTextMessage(sender, { text: textPart }, callback);
-                // });
+                async.eachSeries(splittedText, (textPart, callback) => {
+                    sendTextMessage(sender, textPart);
+                });
             }
         }
     });
