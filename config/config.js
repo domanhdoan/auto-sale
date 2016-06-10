@@ -21,9 +21,10 @@ config.db = {
     engine: 'mysql'
 };
 
+// AI Camera: //"324d2b5845214d5f91cc6c89b3550929",
 config.network = {
     ai_port: 7000,
-    ai_token: "324d2b5845214d5f91cc6c89b3550929",
+    ai_token: "85845565e4634d99ae09ae0a8921e0b6",
     ai_webhook: "/joyboxws/",
     ai_lang: "en",
     port: 5000,
