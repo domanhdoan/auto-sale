@@ -512,7 +512,7 @@ function process_orderflow(session, user_msg, action_details) {
 
 const apiAiService = apiai(APIAI_ACCESS_TOKEN, { language: APIAI_LANG, requestSource: "fb" });
 const aiSessionIds = new Map();
-function processTextByAI(text) {
+function processTextByAI(text, sender) {
     if (!aiSessionIds.has(sender)) {
         aiSessionIds.set(sender, uuid.v1());
     }
@@ -560,7 +560,7 @@ function processEvent(event) {
     if (event.message && event.message.text) {
         var text = event.message.text;
         // Handle a text message from this sender
-        processTextByAI(text);
+        processTextByAI(text, sender);
     } else if (event.postback) {
         var postback = JSON.parse(event.postback.payload);
         var delta = event.timestamp - current_session.timestamp;
