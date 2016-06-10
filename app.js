@@ -26,8 +26,17 @@ if (crawl_source != null) {
             crawler.init(product_pattern, orm_manager);
             crawler.crawl_alink_withdepth(link);
         }
-        auto_order_bot.start(config.network.port, link, product_pattern.product_search, product_finder, model_factory);
+
+        if(config.submodule.salebot){
+            auto_order_bot.start(config.network.port, link, 
+                product_pattern.product_search, product_finder, model_factory);
+        }
     });
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
 }
+
+// var url = "https://fbcdn-photos-d-a.akamaihd.net/hphotos-ak-xlp1/v/t34.0-0/p206x206/13413800_256494738048335_1923798606_n.jpg?_nc_ad=z-m&oh=cc3c654f9c45f265055410e9d4239a1a&oe=575D22BF&__gda__=1465670762_b78c51c19f34b830df45462c1fa8c42c";
+// common.generate_remoteimg_hash(url, function(hash){
+//     logger.info(hash);
+// });

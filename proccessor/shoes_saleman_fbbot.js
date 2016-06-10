@@ -30,8 +30,8 @@ function createProductElement(title, price, thumbnail_url, link, code, id) {
     payload.code = code;
     payload.action = "select";
     var template = {
-        "title": translator(title),
-        "subtitle": translator(price),
+        "title": title,
+        "subtitle": price,
         "image_url": thumbnail_url,
         "buttons": [{
             "type": "web_url",
@@ -89,7 +89,7 @@ function sendDataToFBMessenger(sender, data) {
 }
 
 function sendTextMessage(sender, simple_text) {
-    messageData = {
+    var messageData = {
         text: simple_text
     }
     console.log("Sender = " + sender);
@@ -97,7 +97,7 @@ function sendTextMessage(sender, simple_text) {
 }
 
 function sendGenericMessage(sender, rich_data) {
-    messageData = {
+    var messageData = {
         "attachment": {
             "type": "template",
             "payload": {
@@ -110,7 +110,7 @@ function sendGenericMessage(sender, rich_data) {
 }
 
 function sendConfirmMessage(sender, buttons) {
-    messageData = {
+    var messageData = {
         "attachment": {
             "type": "template",
             "payload": {
@@ -123,6 +123,64 @@ function sendConfirmMessage(sender, buttons) {
     sendDataToFBMessenger(sender, messageData);
 }
 
+function createProductElement(title, desc, price, quantity, thumbnail_url) {
+    var payload = {};
+    payload.id = id;
+    payload.code = code;
+    payload.action = "select";
+    var template = {
+        "title": "Classic White T-Shirt",
+        "subtitle": desc,
+        "quantity": quantity,
+        "price": price,
+        "currency": "VND",
+        "image_url": thumbnail_url
+    };
+    return template;
+}
+
+function sendReceiptMessage(sender, order_items, invoice_details){
+    var messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "receipt",
+                "recipient_name": invoice_details.name,
+                "order_number": invoice_details.id,
+                "currency": "VND",
+                "payment_method": "COD",
+                "order_url": "",
+                "timestamp": invoice_details.creation,
+                "elements": order_items,
+                "address": {
+                    "street_1": "1 Hacker Way",
+                    "street_2": "",
+                    "city": "Menlo Park",
+                    "postal_code": "94025",
+                    "state": "CA",
+                    "country": "US"
+                },
+                "summary": {
+                    "subtotal": 75.00,
+                    "shipping_cost": 4.95,
+                    "total_tax": 6.19,
+                    "total_cost": 56.14
+                },
+                "adjustments": [
+                    {
+                        "name": "New Customer Discount",
+                        "amount": 20
+                    },
+                    {
+                        "name": "$10 Off Coupon",
+                        "amount": 10
+                    }
+                ]
+            }
+        }
+    }
+    sendDataToFBMessenger(sender, messageData);
+}
 // =================================================================
 // Methods for managing user sessions
 // =================================================================

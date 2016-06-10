@@ -6,11 +6,11 @@ var config = {};
 
 config.submodule = {
     crawler: false,
-    salebot: true
+    salebot: false
 };
 
 config.crawler = {
-    temp_dir: './temp'
+    temp_dir: './temp/'
 };
 
 config.db = {

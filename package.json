@@ -34,7 +34,8 @@
     "crypto": "0.0.3",
     "mkdirp": "0.5.1",
     "moment":"2.13.0",
-    "enum": "2.3.0"
+    "enum": "2.3.0",
+    "https": "1.0.0"
   },
   "devDependencies": {
     "gulp-sequelize": "0.0.2"

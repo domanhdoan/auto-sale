@@ -1,5 +1,6 @@
 const imghash = require('imghash');
 var Enum = require('enum');
+var config = require('../config/config.js');
 
 module.exports = {
     say_greetings: "Xin kính chào quý khách",
@@ -11,7 +12,7 @@ module.exports = {
     pls_select_product_size: "Xin vui lòng chọn size",
     pls_enter_quantity: "Xin vui lòng chọn số lượng",
     pls_enter_name: "Xin vui lòng nhập tên người nhận",
-    pls_enter_address: "Xin vui nhập địa chỉ người nhận",
+    pls_enter_address: "Xin vui lòng nhập địa chỉ người nhận",
     pls_enter_phone: "Xin vui lòng nhập số điện thoại",
     pls_enter_email: "Xin vui lòng nhập email người nhận",
     pls_enter_delivery_date: "Xin vui lòng nhập ngày nhận hàng",
@@ -129,8 +130,23 @@ module.exports.generate_remoteimg_hash = function (url, callback) {
     var http = require('http')
         , fs = require('fs')
         , options
+    var https = require('https');
+    var http_client = null;
 
-    var request = http.get(url, function (res) {
+    if(url.startsWith('https')){
+        http_client = https;
+    }else{
+        http_client = http;
+    }
+
+    var temp = url.split('?');
+    var path = temp[0];
+    if(temp.length == 2){
+        // Handle url parameters
+        var url_params_value = temp[1].split('&');
+    }
+
+    var request = http_client.get(url, function (res) {
         var imagedata = ''
         res.setEncoding('binary')
         var contentType = res.headers['content-type'];
@@ -142,7 +158,7 @@ module.exports.generate_remoteimg_hash = function (url, callback) {
         res.on('end', function () {
             var crypto = require('crypto');
             var hash = crypto.createHash('md5').update(url).digest('hex');
-            var fileName = "./temp/" + hash + "." + contentType.replaceAll('/', ".");
+            var fileName = config.crawler.temp_dir + hash + "." + contentType.replaceAll('/', ".");
             fs.writeFile(fileName, imagedata, 'binary', function (err) {
                 if (err) throw err
                 imghash
@@ -153,14 +169,9 @@ module.exports.generate_remoteimg_hash = function (url, callback) {
                     });
             })
         })
-    })
-}
 
-module.exports.generate_localimg_hash = function (path, callback) {
-    imghash
-        .hash(path)
-        .then((hash) => {
-            console.log(hash);
-            callback(hash);
+        res.on('error', function (e) {
+            console.error(e);
         });
+    })
 }
