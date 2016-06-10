@@ -284,13 +284,11 @@ function find_products_by_code(session, message) {
     });
 }
 
-function find_categories(sessionId) {
+function find_categories(store_id) {
     g_product_finder.findCategoriesByStoreId(store_id, function (categories) {
         for (var i = 0; i < categories.length; i++) {
             console.log(categories[i].dataValues.name.trim());
         }
-        user_sessions[sessionId].last_action = common.find_categories;
-        decide_next_action(sessionId);
     });
 }
 
