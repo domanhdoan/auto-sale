@@ -240,6 +240,26 @@ function deteleSession(sessionId) {
 // Methods for handling user request
 // =================================================================
 
+function find_products_by_image(session, user_msg) {
+    common.generate_remoteimg_hash(user_msg,
+        function (hash) {
+            g_product_finder.findProductByFinger(hash, function (product) {
+                var found_products = [];
+                //console.log(JSON.stringify(products[i]));
+                var product_object = createProductElement(
+                    product.dataValues.title,
+                    product.dataValues.price,
+                    product.dataValues.thumbnail.replaceAll("%%", "-"),
+                    product.dataValues.link.replaceAll("%%", "-"),
+                    product.dataValues.code,
+                    product.dataValues.id);
+                found_products.push(product_object);
+                session.last_product.id = product.dataValues.id;
+                sendGenericMessage(session.fbid, found_products);
+            });
+        });
+}
+
 function find_products_by_keywords(session, message) {
     g_product_finder.findShoesByKeywords(message, function (products) {
         var product_count = (products.length > common.product_search_max) ? common.product_search_max : products.length;
@@ -299,23 +319,7 @@ function execute_search_product(session, user_msg, user_msg_trans) {
     // Search products
     var result = common.extract_product_code(user_msg, g_product_code_pattern);
     if (common.is_url(user_msg)) {
-        common.generate_remoteimg_hash(user_msg,
-            function (hash) {
-                g_product_finder.findProductByFinger(hash, function (product) {
-                    var found_products = [];
-                    //console.log(JSON.stringify(products[i]));
-                    var product_object = createProductElement(
-                        product.dataValues.title,
-                        product.dataValues.price,
-                        product.dataValues.thumbnail.replaceAll("%%", "-"),
-                        product.dataValues.link.replaceAll("%%", "-"),
-                        product.dataValues.code,
-                        product.dataValues.id);
-                    found_products.push(product_object);
-                    session.last_product.id = product.dataValues.id;
-                    sendGenericMessage(session.fbid, found_products);
-                });
-            });
+        find_products_by_image(session, user_msg);
     } else if (result.is_code) {
         find_products_by_code(session, result.code);
     } else {
