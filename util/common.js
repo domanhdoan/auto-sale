@@ -80,6 +80,16 @@ module.exports.is_url = function(text){
     return is_url_flag;
 }
 
+module.exports.extract_numeric = function(text){
+    var myRe = new RegExp(/\d{2}/);
+    var ret = "";
+    var results = text.match(myRe) //matches "2 chapters"
+    if (results != null && results.length > 0) {
+        ret = results[0];
+    }
+    return ret;
+}
+
 module.exports.extract_product_code = function(text, pattern){
     var upper = text.toUpperCase();
     var ret = {

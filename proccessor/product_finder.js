@@ -50,7 +50,7 @@ function parse_keywords_calibration(keywords, word_list) {
 
     results.push(results_json['giay']);
     results.push(results_json['mau']);
-    results.push(results_json['size']);
+    results.push(common.extract_numeric(results_json['size']));
 
     return results;
 }
