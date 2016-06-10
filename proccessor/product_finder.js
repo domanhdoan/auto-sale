@@ -56,7 +56,7 @@ function parse_keywords_calibration(keywords, word_list) {
 }
 
 function generate_shoesfind_query(keywords) {
-    var query = " Select P.id, P.title, P.price, P.thumbnail, P.code, P.link"
+    var query = " Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link"
         + " from product as P"
         + " inner join color as C on P.id = C.ProductId"
         + " inner join size as S on P.id = S.ProductId"
