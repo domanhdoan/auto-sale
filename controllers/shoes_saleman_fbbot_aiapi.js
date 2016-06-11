@@ -121,11 +121,11 @@ function createGenericMessage(rich_data) {
             "type": "template",
             "payload": {
                 "template_type": "generic",
-                "elements": []
+                "elements": rich_data
             }
         }
     };
-    messageData.attachment.payload.elements.push(rich_data);
+    //messageData.attachment.payload.elements.push(rich_data);
     return {
         "speech": "Found products are",
         "displayText": "San pham tim thay",
@@ -713,7 +713,7 @@ ai_webhook.post(config.network.ai_webhook, function (req, res) {
 
     action = req.body.result.action
     console.log("request action: ", action);
-    g_product_finder.findShoesByKeywords("mau den", function (products) {
+    g_product_finder.findShoesByKeywords("giay nu", function (products) {
         var product_count = (products.length > 1) ? 1 : products.length;
         if (products.length > 0) {
             // user_sessions[sessionId].last_action = common.find_product;
