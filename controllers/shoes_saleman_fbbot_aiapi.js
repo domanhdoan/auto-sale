@@ -115,6 +115,27 @@ function sendGenericMessage(sender, rich_data) {
     sendDataToFBMessenger(sender, messageData);
 }
 
+function createGenericMessage(rich_data) {
+    var messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": []
+            }
+        }
+    };
+    messageData.attachment.payload.elements.push(rich_data);
+    return {
+        "speech": "Found products are",
+        "displayText": "San pham tim thay",
+        "data": {
+            "facebook": messageData
+        },
+        "source": "joybox web service"
+    }
+}
+
 function sendConfirmMessage(sender, buttons) {
     var messageData = {
         "attachment": {
@@ -533,7 +554,8 @@ function processTextByAI(text, sender) {
             if (isDefined(responseData) && isDefined(responseData.facebook)) {
                 try {
                     console.log('Response as formatted message');
-                    sendTextMessage(sender, responseData.facebook);
+                    //sendTextMessage(sender, responseData.facebook);
+					sendDataToFBMessenger(sender, responseData.facebook)
                 } catch (err) {
                     sendTextMessage(sender, { text: err.message });
                 }
@@ -687,13 +709,35 @@ ai_webhook.use(bodyParser.json());
 ai_webhook.listen(config.network.ai_port);
 ai_webhook.post(config.network.ai_webhook, function (req, res) {
     // get the parameters
+    var action = req.body.result.action
+
     action = req.body.result.action
     console.log("request action: ", action);
+    g_product_finder.findShoesByKeywords("mau den", function (products) {
+        var product_count = (products.length > 1) ? 1 : products.length;
+        if (products.length > 0) {
+            // user_sessions[sessionId].last_action = common.find_product;
+            var found_products = [];
+            for (var i = 0; i < product_count; i++) {
+                var product_object = createProductElement(
+                    products[i].title,
+                    products[i].price,
+                    products[i].thumbnail.replaceAll("%%", "-"),
+                    products[i].link.replaceAll("%%", "-"),
+                    products[i].code,
+                    products[i].id);
+                found_products.push(product_object);
+            }
 
-    if (action == 'searchproduct') {
-
-    }
-
+			var response  = createGenericMessage(found_products);
+			
+			logger.info(JSON.stringify(response));
+            res.setHeader('content-type', 'application/json');
+            res.send(response);
+        } else {
+            sendTextMessage(session.fbid, common.notify_product_notfound);
+        }
+    });
 });
 doSubscribeRequest();
 //=====================================================================//
