@@ -1,7 +1,7 @@
 var g_orm_manager = null;
 var logger = require('../util/logger.js');
 var moment = require('moment');
-
+var common = require('../util/common.js');
 module.exports.init = function (orm_manager) {
     g_orm_manager = orm_manager;
 }
@@ -46,10 +46,22 @@ module.exports.create_product = function (
     product_detail_link,
     product_finger,
     product_brand,
+    product_code_pattern,
     callback
 ) {
-    g_orm_manager.Product
-        .build({
+    var result = common.extract_product_code(product_detail_link, product_code_pattern);
+    g_orm_manager.Product.findOrCreate({
+        where: {
+            $or:[
+                {
+                    title: product_title
+                },
+                {
+                    code: result.code
+                }
+            ]
+        },
+        defaults: {
             title: product_title,
             thumbnail: product_thumbnail.replaceAll('-', '%%'),
             desc: product_desc,
@@ -59,26 +71,28 @@ module.exports.create_product = function (
             link: product_detail_link.replaceAll('-', '%%'),
             finger: product_finger,
             brand: product_brand
-        }).save()
-        .then(function (saved_product) {
-            logger.info(" Save new product successfully");
-            saved_product.setCategory(saved_category);
-            saved_product.setStore(saved_store);
-            if (saved_category.cover == null) {
-                saved_category.updateAttributes({
-                    cover: saved_product.thumbnail.replaceAll("%%", "-")
-                });
-            }
-            callback(saved_product);
-        }).catch(function (error) {
-            logger.error(error);
-        });
+        }
+    }).then(function (product) {
+        var saved_product = product[0]
+        logger.info(" Save new product successfully");
+        saved_product.setCategory(saved_category);
+        saved_product.setStore(saved_store);
+        if (saved_category.cover == null) {
+            saved_category.updateAttributes({
+                cover: saved_product.thumbnail.replaceAll("%%", "-")
+            });
+        }
+        callback(saved_product);
+    }).fail(function (err) {
+
+    });
 }
 
 module.exports.create_product_color = function (saved_product, color_name,
     color_value, callback) {
     g_orm_manager.Color.findOne({
         where: {
+            name: color_name,
             ProductId: saved_product.dataValues.id
         }
     }).then(function (result) {
@@ -105,6 +119,7 @@ module.exports.create_product_color = function (saved_product, color_name,
 module.exports.create_product_size = function (saved_product, size, callback) {
     g_orm_manager.Size.findOne({
         where: {
+            value: size,
             ProductId: saved_product.dataValues.id
         }
     }).then(function (result) {
