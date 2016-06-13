@@ -710,11 +710,11 @@ ai_webhook.listen(config.network.ai_port);
 ai_webhook.post(config.network.ai_webhook, function (req, res) {
     // get the parameters
     var action = req.body.result.action
-
     action = req.body.result.action
     console.log("request action: ", action);
-    g_product_finder.findShoesByKeywords("giay nu", function (products) {
-        var product_count = (products.length > common.product_search_max) ?
+    var user_msg_trans = translator("giày nam mầu xanh lam size 36");
+    g_product_finder.findShoesByKeywords(user_msg_trans, function (products) {
+        var product_count = (products.length > common.product_search_max) ? 
             common.product_search_max : products.length;
         if (products.length > 0) {
             var found_products = [];
