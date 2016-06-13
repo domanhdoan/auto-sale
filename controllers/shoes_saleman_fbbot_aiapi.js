@@ -522,6 +522,14 @@ function process_orderflow(session, user_msg, action_details) {
         session.last_action = common.say_greetings;
         sendTextMessage(session.fbid, common.pls_select_product);
         /*Handle what user send to fanpage*/
+    } else if (last_action_key == common.say_greetings) {
+        if (session.last_invoice.id == -1) {
+            g_model_factory.create_empty_invoice(session.fbid,
+                function (invoice) {
+                    session.last_invoice.id = invoice.id;
+                });
+        } else { }
+        execute_search_product(session, user_msg, user_req_trans);
     } else {
         execute_order_product(session, user_msg);
     }
