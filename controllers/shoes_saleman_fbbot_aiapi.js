@@ -579,10 +579,24 @@ function processEvent(event) {
     var sender = event.sender.id.toString();
     const sessionId = findOrCreateSession(sender);
     var current_session = user_sessions[sessionId];
-    if (event.message && event.message.text) {
-        var text = event.message.text;
-        // Handle a text message from this sender
-        processTextByAI(text, sender);
+    if (event.message){
+        if (event.message.text) {
+            var text = event.message.text;
+            // Handle a text message from this sender
+            processTextByAI(text, sender);
+        } else if (event.message.attachments != null) {
+            var attachments = event.message.attachments;
+            // handle the case when user send an image for searching product
+            for (var i = 0; i < attachments.length; i++) {
+                if (attachments[i].type === 'image') {
+                    process_orderflow (current_session, attachments[i].payload.url, null);
+                } else {
+                    logger.info("Skipp to handle attachment");
+                }
+            }
+        } else{
+
+        }
     } else if (event.postback) {
         var postback = JSON.parse(event.postback.payload);
         var delta = event.timestamp - current_session.timestamp;
@@ -752,7 +766,7 @@ module.exports = {
         server.listen(config.network.port, function () {
             console.log('FB BOT ready to go!');
         });
-        
+
         ai_webhook.listen(config.network.ai_port);
 
         g_product_finder.findStoreByLink(home_page,
