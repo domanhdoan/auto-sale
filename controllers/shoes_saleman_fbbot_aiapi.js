@@ -555,7 +555,7 @@ function processTextByAI(text, sender) {
                 try {
                     console.log('Response as formatted message');
                     //sendTextMessage(sender, responseData.facebook);
-					sendDataToFBMessenger(sender, responseData.facebook)
+                    sendDataToFBMessenger(sender, responseData.facebook)
                 } catch (err) {
                     sendTextMessage(sender, { text: err.message });
                 }
@@ -714,9 +714,9 @@ ai_webhook.post(config.network.ai_webhook, function (req, res) {
     action = req.body.result.action
     console.log("request action: ", action);
     g_product_finder.findShoesByKeywords("giay nu", function (products) {
-        var product_count = (products.length > 1) ? 1 : products.length;
+        var product_count = (products.length > common.product_search_max) ?
+            common.product_search_max : products.length;
         if (products.length > 0) {
-            // user_sessions[sessionId].last_action = common.find_product;
             var found_products = [];
             for (var i = 0; i < product_count; i++) {
                 var product_object = createProductElement(
@@ -728,10 +728,8 @@ ai_webhook.post(config.network.ai_webhook, function (req, res) {
                     products[i].id);
                 found_products.push(product_object);
             }
-
-			var response  = createGenericMessage(found_products);
-			
-			logger.info(JSON.stringify(response));
+            var response = createGenericMessage(found_products);
+            logger.info(JSON.stringify(response));
             res.setHeader('content-type', 'application/json');
             res.send(response);
         } else {
@@ -739,10 +737,9 @@ ai_webhook.post(config.network.ai_webhook, function (req, res) {
         }
     });
 });
-doSubscribeRequest();
-//=====================================================================//
-//================= AI webhook ========================================//
-//=====================================================================//
+    //=====================================================================//
+    //================= AI webhook ========================================//
+    //=====================================================================//
 
 module.exports = {
     start: function (home_page, product_code_pattern,
@@ -751,6 +748,7 @@ module.exports = {
         g_home_page = home_page;
         g_product_code_pattern = product_code_pattern;
 
+        doSubscribeRequest();
         server.use(bodyParser.urlencoded({ extended: true }));
         server.listen(config.network.port, function () {
             console.log('FB BOT ready to go!');
