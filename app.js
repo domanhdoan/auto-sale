@@ -10,6 +10,27 @@ var orm_manager = require("./models/db_manager.js");
 var model_factory = require("./models/model_factory.js");
 var config = require("./config/config.js");
 
+
+var args = process.argv.slice(2);
+if(args.length > 0){
+    for(var i = 0; i < args.length; i++){
+        logger.info("Option = " + args[i]);
+        if(args[i] === '-c'){
+            config.submodule.crawler = true;
+        } else if(args[i] === '-b'){
+            config.submodule.salebot = true;
+        }else{
+            logger.error("Unknown options: " + args[i]);
+        }
+    }
+}else{
+    logger.error("Command: node app.js options");
+    logger.error("Where options: ");
+    logger.error("-c: turn on crawling. Default disable");
+    logger.error("-b: turn on sale bot. Default disable");
+    exit(0);
+}
+
 mkdirp(config.crawler.temp_dir, function (err) {
     // path exists unless there was an error
     logger.info("Created temp folder successfully");

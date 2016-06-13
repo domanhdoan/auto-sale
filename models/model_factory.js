@@ -22,8 +22,6 @@ module.exports.create_category = function (store_object, name, callback) {
                 .then(function (saved_category) {
                     saved_category.setStore(store_object);
                     callback(saved_category);
-                    // extract_productlist_from_link(store_object, saved_category,
-                    //     item_link, true, true, null);
                 }).catch(function (error) {
                     logger.error(error);
                 });
@@ -49,40 +47,79 @@ module.exports.create_product = function (
     product_code_pattern,
     callback
 ) {
-    var result = common.extract_product_code(product_detail_link, product_code_pattern);
-    g_orm_manager.Product.findOrCreate({
+    // var result = common.extract_product_code(product_detail_link, product_code_pattern);
+    // g_orm_manager.Product.findOrCreate({
+    //     where: {
+    //         // $or:[
+    //         //     {
+    //                 title: product_title.trim()
+    //         //     },
+    //         // ]
+    //     },
+    //     defaults: {
+    //         title: product_title,
+    //         thumbnail: product_thumbnail.replaceAll('-', '%%'),
+    //         desc: product_desc,
+    //         price: product_price,
+    //         discount: product_discount,
+    //         percent: product_percent,
+    //         link: product_detail_link.replaceAll('-', '%%'),
+    //         finger: product_finger,
+    //         brand: product_brand
+    //     }
+    // }).then(function (product) {
+    //     var saved_product = product[0];
+    //     logger.info("Save new product successfully");
+    //     saved_product.setCategory(saved_category);
+    //     saved_product.setStore(saved_store);
+    //     if (saved_category.cover == null) {
+    //         saved_category.updateAttributes({
+    //             cover: saved_product.thumbnail.replaceAll("%%", "-")
+    //         });
+    //     }
+    //     callback(saved_product);
+    // }).fail(function (err) {
+
+    // });
+
+    g_orm_manager.Product.findOne({
         where: {
-            $or:[
-                {
-                    title: product_title
-                },
-                {
-                    code: result.code
-                }
-            ]
-        },
-        defaults: {
-            title: product_title,
-            thumbnail: product_thumbnail.replaceAll('-', '%%'),
-            desc: product_desc,
-            price: product_price,
-            discount: product_discount,
-            percent: product_percent,
-            link: product_detail_link.replaceAll('-', '%%'),
-            finger: product_finger,
-            brand: product_brand
+            //title: product_title,
+            finger: product_finger
         }
-    }).then(function (product) {
-        var saved_product = product[0]
-        logger.info(" Save new product successfully");
-        saved_product.setCategory(saved_category);
-        saved_product.setStore(saved_store);
-        if (saved_category.cover == null) {
-            saved_category.updateAttributes({
-                cover: saved_product.thumbnail.replaceAll("%%", "-")
-            });
+    }).then(function (found_product) {
+        if (found_product == null) {
+            g_orm_manager.Product
+                .build({
+                    title: product_title,
+                    thumbnail: product_thumbnail.replaceAll('-', '%%'),
+                    desc: product_desc,
+                    price: product_price,
+                    discount: product_discount,
+                    percent: product_percent,
+                    link: product_detail_link.replaceAll('-', '%%'),
+                    finger: product_finger,
+                    brand: product_brand
+                })
+                .save().then(function (saved_product) {
+                    logger.info("Added product: " + product_title
+                        + " Save id: " + saved_product.dataValues.id
+                        + " Save title: " + saved_product.dataValues.title);
+                    saved_product.setCategory(saved_category);
+                    saved_product.setStore(saved_store);
+                    if (saved_category.cover == null) {
+                        saved_category.updateAttributes({
+                            cover: saved_product.thumbnail.replaceAll("%%", "-")
+                        });
+                    }
+                    callback(saved_product);
+                });
+        } else {
+            logger.info("Added product: " + product_title
+            + " Found id: " + found_product.dataValues.id
+            + " Found title: " + found_product.dataValues.title);
+            callback(found_product);
         }
-        callback(saved_product);
     }).fail(function (err) {
 
     });
@@ -178,7 +215,7 @@ module.exports.update_invoice = function (invoice_info, callback) {
                 plan_delivery_date: invoice_info.delivery,
                 status: invoice_info.status
             });
-        }else{}
+        } else { }
     })
 }
 

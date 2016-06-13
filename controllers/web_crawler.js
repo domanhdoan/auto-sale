@@ -9,6 +9,8 @@ var g_crawl_pattern = null;
 var g_orm_manager = null;
 var g_model_factory = require("../models/model_factory.js");
 
+var url_link = new Map();
+
 function insert_prefix_homepage(current_link, home_page) {
       if (!current_link.startsWith('http')) {
             current_link = home_page + current_link;
@@ -25,10 +27,8 @@ function extract_next_pages(page_object, saved_store, saved_category,
             page_list.each(function (i, page) {
                   var link = $(this).attr('href');
                   link = insert_prefix_homepage(link, cur_home_page);
-                  logger.info("Start Page: " + link + "");
                   var products = extract_productlist_from_link(saved_store, saved_category,
                         link, false, save_to_db, callback);
-                  logger.info("End Page: " + link + "");
             });
       } else {
             logger.info("ONLY have ONE page");
@@ -116,20 +116,23 @@ function extract_productlist_from_link(saved_store, saved_category,
                         }
 
                         if (product_discount == null || product_discount == "") {
-                              product_discount = 0;
+                              product_discount = "0";
                         }
 
                         if (product_percent == null || product_percent == "") {
-                              product_percent = 0;
+                              product_percent = "0";
                         }
-                        logger.info("link = " + product_detail_link.trim());
-                        if (parseInt(product_price) > 0 && save_to_db) {
+                        var price = common.extract_price(product_price);
+                        var discount = common.extract_price(product_discount);
+
+                        if (price > 0 && save_to_db) {
                               common.generate_remoteimg_hash(product_thumbnail, function (finger) {
+                                    logger.info("create_product = " + product_detail_link);
                                     g_model_factory.create_product(
                                           saved_store, saved_category,
                                           product_title, product_thumbnail,
-                                          product_desc, product_price,
-                                          product_discount, product_percent,
+                                          product_desc, price,
+                                          discount, product_percent,
                                           product_detail_link, finger, "",
                                           g_crawl_pattern.product_code_pattern,
                                           function (saved_product) {
@@ -142,11 +145,11 @@ function extract_productlist_from_link(saved_store, saved_category,
                               product_data.thunbnail = product_thumbnail;
                               product_data.price = product_price;
                               crawl_product_list.push(product_data);
-                        } else {
+                        } else if(price == 0){
                               logger.info("Not save product which not have price\n");
                         }
                   } else {
-                       logger.info("Skipped this HTML element\n");
+                        logger.info("Skipped this HTML element\n");
                   }
             });
 

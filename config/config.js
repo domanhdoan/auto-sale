@@ -6,7 +6,7 @@ var config = {};
 
 config.submodule = {
     crawler: false,
-    salebot: true
+    salebot: false
 };
 
 config.crawler = {
