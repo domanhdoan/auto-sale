@@ -1,6 +1,7 @@
 const imghash = require('imghash');
 var Enum = require('enum');
 var config = require('../config/config.js');
+var logger = require('./logger.js');
 
 module.exports = {
     say_greetings: "Xin kính chào quý khách",
@@ -38,7 +39,7 @@ module.exports = {
     action_order: "order",
     action_select: "select",
     action_confirm_order: "ok",
-	product_search_max:10
+    product_search_max: 10
 }
 
 module.exports.sale_steps = new Enum([
@@ -59,9 +60,11 @@ module.exports.sale_steps = new Enum([
     "set_delivery_date"
 ]);
 
-var color_vn = {do:"Đỏ", den: "Đen", xam: "Xám", xanhlam: "Xanh lam", 
+var color_vn = {
+    do: "Đỏ", den: "Đen", xam: "Xám", xanhlam: "Xanh lam",
     hongphan: "Hồng phấn", trang: "Trắng", xanhtimthan: "Xanh tím than",
-    ghi: "Ghi", tim: "Tím"};
+    ghi: "Ghi", tim: "Tím"
+};
 
 module.exports.get_color_vn = function (value) {
     return color_vn[value];
@@ -72,7 +75,7 @@ module.exports.load_json = function (path) {
     return json_object;
 }
 
-module.exports.is_url = function(text){
+module.exports.is_url = function (text) {
     var is_url_flag = false;
     if (text.startsWith('http')) {
         is_url_flag = true;
@@ -80,7 +83,21 @@ module.exports.is_url = function(text){
     return is_url_flag;
 }
 
-module.exports.extract_numeric = function(text){
+module.exports.extract_price = function (text) {
+    var str = text.replace(/\D/g, '');
+    var ret = 0;
+    if (str.length == 0) {
+        ret = 0;
+    } else {
+        ret = parseInt(str);
+        if (text.toUpperCase().indexOf("K") > 0) {
+            ret *= 1000;
+        }
+    }
+    return ret;
+}
+
+module.exports.extract_numeric = function (text) {
     var myRe = new RegExp(/\d{2}/);
     var ret = "";
     var results = text.match(myRe) //matches "2 chapters"
@@ -90,7 +107,7 @@ module.exports.extract_numeric = function(text){
     return ret;
 }
 
-module.exports.extract_product_code = function(text, pattern){
+module.exports.extract_product_code = function (text, pattern) {
     var upper = text.toUpperCase();
     var ret = {
         is_code: false,
@@ -160,18 +177,13 @@ module.exports.generate_remoteimg_hash = function (url, callback) {
     var https = require('https');
     var http_client = null;
 
-    if(url.startsWith('https')){
+    if (url.startsWith('https')) {
         http_client = https;
-    }else{
+    } else {
         http_client = http;
     }
 
-    var temp = url.split('?');
-    var path = temp[0];
-    if(temp.length == 2){
-        // Handle url parameters
-        var url_params_value = temp[1].split('&');
-    }
+    logger.info("generate_remoteimg_hash = " + url);
 
     var request = http_client.get(url, function (res) {
         var imagedata = ''
@@ -191,7 +203,6 @@ module.exports.generate_remoteimg_hash = function (url, callback) {
                 imghash
                     .hash(fileName)
                     .then((hash) => {
-                        console.log(hash);
                         callback(hash);
                     });
             })
@@ -200,5 +211,5 @@ module.exports.generate_remoteimg_hash = function (url, callback) {
         res.on('error', function (e) {
             console.error(e);
         });
-    })
+    });
 }
