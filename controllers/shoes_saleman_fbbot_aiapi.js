@@ -356,7 +356,8 @@ function find_categories(store_id) {
     });
 }
 
-function send_available_colorNsize(productId) {
+function send_available_colorNsize(session) {
+    var productId = session.last_product.id;
     g_product_finder.getProductColors(productId,
         function (colors) {
             if (colors != null && colors.length > 0) {
@@ -511,7 +512,7 @@ function process_orderflow(session, user_msg, action_details) {
         } else if (user_msg.indexOf(common.action_select) >= 0) {
             session.last_product.id = action_details.id;
             session.last_action = common.select_product;
-            send_available_colorNsize(session.last_product.id);
+            send_available_colorNsize(session);
         } else if (user_msg.indexOf(common.action_order) >= 0) {
             session.last_action = common.set_quantity;
             session.last_invoice.is_ordering = true;
