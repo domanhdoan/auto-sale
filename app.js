@@ -31,7 +31,7 @@ if (args.length > 0) {
     }
 } else {
     show_errmsg();
-    //exit(0);
+    exit(0);
 }
 
 mkdirp(config.crawler.temp_dir, function (err) {
@@ -43,7 +43,7 @@ product_finder.init(orm_manager, crawler);
 model_factory.init(orm_manager);
 
 // var input_thumb_url = "https://scontent.xx.fbcdn.net/v/t34.0-12/13453913_258714754493000_741224848_n.png?_nc_ad=z-m&oh=3da5288392f6ef569a65807bfe651458&oe=57623AFE";
-// product_finder.findProductByThumbnail(input_thumb_url, function(product){
+// product_finder.findProductByThumbnail("http://bluewind.vn/", input_thumb_url, function(product){
 
 // });
 

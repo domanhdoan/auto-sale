@@ -231,14 +231,16 @@ exports.crawl_alink_withdepth = function (home_page) {
       });
 }
 
-exports.extract_product_thumb_link = function (input_thumb, callback) {
-      var goole_search_image = "https://www.google.com/searchbyimage?&image_url=" + input_thumb;
+exports.extract_product_thumb_link = function (home_page, input_thumb, callback) {
+      var encoded_uri = encodeURIComponent(input_thumb);
+      var goole_search_image = "https://www.google.com/searchbyimage?&image_url=" 
+            + encoded_uri +"&as_sitesearch=" + home_page;
       //request.debug = true;
       request(goole_search_image, {
             followRedirect: true,
       }, function (error, response, body) {
             var options = {
-                  url: response.req._headers.referer,
+                  url: response.req._headers.referer+"&as_sitesearch=" + home_page,
                   headers: {
                         followRedirect: true,
                         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36'
@@ -248,14 +250,17 @@ exports.extract_product_thumb_link = function (input_thumb, callback) {
             request(options, function (error, response, body) {
                   var $ = cheerio.load(body);
                   var search_items = $('div.srg div.g div.rc div.s div div.th._lyb a');
+                  // var similar_images_link = "http://google.com" + $('div#rso div.g div._Icb._kk._wI a').attr('href');
                   var image_url = "";
-                  if(search_items.length > 0){
+                  if (search_items.length > 0) {
                         var search_item = search_items[0];
                         var url = $(search_item).attr('href').replaceAll("/imgres?", "");
                         var params = url.split('&');
                         image_url = params[0].replaceAll("imgurl=", "");
+                        var refurl = params[1].replaceAll("imgrefurl=", "");
+                        logger.info(image_url);
+                        callback(image_url)
                   }
-                  callback(image_url);
             });
       });
 }
