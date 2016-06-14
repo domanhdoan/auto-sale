@@ -365,7 +365,7 @@ function send_available_colorNsize(productId) {
                     available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
                 }
                 available_colors += common.get_color_vn(colors[(colors.length - 1)].dataValues.name);
-                sendTextMessage(session.fbid, "Màu có sẵn: " + available_colors);
+                sendTextMessage(session.fbid, "Màu sắc: " + available_colors);
                 sendTextMessage(session.fbid, common.pls_select_product_color);
             } else {
                 sendTextMessage(session.fbid, common.notify_product_notfound);
@@ -376,8 +376,6 @@ function send_available_colorNsize(productId) {
 }
 
 function execute_search_product(session, user_msg, user_msg_trans) {
-    //sendTextMessage(session.fbid, common.say_waiting_message);
-    // Search products
     var result = common.extract_product_code(user_msg, g_product_code_pattern);
     if (common.is_url(user_msg)) {
         find_products_by_image(session, user_msg);
@@ -391,6 +389,7 @@ function execute_search_product(session, user_msg, user_msg_trans) {
 function execute_select_product(session, text) {
     var user_req_trans = translator(text).toLowerCase();
     if (session.last_action == common.select_product) {
+        // Remove mua word to get color value
         var color_keyword = user_req_trans.replaceAll("mau", "").replaceAll(" ", "");
         g_product_finder.checkProductByColor(session.last_product.id,
             color_keyword, function (color) {
@@ -407,7 +406,7 @@ function execute_select_product(session, text) {
                                     available_sizes += sizes[i].dataValues.value + ", ";
                                 }
                                 available_sizes += sizes[(sizes.length - 1)].dataValues.value;
-                                sendTextMessage(session.fbid, "Size có sẵn: " + available_sizes);
+                                sendTextMessage(session.fbid, "Size: " + available_sizes);
                             } else {
                                 logger.info("No Available Size for Product");
                                 sendTextMessage(session.fbid, common.notify_product_notfound);
@@ -425,7 +424,6 @@ function execute_select_product(session, text) {
                 if (size != null) {
                     session.last_action = common.select_product_size;
                     session.last_product.size = size.dataValues.id;
-                    // sendTextMessage(current_session.fbid, common.notify_product_found);
                     sendTextMessage(session.fbid, common.pls_enter_quantity);
                 } else {
                     logger.debug("Product not found");

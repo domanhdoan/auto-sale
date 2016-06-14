@@ -16,6 +16,7 @@ function show_errmsg() {
     logger.error("-c: turn on crawling. Default disable");
     logger.error("-b: turn on sale bot. Default disable");
 }
+
 var args = process.argv.slice(2);
 if (args.length > 0) {
     for (var i = 0; i < args.length; i++) {

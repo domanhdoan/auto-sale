@@ -47,7 +47,7 @@ module.exports.create_product = function (
     product_code_pattern,
     callback
 ) {
-    // var result = common.extract_product_code(product_detail_link, product_code_pattern);
+    var result = common.extract_product_code(product_detail_link, product_code_pattern);
     // g_orm_manager.Product.findOrCreate({
     //     where: {
     //         // $or:[
@@ -85,7 +85,8 @@ module.exports.create_product = function (
     g_orm_manager.Product.findOne({
         where: {
             //title: product_title,
-            finger: product_finger
+            //finger: product_finger
+            code: result.code
         }
     }).then(function (found_product) {
         if (found_product == null) {
@@ -120,8 +121,6 @@ module.exports.create_product = function (
             + " Found title: " + found_product.dataValues.title);
             callback(found_product);
         }
-    }).fail(function (err) {
-
     });
 }
 
