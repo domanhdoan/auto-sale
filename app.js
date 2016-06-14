@@ -42,7 +42,7 @@ mkdirp(config.crawler.temp_dir, function (err) {
 product_finder.init(orm_manager, crawler);
 model_factory.init(orm_manager);
 
-// var input_thumb_url = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTbxefYvasb55fdJGRtz_kA6b3x--3GK5h7ySjbS5x6lW6moNfH";
+// var input_thumb_url = "https://scontent.xx.fbcdn.net/v/t34.0-12/13453913_258714754493000_741224848_n.png?_nc_ad=z-m&oh=3da5288392f6ef569a65807bfe651458&oe=57623AFE";
 // product_finder.findProductByThumbnail(input_thumb_url, function(product){
 
 // });
