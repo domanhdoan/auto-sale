@@ -10,11 +10,6 @@ var orm_manager = require("./models/db_manager.js");
 var model_factory = require("./models/model_factory.js");
 var config = require("./config/config.js");
 
-var input_thumb_url = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTbxefYvasb55fdJGRtz_kA6b3x--3GK5h7ySjbS5x6lW6moNfH";
-crawler.extract_product_thumb_link(input_thumb_url, function (real_thumb_url) {
-    logger.info("search_item URL = " + real_thumb_url);
-});
-
 function show_errmsg() {
     logger.error("Command: node app.js options");
     logger.error("Where options: ");
@@ -46,6 +41,11 @@ mkdirp(config.crawler.temp_dir, function (err) {
 
 product_finder.init(orm_manager, crawler);
 model_factory.init(orm_manager);
+
+// var input_thumb_url = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTbxefYvasb55fdJGRtz_kA6b3x--3GK5h7ySjbS5x6lW6moNfH";
+// product_finder.findProductByThumbnail(input_thumb_url, function(product){
+
+// });
 
 var crawl_source = common.load_json("./crawl_sources/links.json");
 if (crawl_source != null) {

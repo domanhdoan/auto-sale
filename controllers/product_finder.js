@@ -173,17 +173,21 @@ exports.findProductByFinger = function (finger, callback) {
 }
 
 exports.findProductByThumbnail = function (thumbnail_link, callback) {
-    g_orm_manager.Product.findOne({
-        where: {
-            thumbnail: thumbnail_link.replaceAll('-', '%%')
-        }
-    }).then(function (product) {
-        if (product != null) {
-            logger.info(products[0].dataValues.title);
-            callback(product);
-        } else {
-            logger.debug("Product not found");
-        }
+    require('../controllers/web_crawler').extract_product_thumb_link(
+            thumbnail_link, function (real_thumb_url) {
+        logger.info("search_item URL = " + real_thumb_url);
+        g_orm_manager.Product.findOne({
+            where: {
+                thumbnail: real_thumb_url.replaceAll('-', '%%')
+            }
+        }).then(function (product) {
+            if (product != null) {
+                logger.info(product.dataValues.title);
+                callback(product);
+            } else {
+                logger.debug("Product not found");
+            }
+        });
     });
 }
 
