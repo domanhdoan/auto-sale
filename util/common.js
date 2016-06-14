@@ -42,6 +42,10 @@ module.exports = {
     product_search_max: 10
 }
 
+module.exports.typical_question = {
+    
+}
+
 module.exports.sale_steps = new Enum([
     "say_greetings",
 

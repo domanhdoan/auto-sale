@@ -10,25 +10,33 @@ var orm_manager = require("./models/db_manager.js");
 var model_factory = require("./models/model_factory.js");
 var config = require("./config/config.js");
 
+var input_thumb_url = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTbxefYvasb55fdJGRtz_kA6b3x--3GK5h7ySjbS5x6lW6moNfH";
+crawler.extract_product_thumb_link(input_thumb_url, function (real_thumb_url) {
+    logger.info("search_item URL = " + real_thumb_url);
+});
 
-var args = process.argv.slice(2);
-if(args.length > 0){
-    for(var i = 0; i < args.length; i++){
-        logger.info("Option = " + args[i]);
-        if(args[i] === '-c'){
-            config.submodule.crawler = true;
-        } else if(args[i] === '-b'){
-            config.submodule.salebot = true;
-        }else{
-            logger.error("Unknown options: " + args[i]);
-        }
-    }
-}else{
+function show_errmsg() {
     logger.error("Command: node app.js options");
     logger.error("Where options: ");
     logger.error("-c: turn on crawling. Default disable");
     logger.error("-b: turn on sale bot. Default disable");
-    exit(0);
+}
+var args = process.argv.slice(2);
+if (args.length > 0) {
+    for (var i = 0; i < args.length; i++) {
+        logger.info("Option = " + args[i]);
+        if (args[i] === '-c') {
+            config.submodule.crawler = true;
+        } else if (args[i] === '-b') {
+            config.submodule.salebot = true;
+        } else {
+            logger.error("Unknown options: " + args[i]);
+            show_errmsg();
+        }
+    }
+} else {
+    show_errmsg();
+    //exit(0);
 }
 
 mkdirp(config.crawler.temp_dir, function (err) {
@@ -43,12 +51,12 @@ var crawl_source = common.load_json("./crawl_sources/links.json");
 if (crawl_source != null) {
     crawl_source.links.forEach(function (link) {
         var product_pattern = common.load_crawl_pattern(link);
-        if(config.submodule.crawler){
+        if (config.submodule.crawler) {
             crawler.init(product_pattern, orm_manager);
             crawler.crawl_alink_withdepth(link);
         }
 
-        if(config.submodule.salebot){
+        if (config.submodule.salebot) {
             shoes_salebot.start(link, product_pattern.product_code_pattern,
                 product_finder, model_factory);
         }

@@ -145,7 +145,7 @@ function extract_productlist_from_link(saved_store, saved_category,
                               product_data.thunbnail = product_thumbnail;
                               product_data.price = product_price;
                               crawl_product_list.push(product_data);
-                        } else if(price == 0){
+                        } else if (price == 0) {
                               logger.info("Not save product which not have price\n");
                         }
                   } else {
@@ -227,6 +227,35 @@ exports.crawl_alink_withdepth = function (home_page) {
                   } else {
                         logger.info("Not add new store that have emtpy home page\n");
                   }
+            });
+      });
+}
+
+exports.extract_product_thumb_link = function (input_thumb, callback) {
+      var goole_search_image = "https://www.google.com/searchbyimage?&image_url=" + input_thumb;
+      //request.debug = true;
+      request(goole_search_image, {
+            followRedirect: true,
+      }, function (error, response, body) {
+            var options = {
+                  url: response.req._headers.referer,
+                  headers: {
+                        followRedirect: true,
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36'
+                  }
+            };
+
+            request(options, function (error, response, body) {
+                  var $ = cheerio.load(body);
+                  var search_items = $('div.srg div.g div.rc div.s div div.th._lyb a');
+                  var image_url = "";
+                  if(search_items.length > 0){
+                        var search_item = search_items[0];
+                        var url = $(search_item).attr('href').replaceAll("/imgres?", "");
+                        var params = url.split('&');
+                        image_url = params[0].replaceAll("imgurl=", "");
+                  }
+                  callback(image_url);
             });
       });
 }
