@@ -269,23 +269,38 @@ function deteleSession(sessionId) {
 // =================================================================
 
 function find_products_by_image(session, user_msg) {
-    common.generate_remoteimg_hash(user_msg,
-        function (hash) {
-            g_product_finder.findProductByFinger(hash, function (product) {
-                var found_products = [];
-                //console.log(JSON.stringify(products[i]));
-                var product_object = createProductElement(
-                    product.dataValues.title,
-                    product.dataValues.price,
-                    product.dataValues.thumbnail.replaceAll("%%", "-"),
-                    product.dataValues.link.replaceAll("%%", "-"),
-                    product.dataValues.code,
-                    product.dataValues.id);
-                found_products.push(product_object);
-                session.last_product.id = product.dataValues.id;
-                sendGenericMessage(session.fbid, found_products);
-            });
-        });
+    // common.generate_remoteimg_hash(user_msg,
+    //     function (hash) {
+    //         g_product_finder.findProductByFinger(hash, function (product) {
+    //             var found_products = [];
+    //             //console.log(JSON.stringify(products[i]));
+    //             var product_object = createProductElement(
+    //                 product.dataValues.title,
+    //                 product.dataValues.price,
+    //                 product.dataValues.thumbnail.replaceAll("%%", "-"),
+    //                 product.dataValues.link.replaceAll("%%", "-"),
+    //                 product.dataValues.code,
+    //                 product.dataValues.id);
+    //             found_products.push(product_object);
+    //             session.last_product.id = product.dataValues.id;
+    //             sendGenericMessage(session.fbid, found_products);
+    //         });
+    //     });
+
+    g_product_finder.findProductByThumbnail(user_msg, function (product) {
+        var found_products = [];
+        //console.log(JSON.stringify(products[i]));
+        var product_object = createProductElement(
+            product.dataValues.title,
+            product.dataValues.price,
+            product.dataValues.thumbnail.replaceAll("%%", "-"),
+            product.dataValues.link.replaceAll("%%", "-"),
+            product.dataValues.code,
+            product.dataValues.id);
+        found_products.push(product_object);
+        session.last_product.id = product.dataValues.id;
+        sendGenericMessage(session.fbid, found_products);
+    });
 }
 
 function find_products_by_keywords(session, message) {
