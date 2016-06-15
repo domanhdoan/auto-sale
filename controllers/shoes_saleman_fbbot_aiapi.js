@@ -509,18 +509,6 @@ function execute_finish_invoice(session, text) {
         session.last_action = common.set_delivery_date;
         var buttons = createConfirmOrCancelElement();
         sendConfirmMessage(session.fbid, buttons);
-    } else if (session.last_action == common.pls_end_buying) {
-        if (text.toLowerCase() === common.action_confirm_order) {
-            session.last_invoice.status = "confirm";
-            g_model_factory.update_invoice(session.last_invoice, function (invoice) {
-                logger.info(invoice);
-            });
-        } else {
-
-        }
-        session.last_invoice.is_ordering = false;
-        session.last_action = common.say_greetings;
-        sendTextMessage(session.fbid, common.pls_select_product);
     } else {
 
     }

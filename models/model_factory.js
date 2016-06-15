@@ -200,7 +200,7 @@ module.exports.cancel_invoice = function (id, status, callback) {
                 status: "cancel"
             });
         } else { }
-        callback();
+        callback(invoice);
     })
 }
 
