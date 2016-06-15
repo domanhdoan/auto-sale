@@ -40,6 +40,7 @@ module.exports = {
     action_order: "order",
     action_select: "select",
     action_confirm_order: "ok",
+    updating: "Đang cập nhật",
     product_search_max: 10
 }
 

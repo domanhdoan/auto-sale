@@ -379,7 +379,7 @@ function show_available_colorNsize(session, show_color, show_size) {
                     }
                     available_colors += common.get_color_vn(colors[(colors.length - 1)].dataValues.name);
                 } else {
-                    sendTextMessage(session.fbid, common.notify_product_notfound);
+                    available_colors += common.updating;
                 }
             }
 
@@ -392,9 +392,10 @@ function show_available_colorNsize(session, show_color, show_size) {
                     }
                     available_sizes += sizes[(sizes.length - 1)].dataValues.value;
                 } else {
-                    sendTextMessage(session.fbid, common.notify_product_notfound);
+                    available_sizes += common.updating;
                 }
             }
+            logger.info("Product id = " + productId + "Details - " + available_colors + available_sizes);
             sendTextMessage(session.fbid, available_colors + available_sizes);
         });
 }
