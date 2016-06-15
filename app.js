@@ -10,11 +10,12 @@ var orm_manager = require("./models/db_manager.js");
 var model_factory = require("./models/model_factory.js");
 var config = require("./config/config.js");
 
-function show_errmsg() {
+function show_error() {
     logger.error("Command: node app.js options");
     logger.error("Where options: ");
     logger.error("-c: turn on crawling. Default disable");
     logger.error("-b: turn on sale bot. Default disable");
+    logger.error("--noai: turn off sale bot. Default enable");
 }
 
 var args = process.argv.slice(2);
@@ -25,13 +26,15 @@ if (args.length > 0) {
             config.submodule.crawler = true;
         } else if (args[i] === '-b') {
             config.submodule.salebot = true;
+        } else if (args[i] === '--noai') {
+            config.bots.ai_on = false;
         } else {
             logger.error("Unknown options: " + args[i]);
-            show_errmsg();
+            show_error();
         }
     }
 } else {
-    show_errmsg();
+    show_error();
     exit(0);
 }
 
@@ -43,11 +46,6 @@ mkdirp(config.crawler.temp_dir, function (err) {
 product_finder.init(orm_manager, crawler);
 model_factory.init(orm_manager);
 
-// var input_thumb_url = "https://scontent.xx.fbcdn.net/v/t34.0-12/13453913_258714754493000_741224848_n.png?_nc_ad=z-m&oh=3da5288392f6ef569a65807bfe651458&oe=57623AFE";
-// product_finder.findProductByThumbnail("http://bluewind.vn/", input_thumb_url, function(product){
-
-// });
-
 var crawl_source = common.load_json("./crawl_sources/links.json");
 if (crawl_source != null) {
     crawl_source.links.forEach(function (link) {
@@ -58,6 +56,7 @@ if (crawl_source != null) {
         }
 
         if (config.submodule.salebot) {
+            shoes_salebot.enable_ai(config.bots.ai_on);
             shoes_salebot.start(link, product_pattern.product_code_pattern,
                 product_finder, model_factory);
         }

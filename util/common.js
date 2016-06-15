@@ -36,6 +36,7 @@ module.exports = {
     notify_product_notfound: "Rất tiếc sản phẩm hiện đang tạm thời hết hàng. Xin vui lòng chọn sản phẩm khác",
     cmd_terminate_order: "huy",
     action_continue_search: "search",
+    action_view_details: "view",
     action_order: "order",
     action_select: "select",
     action_confirm_order: "ok",

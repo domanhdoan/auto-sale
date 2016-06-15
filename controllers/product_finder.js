@@ -55,7 +55,7 @@ function parse_keywords_calibration(keywords, word_list) {
     return results;
 }
 
-function generate_shoesfind_query(keywords) {
+function generate_query_findshoes(keywords) {
     var query = " Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link"
         + " from product as P";
     if (keywords[1].length > 0) {
@@ -73,6 +73,15 @@ function generate_shoesfind_query(keywords) {
     }
      query += " LIMIT " + common.product_search_max + ";";
         
+    return query;
+}
+
+function generate_query_findcolorNsize(product_id) {
+    var query = " Select DISTINCT C.name, S.value"
+        + " from product as P";
+    query += " inner join color as C on P.id = C.ProductId"
+    query += " inner join size as S on P.id = S.ProductId";
+    query += " where P.id = " + product_id + "";    
     return query;
 }
 //===================================================//
@@ -124,7 +133,7 @@ exports.findShoesByKeywords = function (user_message, callback) {
     var keywords_value = parse_keywords_calibration(keywords, word_list);
     var count = Object.keys(keywords_value).length;
     if (count != 0) {
-        var query = generate_shoesfind_query(keywords_value);
+        var query = generate_query_findshoes(keywords_value);
         g_orm_manager.sequelize.query(query)
             .spread(function (results, metadata) {
                 if (results == null) {
@@ -140,10 +149,6 @@ exports.findShoesByKeywords = function (user_message, callback) {
     }
 
 }
-
-// exports.findProductsByKeywords = function (search_path, keywords, callback) {
-//     g_web_crawler.crawl_alink_nodepth(search_path + "" + keywords, callback);
-// }
 
 exports.findProductsByCode = function (code, callback) {
     g_orm_manager.Product.findOne({
@@ -187,6 +192,14 @@ exports.findProductByThumbnail = function (home_page, thumbnail_link, callback) 
             } else {
                 logger.debug("Product not found");
             }
+        });
+    });
+}
+
+exports.getColorsNSize = function (product_id, callback){
+    module.exports.getProductColors(product_id, function(colors){
+        module.exports.getProductSizes(product_id, function(sizes){
+            callback(colors, sizes);
         });
     });
 }

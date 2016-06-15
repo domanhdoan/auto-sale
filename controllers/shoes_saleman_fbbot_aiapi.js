@@ -20,37 +20,48 @@ var g_product_finder = null;
 var g_model_factory = require("../models/model_factory.js");
 var g_product_code_pattern = "";
 
+var g_ai_using = false;
 
-const APIAI_ACCESS_TOKEN = config.network.ai_token;
-const APIAI_LANG = config.network.ai_lang;
-const FB_VERIFY_TOKEN = config.network.fb_verify_token;
-const FB_PAGE_ACCESS_TOKEN = config.network.fb_page_token;
+const APIAI_ACCESS_TOKEN = config.bots.ai_token;
+const APIAI_LANG = config.bots.ai_lang;
+const FB_VERIFY_TOKEN = config.bots.fb_verify_token;
+const FB_PAGE_ACCESS_TOKEN = config.bots.fb_page_token;
 
 // =================================================================
 // Methods for sending message to target user FB messager
 // =================================================================
 
 function createProductElement(title, price, thumbnail_url, link, code, id) {
-    var payload = {};
-    payload.id = id;
-    payload.code = code;
-    payload.action = "select";
-    var template = {
+    var payload1 = {};
+    payload1.id = id;
+    payload1.code = code;
+    payload1.action = common.action_view_details;
+    var payload2 = {};
+    payload2.id = id;
+    payload2.code = code;
+    payload2.action = common.action_order;
+    var element = {
         "title": title,
         "subtitle": price,
         "image_url": thumbnail_url,
-        "buttons": [{
-            "type": "web_url",
-            "url": link,
-            "title": "Chi tiết"
-        },
+        "buttons": [
+            {
+                "type": "postback",
+                "title": "Chi tiết",
+                "payload": JSON.stringify(payload1)
+            },
             {
                 "type": "postback",
                 "title": "Đặt hàng",
-                "payload": JSON.stringify(payload),
-            }],
+                "payload": JSON.stringify(payload2),
+            },
+            {
+                "type": "web_url",
+                "url": link,
+                "title": "Xem trên Web"
+            }]
     };
-    return template;
+    return element;
 }
 
 function createSearchOrPurchaseElement() {
@@ -76,7 +87,7 @@ function sendDataToFBMessenger(sender, data) {
 
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: config.network.fb_page_token },
+        qs: { access_token: config.bots.fb_page_token },
         method: 'POST',
         json: true,
         body: {
@@ -125,7 +136,6 @@ function createGenericMessage(rich_data) {
             }
         }
     };
-    //messageData.attachment.payload.elements.push(rich_data);
     return {
         "speech": "Found products are",
         "displayText": "San pham tim thay",
@@ -356,23 +366,36 @@ function find_categories(store_id) {
     });
 }
 
-function send_available_colorNsize(session) {
+function show_available_colorNsize(session, show_color, show_size) {
     var productId = session.last_product.id;
-    g_product_finder.getProductColors(productId,
-        function (colors) {
-            if (colors != null && colors.length > 0) {
-                var available_colors = "";
-                for (var i = 0; i < (colors.length - 1); i++) {
-                    available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
+    g_product_finder.getColorsNSize(productId,
+        function (colors, sizes) {
+            var available_colors = "";
+            if (show_color) {
+                available_colors = "Màu sắc: ";
+                if (colors != null && colors.length > 0) {
+                    for (var i = 0; i < (colors.length - 1); i++) {
+                        available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
+                    }
+                    available_colors += common.get_color_vn(colors[(colors.length - 1)].dataValues.name);
+                } else {
+                    sendTextMessage(session.fbid, common.notify_product_notfound);
                 }
-                available_colors += common.get_color_vn(colors[(colors.length - 1)].dataValues.name);
-                sendTextMessage(session.fbid, "Màu sắc: " + available_colors);
-                sendTextMessage(session.fbid, common.pls_select_product_color);
-            } else {
-                sendTextMessage(session.fbid, common.notify_product_notfound);
-                session.last_action = common.say_search_continue_message;
-                session.last_action = common.say_greetings;
             }
+
+            var available_sizes = "";
+            if (show_size) {
+                var available_sizes = "\nSize: ";
+                if (sizes != null && sizes.length > 0) {
+                    for (var i = 0; i < (sizes.length - 1); i++) {
+                        available_sizes += sizes[i].dataValues.value + ", ";
+                    }
+                    available_sizes += sizes[(sizes.length - 1)].dataValues.value;
+                } else {
+                    sendTextMessage(session.fbid, common.notify_product_notfound);
+                }
+            }
+            sendTextMessage(session.fbid, available_colors + available_sizes);
         });
 }
 
@@ -387,7 +410,7 @@ function execute_search_product(session, user_msg, user_msg_trans) {
     }
 }
 
-function execute_select_product(session, text) {
+function execute_order_product(session, text) {
     var user_req_trans = translator(text).toLowerCase();
     if (session.last_action == common.select_product) {
         // Remove mua word to get color value
@@ -398,22 +421,6 @@ function execute_select_product(session, text) {
                     session.last_action = common.select_product_color;
                     session.last_product.color = color.dataValues.id;
                     sendTextMessage(session.fbid, common.pls_select_product_size);
-                    g_product_finder.getProductSizes(session.last_product.id,
-                        function (sizes) {
-                            if (sizes != null && sizes.length > 0) {
-                                var available_sizes = "";
-                                for (var i = 0; i < (sizes.length - 1); i++) {
-                                    logger.info("Available Size: " + sizes[i].dataValues.value);
-                                    available_sizes += sizes[i].dataValues.value + ", ";
-                                }
-                                available_sizes += sizes[(sizes.length - 1)].dataValues.value;
-                                sendTextMessage(session.fbid, "Size: " + available_sizes);
-                            } else {
-                                logger.info("No Available Size for Product");
-                                sendTextMessage(session.fbid, common.notify_product_notfound);
-                                session.last_action = common.say_greetings;
-                            }
-                        });
                 } else {
                     logger.debug("Product not found");
                     sendTextMessage(session.fbid, common.notify_product_notfound);
@@ -448,7 +455,7 @@ function execute_select_product(session, text) {
     }
 }
 
-function execute_order_product(session, text) {
+function execute_finish_invoice(session, text) {
     if (session.last_action == common.set_quantity) {
         logger.debug("Name: " + text);
         session.last_action = common.set_recipient_name;
@@ -507,18 +514,16 @@ function process_orderflow(session, user_msg, action_details) {
         if (session.last_invoice.is_ordering &&
             (user_msg.indexOf(common.action_continue_search) >= 0)) {
             session.last_action = common.say_greetings;
-            //sendTextMessage(session.fbid, common.say_search_continue_message);
             sendTextMessage(session.fbid, common.pls_select_product);
-        } else if (user_msg.indexOf(common.action_select) >= 0) {
+        } else if (user_msg.indexOf(common.action_view_details) >= 0) {
             session.last_product.id = action_details.id;
-            session.last_action = common.select_product;
-            send_available_colorNsize(session);
+            show_available_colorNsize(session, true, true);
         } else if (user_msg.indexOf(common.action_order) >= 0) {
-            session.last_action = common.set_quantity;
+            session.last_action = common.select_product;
             session.last_invoice.is_ordering = true;
-            sendTextMessage(session.fbid, common.pls_enter_name);
+            sendTextMessage(session.fbid, common.pls_select_product_color);
         } else {
-
+            logger.error("Unknow action: " + JSON.stringify(action_details));
         }
     } else if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
         var invoice_id = session.last_invoice.id;
@@ -543,8 +548,10 @@ function process_orderflow(session, user_msg, action_details) {
                 });
         } else { }
         execute_search_product(session, user_msg, user_req_trans);
-    } else {
+    } else if (last_action_key == common.select_product) {
         execute_order_product(session, user_msg);
+    } else {
+        execute_finish_invoice(session, user_msg);
     }
 }
 
@@ -600,22 +607,26 @@ function processEvent(event) {
     var sender = event.sender.id.toString();
     const sessionId = findOrCreateSession(sender);
     var current_session = user_sessions[sessionId];
-    if (event.message){
+    if (event.message) {
         if (event.message.text) {
             var text = event.message.text;
             // Handle a text message from this sender
-            processTextByAI(text, sender);
+            if (g_ai_using) {
+                processTextByAI(text, sender);
+            } else {
+                process_orderflow(current_session, text);
+            }
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
             // handle the case when user send an image for searching product
             for (var i = 0; i < attachments.length; i++) {
                 if (attachments[i].type === 'image') {
-                    process_orderflow (current_session, attachments[i].payload.url, null);
+                    process_orderflow(current_session, attachments[i].payload.url, null);
                 } else {
                     logger.info("Skipp to handle attachment");
                 }
             }
-        } else{
+        } else {
 
         }
     } else if (event.postback) {
@@ -701,7 +712,7 @@ function isDefined(obj) {
 var server = express();
 server.use(bodyParser.text({ type: 'application/json' }));
 
-server.get(config.network.fb_webhook, function (req, res) {
+server.get(config.bots.fb_webhook, function (req, res) {
     if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
         console.log("call get");
@@ -713,7 +724,7 @@ server.get(config.network.fb_webhook, function (req, res) {
     }
 });
 
-server.post(config.network.fb_webhook, function (req, res) {
+server.post(config.bots.fb_webhook, function (req, res) {
     try {
         var data = JSONbig.parse(req.body);
         var messaging_events = data.entry[0].messaging;
@@ -741,7 +752,7 @@ server.post(config.network.fb_webhook, function (req, res) {
 //=====================================================================//
 var ai_webhook = express();
 ai_webhook.use(bodyParser.json());
-ai_webhook.post(config.network.ai_webhook, function (req, res) {
+ai_webhook.post(config.bots.ai_webhook, function (req, res) {
     // get the parameters
     var action = req.body.result.action
     action = req.body.result.action
@@ -776,6 +787,9 @@ ai_webhook.post(config.network.ai_webhook, function (req, res) {
 //=====================================================================//
 
 module.exports = {
+    enable_ai: function (use_ai) {
+        g_ai_using = use_ai;
+    },
     start: function (home_page, product_code_pattern,
         products_finder, model_factory) {
         g_product_finder = products_finder;
@@ -784,11 +798,13 @@ module.exports = {
 
         doSubscribeRequest();
         server.use(bodyParser.urlencoded({ extended: true }));
-        server.listen(config.network.port, function () {
+        server.listen(config.bots.port, function () {
             console.log('FB BOT ready to go!');
         });
 
-        ai_webhook.listen(config.network.ai_port);
+        if (g_ai_using) {
+            ai_webhook.listen(config.bots.ai_port);
+        }
 
         g_product_finder.findStoreByLink(home_page,
             function (store) {

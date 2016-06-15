@@ -71,7 +71,7 @@ function sendDataToFBMessenger(sender, data) {
 
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: config.network.fb_token },
+        qs: { access_token: config.bots.fb_token },
         method: 'POST',
         json: true,
         body: {
@@ -506,14 +506,14 @@ function execute_saleflow_simple(session, user_msg, action_details) {
     }
 }
 
-server.get(config.network.fb_webhook, bodyParser.json(), function (req, res) {
+server.get(config.bots.fb_webhook, bodyParser.json(), function (req, res) {
     if (req.query['hub.verify_token'] === 'verify_me') {
         res.send(req.query['hub.challenge']);
     }
     res.send('Error, wrong validation token');
 });
 
-server.post(config.network.fb_webhook, bodyParser.json(), function (req, res) {
+server.post(config.bots.fb_webhook, bodyParser.json(), function (req, res) {
     if (req.body != null) {
         messaging_events = req.body.entry[0].messaging;
         const messaging = getFirstMessagingEntry(req.body);
