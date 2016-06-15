@@ -624,12 +624,14 @@ function processPostbackEvent(session, action_details) {
         session.last_invoice.status = "confirm";
         g_model_factory.update_invoice(session.last_invoice, function (invoice) {
             logger.info(invoice);
+            user_sessions[session.sessionId] = initSession(session.fbid);
+            sendTextMessage(session.fbid, common.say_greetings);
         });
-        session = initSession(session.fbid);
     } else if (user_action.indexOf(common.action_cancel_order) >= 0) {
         g_model_factory.cancel_invoice(session.last_invoice.id, "cancel", function (invoice) {
             if (invoice != null) {
-                session = initSession(session.fbid);
+                user_sessions[session.sessionId] = initSession(session.fbid);
+                sendTextMessage(session.fbid, common.say_greetings);
             }
         });
     } else {
