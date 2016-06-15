@@ -266,7 +266,7 @@ function createAndSendInvoice(session, callback) {
         }
 
         var invoice_details = session.last_invoice;
-        var invoice_summary = generate_invoice_summary(sub_total/1000, 20);
+        var invoice_summary = generate_invoice_summary(sub_total/100, 200);
         var invoice_adjustments = {};
         sendReceiptMessage(session.fbid, invoice_items,
             invoice_details, invoice_summary, invoice_adjustments, callback);
@@ -313,6 +313,7 @@ const initSession = (fbid) => {
             delivery: "",
             email: "",
             status: "",
+            creation:"",
             is_ordering: false
         }
     };
