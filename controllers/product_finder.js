@@ -273,17 +273,21 @@ exports.getOrderItems = function (invoice_id, callback) {
         },
         include: [{
             model: g_orm_manager.Product,
-            attributes: ['title', 'desc', 'thumbnail','price', 'discount'],
+            attributes: ['title', 'desc', 'thumbnail', 'price', 'discount'],
             where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
         },
-        {
-            model: g_orm_manager.Color,
-            where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
-        },
-        {
-            model: g_orm_manager.Size,
-            where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
-        }]
+            {
+                model: g_orm_manager.Color,
+                where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+            },
+            {
+                model: g_orm_manager.Size,
+                where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+            },
+            {
+                model: g_orm_manager.Invoice,
+                where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+            }]
     }).then(function (items) {
         callback(items);
     });

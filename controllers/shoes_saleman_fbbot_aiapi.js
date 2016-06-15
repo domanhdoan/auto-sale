@@ -231,7 +231,7 @@ function sendReceiptMessage(sender, invoice_items, invoice_details,
                 "elements": invoice_items,
                 "currency": "VND",
                 "order_url": "",
-                "timestamp": invoice_details.creation,
+                "timestamp": invoice_details.creation_date,
                 "address": {
                     "street_1": invoice_details.address,
                     "city": "Hà Nội",
@@ -252,6 +252,9 @@ function createAndSendInvoice(session, callback) {
     g_product_finder.getOrderItems(session.last_invoice.id, function (items) {
         var invoice_items = [];
         var sub_total = 0;
+        session.last_invoice.creation_date = items[0].Invoice.dataValues.creation_date;
+        var invoice_details = session.last_invoice;
+
         for (var i = 0; i < items.length; i++) {
             var title = items[i].Product.dataValues.title;
             var price = items[i].Product.dataValues.price;
@@ -260,12 +263,10 @@ function createAndSendInvoice(session, callback) {
             var thumbnail_url = items[i].Product.dataValues.thumbnail;
             var jsonitem = createOrderItemElement(title, subtitle, 
                 price, quantity, thumbnail_url);
-
             invoice_items.push(jsonitem);
             sub_total += (price * quantity);
         }
 
-        var invoice_details = session.last_invoice;
         var invoice_summary = generate_invoice_summary(sub_total/100, 200);
         var invoice_adjustments = {};
         sendReceiptMessage(session.fbid, invoice_items,
@@ -313,7 +314,7 @@ const initSession = (fbid) => {
             delivery: "",
             email: "",
             status: "",
-            creation:"",
+            creation_date:"",
             is_ordering: false
         }
     };
