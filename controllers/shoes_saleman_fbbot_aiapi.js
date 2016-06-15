@@ -100,51 +100,7 @@ function createConfirmOrCancelElement() {
     return template;
 }
 
-function sendDataToFBMessenger(sender, data) {
-    logger.info("Data = " + JSON.stringify(data));
-
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: config.bots.fb_page_token },
-        method: 'POST',
-        json: true,
-        body: {
-            recipient: { id: sender },
-            message: data
-        }
-    }, function (error, response, body) {
-        if (error) {
-            logger.error('Error sending message: ' + error.stack);
-        } else if (response.body.error) {
-            logger.error('Error: ' + JSON.stringify(response.body.error));
-        } else {
-            //logger.info(response);
-        }
-    });
-}
-
-function sendTextMessage(sender, simple_text) {
-    var messageData = {
-        text: simple_text
-    }
-    console.log("Sender = " + sender);
-    sendDataToFBMessenger(sender, messageData);
-}
-
-function sendGenericMessage(sender, rich_data) {
-    var messageData = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": rich_data
-            }
-        }
-    };
-    sendDataToFBMessenger(sender, messageData);
-}
-
-function createGenericMessage(rich_data) {
+function createAIAPIProductsMessage(rich_data) {
     var messageData = {
         "attachment": {
             "type": "template",
@@ -164,6 +120,64 @@ function createGenericMessage(rich_data) {
     }
 }
 
+function createOrderItemElement(title, desc, price, quantity, thumbnail_url) {
+    var template = {
+        "title": title,
+        "subtitle": desc,
+        "quantity": quantity,
+        "price": price,
+        "currency": "VND",
+        "image_url": thumbnail_url
+    };
+    return template;
+}
+
+function sendDataToFBMessenger(sender, data, callback) {
+    logger.info("Data = " + JSON.stringify(data));
+
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token: config.bots.fb_page_token },
+        method: 'POST',
+        json: true,
+        body: {
+            recipient: { id: sender },
+            message: data
+        }
+    }, function (error, response, body) {
+        if (error) {
+            logger.error('Error sending message: ' + error.stack);
+        } else if (response.body.error) {
+            logger.error('Error: ' + JSON.stringify(response.body.error));
+        } else {
+            if (callback != null) {
+                callback();
+            }
+        }
+    });
+}
+
+function sendTextMessage(sender, simple_text, callback) {
+    var messageData = {
+        text: simple_text
+    }
+    console.log("Sender = " + sender);
+    sendDataToFBMessenger(sender, messageData, callback);
+}
+
+function sendGenericMessage(sender, rich_data) {
+    var messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": rich_data
+            }
+        }
+    };
+    sendDataToFBMessenger(sender, messageData, null);
+}
+
 function sendConfirmMessage(sender, buttons) {
     var messageData = {
         "attachment": {
@@ -175,19 +189,7 @@ function sendConfirmMessage(sender, buttons) {
             }
         }
     };
-    sendDataToFBMessenger(sender, messageData);
-}
-
-function createOrderItemElement(title, desc, price, quantity, thumbnail_url) {
-    var template = {
-        "title": title,
-        "subtitle": desc,
-        "quantity": quantity,
-        "price": price,
-        "currency": "VND",
-        "image_url": thumbnail_url
-    };
-    return template;
+    sendDataToFBMessenger(sender, messageData, null);
 }
 
 function sendReceiptMessage(sender, order_items, invoice_details) {
@@ -230,7 +232,7 @@ function sendReceiptMessage(sender, order_items, invoice_details) {
             }
         }
     }
-    sendDataToFBMessenger(sender, messageData);
+    sendDataToFBMessenger(sender, messageData, null);
 }
 // =================================================================
 // Methods for managing user sessions
@@ -258,6 +260,7 @@ const initSession = (fbid) => {
         context: {},
         last_product: {
             id: -1,
+            title: "",
             color: -1,
             size: -1
         },
@@ -373,7 +376,7 @@ function find_categories(store_id) {
 function show_available_colorNsize(session, show_color, show_size) {
     var productId = session.last_product.id;
     g_product_finder.getColorsNSize(productId,
-        function (product_tile, colors, sizes) {
+        function (colors, sizes) {
             var available_colors = "";
             if (show_color) {
                 available_colors = "\n - Màu sắc: ";
@@ -400,7 +403,7 @@ function show_available_colorNsize(session, show_color, show_size) {
                 }
             }
             logger.info("Product id = " + productId + "Details - " + available_colors + available_sizes);
-            sendTextMessage(session.fbid, product_tile + available_colors + available_sizes);
+            sendTextMessage(session.fbid, session.last_product.title + available_colors + available_sizes);
         });
 }
 
@@ -425,12 +428,15 @@ function execute_order_product(session, text) {
                 if (color != null) {
                     session.last_action = common.select_product_color;
                     session.last_product.color = color.dataValues.id;
-                    sendTextMessage(session.fbid, common.pls_select_product_size);
-                    show_available_colorNsize(session.fbid, false, true);
+                    sendTextMessage(session.fbid, common.pls_select_product_size, function () {
+                        show_available_colorNsize(session, false, true);
+                    });
                 } else {
                     logger.debug("Product not found");
-                    sendTextMessage(session.fbid, common.notify_color_notfound);
-                    show_available_colorNsize(session.fbid, true, false);
+                    sendTextMessage(session.fbid, common.notify_color_notfound,
+                        function () {
+                            show_available_colorNsize(session, true, false);
+                        });
                 }
             });
     } else if (session.last_action == common.select_product_color) {
@@ -441,8 +447,10 @@ function execute_order_product(session, text) {
                     session.last_product.size = size.dataValues.id;
                     sendTextMessage(session.fbid, common.pls_enter_quantity);
                 } else {
-                    sendTextMessage(session.fbid, common.notify_size_notfound);
-                    show_available_colorNsize(session.fbid, false, true);
+                    sendTextMessage(session.fbid, common.notify_size_notfound,
+                        function () {
+                            show_available_colorNsize(session, false, true);
+                        });
                 }
             });
     } else if (session.last_action == common.select_product_size) {
@@ -500,76 +508,6 @@ function execute_finish_invoice(session, text) {
     }
 }
 
-function execute_orderflow(session, user_msg, action_details) {
-    var user_req_trans = translator(user_msg).toLowerCase();
-    var last_action_key = session.last_action;
-    var last_action = common.sale_steps.get(last_action_key);
-    if (action_details != null) { /*Handle call-to-action buttons*/
-        if (user_msg.indexOf(common.action_view_details) >= 0) {
-            session.last_product.id = action_details.id;
-            show_available_colorNsize(session, true, true);
-        } else if (user_msg.indexOf(common.action_order) >= 0) {
-            session.last_product.id = action_details.id;
-            session.last_action = common.select_product;
-            session.last_invoice.is_ordering = true;
-            sendTextMessage(session.fbid, "Bạn đã đặt hàng sản phẩm: " + action_details.title
-                + "\n" + common.pls_select_product_color);
-        } else if (session.last_invoice.is_ordering &&
-            (user_msg.indexOf(common.action_continue_search) >= 0)) {
-            session.last_action = common.say_greetings;
-            sendTextMessage(session.fbid, common.pls_select_product);
-        } else if (user_msg.indexOf(common.action_purchase) >= 0) {
-            session.last_action = common.set_quantity;
-            sendTextMessage(session.fbid, common.pls_enter_name);
-        } else if (user_msg.indexOf(common.action_confirm_order) >= 0) {
-            session.last_invoice.status = "confirm";
-            g_model_factory.update_invoice(session.last_invoice, function (invoice) {
-                logger.info(invoice);
-            });
-            session = initSession(session.fbid);
-        } else if (user_msg.indexOf(common.action_cancel_order) >= 0) {
-            g_model_factory.cancel_invoice(session.last_invoice.id, "cancel", function (invoice) {
-                if (invoice != null) {
-                    session = initSession(session.fbid);
-                }
-            });
-        } else {
-            logger.error("Unknow action: " + JSON.stringify(action_details));
-        }
-    } else if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
-        var invoice_id = session.last_invoice.id;
-        var status = "cancel";
-        session.last_invoice.is_ordering = false;
-        g_model_factory.cancel_invoice(invoice_id, status,
-            function (invoice) {
-                session.last_invoice.id = -1;
-                session.last_product.id = -1;
-                session.last_invoice.id = -1;
-                session.last_invoice.status = "cancel";
-            });
-        sendTextMessage(session.fbid, common.pls_reset_buying);
-        session.last_action = common.say_greetings;
-        sendTextMessage(session.fbid, common.pls_select_product);
-        /*Handle what user send to fanpage*/
-    } else if (last_action_key == common.say_greetings) {
-        if (session.last_invoice.id == -1) {
-            g_model_factory.create_empty_invoice(session.fbid,
-                function (invoice) {
-                    session.last_invoice.id = invoice.id;
-                });
-        } else { }
-        execute_search_product(session, user_msg, user_req_trans);
-    } else if ((last_action >= common.sale_steps.get(common.select_product))
-        && last_action < common.sale_steps.get(common.set_quantity)) {
-        execute_order_product(session, user_msg);
-    } else if ((last_action >= common.sale_steps.get(common.set_quantity))
-        && last_action <= common.sale_steps.get(common.set_delivery_date)) {
-        execute_finish_invoice(session, user_msg);
-    } else {
-        logger.error("Unknow message: " + user_msg);
-    }
-}
-
 //=====================================================================//
 //================= AI service ========================================//
 //=====================================================================//
@@ -617,6 +555,85 @@ function processTextByAI(text, sender) {
     apiaiRequest.on('error', (error) => console.error(error));
     apiaiRequest.end();
 }
+//=====================================================================//
+//================= AI service ========================================//
+//=====================================================================//
+function processTextEvent(session, user_msg) {
+    var user_req_trans = translator(user_msg).toLowerCase();
+    var last_action_key = session.last_action;
+    var last_action = common.sale_steps.get(last_action_key);
+    if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
+        var invoice_id = session.last_invoice.id;
+        var status = "cancel";
+        session.last_invoice.is_ordering = false;
+        g_model_factory.cancel_invoice(invoice_id, status,
+            function (invoice) {
+                session.last_invoice.id = -1;
+                session.last_product.id = -1;
+                session.last_invoice.id = -1;
+                session.last_invoice.status = "cancel";
+            });
+        sendTextMessage(session.fbid, common.pls_reset_buying);
+        session.last_action = common.say_greetings;
+        sendTextMessage(session.fbid, common.pls_select_product);
+        /*Handle what user send to fanpage*/
+    } else if (last_action_key == common.say_greetings) {
+        if (session.last_invoice.id == -1) {
+            g_model_factory.create_empty_invoice(session.fbid,
+                function (invoice) {
+                    session.last_invoice.id = invoice.id;
+                });
+        } else { }
+        execute_search_product(session, user_msg, user_req_trans);
+    } else if ((last_action >= common.sale_steps.get(common.select_product))
+        && last_action < common.sale_steps.get(common.set_quantity)) {
+        execute_order_product(session, user_msg);
+    } else if ((last_action >= common.sale_steps.get(common.set_quantity))
+        && last_action <= common.sale_steps.get(common.set_delivery_date)) {
+        execute_finish_invoice(session, user_msg);
+    } else {
+        logger.error("Unknow message: " + user_msg);
+    }
+}
+
+function processPostbackEvent(session, action_details) {
+    var user_action = action_details.action;
+    if (user_action.indexOf(common.action_view_details) >= 0) {
+        session.last_product.id = action_details.id;
+        session.last_product.title = action_details.title;
+        show_available_colorNsize(session, true, true);
+    } else if (user_action.indexOf(common.action_order) >= 0) {
+        session.last_product.id = action_details.id;
+        session.last_action = common.select_product;
+        session.last_product.title = action_details.title;
+        session.last_invoice.is_ordering = true;
+        sendTextMessage(session.fbid, "Bắt đầu đặt hàng. " +
+            common.pls_select_product_color, function () {
+                show_available_colorNsize(session, true, false);
+            });
+    } else if (session.last_invoice.is_ordering &&
+        (user_action.indexOf(common.action_continue_search) >= 0)) {
+        session.last_action = common.say_greetings;
+        sendTextMessage(session.fbid, common.pls_select_product);
+    } else if (user_action.indexOf(common.action_purchase) >= 0) {
+        session.last_action = common.set_quantity;
+        sendTextMessage(session.fbid, common.pls_enter_name);
+    } else if (user_action.indexOf(common.action_confirm_order) >= 0) {
+        session.last_invoice.status = "confirm";
+        g_model_factory.update_invoice(session.last_invoice, function (invoice) {
+            logger.info(invoice);
+        });
+        session = initSession(session.fbid);
+    } else if (user_action.indexOf(common.action_cancel_order) >= 0) {
+        g_model_factory.cancel_invoice(session.last_invoice.id, "cancel", function (invoice) {
+            if (invoice != null) {
+                session = initSession(session.fbid);
+            }
+        });
+    } else {
+        logger.error("Unknow action: " + JSON.stringify(action_details));
+    }
+}
 
 function processEvent(event) {
     var sender = event.sender.id.toString();
@@ -629,14 +646,14 @@ function processEvent(event) {
             if (g_ai_using) {
                 processTextByAI(text, sender);
             } else {
-                execute_orderflow(current_session, text);
+                processTextEvent(current_session, text);
             }
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
             // handle the case when user send an image for searching product
             for (var i = 0; i < attachments.length; i++) {
                 if (attachments[i].type === 'image') {
-                    execute_orderflow(current_session, attachments[i].payload.url, null);
+                    processTextEvent(current_session, attachments[i].payload.url);
                 } else {
                     logger.info("Skipp to handle attachment");
                 }
@@ -649,7 +666,7 @@ function processEvent(event) {
         var delta = event.timestamp - current_session.timestamp;
         if (delta > 150 /*avoid double click*/) {
             current_session.timestamp = event.timestamp;
-            execute_orderflow(current_session, postback.action, postback);
+            processPostbackEvent(current_session, postback);
         } else {
             logger.info("Skipp to handle double click");
         }
@@ -788,7 +805,7 @@ ai_webhook.post(config.bots.ai_webhook, function (req, res) {
                     products[i].id);
                 found_products.push(product_object);
             }
-            var response = createGenericMessage(found_products);
+            var response = createAIAPIProductsMessage(found_products);
             logger.info(JSON.stringify(response));
             res.setHeader('content-type', 'application/json');
             res.send(response);

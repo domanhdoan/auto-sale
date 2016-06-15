@@ -18,7 +18,7 @@ function parse_keywords(keywords, word_list) {
                 console.log("key = " + last_keyword + " value = " + temp);
                 result[last_keyword] = temp.trim();
                 temp = '';
-            }else{
+            } else {
                 result['giay'] = temp.trim();
             }
             last_keyword = word_list[i];
@@ -71,8 +71,8 @@ function generate_query_findshoes(keywords) {
     if (keywords[2].length > 0) {
         query += " and S.value = '" + keywords[2] + "'";
     }
-     query += " LIMIT " + common.product_search_max + ";";
-        
+    query += " LIMIT " + common.product_search_max + ";";
+
     return query;
 }
 
@@ -81,7 +81,7 @@ function generate_query_findcolorNsize(product_id) {
         + " from product as P";
     query += " inner join color as C on P.id = C.ProductId"
     query += " inner join size as S on P.id = S.ProductId";
-    query += " where P.id = " + product_id + "";    
+    query += " where P.id = " + product_id + "";
     return query;
 }
 //===================================================//
@@ -153,7 +153,7 @@ exports.findShoesByKeywords = function (user_message, callback) {
 exports.findProductsById = function (id, callback) {
     g_orm_manager.Product.findOne({
         where: {
-            id:id
+            id: id
         }
     }).then(function (product) {
         callback(product);
@@ -189,35 +189,36 @@ exports.findProductByFinger = function (finger, callback) {
 
 exports.findProductByThumbnail = function (home_page, thumbnail_link, callback) {
     require('../controllers/web_crawler').extract_product_thumb_link(
-            home_page, thumbnail_link, function (real_thumb_url) {
-        logger.info("search_item URL = " + real_thumb_url);
-        g_orm_manager.Product.findOne({
-            where: {
-                thumbnail: real_thumb_url.replaceAll('-', '%%')
-            }
-        }).then(function (product) {
-            if (product != null) {
-                logger.info(product.dataValues.title);
-                callback(product);
-            } else {
-                logger.debug("Product not found");
-            }
+        home_page, thumbnail_link, function (real_thumb_url) {
+            logger.info("search_item URL = " + real_thumb_url);
+            g_orm_manager.Product.findOne({
+                where: {
+                    thumbnail: real_thumb_url.replaceAll('-', '%%')
+                }
+            }).then(function (product) {
+                if (product != null) {
+                    logger.info(product.dataValues.title);
+                    callback(product);
+                } else {
+                    logger.debug("Product not found");
+                }
+            });
         });
-    });
 }
 
-exports.getColorsNSize = function (product_id, callback){
-    module.exports.getProductColors(product_id, function(colors){
-        module.exports.getProductSizes(product_id, function(sizes){
-            module.exports.findProductsById(product_id, function (product) {
-                callback(product.dataValues.title, colors, sizes);
-            });
+exports.getColorsNSize = function (product_id, callback) {
+    module.exports.getProductColors(product_id, function (colors) {
+        module.exports.getProductSizes(product_id, function (sizes) {
+            callback(colors, sizes);
         });
     });
 }
 
 exports.getProductColors = function (product_id, callback) {
     g_orm_manager.Color.findAll({
+        order: [
+            ['value', 'ASC']
+        ],
         where: {
             ProductId: product_id
         }
@@ -228,6 +229,9 @@ exports.getProductColors = function (product_id, callback) {
 
 exports.getProductSizes = function (product_id, callback) {
     g_orm_manager.Size.findAll({
+        order: [
+            ['value', 'ASC']
+        ],
         where: {
             ProductId: product_id
         }
