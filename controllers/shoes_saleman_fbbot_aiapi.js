@@ -625,7 +625,7 @@ function processPostbackEvent(session, action_details) {
         g_model_factory.update_invoice(session.last_invoice, function (invoice) {
             logger.info(invoice);
             user_sessions[session.sessionId] = initSession(session.fbid);
-            sendTextMessage(session.fbid, common.say_greetings);
+            sendTextMessage(session.fbid, common.pls_select_product);
         });
     } else if (user_action.indexOf(common.action_cancel_order) >= 0) {
         g_model_factory.cancel_invoice(session.last_invoice.id, "cancel", function (invoice) {
