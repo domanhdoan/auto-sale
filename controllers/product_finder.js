@@ -150,6 +150,16 @@ exports.findShoesByKeywords = function (user_message, callback) {
 
 }
 
+exports.findProductsById = function (id, callback) {
+    g_orm_manager.Product.findOne({
+        where: {
+            id:id
+        }
+    }).then(function (product) {
+        callback(product);
+    });
+}
+
 exports.findProductsByCode = function (code, callback) {
     g_orm_manager.Product.findOne({
         where: {
@@ -199,7 +209,9 @@ exports.findProductByThumbnail = function (home_page, thumbnail_link, callback) 
 exports.getColorsNSize = function (product_id, callback){
     module.exports.getProductColors(product_id, function(colors){
         module.exports.getProductSizes(product_id, function(sizes){
-            callback(colors, sizes);
+            module.exports.findProductsById(product_id, function (product) {
+                callback(product.dataValues.title, colors, sizes);
+            });
         });
     });
 }

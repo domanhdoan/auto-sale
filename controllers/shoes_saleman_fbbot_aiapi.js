@@ -369,10 +369,10 @@ function find_categories(store_id) {
 function show_available_colorNsize(session, show_color, show_size) {
     var productId = session.last_product.id;
     g_product_finder.getColorsNSize(productId,
-        function (colors, sizes) {
+        function (product_tile, colors, sizes) {
             var available_colors = "";
             if (show_color) {
-                available_colors = "Màu sắc: ";
+                available_colors = "\n - Màu sắc: ";
                 if (colors != null && colors.length > 0) {
                     for (var i = 0; i < (colors.length - 1); i++) {
                         available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
@@ -385,7 +385,7 @@ function show_available_colorNsize(session, show_color, show_size) {
 
             var available_sizes = "";
             if (show_size) {
-                var available_sizes = "\nSize: ";
+                var available_sizes = "\n - Size: ";
                 if (sizes != null && sizes.length > 0) {
                     for (var i = 0; i < (sizes.length - 1); i++) {
                         available_sizes += sizes[i].dataValues.value + ", ";
@@ -396,7 +396,7 @@ function show_available_colorNsize(session, show_color, show_size) {
                 }
             }
             logger.info("Product id = " + productId + "Details - " + available_colors + available_sizes);
-            sendTextMessage(session.fbid, available_colors + available_sizes);
+            sendTextMessage(session.fbid, product_tile + available_colors + available_sizes);
         });
 }
 
@@ -549,7 +549,8 @@ function process_orderflow(session, user_msg, action_details) {
                 });
         } else { }
         execute_search_product(session, user_msg, user_req_trans);
-    } else if (last_action_key == common.select_product) {
+    } else if ((last_action >= common.sale_steps.get(common.select_product)) 
+        && last_action <= common.sale_steps.get(common.set_quantity)) {
         execute_order_product(session, user_msg);
     } else {
         execute_finish_invoice(session, user_msg);
