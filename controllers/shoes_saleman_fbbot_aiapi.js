@@ -83,8 +83,8 @@ function createSearchOrPurchaseElement() {
 }
 
 function createConfirmOrCancelElement() {
-    var purchase_action = {};
-    var search_action = {};
+    var confirm_action = {};
+    var cancel_action = {};
     confirm_action.action = common.action_confirm_order;
     cancel_action.action = common.action_cancel_order;
     var template = [{
@@ -275,6 +275,7 @@ const initSession = (fbid) => {
         }
     };
 }
+
 const findOrCreateSession = (fbid) => {
     let sessionId;
     // Let's see if we already have a session for the user fbid
@@ -300,24 +301,6 @@ function deteleSession(sessionId) {
 // =================================================================
 
 function find_products_by_image(session, user_msg) {
-    // common.generate_remoteimg_hash(user_msg,
-    //     function (hash) {
-    //         g_product_finder.findProductByFinger(hash, function (product) {
-    //             var found_products = [];
-    //             //console.log(JSON.stringify(products[i]));
-    //             var product_object = createProductElement(
-    //                 product.dataValues.title,
-    //                 product.dataValues.price,
-    //                 product.dataValues.thumbnail.replaceAll("%%", "-"),
-    //                 product.dataValues.link.replaceAll("%%", "-"),
-    //                 product.dataValues.code,
-    //                 product.dataValues.id);
-    //             found_products.push(product_object);
-    //             session.last_product.id = product.dataValues.id;
-    //             sendGenericMessage(session.fbid, found_products);
-    //         });
-    //     });
-
     g_product_finder.findProductByThumbnail(g_home_page, user_msg, function (product) {
         var found_products = [];
         var product_object = createProductElement(
@@ -443,9 +426,11 @@ function execute_order_product(session, text) {
                     session.last_action = common.select_product_color;
                     session.last_product.color = color.dataValues.id;
                     sendTextMessage(session.fbid, common.pls_select_product_size);
+                    show_available_colorNsize(session.fbid, false, true);
                 } else {
                     logger.debug("Product not found");
-                    sendTextMessage(session.fbid, common.notify_product_notfound);
+                    sendTextMessage(session.fbid, common.notify_color_notfound);
+                    show_available_colorNsize(session.fbid, true, false);
                 }
             });
     } else if (session.last_action == common.select_product_color) {
@@ -456,8 +441,8 @@ function execute_order_product(session, text) {
                     session.last_product.size = size.dataValues.id;
                     sendTextMessage(session.fbid, common.pls_enter_quantity);
                 } else {
-                    logger.debug("Product not found");
-                    sendTextMessage(session.fbid, common.notify_product_notfound);
+                    sendTextMessage(session.fbid, common.notify_size_notfound);
+                    show_available_colorNsize(session.fbid, false, true);
                 }
             });
     } else if (session.last_action == common.select_product_size) {
@@ -498,7 +483,7 @@ function execute_finish_invoice(session, text) {
         var is_valid_email = validator.validate(text);
         if (is_valid_email) {
             session.last_invoice.email = text;
-            session.last_action = common.set_email;
+            session.last_action = common.set_delivery_date;
             sendTextMessage(session.fbid, common.pls_enter_delivery_date);
         } else {
             sendTextMessage(session.fbid, common.pls_enter_email);
@@ -507,18 +492,18 @@ function execute_finish_invoice(session, text) {
         logger.debug("Delivery: " + text);
         session.last_invoice.delivery = text;
         session.last_action = common.set_delivery_date;
+    } else if (session.last_action == common.set_delivery_date) {
         var buttons = createConfirmOrCancelElement();
         sendConfirmMessage(session.fbid, buttons);
     } else {
-
+        logger.info("Unknow action = " + text);
     }
 }
 
-function process_orderflow(session, user_msg, action_details) {
+function execute_orderflow(session, user_msg, action_details) {
     var user_req_trans = translator(user_msg).toLowerCase();
     var last_action_key = session.last_action;
     var last_action = common.sale_steps.get(last_action_key);
-
     if (action_details != null) { /*Handle call-to-action buttons*/
         if (user_msg.indexOf(common.action_view_details) >= 0) {
             session.last_product.id = action_details.id;
@@ -534,6 +519,7 @@ function process_orderflow(session, user_msg, action_details) {
             session.last_action = common.say_greetings;
             sendTextMessage(session.fbid, common.pls_select_product);
         } else if (user_msg.indexOf(common.action_purchase) >= 0) {
+            session.last_action = common.set_quantity;
             sendTextMessage(session.fbid, common.pls_enter_name);
         } else if (user_msg.indexOf(common.action_confirm_order) >= 0) {
             session.last_invoice.status = "confirm";
@@ -542,7 +528,7 @@ function process_orderflow(session, user_msg, action_details) {
             });
             session = initSession(session.fbid);
         } else if (user_msg.indexOf(common.action_cancel_order) >= 0) {
-            g_model_factory.cancel_invoice(session.last_invoice.id, function (invoice) {
+            g_model_factory.cancel_invoice(session.last_invoice.id, "cancel", function (invoice) {
                 if (invoice != null) {
                     session = initSession(session.fbid);
                 }
@@ -643,14 +629,14 @@ function processEvent(event) {
             if (g_ai_using) {
                 processTextByAI(text, sender);
             } else {
-                process_orderflow(current_session, text);
+                execute_orderflow(current_session, text);
             }
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
             // handle the case when user send an image for searching product
             for (var i = 0; i < attachments.length; i++) {
                 if (attachments[i].type === 'image') {
-                    process_orderflow(current_session, attachments[i].payload.url, null);
+                    execute_orderflow(current_session, attachments[i].payload.url, null);
                 } else {
                     logger.info("Skipp to handle attachment");
                 }
@@ -663,7 +649,7 @@ function processEvent(event) {
         var delta = event.timestamp - current_session.timestamp;
         if (delta > 150 /*avoid double click*/) {
             current_session.timestamp = event.timestamp;
-            process_orderflow(current_session, postback.action, postback);
+            execute_orderflow(current_session, postback.action, postback);
         } else {
             logger.info("Skipp to handle double click");
         }

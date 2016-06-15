@@ -33,6 +33,8 @@ module.exports = {
     set_email: "set_email",
     set_delivery_date: "set_delivery_date",
     notify_product_found: "Sản phẩm còn hàng",
+    notify_color_notfound: "Không còn màu trong cửa hàng",
+    notify_size_notfound: "Không còn size trong cửa hàng",
     notify_product_notfound: "Rất tiếc sản phẩm hiện đang tạm thời hết hàng. Xin vui lòng chọn sản phẩm khác",
     cmd_terminate_order: "huy",
     action_continue_search: "search",
@@ -47,7 +49,7 @@ module.exports = {
 }
 
 module.exports.typical_question = {
-    
+
 }
 
 module.exports.sale_steps = new Enum([
