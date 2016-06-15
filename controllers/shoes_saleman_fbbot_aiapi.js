@@ -526,7 +526,7 @@ function process_orderflow(session, user_msg, action_details) {
                 + "\n" +common.pls_select_product_color);
         } else if (user_msg.indexOf(common.action_purchase) >= 0) {
             session.last_action = common.set_quantity;
-            //session.last_invoice.is_ordering = true;
+            session.last_invoice.is_ordering = false;
             sendTextMessage(session.fbid, common.pls_enter_name);
         } else {
             logger.error("Unknow action: " + JSON.stringify(action_details));
@@ -557,8 +557,11 @@ function process_orderflow(session, user_msg, action_details) {
     } else if ((last_action >= common.sale_steps.get(common.select_product)) 
         && last_action <= common.sale_steps.get(common.set_quantity)) {
         execute_order_product(session, user_msg);
-    } else {
+    } else if ((last_action >= common.sale_steps.get(common.set_recipient_name)) 
+        && last_action <= common.sale_steps.get(common.set_delivery_date)) {
         execute_finish_invoice(session, user_msg);
+    }else{
+        logger.error("Unknow message: " + user_msg);
     }
 }
 
