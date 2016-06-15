@@ -533,6 +533,8 @@ function process_orderflow(session, user_msg, action_details) {
             (user_msg.indexOf(common.action_continue_search) >= 0)) {
             session.last_action = common.say_greetings;
             sendTextMessage(session.fbid, common.pls_select_product);
+        } else if (user_msg.indexOf(common.action_purchase) >= 0) {
+            sendTextMessage(session.fbid, common.pls_enter_name);
         } else if (user_msg.indexOf(common.action_confirm_order) >= 0) {
             session.last_invoice.status = "confirm";
             g_model_factory.update_invoice(session.last_invoice, function (invoice) {
@@ -541,7 +543,7 @@ function process_orderflow(session, user_msg, action_details) {
             session = initSession(session.fbid);
         } else if (user_msg.indexOf(common.action_cancel_order) >= 0) {
             g_model_factory.cancel_invoice(session.last_invoice.id, function (invoice) {
-                if(invoice != null){
+                if (invoice != null) {
                     session = initSession(session.fbid);
                 }
             });
