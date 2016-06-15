@@ -522,8 +522,8 @@ function process_orderflow(session, user_msg, action_details) {
         } else if (user_msg.indexOf(common.action_order) >= 0) {
             session.last_action = common.select_product;
             session.last_invoice.is_ordering = true;
-            sendTextMessage(session.fbid, "Bạn đã đặt hàng sản phẩm: " + action_details.title);
-            sendTextMessage(session.fbid, common.pls_select_product_color);
+            sendTextMessage(session.fbid, "Bạn đã đặt hàng sản phẩm: " + action_details.title 
+                + "\n" +common.pls_select_product_color);
         } else if (user_msg.indexOf(common.action_purchase) >= 0) {
             session.last_action = common.set_quantity;
             //session.last_invoice.is_ordering = true;
