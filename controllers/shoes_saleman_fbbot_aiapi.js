@@ -34,11 +34,11 @@ const FB_PAGE_ACCESS_TOKEN = config.bots.fb_page_token;
 function createProductElement(title, price, thumbnail_url, link, code, id) {
     var payload1 = {};
     payload1.id = id;
-    payload1.code = code;
+    payload1.title = title;
     payload1.action = common.action_view_details;
     var payload2 = {};
     payload2.id = id;
-    payload2.code = code;
+    payload2.title = title;
     payload2.action = common.action_order;
     var element = {
         "title": title,
@@ -47,7 +47,7 @@ function createProductElement(title, price, thumbnail_url, link, code, id) {
         "buttons": [
             {
                 "type": "postback",
-                "title": "Chi tiết",
+                "title": "Xem Chi tiết",
                 "payload": JSON.stringify(payload1)
             },
             {
@@ -65,10 +65,10 @@ function createProductElement(title, price, thumbnail_url, link, code, id) {
 }
 
 function createSearchOrPurchaseElement() {
-    var order_action = {};
+    var purchase_action = {};
     var search_action = {};
-    search_action.action = "search";
-    order_action.action = "order";
+    search_action.action = common.action_continue_search;
+    purchase_action.action = common.action_purchase;
     var template = [{
         "type": "postback",
         "title": "Thêm sản phẩm",
@@ -76,8 +76,8 @@ function createSearchOrPurchaseElement() {
     },
         {
             "type": "postback",
-            "title": "Đặt hàng",
-            "payload": JSON.stringify(order_action),
+            "title": "Mua hàng",
+            "payload": JSON.stringify(purchase_action),
         }];
     return template;
 }
@@ -522,7 +522,12 @@ function process_orderflow(session, user_msg, action_details) {
         } else if (user_msg.indexOf(common.action_order) >= 0) {
             session.last_action = common.select_product;
             session.last_invoice.is_ordering = true;
+            sendTextMessage(session.fbid, "Bạn đã đặt hàng sản phẩm: " + action_details.title);
             sendTextMessage(session.fbid, common.pls_select_product_color);
+        } else if (user_msg.indexOf(common.action_purchase) >= 0) {
+            session.last_action = common.set_quantity;
+            //session.last_invoice.is_ordering = true;
+            sendTextMessage(session.fbid, common.pls_enter_name);
         } else {
             logger.error("Unknow action: " + JSON.stringify(action_details));
         }
