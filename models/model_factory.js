@@ -117,8 +117,8 @@ module.exports.create_product = function (
                 });
         } else {
             logger.info("Added product: " + product_title
-            + " Found id: " + found_product.dataValues.id
-            + " Found title: " + found_product.dataValues.title);
+                + " Found id: " + found_product.dataValues.id
+                + " Found title: " + found_product.dataValues.title);
             callback(found_product);
         }
     });
@@ -216,6 +216,7 @@ module.exports.update_invoice = function (invoice_info, callback) {
                 status: invoice_info.status
             });
         } else { }
+        callback(callback);
     })
 }
 
