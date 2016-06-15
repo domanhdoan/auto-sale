@@ -87,16 +87,18 @@ function createConfirmOrCancelElement() {
     var cancel_action = {};
     confirm_action.action = common.action_confirm_order;
     cancel_action.action = common.action_cancel_order;
-    var template = [{
-        "type": "postback",
-        "title": "Xác nhận",
-        "payload": JSON.stringify(confirm_action),
-    },
+    var template = [
         {
             "type": "postback",
             "title": "Hủy mua hàng",
             "payload": JSON.stringify(cancel_action),
-        }];
+        },
+        {
+            "type": "postback",
+            "title": "Xác nhận",
+            "payload": JSON.stringify(confirm_action),
+        }
+        ];
     return template;
 }
 
