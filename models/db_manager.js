@@ -69,6 +69,9 @@ db.Size.belongsTo(db.Product);
 // db.Color.sync({force: true});
 // db.Size.sync({force: true});
 
+db.Product.hasMany(db.ProductPhoto, { as: "Product", foreignKeyConstraint:true});
+db.ProductPhoto.belongsTo(db.Product);
+
 db.Color.hasMany(db.FashionItem, { as: "Color", foreignKeyConstraint:true});
 db.Size.hasMany(db.FashionItem, { as: "Size", foreignKeyConstraint:true});
 db.Product.hasMany(db.FashionItem, { as: "Product", foreignKeyConstraint:true});

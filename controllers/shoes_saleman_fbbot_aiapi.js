@@ -98,7 +98,7 @@ function createConfirmOrCancelElement() {
             "title": "Xác nhận",
             "payload": JSON.stringify(confirm_action),
         }
-        ];
+    ];
     return template;
 }
 
@@ -120,18 +120,6 @@ function createAIAPIProductsMessage(rich_data) {
         },
         "source": "joybox web service"
     }
-}
-
-function createOrderItemElement(title, desc, price, quantity, thumbnail_url) {
-    var template = {
-        "title": title,
-        "subtitle": desc,
-        "quantity": quantity,
-        "price": price,
-        "currency": "VND",
-        "image_url": thumbnail_url
-    };
-    return template;
 }
 
 function sendDataToFBMessenger(sender, data, callback) {
@@ -194,48 +182,93 @@ function sendConfirmMessage(sender, buttons) {
     sendDataToFBMessenger(sender, messageData, null);
 }
 
-function sendReceiptMessage(sender, order_items, invoice_details) {
+function createOrderItemElement (title, price, quantity, thumbnail_url) {
+    var jsonItem = {
+        "title": title,
+        "subtitle": "",
+        "quantity": quantity,
+        "price": price,
+        "currency": "VND",
+        "image_url": thumbnail_url
+    };
+    return jsonItem;
+}
+
+function generate_invoice_items(session) {
+
+}
+
+function generate_invoice_summary(sub_total, shipping_cost) {
+    var summary = {
+        "subtotal": sub_total,
+        "shipping_cost": shipping_cost,
+        "total_tax": sub_total * 0.05, // 5 % VAT
+        "total_cost": (sub_total + shipping_cost + sub_total * 0.05)
+    };
+
+    return summary;
+}
+
+function generate_invoice_adjustment() {
+    var adjustments = [
+        {
+            "name": "New Customer Discount",
+            "amount": 20
+        },
+        {
+            "name": "$10 Off Coupon",
+            "amount": 10
+        }
+    ];
+
+    return adjustments;
+}
+
+function sendReceiptMessage(sender, invoice_items, invoice_details, 
+    summary, adjustments, callback) {
     var messageData = {
         "attachment": {
             "type": "template",
             "payload": {
                 "template_type": "receipt",
-                "recipient_name": invoice_details.name,
                 "order_number": invoice_details.id,
+                "recipient_name": invoice_details.name,
+                "elements": invoice_items,
                 "currency": "VND",
-                "payment_method": "COD",
                 "order_url": "",
                 "timestamp": invoice_details.creation,
-                "elements": order_items,
-                "address": {
-                    "street_1": "1 Hacker Way",
-                    "street_2": "",
-                    "city": "Menlo Park",
-                    "postal_code": "94025",
-                    "state": "CA",
-                    "country": "US"
-                },
-                "summary": {
-                    "subtotal": 75.00,
-                    "shipping_cost": 4.95,
-                    "total_tax": 6.19,
-                    "total_cost": 56.14
-                },
-                "adjustments": [
-                    {
-                        "name": "New Customer Discount",
-                        "amount": 20
-                    },
-                    {
-                        "name": "$10 Off Coupon",
-                        "amount": 10
-                    }
-                ]
+                "address": invoice_details.address,
+                "payment_method": "COD",
+                "summary": summary,
+                "adjustments": adjustments
             }
         }
     }
-    sendDataToFBMessenger(sender, messageData, null);
+    sendDataToFBMessenger(sender, messageData, callback);
 }
+
+function createAndSendInvoice(session, callback) {
+    g_product_finder.getOrderItems(session.last_invoice.id, function (items) {
+        var invoice_items = [];
+        var sub_total = 0;
+        for (var i = 0; i < items.length; i++) {
+            var title = items[i].Product.dataValues.title;
+            var price = items[i].Product.dataValues.price;
+            var quantity = items[i].dataValues.quantity;
+            var thumbnail_url = items[i].Product.dataValues.thumbnail;
+            var jsonitem = createOrderItemElement(title, price, quantity, thumbnail_url);
+            invoice_items.push(jsonitem);
+            sub_total += (price * quantity);
+        }
+
+        var invoice_details = session.last_invoice;
+        var invoice_summary = generate_invoice_summary(sub_total, 20000);
+        var invoice_adjustments = {};
+        sendReceiptMessage(session.fbid, invoice_items,
+            invoice_details, invoice_summary, callback);
+    });
+}
+
 // =================================================================
 // Methods for managing user sessions
 // =================================================================
@@ -503,8 +536,10 @@ function execute_finish_invoice(session, text) {
         session.last_invoice.delivery = text;
         session.last_action = common.set_delivery_date;
     } else if (session.last_action == common.set_delivery_date) {
-        var buttons = createConfirmOrCancelElement();
-        sendConfirmMessage(session.fbid, buttons);
+        createAndSendInvoice(session, function(){
+            var buttons = createConfirmOrCancelElement();
+            sendConfirmMessage(session.fbid, buttons);
+        });
     } else {
         logger.info("Unknow action = " + text);
     }

@@ -261,3 +261,30 @@ exports.checkProductBySize = function (product_id, size, callback) {
         callback(size);
     });
 }
+
+exports.getOrderItems = function (invoice_id, callback) {
+    g_orm_manager.FashionItem.findAll({
+        attributes: ['quantity'],
+        order: [
+            ['id', 'ASC']
+        ],
+        where: {
+            InvoiceId: invoice_id
+        },
+        include: [{
+            model: g_orm_manager.Product,
+            attributes: ['title', 'desc', 'thumbnail','price', 'discount'],
+            where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+        },
+        {
+            model: g_orm_manager.Color,
+            where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+        },
+        {
+            model: g_orm_manager.Size,
+            where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+        }]
+    }).then(function (items) {
+        callback(items);
+    });
+}
