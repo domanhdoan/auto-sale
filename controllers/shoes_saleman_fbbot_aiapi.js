@@ -124,7 +124,6 @@ function createAIAPIProductsMessage(rich_data) {
 
 function sendDataToFBMessenger(sender, data, callback) {
     logger.info("Data = " + JSON.stringify(data));
-
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: { access_token: config.bots.fb_page_token },
@@ -174,7 +173,7 @@ function sendConfirmMessage(sender, buttons) {
             "type": "template",
             "payload": {
                 "template_type": "button",
-                "text": "Bạn muốn tiếp tục chọn thêm sản phẩm khác?",
+                "text": "Xác nhận đơn đặt hàng.",
                 "buttons": buttons
             }
         }
@@ -182,20 +181,16 @@ function sendConfirmMessage(sender, buttons) {
     sendDataToFBMessenger(sender, messageData, null);
 }
 
-function createOrderItemElement (title, price, quantity, thumbnail_url) {
+function createOrderItemElement (title, desc, price, quantity, thumbnail_url) {
     var jsonItem = {
         "title": title,
         "subtitle": "",
         "quantity": quantity,
         "price": price,
         "currency": "VND",
-        "image_url": thumbnail_url
+        "image_url": thumbnail_url.replaceAll("%%", "-")
     };
     return jsonItem;
-}
-
-function generate_invoice_items(session) {
-
 }
 
 function generate_invoice_summary(sub_total, shipping_cost) {
@@ -237,7 +232,13 @@ function sendReceiptMessage(sender, invoice_items, invoice_details,
                 "currency": "VND",
                 "order_url": "",
                 "timestamp": invoice_details.creation,
-                "address": invoice_details.address,
+                "address": {
+                    "street_1": invoice_details.address,
+                    "city": "Hà Nội",
+                    "postal_code": "10000",
+                    "state": "Hà Nội",
+                    "country": "VN"
+                },
                 "payment_method": "COD",
                 "summary": summary,
                 "adjustments": adjustments
@@ -254,18 +255,21 @@ function createAndSendInvoice(session, callback) {
         for (var i = 0; i < items.length; i++) {
             var title = items[i].Product.dataValues.title;
             var price = items[i].Product.dataValues.price;
+            var subtitle = items[i].Product.dataValues.desc;
             var quantity = items[i].dataValues.quantity;
             var thumbnail_url = items[i].Product.dataValues.thumbnail;
-            var jsonitem = createOrderItemElement(title, price, quantity, thumbnail_url);
+            var jsonitem = createOrderItemElement(title, subtitle, 
+                price, quantity, thumbnail_url);
+
             invoice_items.push(jsonitem);
             sub_total += (price * quantity);
         }
 
         var invoice_details = session.last_invoice;
-        var invoice_summary = generate_invoice_summary(sub_total, 20000);
+        var invoice_summary = generate_invoice_summary(sub_total/1000, 20);
         var invoice_adjustments = {};
         sendReceiptMessage(session.fbid, invoice_items,
-            invoice_details, invoice_summary, callback);
+            invoice_details, invoice_summary, invoice_adjustments, callback);
     });
 }
 
