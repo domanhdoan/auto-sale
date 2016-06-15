@@ -41,6 +41,7 @@ module.exports = {
     action_select: "select",
     action_purchase: "purchase",
     action_confirm_order: "ok",
+    action_cancel_order: "cancel",
     updating: "Đang cập nhật",
     product_search_max: 10
 }

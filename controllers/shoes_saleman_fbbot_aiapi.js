@@ -42,7 +42,7 @@ function createProductElement(title, price, thumbnail_url, link, code, id) {
     payload2.action = common.action_order;
     var element = {
         "title": title,
-        "subtitle": price,
+        "subtitle": price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VNĐ",
         "image_url": thumbnail_url,
         "buttons": [
             {
@@ -78,6 +78,24 @@ function createSearchOrPurchaseElement() {
             "type": "postback",
             "title": "Mua hàng",
             "payload": JSON.stringify(purchase_action),
+        }];
+    return template;
+}
+
+function createConfirmOrCancelElement() {
+    var purchase_action = {};
+    var search_action = {};
+    confirm_action.action = common.action_confirm_order;
+    cancel_action.action = common.action_cancel_order;
+    var template = [{
+        "type": "postback",
+        "title": "Xác nhận",
+        "payload": JSON.stringify(confirm_action),
+    },
+        {
+            "type": "postback",
+            "title": "Hủy mua hàng",
+            "payload": JSON.stringify(cancel_action),
         }];
     return template;
 }
@@ -234,6 +252,29 @@ const getFirstMessagingEntry = (body) => {
     return val || null;
 };
 
+const initSession = (fbid) => {
+    return {
+        fbid: fbid,
+        context: {},
+        last_product: {
+            id: -1,
+            color: -1,
+            size: -1
+        },
+        last_action: common.say_greetings,
+        timestamp: 0,
+        last_invoice: {
+            id: -1,
+            name: "",
+            phone: "",
+            address: "",
+            delivery: "",
+            email: "",
+            status: "",
+            is_ordering: false
+        }
+    };
+}
 const findOrCreateSession = (fbid) => {
     let sessionId;
     // Let's see if we already have a session for the user fbid
@@ -246,27 +287,7 @@ const findOrCreateSession = (fbid) => {
     if (!sessionId) {
         // No session found for user fbid, let's create a new one
         sessionId = new Date().toISOString();
-        user_sessions[sessionId] = {
-            fbid: fbid,
-            context: {},
-            last_product: {
-                id: -1,
-                color: -1,
-                size: -1
-            },
-            last_action: common.say_greetings,
-            timestamp: 0,
-            last_invoice: {
-                id: -1,
-                name: "",
-                phone: "",
-                address: "",
-                delivery: "",
-                email: "",
-                status: "",
-                is_ordering: false
-            }
-        };
+        user_sessions[sessionId] = initSession(fbid);
     }
     return sessionId;
 };
@@ -415,7 +436,7 @@ function execute_order_product(session, text) {
     var user_req_trans = translator(text).toLowerCase();
     if (session.last_action == common.select_product) {
         // Remove mua word to get color value
-        var color_keyword = user_req_trans.replaceAll("mau", "").replaceAll(" ", "");
+        var color_keyword = user_req_trans.replaceAll("mau", "").replaceAll(" ", "").trim();
         g_product_finder.checkProductByColor(session.last_product.id,
             color_keyword, function (color) {
                 if (color != null) {
@@ -486,9 +507,8 @@ function execute_finish_invoice(session, text) {
         logger.debug("Delivery: " + text);
         session.last_invoice.delivery = text;
         session.last_action = common.set_delivery_date;
-    } else if (session.last_action == common.set_delivery_date) {
-        sendTextMessage(session.fbid, common.pls_end_buying);
-        session.last_action = common.pls_end_buying;
+        var buttons = createConfirmOrCancelElement();
+        sendConfirmMessage(session.fbid, buttons);
     } else if (session.last_action == common.pls_end_buying) {
         if (text.toLowerCase() === common.action_confirm_order) {
             session.last_invoice.status = "confirm";
@@ -512,22 +532,31 @@ function process_orderflow(session, user_msg, action_details) {
     var last_action = common.sale_steps.get(last_action_key);
 
     if (action_details != null) { /*Handle call-to-action buttons*/
-        if (session.last_invoice.is_ordering &&
-            (user_msg.indexOf(common.action_continue_search) >= 0)) {
-            session.last_action = common.say_greetings;
-            sendTextMessage(session.fbid, common.pls_select_product);
-        } else if (user_msg.indexOf(common.action_view_details) >= 0) {
+        if (user_msg.indexOf(common.action_view_details) >= 0) {
             session.last_product.id = action_details.id;
             show_available_colorNsize(session, true, true);
         } else if (user_msg.indexOf(common.action_order) >= 0) {
+            session.last_product.id = action_details.id;
             session.last_action = common.select_product;
             session.last_invoice.is_ordering = true;
-            sendTextMessage(session.fbid, "Bạn đã đặt hàng sản phẩm: " + action_details.title 
-                + "\n" +common.pls_select_product_color);
-        } else if (user_msg.indexOf(common.action_purchase) >= 0) {
-            session.last_action = common.set_quantity;
-            session.last_invoice.is_ordering = false;
-            sendTextMessage(session.fbid, common.pls_enter_name);
+            sendTextMessage(session.fbid, "Bạn đã đặt hàng sản phẩm: " + action_details.title
+                + "\n" + common.pls_select_product_color);
+        } else if (session.last_invoice.is_ordering &&
+            (user_msg.indexOf(common.action_continue_search) >= 0)) {
+            session.last_action = common.say_greetings;
+            sendTextMessage(session.fbid, common.pls_select_product);
+        } else if (user_msg.indexOf(common.action_confirm_order) >= 0) {
+            session.last_invoice.status = "confirm";
+            g_model_factory.update_invoice(session.last_invoice, function (invoice) {
+                logger.info(invoice);
+            });
+            session = initSession(session.fbid);
+        } else if (user_msg.indexOf(common.action_cancel_order) >= 0) {
+            g_model_factory.cancel_invoice(session.last_invoice.id, function (invoice) {
+                if(invoice != null){
+                    session = initSession(session.fbid);
+                }
+            });
         } else {
             logger.error("Unknow action: " + JSON.stringify(action_details));
         }
@@ -554,13 +583,13 @@ function process_orderflow(session, user_msg, action_details) {
                 });
         } else { }
         execute_search_product(session, user_msg, user_req_trans);
-    } else if ((last_action >= common.sale_steps.get(common.select_product)) 
-        && last_action <= common.sale_steps.get(common.set_quantity)) {
+    } else if ((last_action >= common.sale_steps.get(common.select_product))
+        && last_action < common.sale_steps.get(common.set_quantity)) {
         execute_order_product(session, user_msg);
-    } else if ((last_action >= common.sale_steps.get(common.set_recipient_name)) 
+    } else if ((last_action >= common.sale_steps.get(common.set_quantity))
         && last_action <= common.sale_steps.get(common.set_delivery_date)) {
         execute_finish_invoice(session, user_msg);
-    }else{
+    } else {
         logger.error("Unknow message: " + user_msg);
     }
 }
