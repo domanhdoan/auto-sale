@@ -28,7 +28,7 @@ var db = {};
 
 fs.readdirSync(__dirname).filter(function (file) {
     return (file.indexOf(".") !== 0) && (file !== "db_manager.js") 
-        && (file !== "model_factory.js");
+        && (file !== "model_factory.js") && (file !== "product_finder.js");
 }).forEach(function (file) {
     var model = sequelize["import"](path.join(__dirname, file));
     if (model != null) {

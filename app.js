@@ -1,9 +1,9 @@
 require('string.prototype.startswith');
 var mkdirp = require('mkdirp');
 
+var product_finder = require('./models/product_finder.js');
 var crawler = require("./controllers/web_crawler");
 var shoes_salebot = require("./controllers/shoes_saleman_fbbot_aiapi");
-var product_finder = require('./controllers/product_finder.js');
 var common = require("./util/common");
 var logger = require("./util/logger");
 var orm_manager = require("./models/db_manager.js");
@@ -39,28 +39,42 @@ if (args.length > 0) {
 }
 
 mkdirp(config.crawler.temp_dir, function (err) {
-    // path exists unless there was an error
     logger.info("Created temp folder successfully");
 });
 
 product_finder.init(orm_manager, crawler);
 model_factory.init(orm_manager);
-
+var store_crawling_pattern;
 var crawl_source = common.load_json("./crawl_sources/links.json");
 if (crawl_source != null) {
     crawl_source.links.forEach(function (link) {
-        var product_pattern = common.load_crawl_pattern(link);
+        store_crawling_pattern = common.load_crawl_pattern(link);
         if (config.submodule.crawler) {
-            crawler.init(product_pattern, orm_manager);
+            crawler.init(store_crawling_pattern, orm_manager);
             crawler.crawl_alink_withdepth(link);
         }
 
         if (config.submodule.salebot) {
             shoes_salebot.enable_ai(config.bots.ai_on);
-            shoes_salebot.start(link, product_pattern.product_code_pattern,
+            shoes_salebot.start(link, store_crawling_pattern,
                 product_finder, model_factory);
         }
     });
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
 }
+
+// var NodeGeocoder = require('node-geocoder');
+
+// var options = {
+//     provider: 'google',
+//     // Optionnal depending of the providers 
+//     httpAdapter: 'https', // Default 
+//     apiKey: 'AIzaSyChRPQzNkcU8ULGhQTuRJhkzQURQ8nkzcY',
+//     formatter: null         // 'gpx', 'string', ... 
+// };
+
+// var geocoder = NodeGeocoder(options);
+// geocoder.geocode('sapa, lao cai', function(err, res) {
+//   console.log(res);
+// });

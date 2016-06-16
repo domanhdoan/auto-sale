@@ -3,12 +3,10 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var validator = require("email-validator");
 var request = require('request');
-var translator = require('speakingurl').createSlug({ maintainCase: true, separator: " " });
 const apiai = require('apiai');
 const uuid = require('node-uuid');
 const JSONbig = require('json-bigint');
 const async = require('async');
-var fbmsg_sender = require("../util/fbmsg_sender");
 var common = require("../util/common");
 var config = require("../config/config.js");
 var logger = require("../util/logger.js");
@@ -18,10 +16,9 @@ var g_home_page = "";
 var g_search_path = "";
 var g_product_finder = null;
 var g_model_factory = require("../models/model_factory.js");
-var g_product_code_pattern = "";
+var g_store_pattern = {};
 
 var g_ai_using = false;
-
 const APIAI_ACCESS_TOKEN = config.bots.ai_token;
 const APIAI_LANG = config.bots.ai_lang;
 const FB_VERIFY_TOKEN = config.bots.fb_verify_token;
@@ -91,6 +88,26 @@ function createConfirmOrCancelElement() {
         {
             "type": "postback",
             "title": "Hủy mua hàng",
+            "payload": JSON.stringify(cancel_action),
+        },
+        {
+            "type": "postback",
+            "title": "Xác nhận",
+            "payload": JSON.stringify(confirm_action),
+        }
+    ];
+    return template;
+}
+
+function createAddressConfirmElement() {
+    var confirm_action = {};
+    var cancel_action = {};
+    confirm_action.action = common.action_confirm_order;
+    cancel_action.action = common.action_cancel_order;
+    var template = [
+        {
+            "type": "postback",
+            "title": "Thay đổi",
             "payload": JSON.stringify(cancel_action),
         },
         {
@@ -181,7 +198,21 @@ function sendConfirmMessage(sender, buttons) {
     sendDataToFBMessenger(sender, messageData, null);
 }
 
-function createOrderItemElement (title, desc, price, quantity, thumbnail_url) {
+function sendAddressConfirmMessage(sender, buttons) {
+    var messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "button",
+                "text": "Xác nhận đơn đặt hàng.",
+                "buttons": buttons
+            }
+        }
+    };
+    sendDataToFBMessenger(sender, messageData, null);
+}
+
+function createOrderItemElement(title, desc, price, quantity, thumbnail_url) {
     var jsonItem = {
         "title": title,
         "subtitle": "",
@@ -219,7 +250,7 @@ function generate_invoice_adjustment() {
     return adjustments;
 }
 
-function sendReceiptMessage(sender, invoice_items, invoice_details, 
+function sendReceiptMessage(sender, invoice_items, invoice_details,
     summary, adjustments, callback) {
     var messageData = {
         "attachment": {
@@ -261,13 +292,13 @@ function createAndSendInvoice(session, callback) {
             var subtitle = items[i].Product.dataValues.desc;
             var quantity = items[i].dataValues.quantity;
             var thumbnail_url = items[i].Product.dataValues.thumbnail;
-            var jsonitem = createOrderItemElement(title, subtitle, 
+            var jsonitem = createOrderItemElement(title, subtitle,
                 price, quantity, thumbnail_url);
             invoice_items.push(jsonitem);
             sub_total += (price * quantity);
         }
 
-        var invoice_summary = generate_invoice_summary(sub_total/100, 200);
+        var invoice_summary = generate_invoice_summary(sub_total / 100, 200);
         var invoice_adjustments = {};
         sendReceiptMessage(session.fbid, invoice_items,
             invoice_details, invoice_summary, invoice_adjustments, callback);
@@ -314,7 +345,7 @@ const initSession = (fbid) => {
             delivery: "",
             email: "",
             status: "",
-            creation_date:"",
+            creation_date: "",
             is_ordering: false
         }
     };
@@ -448,8 +479,16 @@ function show_available_colorNsize(session, show_color, show_size) {
         });
 }
 
+function searchAndConfirmAddress(origin, destination) {
+    var distance = common.search_address(destination,
+        function (results) {
+            console.log(results);
+        });
+}
+
 function execute_search_product(session, user_msg, user_msg_trans) {
-    var result = common.extract_product_code(user_msg, g_product_code_pattern);
+    var result = common.extract_product_code(user_msg,
+        g_store_pattern.product_code_pattern);
     if (common.is_url(user_msg)) {
         find_products_by_image(session, user_msg);
     } else if (result.is_code) {
@@ -527,6 +566,7 @@ function execute_finish_invoice(session, text) {
         session.last_action = common.set_address;
         sendTextMessage(session.fbid, common.pls_enter_email);
         session.last_invoice.address = text;
+        searchAndConfirmAddress(g_store_pattern.store_address, text);
     } else if (session.last_action == common.set_address) {
         logger.debug("Email: " + text);
         var is_valid_email = validator.validate(text);
@@ -542,7 +582,7 @@ function execute_finish_invoice(session, text) {
         session.last_invoice.delivery = text;
         session.last_action = common.set_delivery_date;
     } else if (session.last_action == common.set_delivery_date) {
-        createAndSendInvoice(session, function(){
+        createAndSendInvoice(session, function () {
             var buttons = createConfirmOrCancelElement();
             sendConfirmMessage(session.fbid, buttons);
         });
@@ -602,7 +642,7 @@ function processTextByAI(text, sender) {
 //================= AI service ========================================//
 //=====================================================================//
 function processTextEvent(session, user_msg) {
-    var user_req_trans = translator(user_msg).toLowerCase();
+    var user_req_trans = user_msg.latinise().toLowerCase();
     var last_action_key = session.last_action;
     var last_action = common.sale_steps.get(last_action_key);
     if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
@@ -692,6 +732,7 @@ function processEvent(event) {
                 processTextByAI(text, sender);
             } else {
                 processTextEvent(current_session, text);
+                // searchAndConfirmAddress(g_store_pattern.store_address, text);
             }
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
@@ -867,11 +908,11 @@ module.exports = {
     enable_ai: function (use_ai) {
         g_ai_using = use_ai;
     },
-    start: function (home_page, product_code_pattern,
+    start: function (home_page, store_crawling_pattern,
         products_finder, model_factory) {
         g_product_finder = products_finder;
         g_home_page = home_page;
-        g_product_code_pattern = product_code_pattern;
+        g_store_pattern = store_crawling_pattern;
 
         doSubscribeRequest();
         server.use(bodyParser.urlencoded({ extended: true }));

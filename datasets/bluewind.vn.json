@@ -26,17 +26,8 @@
     },
     "product_code_pattern": "BW(\\d+)",
     "keywords": {
-        "category": "",
-        "usage_purpose":"",
-        "gender": "",
-        "brand": "",
-        "size": "",
-        "color": "",
-        "price": "",
-        "hot_trend":"",
-        "sale":"",
         "code": "bw*"
     },
-    
-     "store_type":"shoes"
+    "store_address": "85 Nguyễn Khang,  p.Yên Hòa, q.Cầu Giấy, HN",
+    "store_type": "shoes"
 }

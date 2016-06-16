@@ -23,6 +23,8 @@ config.db = {
 
 // AI Camera: //"324d2b5845214d5f91cc6c89b3550929",
 config.bots = {
+    map_key:"AIzaSyChRPQzNkcU8ULGhQTuRJhkzQURQ8nkzcY",
+    map_provider: "google",
     ai_port: 7000,
     ai_token: "85845565e4634d99ae09ae0a8921e0b6",
     ai_webhook: "/joyboxws/",
