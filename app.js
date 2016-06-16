@@ -63,18 +63,3 @@ if (crawl_source != null) {
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
 }
-
-// var NodeGeocoder = require('node-geocoder');
-
-// var options = {
-//     provider: 'google',
-//     // Optionnal depending of the providers 
-//     httpAdapter: 'https', // Default 
-//     apiKey: 'AIzaSyChRPQzNkcU8ULGhQTuRJhkzQURQ8nkzcY',
-//     formatter: null         // 'gpx', 'string', ... 
-// };
-
-// var geocoder = NodeGeocoder(options);
-// geocoder.geocode('sapa, lao cai', function(err, res) {
-//   console.log(res);
-// });

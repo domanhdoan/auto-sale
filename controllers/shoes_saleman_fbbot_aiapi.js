@@ -105,12 +105,12 @@ function createConfirmOrCancelElement() {
 function createAddressConfirmElement() {
     var confirm_action = {};
     var cancel_action = {};
-    confirm_action.action = common.action_confirm_order;
-    cancel_action.action = common.action_cancel_order;
+    confirm_action.action = common.action_confirm_addr;
+    cancel_action.action = common.action_retype_addr;
     var template = [
         {
             "type": "postback",
-            "title": "Thay đổi",
+            "title": "Nhập lại",
             "payload": JSON.stringify(cancel_action),
         },
         {
@@ -170,7 +170,7 @@ function sendTextMessage(sender, simple_text, callback) {
     var messageData = {
         text: simple_text
     }
-    console.log("Sender = " + sender);
+    console.log("Sender = " + sender + " message: " + simple_text);
     sendDataToFBMessenger(sender, messageData, callback);
 }
 
@@ -187,27 +187,13 @@ function sendGenericMessage(sender, rich_data) {
     sendDataToFBMessenger(sender, messageData, null);
 }
 
-function sendConfirmMessage(sender, buttons) {
+function sendConfirmMessage(sender, message, buttons) {
     var messageData = {
         "attachment": {
             "type": "template",
             "payload": {
                 "template_type": "button",
-                "text": "Xác nhận đơn đặt hàng.",
-                "buttons": buttons
-            }
-        }
-    };
-    sendDataToFBMessenger(sender, messageData, null);
-}
-
-function sendAddressConfirmMessage(sender, buttons) {
-    var messageData = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "button",
-                "text": "Xác nhận đơn đặt hàng.",
+                "text": message,
                 "buttons": buttons
             }
         }
@@ -255,6 +241,20 @@ function generate_invoice_adjustment() {
 
 function sendReceiptMessage(sender, invoice_items, invoice_details,
     summary, adjustments, callback) {
+    var fullAddress = {
+        street_1: "",
+        city: "",
+        state: "",
+        postal_code: "10000",
+        country: "VN"
+    };
+    // Street, city, province, country
+    var temp = invoice_details.address.split(",");
+    fullAddress.street_1 = invoice_details.address.replace(temp[temp.length - 2]
+        + "," + temp[temp.length - 1], "");
+    fullAddress.city = temp[temp.length - 2].trim();
+    fullAddress.state = temp[temp.length - 2].trim();
+
     var messageData = {
         "attachment": {
             "type": "template",
@@ -266,13 +266,7 @@ function sendReceiptMessage(sender, invoice_items, invoice_details,
                 "currency": "VND",
                 "order_url": "",
                 "timestamp": invoice_details.creation_date,
-                "address": {
-                    "street_1": invoice_details.address,
-                    "city": "Hà Nội",
-                    "postal_code": "10000",
-                    "state": "Hà Nội",
-                    "country": "VN"
-                },
+                "address": fullAddress,
                 "payment_method": "COD",
                 "summary": summary,
                 "adjustments": adjustments
@@ -297,7 +291,7 @@ function createAndSendInvoice(session, callback) {
             var title = items[i].Product.dataValues.title;
             var price = items[i].Product.dataValues.price;
             var subtitle = "Mô tả SP: Màu " + common.get_color_vn(items[i].Color.dataValues.name)
-                + " và Size " + items[i].Size.dataValues.value;
+                + " và size " + items[i].Size.dataValues.value;
             var quantity = items[i].dataValues.quantity;
             var thumbnail_url = items[i].Product.dataValues.thumbnail;
             var jsonitem = createOrderItemElement(title, subtitle,
@@ -314,24 +308,47 @@ function createAndSendInvoice(session, callback) {
 }
 
 function createAndSendOrderToStore(session, callback) {
-    g_product_finder.getOrderItems(session.last_invoice.id, function (items) { 
-         for (var i = 0; i < items.length; i++) {
-             var order = g_store_pattern.order_form;
-             request({
-                 url: g_home_page,
-                 method: 'POST',
-             }, function (error, response, body) {
-                 if (error) {
-                     logger.error('Error sending message: ' + error.stack);
-                 } else if (response.body.error) {
-                     logger.error('Error: ' + JSON.stringify(response.body.error));
-                 } else {
-                     if (callback != null) {
-                         callback();
-                     }
-                 }
-             });
-         }
+    g_product_finder.getOrderItems(session.last_invoice.id, function (items) {
+        for (var i = 0; i < items.length; i++) {
+            var order = g_store_pattern.order_form;
+            request({
+                url: g_home_page,
+                method: 'POST',
+            }, function (error, response, body) {
+                if (error) {
+                    logger.error('Error sending message: ' + error.stack);
+                } else if (response.body.error) {
+                    logger.error('Error: ' + JSON.stringify(response.body.error));
+                } else {
+                    if (callback != null) {
+                        callback();
+                    }
+                }
+            });
+        }
+    });
+}
+
+function getUserProfile(fbid, callback) {
+    const req = {
+        method: 'GET',
+        uri: `https://graph.facebook.com/v2.6/${fbid}`,
+        qs: {
+            fields: 'first_name,last_name,locale,gender',
+            access_token: FB_PAGE_ACCESS_TOKEN
+        },
+        json: true
+    }
+    request(req, function (error, response, body) {
+        if (error) {
+            logger.error('Error sending message: ' + error.stack);
+        } else if (response.body.error) {
+            logger.error('Error: ' + JSON.stringify(response.body.error));
+        } else {
+            if (callback != null) {
+                callback();
+            }
+        }
     });
 }
 
@@ -520,11 +537,22 @@ function show_available_colorNsize(session, show_color, show_size) {
         });
 }
 
-function searchAndConfirmAddress(origin, destination) {
-    var distance = common.search_address(destination,
-        function (results) {
-            console.log(results);
-        });
+function searchAndConfirmAddress(session, destination, callback) {
+    // Handle a text message from this sender
+    //getUserProfile(sender, function () {
+    common.search_address(destination, function (result) {
+        var length = 1;//result.length;
+        for (var i = 0; i < length; i++) {
+            logger.info("Full address: " + result[i].formattedAddress);
+            logger.info("City = " + result[i].city);
+            logger.info("Province / State = " + result[i].administrativeLevels.level1long);
+
+            var buttons = createAddressConfirmElement();
+            sendConfirmMessage(session.fbid, result[i].formattedAddress, buttons);
+            callback(result[i].formattedAddress);
+        }
+    });
+    //});
 }
 
 function execute_search_product(session, user_msg, user_msg_trans) {
@@ -587,7 +615,8 @@ function execute_order_product(session, text) {
 
         session.last_action = common.say_search_continue_message;
         var confirm_buttons = createSearchOrPurchaseElement();
-        sendConfirmMessage(session.fbid, confirm_buttons);
+        sendConfirmMessage(session.fbid, "Xác nhận đơn đặt hàng.", 
+            confirm_buttons);
     }
 }
 
@@ -604,10 +633,9 @@ function execute_finish_invoice(session, text) {
         session.last_invoice.phone = text;
     } else if (session.last_action == common.set_phone) {
         logger.debug("Address: " + text);
-        session.last_action = common.set_address;
-        sendTextMessage(session.fbid, common.pls_enter_email);
-        session.last_invoice.address = text;
-        searchAndConfirmAddress(g_store_pattern.store_address, text);
+        searchAndConfirmAddress(session, text, function (result) {
+            session.last_invoice.address = result;
+        });
     } else if (session.last_action == common.set_address) {
         logger.debug("Email: " + text);
         var is_valid_email = validator.validate(text);
@@ -726,8 +754,6 @@ function processPostbackEvent(session, action_details) {
         session.last_product.id = action_details.id;
         session.last_product.title = action_details.title;
         show_available_colorNsize(session, true, true);
-        //var found_products = search_map.get(session.last_search);
-        //sendGenericMessage(session.fbid, found_products);
         execute_search_product(session, session.last_search, session.last_search);
     } else if (user_action.indexOf(common.action_order) >= 0) {
         session.last_product.id = action_details.id;
@@ -745,6 +771,11 @@ function processPostbackEvent(session, action_details) {
     } else if (user_action.indexOf(common.action_purchase) >= 0) {
         session.last_action = common.set_quantity;
         sendTextMessage(session.fbid, common.pls_enter_name);
+    } else if (user_action.indexOf(common.action_confirm_addr) >= 0) {
+        session.last_action = common.set_address;
+        sendTextMessage(session.fbid, common.pls_enter_email);
+    } else if (user_action.indexOf(common.action_retype_addr) >= 0) {
+        sendTextMessage(session.fbid, common.pls_enter_address);
     } else if (user_action.indexOf(common.action_confirm_order) >= 0) {
         session.last_invoice.status = "confirm";
         g_model_factory.update_invoice(session.last_invoice, function (invoice) {
@@ -771,7 +802,7 @@ function processEvent(event) {
     if (event.message) {
         if (event.message.text) {
             var text = event.message.text;
-            // Handle a text message from this sender
+
             if (g_ai_using) {
                 processTextByAI(text, sender);
             } else {

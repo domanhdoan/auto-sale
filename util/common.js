@@ -46,6 +46,8 @@ module.exports = {
     action_confirm_order: "ok",
     action_cancel_order: "cancel",
     updating: "Đang cập nhật",
+    action_confirm_addr: "confirm_addr",
+    action_retype_addr: "retype_addr",
     product_search_max: 10
 }
 
@@ -246,6 +248,9 @@ module.exports.search_address = function (origin, callback){
         // Optionnal depending of the providers 
         httpAdapter: 'https', // Default 
         apiKey: config.bots.map_key,
+        countryCode: 'vn', 
+        minConfidence: 0.5, 
+        limit: 5,
         formatter: null         // 'gpx', 'string', ... 
     };
 
