@@ -250,7 +250,7 @@ function sendReceiptMessage(sender, invoice_items, invoice_details,
     };
     // Street, city, province, country
     var temp = invoice_details.address.split(",");
-    fullAddress.street_1 = invoice_details.address.replace(temp[temp.length - 2]
+    fullAddress.street_1 = invoice_details.address.replace(","+ temp[temp.length - 2]
         + "," + temp[temp.length - 1], "");
     fullAddress.city = temp[temp.length - 2].trim();
     fullAddress.state = temp[temp.length - 2].trim();
@@ -544,9 +544,8 @@ function searchAndConfirmAddress(session, destination, callback) {
         var length = 1;//result.length;
         for (var i = 0; i < length; i++) {
             logger.info("Full address: " + result[i].formattedAddress);
-            logger.info("City = " + result[i].city);
-            logger.info("Province / State = " + result[i].administrativeLevels.level1long);
-
+            //logger.info("City = " + result[i].city);
+            //logger.info("Province / State = " + result[i].administrativeLevels.level1long);
             var buttons = createAddressConfirmElement();
             sendConfirmMessage(session.fbid, result[i].formattedAddress, buttons);
             callback(result[i].formattedAddress);
