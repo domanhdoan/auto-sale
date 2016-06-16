@@ -283,7 +283,11 @@ function createAndSendInvoice(session, callback) {
     g_product_finder.getOrderItems(session.last_invoice.id, function (items) {
         var sub_total = 0;
         var invoice_items = [];
-        session.last_invoice.creation_date = items[0].Invoice.dataValues.creation_date.slice(0, -3);
+        var length = items[0].Invoice.dataValues.creation_date.length;
+        var delta = length - 10;
+        if (delta > 0) {
+            session.last_invoice.creation_date = items[0].Invoice.dataValues.creation_date.slice(0, -1 * delta);
+        }
         var invoice_details = session.last_invoice;
 
         for (var i = 0; i < items.length; i++) {
