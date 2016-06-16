@@ -74,7 +74,8 @@ module.exports.sale_steps = new Enum([
 var color_vn = {
     do: "Đỏ", den: "Đen", xam: "Xám", xanhlam: "Xanh lam",
     hongphan: "Hồng phấn", trang: "Trắng", xanhtimthan: "Xanh tím than",
-    ghi: "Ghi", tim: "Tím"
+    ghi: "Ghi", tim: "Tím", vang: "Vàng", xanhcoban: "Xanh cô ban", nau: "Nâu",
+    dogach: "Đỏ Gạch", xanhdatroi: "Xanh Da Trời", dodun: "Đỏ Đun", xanhneon: "Xanh Neon"
 };
 
 module.exports.get_color_vn = function (value) {
