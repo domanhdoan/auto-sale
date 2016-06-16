@@ -24,6 +24,9 @@ const APIAI_LANG = config.bots.ai_lang;
 const FB_VERIFY_TOKEN = config.bots.fb_verify_token;
 const FB_PAGE_ACCESS_TOKEN = config.bots.fb_page_token;
 
+// Keyword - results
+var search_map = {};
+
 // =================================================================
 // Methods for sending message to target user FB messager
 // =================================================================
@@ -351,7 +354,8 @@ const initSession = (fbid) => {
             status: "",
             creation_date: "",
             is_ordering: false
-        }
+        },
+        last_search: ""
     };
 }
 
@@ -412,6 +416,8 @@ function find_products_by_keywords(session, message) {
                 found_products.push(product_object);
             }
             sendGenericMessage(session.fbid, found_products);
+            search_map[message] = found_products;
+            session.last_search = message;
         } else {
             sendTextMessage(session.fbid, common.notify_product_notfound);
         }
@@ -689,6 +695,9 @@ function processPostbackEvent(session, action_details) {
         session.last_product.id = action_details.id;
         session.last_product.title = action_details.title;
         show_available_colorNsize(session, true, true);
+        //var found_products = search_map.get(session.last_search);
+        //sendGenericMessage(session.fbid, found_products);
+        execute_search_product(session, session.last_search, session.last_search);
     } else if (user_action.indexOf(common.action_order) >= 0) {
         session.last_product.id = action_details.id;
         session.last_action = common.select_product;
