@@ -281,9 +281,9 @@ function sendReceiptMessage(sender, invoice_items, invoice_details,
 
 function createAndSendInvoice(session, callback) {
     g_product_finder.getOrderItems(session.last_invoice.id, function (items) {
-        var invoice_items = [];
         var sub_total = 0;
-        session.last_invoice.creation_date = items[0].Invoice.dataValues.creation_date;
+        var invoice_items = [];
+        session.last_invoice.creation_date = items[0].Invoice.dataValues.creation_date.slice(0, -3);
         var invoice_details = session.last_invoice;
 
         for (var i = 0; i < items.length; i++) {
@@ -499,7 +499,7 @@ function execute_search_product(session, user_msg, user_msg_trans) {
 }
 
 function execute_order_product(session, text) {
-    var user_req_trans = translator(text).toLowerCase();
+    var user_req_trans = text.latinise().toLowerCase();
     if (session.last_action == common.select_product) {
         // Remove mua word to get color value
         var color_keyword = user_req_trans.replaceAll("mau", "").replaceAll(" ", "").trim();
@@ -732,7 +732,6 @@ function processEvent(event) {
                 processTextByAI(text, sender);
             } else {
                 processTextEvent(current_session, text);
-                // searchAndConfirmAddress(g_store_pattern.store_address, text);
             }
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
