@@ -71,7 +71,7 @@ function generate_query_findshoes(keywords) {
     if (keywords[2].length > 0) {
         query += " and S.value = '" + keywords[2] + "'";
     }
-    query += " LIMIT " + common.product_search_max + ";";
+    query += " order by P.id ASC LIMIT " + common.product_search_max + ";";
 
     return query;
 }

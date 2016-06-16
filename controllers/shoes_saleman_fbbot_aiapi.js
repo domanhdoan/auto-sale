@@ -404,6 +404,8 @@ function find_products_by_keywords(session, message) {
         var product_count = (products.length > common.product_search_max) ? common.product_search_max : products.length;
         if (products.length > 0) {
             // user_sessions[sessionId].last_action = common.find_product;
+            var found_products1 = [];
+            var found_products2 = [];
             var found_products = [];
             for (var i = 0; i < product_count; i++) {
                 var product_object = createProductElement(
@@ -413,8 +415,14 @@ function find_products_by_keywords(session, message) {
                     products[i].link.replaceAll("%%", "-"),
                     products[i].code,
                     products[i].id);
-                found_products.push(product_object);
+                if (session.last_product.id <= products[i].id) {
+                    found_products1.push(product_object);
+                } else {
+                    found_products2.push(product_object);
+                }
+
             }
+            found_products = found_products1.concat(found_products2);
             sendGenericMessage(session.fbid, found_products);
             search_map[message] = found_products;
             session.last_search = message;
