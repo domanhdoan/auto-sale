@@ -28,6 +28,20 @@
     "keywords": {
         "code": "bw*"
     },
+    "order_form":{
+        "title": "dynamictext-99",
+        "color": "menu-760",
+        "size": "menu-750",
+        "quantity": "menu-185",
+        "receipt_name": "your-name",
+        "email": "your-email",
+        "phone": "your-subject",
+        "address": "your-dc",
+        "comments": "your-message",
+        "request_type": "_wpcf7_is_ajax_call",
+        "unit_tag": "_wpcf7_unit_tag",
+        "once": "_wpnonce"
+    },
     "store_address": "85 Nguyễn Khang,  p.Yên Hòa, q.Cầu Giấy, HN",
     "store_type": "shoes"
 }

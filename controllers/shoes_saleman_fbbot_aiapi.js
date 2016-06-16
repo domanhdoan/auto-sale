@@ -218,7 +218,7 @@ function sendAddressConfirmMessage(sender, buttons) {
 function createOrderItemElement(title, desc, price, quantity, thumbnail_url) {
     var jsonItem = {
         "title": title,
-        "subtitle": "",
+        "subtitle": desc,
         "quantity": quantity,
         "price": price,
         "currency": "VND",
@@ -261,7 +261,7 @@ function sendReceiptMessage(sender, invoice_items, invoice_details,
             "payload": {
                 "template_type": "receipt",
                 "order_number": invoice_details.id,
-                "recipient_name": invoice_details.name,
+                "recipient_name": invoice_details.name + " - ĐT " + invoice_details.phone,
                 "elements": invoice_items,
                 "currency": "VND",
                 "order_url": "",
@@ -296,7 +296,8 @@ function createAndSendInvoice(session, callback) {
         for (var i = 0; i < items.length; i++) {
             var title = items[i].Product.dataValues.title;
             var price = items[i].Product.dataValues.price;
-            var subtitle = items[i].Product.dataValues.desc;
+            var subtitle = "Mô tả SP: Màu " + common.get_color_vn(items[i].Color.dataValues.name)
+                + " và Size " + items[i].Size.dataValues.value;
             var quantity = items[i].dataValues.quantity;
             var thumbnail_url = items[i].Product.dataValues.thumbnail;
             var jsonitem = createOrderItemElement(title, subtitle,
@@ -309,6 +310,28 @@ function createAndSendInvoice(session, callback) {
         var invoice_adjustments = {};
         sendReceiptMessage(session.fbid, invoice_items,
             invoice_details, invoice_summary, invoice_adjustments, callback);
+    });
+}
+
+function createAndSendOrderToStore(session, callback) {
+    g_product_finder.getOrderItems(session.last_invoice.id, function (items) { 
+         for (var i = 0; i < items.length; i++) {
+             var order = g_store_pattern.order_form;
+             request({
+                 url: g_home_page,
+                 method: 'POST',
+             }, function (error, response, body) {
+                 if (error) {
+                     logger.error('Error sending message: ' + error.stack);
+                 } else if (response.body.error) {
+                     logger.error('Error: ' + JSON.stringify(response.body.error));
+                 } else {
+                     if (callback != null) {
+                         callback();
+                     }
+                 }
+             });
+         }
     });
 }
 
