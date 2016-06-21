@@ -48,6 +48,9 @@ Object.keys(db).forEach(function (modelName) {
 db.Store.hasMany(db.Category, { as: "Store", foreignKeyConstraint:true});
 db.Category.belongsTo(db.Store);
 
+db.Store.hasMany(db.Fanpage, { as: "Store", foreignKeyConstraint:true});
+db.Fanpage.belongsTo(db.Store);
+
 //Define relation for Product
 db.Store.hasMany(db.Product, { as: "Store", foreignKeyConstraint:true});
 db.Product.belongsTo(db.Store);
