@@ -2,8 +2,8 @@
   "object":"page",
   "entry":[
     {
-      "id":123456788,
-      "time":1458692752478,
+      "id":"PAGE_ID",
+      "time":1460245674269,
       "messaging":[
         {
           "sender":{
@@ -12,12 +12,14 @@
           "recipient":{
             "id":"PAGE_ID"
           },
-          "timestamp":1458692752478,
-          "postback":{
-                "payload":"{\"id\":49,\"title\":\"Giày thể thao nam BW6305\",\"action\":\"view\"}"
+          "timestamp":1460245672080,
+          "message":{
+            "mid":"mid.1460245671959:dad2ec9421b03d6f78",
+            "seq":216,
+            "text":"mau den"
           }
         }
       ]
     }
   ]
-}
+ }

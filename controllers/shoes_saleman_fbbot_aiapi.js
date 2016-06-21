@@ -154,7 +154,6 @@ function findProductByCode(session, message) {
                 product.dataValues.id);
             found_products.push(product_object);
             fbMessenger.sendGenericMessage(session.fbid, found_products);
-            //fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_color);
         } else {
             logger.debug("Product not found");
             fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);

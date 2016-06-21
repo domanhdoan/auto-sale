@@ -12,7 +12,7 @@
           "recipient":{
             "id":"PAGE_ID"
           },
-          "timestamp":1458692752478,
+          "timestamp":1458692752678,
           "postback":{
                 "payload":"{\"id\":49,\"title\":\"Giày thể thao nam BW6305\",\"action\":\"view\"}"
           }
