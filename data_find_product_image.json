@@ -15,8 +15,15 @@
           "timestamp":1460245672080,
           "message":{
             "mid":"mid.1460245671959:dad2ec9421b03d6f78",
-            "seq":216,
-            "text":"giay the thao"
+            "seq": 216,
+            "attachments": [
+              {
+                "type": "image",
+                "payload": {
+                  "url": "http://bluewind.vn/wp-content/uploads/2016/05/6305-de-1.png"
+                }
+              }
+            ]
           }
         }
       ]

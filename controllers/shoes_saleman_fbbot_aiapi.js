@@ -93,7 +93,7 @@ function createAndSendOrderToStore (session, callback) {
 function findProductByImage(session, user_msg) {
     g_product_finder.findProductByThumbnail(g_home_page, user_msg, function (product) {
         var found_products = [];
-        var product_object = createProductElement(
+        var product_object = fbMessenger.createProductElement(
             product.dataValues.title,
             product.dataValues.price,
             product.dataValues.thumbnail.replaceAll("%%", "-"),
@@ -102,7 +102,7 @@ function findProductByImage(session, user_msg) {
             product.dataValues.id);
         found_products.push(product_object);
         session.last_product.id = product.dataValues.id;
-        sendGenericMessage(session.fbid, found_products);
+        fbMessenger.sendGenericMessage(session.fbid, found_products);
     });
 }
 
@@ -115,7 +115,7 @@ function findProductByKeywords(session, message) {
             var found_products2 = [];
             var found_products = [];
             for (var i = 0; i < product_count; i++) {
-                var product_object = fbMessenger.createProductElement(
+                var product_object = fbMessenger.fbMessenger.createProductElement(
                     products[i].title,
                     products[i].price,
                     products[i].thumbnail.replaceAll("%%", "-"),
@@ -130,11 +130,11 @@ function findProductByKeywords(session, message) {
 
             }
             found_products = found_products1.concat(found_products2);
-            fbMessenger.sendGenericMessage(session.fbid, found_products);
+            fbMessenger.fbMessenger.sendGenericMessage(session.fbid, found_products);
             search_map[message] = found_products;
             session.last_search = message;
         } else {
-            sendTextMessage(session.fbid, common.notify_product_notfound);
+            fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
         }
     });
 }
@@ -145,7 +145,7 @@ function findProductByCode(session, message) {
             // current_session.last_action = common.find_product;
             session.last_product.id = product.dataValues.id;
             var found_products = [];
-            var product_object = createProductElement(
+            var product_object = fbMessenger.createProductElement(
                 product.dataValues.title,
                 product.dataValues.price,
                 product.dataValues.thumbnail.replaceAll("%%", "-"),
@@ -153,11 +153,11 @@ function findProductByCode(session, message) {
                 product.dataValues.code,
                 product.dataValues.id);
             found_products.push(product_object);
-            sendGenericMessage(session.fbid, found_products);
-            //sendTextMessage(session.fbid, common.pls_select_product_color);
+            fbMessenger.sendGenericMessage(session.fbid, found_products);
+            //fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_color);
         } else {
             logger.debug("Product not found");
-            sendTextMessage(session.fbid, common.notify_product_notfound);
+            fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
         }
     });
 }
@@ -195,7 +195,7 @@ function showAvailableColorNsize(session, show_color, show_size) {
                 }
             }
             logger.info("Product id = " + productId + "Details - " + available_colors + available_sizes);
-            sendTextMessage(session.fbid, session.last_product.title + available_colors + available_sizes);
+            fbMessenger.sendTextMessage(session.fbid, session.last_product.title + available_colors + available_sizes);
         });
 }
 
@@ -209,7 +209,7 @@ function searchAndConfirmAddress(session, destination, callback) {
             //logger.info("City = " + result[i].city);
             //logger.info("Province / State = " + result[i].administrativeLevels.level1long);
             var buttons = createAddressConfirmElement();
-            sendConfirmMessage(session.fbid, result[i].formattedAddress, buttons);
+            fbMessenger.sendConfirmMessage(session.fbid, result[i].formattedAddress, buttons);
             callback(result[i].formattedAddress);
         }
     });
@@ -238,12 +238,12 @@ function doProductOrder(session, text) {
                 if (color != null) {
                     session.last_action = common.select_product_color;
                     session.last_product.color = color.dataValues.id;
-                    sendTextMessage(session.fbid, common.pls_select_product_size, function () {
+                    fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_size, function () {
                         showAvailableColorNsize(session, false, true);
                     });
                 } else {
                     logger.debug("Product not found");
-                    sendTextMessage(session.fbid, common.notify_color_notfound,
+                    fbMessenger.sendTextMessage(session.fbid, common.notify_color_notfound,
                         function () {
                             showAvailableColorNsize(session, true, false);
                         });
@@ -255,9 +255,9 @@ function doProductOrder(session, text) {
                 if (size != null) {
                     session.last_action = common.select_product_size;
                     session.last_product.size = size.dataValues.id;
-                    sendTextMessage(session.fbid, common.pls_enter_quantity);
+                    fbMessenger.sendTextMessage(session.fbid, common.pls_enter_quantity);
                 } else {
-                    sendTextMessage(session.fbid, common.notify_size_notfound,
+                    fbMessenger.sendTextMessage(session.fbid, common.notify_size_notfound,
                         function () {
                             showAvailableColorNsize(session, false, true);
                         });
@@ -276,7 +276,7 @@ function doProductOrder(session, text) {
 
         session.last_action = common.say_search_continue_message;
         var confirm_buttons = createSearchOrPurchaseElement();
-        sendConfirmMessage(session.fbid, "Xác nhận đơn đặt hàng.", 
+        fbMessenger.sendConfirmMessage(session.fbid, "Xác nhận đơn đặt hàng.", 
             confirm_buttons);
     }
 }
@@ -285,12 +285,12 @@ function doFillOrderDetails(session, text) {
     if (session.last_action == common.set_quantity) {
         logger.debug("Name: " + text);
         session.last_action = common.set_recipient_name;
-        sendTextMessage(session.fbid, common.pls_enter_phone);
+        fbMessenger.sendTextMessage(session.fbid, common.pls_enter_phone);
         session.last_invoice.name = text;
     } else if (session.last_action == common.set_recipient_name) {
         logger.debug("Phone: " + text);
         session.last_action = common.set_phone;
-        sendTextMessage(session.fbid, common.pls_enter_address);
+        fbMessenger.sendTextMessage(session.fbid, common.pls_enter_address);
         session.last_invoice.phone = text;
     } else if (session.last_action == common.set_phone) {
         logger.debug("Address: " + text);
@@ -303,9 +303,9 @@ function doFillOrderDetails(session, text) {
         if (is_valid_email) {
             session.last_invoice.email = text;
             session.last_action = common.set_delivery_date;
-            sendTextMessage(session.fbid, common.pls_enter_delivery_date);
+            fbMessenger.sendTextMessage(session.fbid, common.pls_enter_delivery_date);
         } else {
-            sendTextMessage(session.fbid, common.pls_enter_email);
+            fbMessenger.sendTextMessage(session.fbid, common.pls_enter_email);
         }
     } else if (session.last_action == common.set_email) {
         logger.debug("Delivery: " + text);
@@ -314,7 +314,7 @@ function doFillOrderDetails(session, text) {
     } else if (session.last_action == common.set_delivery_date) {
         createAndSendInvoice(session, function () {
             var buttons = createConfirmOrCancelElement();
-            sendConfirmMessage(session.fbid, buttons);
+            fbMessenger.sendConfirmMessage(session.fbid, buttons);
         });
     } else {
         logger.info("Unknow action = " + text);
@@ -348,10 +348,10 @@ function processTextByAI(text, sender) {
             if (isDefined(responseData) && isDefined(responseData.facebook)) {
                 try {
                     console.log('Response as formatted message');
-                    //sendTextMessage(sender, responseData.facebook);
+                    //fbMessenger.sendTextMessage(sender, responseData.facebook);
                     sendDataToFBMessenger(sender, responseData.facebook)
                 } catch (err) {
-                    sendTextMessage(sender, { text: err.message });
+                    fbMessenger.sendTextMessage(sender, { text: err.message });
                 }
             } else if (isDefined(responseText)) {
                 console.log('Response as text message');
@@ -359,7 +359,7 @@ function processTextByAI(text, sender) {
                 // so we split message if needed
                 var splittedText = splitResponse(responseText);
                 async.eachSeries(splittedText, (textPart, callback) => {
-                    sendTextMessage(sender, textPart);
+                    fbMessenger.sendTextMessage(sender, textPart);
                 });
             }
         }
@@ -386,9 +386,9 @@ function processTextEvent(session, user_msg) {
                 session.last_invoice.id = -1;
                 session.last_invoice.status = "cancel";
             });
-        sendTextMessage(session.fbid, common.pls_reset_buying);
+        fbMessenger.sendTextMessage(session.fbid, common.pls_reset_buying);
         session.last_action = common.say_greetings;
-        sendTextMessage(session.fbid, common.pls_select_product);
+        fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
         /*Handle what user send to fanpage*/
     } else if (last_action_key == common.say_greetings) {
         if (session.last_invoice.id == -1) {
@@ -421,34 +421,34 @@ function processPostbackEvent(session, action_details) {
         session.last_action = common.select_product;
         session.last_product.title = action_details.title;
         session.last_invoice.is_ordering = true;
-        sendTextMessage(session.fbid, "Bắt đầu đặt hàng. " +
+        fbMessenger.sendTextMessage(session.fbid, "Bắt đầu đặt hàng. " +
             common.pls_select_product_color, function () {
                 showAvailableColorNsize(session, true, false);
             });
     } else if (session.last_invoice.is_ordering &&
         (user_action.indexOf(common.action_continue_search) >= 0)) {
         session.last_action = common.say_greetings;
-        sendTextMessage(session.fbid, common.pls_select_product);
+        fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
     } else if (user_action.indexOf(common.action_purchase) >= 0) {
         session.last_action = common.set_quantity;
-        sendTextMessage(session.fbid, common.pls_enter_name);
+        fbMessenger.sendTextMessage(session.fbid, common.pls_enter_name);
     } else if (user_action.indexOf(common.action_confirm_addr) >= 0) {
         session.last_action = common.set_address;
-        sendTextMessage(session.fbid, common.pls_enter_email);
+        fbMessenger.sendTextMessage(session.fbid, common.pls_enter_email);
     } else if (user_action.indexOf(common.action_retype_addr) >= 0) {
-        sendTextMessage(session.fbid, common.pls_enter_address);
+        fbMessenger.sendTextMessage(session.fbid, common.pls_enter_address);
     } else if (user_action.indexOf(common.action_confirm_order) >= 0) {
         session.last_invoice.status = "confirm";
         g_model_factory.update_invoice(session.last_invoice, function (invoice) {
             logger.info(invoice);
             sessionManager.resetSession(session.fbid);
-            sendTextMessage(session.fbid, common.pls_select_product);
+            fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
         });
     } else if (user_action.indexOf(common.action_cancel_order) >= 0) {
         g_model_factory.cancel_invoice(session.last_invoice.id, "cancel", function (invoice) {
             if (invoice != null) {
                 user_sessions[session.sessionId] = initSession(session.fbid);
-                sendTextMessage(session.fbid, common.say_greetings);
+                fbMessenger.sendTextMessage(session.fbid, common.say_greetings);
             }
         });
     } else {
@@ -603,7 +603,7 @@ ai_webhook.post(config.bots.ai_webhook, function (req, res) {
         if (products.length > 0) {
             var found_products = [];
             for (var i = 0; i < product_count; i++) {
-                var product_object = createProductElement(
+                var product_object = fbMessenger.createProductElement(
                     products[i].title,
                     products[i].price,
                     products[i].thumbnail.replaceAll("%%", "-"),
@@ -617,7 +617,7 @@ ai_webhook.post(config.bots.ai_webhook, function (req, res) {
             res.setHeader('content-type', 'application/json');
             res.send(response);
         } else {
-            sendTextMessage(session.fbid, common.notify_product_notfound);
+            fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
         }
     });
 });
