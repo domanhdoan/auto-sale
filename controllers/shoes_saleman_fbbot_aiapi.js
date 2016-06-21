@@ -115,7 +115,7 @@ function findProductByKeywords(session, message) {
             var found_products2 = [];
             var found_products = [];
             for (var i = 0; i < product_count; i++) {
-                var product_object = fbMessenger.fbMessenger.createProductElement(
+                var product_object = fbMessenger.createProductElement(
                     products[i].title,
                     products[i].price,
                     products[i].thumbnail.replaceAll("%%", "-"),
@@ -130,7 +130,7 @@ function findProductByKeywords(session, message) {
 
             }
             found_products = found_products1.concat(found_products2);
-            fbMessenger.fbMessenger.sendGenericMessage(session.fbid, found_products);
+            fbMessenger.sendGenericMessage(session.fbid, found_products);
             search_map[message] = found_products;
             session.last_search = message;
         } else {
