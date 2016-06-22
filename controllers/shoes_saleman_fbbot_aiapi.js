@@ -114,8 +114,10 @@ function sendSearchResultsToFB(session, products) {
                 found_products[i].dataValues.code,
                 found_products[i].dataValues.id);
             results.push(product_object);
-            session.last_product.id = products.dataValues.id;
-            fbMessenger.sendGenericMessage(session.fbid, results);
+        }
+        fbMessenger.sendGenericMessage(session.fbid, results);
+        if (product_count == 1) {
+            session.last_product.id = found_products[0].dataValues.id;
         }
     }
 
