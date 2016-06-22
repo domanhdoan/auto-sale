@@ -2,37 +2,43 @@ var g_orm_manager = null;
 var logger = require('../util/logger.js');
 var moment = require('moment');
 var common = require('../util/common.js');
+
 module.exports.init = function (orm_manager) {
     g_orm_manager = orm_manager;
 }
 
-module.exports.create_category = function (store_object, name, callback) {
-    g_orm_manager.Category.findOne({
+module.exports.findAndCreateStore = function (store_page, store_type, callback) {
+    g_orm_manager.Store.findOrCreate({
         where: {
-            name: name,
-            StoreId: store_object.id
+            home: store_page
+        },
+        defaults: {
+            home: store_page,
+            type: store_type
         }
-    }).then(function (result) {
-        if (result == null) {
-            g_orm_manager.Category
-                .build({
-                    name: name,
-                })
-                .save()
-                .then(function (saved_category) {
-                    saved_category.setStore(store_object);
-                    callback(saved_category);
-                }).catch(function (error) {
-                    logger.error(error);
-                });
-
-        } else {
-            callback(result);
-        }
+    }).then(function (store) {
+        var saved_store = store[0];
+        callback(saved_store);
     });
 }
 
-module.exports.create_product = function (
+module.exports.findAndCreateCategory = function (store_object, name, callback) {
+    g_orm_manager.Category.findOrCreate({
+        where: {
+            name: name,
+            StoreId: store_object.id
+        },
+        defaults: {
+            name: name,
+        }
+    }).then(function (category) {
+        var saved_category = category[0];
+        saved_category.setStore(store_object);
+        callback(saved_category);
+    });
+}
+
+module.exports.findAndCreateProduct = function (
     saved_store,
     saved_category,
     product_title,
@@ -47,14 +53,10 @@ module.exports.create_product = function (
     product_code_pattern,
     callback
 ) {
-    var result = common.extract_product_code(product_detail_link, product_code_pattern);
+    // result = common.extract_product_code(product_detail_link, product_code_pattern);
     // g_orm_manager.Product.findOrCreate({
     //     where: {
-    //         // $or:[
-    //         //     {
-    //                 title: product_title.trim()
-    //         //     },
-    //         // ]
+    //         link: product_detail_link.replaceAll('-', '%%')
     //     },
     //     defaults: {
     //         title: product_title,
@@ -78,15 +80,11 @@ module.exports.create_product = function (
     //         });
     //     }
     //     callback(saved_product);
-    // }).fail(function (err) {
-
     // });
 
     g_orm_manager.Product.findOne({
         where: {
-            //title: product_title,
-            //finger: product_finger
-            code: result.code
+            link: product_detail_link.replaceAll('-', '%%')
         }
     }).then(function (found_product) {
         if (found_product == null) {

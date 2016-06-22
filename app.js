@@ -55,15 +55,16 @@ if (crawl_source != null) {
         store_crawling_pattern = common.load_crawl_pattern(link);
         if (config.submodule.crawler) {
             crawler.init(store_crawling_pattern, orm_manager);
-            crawler.crawl_alink_withdepth(link);
+            crawler.crawlWholeSite(link);
         }
 
-        if (config.submodule.salebot) {
-            shoes_salebot.enable_ai(config.bots.ai_on);
-            shoes_salebot.start(link, store_crawling_pattern,
-                product_finder, model_factory);
-        }
     });
+
+    if (config.submodule.salebot) {
+        shoes_salebot.enable_ai(config.bots.ai_on);
+        shoes_salebot.start(link, store_crawling_pattern,
+            product_finder, model_factory);
+    }
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
 }
