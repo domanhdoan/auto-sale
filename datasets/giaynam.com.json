@@ -14,9 +14,11 @@
         "percent":".p_gia .gia_giam",
         "detail_link":".p_img a",
         "details": {
+            "code": "p.masp strong",
+            "color": "dd.mausac a",
+            "size": "dd.size span",
             "brand": "",
-            "size": "",
-            "stock_status": ""
+            "instock": "del"
         },
         "product_paging": {
             "page_list": "div.wp-pagenavi",
