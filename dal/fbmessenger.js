@@ -6,7 +6,7 @@ var config = require("../config/config.js");
 function FBMessenger(){
     this.sendDataToFBMessenger = function (sender, data, callback) {
         logger.info("Data = " + JSON.stringify(data));
-        request({
+        require('request')({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: { access_token: config.bots.fb_page_token },
             method: 'POST',
