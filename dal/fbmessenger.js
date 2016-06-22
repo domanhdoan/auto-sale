@@ -1,30 +1,31 @@
 
 var common = require("../util/common");
 var logger = require("../util/logger.js");
+var config = require("../config/config.js");
 
 function FBMessenger(){
     this.sendDataToFBMessenger = function (sender, data, callback) {
         logger.info("Data = " + JSON.stringify(data));
-        // request({
-        //     url: 'https://graph.facebook.com/v2.6/me/messages',
-        //     qs: { access_token: config.bots.fb_page_token },
-        //     method: 'POST',
-        //     json: true,
-        //     body: {
-        //         recipient: { id: sender },
-        //         message: data
-        //     }
-        // }, function (error, response, body) {
-        //     if (error) {
-        //         logger.error('Error sending message: ' + error.stack);
-        //     } else if (response.body.error) {
-        //         logger.error('Error: ' + JSON.stringify(response.body.error));
-        //     } else {
-        //         if (callback != null) {
-        //             callback();
-        //         }
-        //     }
-        // });
+        request({
+            url: 'https://graph.facebook.com/v2.6/me/messages',
+            qs: { access_token: config.bots.fb_page_token },
+            method: 'POST',
+            json: true,
+            body: {
+                recipient: { id: sender },
+                message: data
+            }
+        }, function (error, response, body) {
+            if (error) {
+                logger.error('Error sending message: ' + error.stack);
+            } else if (response.body.error) {
+                logger.error('Error: ' + JSON.stringify(response.body.error));
+            } else {
+                if (callback != null) {
+                    callback();
+                }
+            }
+        });
     }
 }
 
