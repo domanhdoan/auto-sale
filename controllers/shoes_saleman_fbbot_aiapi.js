@@ -93,6 +93,7 @@ function createAndSendOrderToStore(session, callback) {
 function sendSearchResultsToFB(session, products) {
     if (products == null) {
         // send suggestion for products in same category
+        fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
     } else {
         var found_products = null;
         var results = [];
@@ -165,12 +166,7 @@ function findProductByKeywords(session, message) {
 
 function findProductByCode(session, message) {
     g_product_finder.findProductsByCode(message, function (product) {
-        if (product != null) {
-            sendSearchResultsToFB(session, product);
-        } else {
-            logger.debug("Product not found");
-            fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
-        }
+        sendSearchResultsToFB(session, product);
     });
 }
 
