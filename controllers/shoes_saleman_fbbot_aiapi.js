@@ -12,10 +12,10 @@ var config = require("../config/config.js");
 var logger = require("../util/logger.js");
 
 // Refactory code
-var SessionManager = require("../util/SessionManager.js");
+var SessionManager = require("../util/session_manager.js");
 var sessionManager = new SessionManager();
 
-var FBMessenger = require("../util/FBMessenger.js");
+var FBMessenger = require("../util/fbmessenger.js");
 var fbMessenger = new FBMessenger();
 
 var g_store_id = "";
