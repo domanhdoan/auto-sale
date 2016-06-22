@@ -7,7 +7,8 @@ var request = require("request");
 var cur_home_page = "";
 var g_crawl_pattern = null;
 var g_orm_manager = null;
-var g_model_factory = require("../models/model_factory.js");
+
+var g_model_factory = require("../dal/model_factory.js");
 
 var url_link = new Map();
 

@@ -7,22 +7,25 @@ const apiai = require('apiai');
 const uuid = require('node-uuid');
 const JSONbig = require('json-bigint');
 const async = require('async');
-var common = require("../util/common");
+
 var config = require("../config/config.js");
+
+var common = require("../util/common");
 var logger = require("../util/logger.js");
+
+var g_model_factory = require("../dal/model_factory.js");
 
 // Refactory code
 var SessionManager = require("../util/session_manager.js");
 var sessionManager = new SessionManager();
 
-var FBMessenger = require("../util/fbmessenger.js");
+var FBMessenger = require("../dal/fbmessenger.js");
 var fbMessenger = new FBMessenger();
 
 var g_store_id = "";
 var g_home_page = "";
 var g_search_path = "";
 var g_product_finder = null;
-var g_model_factory = require("../models/model_factory.js");
 var g_store_pattern = {};
 
 var g_ai_using = false;
@@ -33,7 +36,7 @@ const FB_VERIFY_TOKEN = config.bots.fb_verify_token;
 // Keyword - results
 var search_map = {};
 
-function createAndSendInvoice (session, callback) {
+function createAndSendOrderToFB(session, callback) {
     g_product_finder.getOrderItems(session.last_invoice.id, function (items) {
         var sub_total = 0;
         var invoice_items = [];
@@ -58,14 +61,14 @@ function createAndSendInvoice (session, callback) {
             sub_total += (price * quantity);
         }
 
-        var invoice_summary = generate_invoice_summary(sub_total / 100, 200);
+        var invoice_summary = fbMessenger.generate_invoice_summary(sub_total / 100, 200);
         var invoice_adjustments = {};
         fbMessenger.sendReceiptMessage(session.fbid, invoice_items,
             invoice_details, invoice_summary, invoice_adjustments, callback);
     });
 }
 
-function createAndSendOrderToStore (session, callback) {
+function createAndSendOrderToStore(session, callback) {
     g_product_finder.getOrderItems(session.last_invoice.id, function (items) {
         for (var i = 0; i < items.length; i++) {
             var order = g_store_pattern.order_form;
@@ -86,23 +89,44 @@ function createAndSendOrderToStore (session, callback) {
         }
     });
 }
+
+function sendSearchResultsToFB(session, products) {
+    if (products == null) {
+        // send suggestion for products in same category
+    } else {
+        var found_products = null;
+        var results = [];
+        if (Array.isArray(products)) {
+            found_products = products;
+        } else {
+            found_products = [];
+            found_products.push(products);
+        }
+        var product_count = (found_products.length > common.product_search_max) ?
+            common.product_search_max : found_products.length;
+        for (var i = 0; i < product_count; i++) {
+            var product_object = fbMessenger.createProductElement(
+                found_products[i].dataValues.title,
+                found_products[i].dataValues.price,
+                found_products[i].dataValues.thumbnail.replaceAll("%%", "-"),
+                found_products[i].dataValues.link.replaceAll("%%", "-"),
+                found_products[i].dataValues.code,
+                found_products[i].dataValues.id);
+            results.push(product_object);
+            session.last_product.id = products.dataValues.id;
+            fbMessenger.sendGenericMessage(session.fbid, results);
+        }
+    }
+
+}
+
 // =================================================================
-// Methods for handling user request
+// Methods for search product
 // =================================================================
 
 function findProductByImage(session, user_msg) {
     g_product_finder.findProductByThumbnail(g_home_page, user_msg, function (product) {
-        var found_products = [];
-        var product_object = fbMessenger.createProductElement(
-            product.dataValues.title,
-            product.dataValues.price,
-            product.dataValues.thumbnail.replaceAll("%%", "-"),
-            product.dataValues.link.replaceAll("%%", "-"),
-            product.dataValues.code,
-            product.dataValues.id);
-        found_products.push(product_object);
-        session.last_product.id = product.dataValues.id;
-        fbMessenger.sendGenericMessage(session.fbid, found_products);
+        sendSearchResultsToFB(session, product);
     });
 }
 
@@ -142,18 +166,7 @@ function findProductByKeywords(session, message) {
 function findProductByCode(session, message) {
     g_product_finder.findProductsByCode(message, function (product) {
         if (product != null) {
-            // current_session.last_action = common.find_product;
-            session.last_product.id = product.dataValues.id;
-            var found_products = [];
-            var product_object = fbMessenger.createProductElement(
-                product.dataValues.title,
-                product.dataValues.price,
-                product.dataValues.thumbnail.replaceAll("%%", "-"),
-                product.dataValues.link.replaceAll("%%", "-"),
-                product.dataValues.code,
-                product.dataValues.id);
-            found_products.push(product_object);
-            fbMessenger.sendGenericMessage(session.fbid, found_products);
+            sendSearchResultsToFB(session, product);
         } else {
             logger.debug("Product not found");
             fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
@@ -275,7 +288,7 @@ function doProductOrder(session, text) {
 
         session.last_action = common.say_search_continue_message;
         var confirm_buttons = createSearchOrPurchaseElement();
-        fbMessenger.sendConfirmMessage(session.fbid, "Xác nhận đơn đặt hàng.", 
+        fbMessenger.sendConfirmMessage(session.fbid, "Xác nhận đơn đặt hàng.",
             confirm_buttons);
     }
 }
@@ -311,7 +324,7 @@ function doFillOrderDetails(session, text) {
         session.last_invoice.delivery = text;
         session.last_action = common.set_delivery_date;
     } else if (session.last_action == common.set_delivery_date) {
-        createAndSendInvoice(session, function () {
+        createAndSendOrderToFB(session, function () {
             var buttons = createConfirmOrCancelElement();
             fbMessenger.sendConfirmMessage(session.fbid, buttons);
         });

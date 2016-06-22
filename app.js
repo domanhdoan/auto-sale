@@ -1,14 +1,18 @@
 require('string.prototype.startswith');
 var mkdirp = require('mkdirp');
 
-var product_finder = require('./models/product_finder.js');
-var crawler = require("./controllers/web_crawler");
-var shoes_salebot = require("./controllers/shoes_saleman_fbbot_aiapi");
+var config = require("./config/config.js");
+
+var orm_manager = require("./models/db_manager.js");
+
+var product_finder = require('./dal/product_finder.js');
+var model_factory = require("./dal/model_factory.js");
+
+var crawler         = require("./controllers/web_crawler");
+var shoes_salebot   = require("./controllers/shoes_saleman_fbbot_aiapi");
+
 var common = require("./util/common");
 var logger = require("./util/logger");
-var orm_manager = require("./models/db_manager.js");
-var model_factory = require("./models/model_factory.js");
-var config = require("./config/config.js");
 
 function show_error() {
     logger.error("Command: node app.js options");
