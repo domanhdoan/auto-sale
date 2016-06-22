@@ -16,7 +16,7 @@ var logger = require("../util/logger.js");
 var g_model_factory = require("../dal/model_factory.js");
 
 // Refactory code
-var SessionManager = require("../util/session_manager.js");
+var SessionManager = require("../dal/session_manager.js");
 var sessionManager = new SessionManager();
 
 var FBMessenger = require("../dal/fbmessenger.js");
