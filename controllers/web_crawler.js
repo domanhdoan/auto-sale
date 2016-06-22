@@ -10,8 +10,6 @@ var g_orm_manager = null;
 
 var g_model_factory = require("../dal/model_factory.js");
 
-var url_link = new Map();
-
 function insertPrefixForLink(current_link, home_page) {
       if (!current_link.startsWith('http')) {
             current_link = home_page + current_link;
