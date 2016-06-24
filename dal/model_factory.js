@@ -22,7 +22,7 @@ module.exports.findAndCreateStore = function (store_page, store_type, callback) 
     });
 }
 
-module.exports.findAndCreateCategory = function (store_object, name, callback) {
+module.exports.findAndCreateCategory = function (store_object, name, link, callback) {
     g_orm_manager.Category.findOrCreate({
         where: {
             name: name,
@@ -30,6 +30,7 @@ module.exports.findAndCreateCategory = function (store_object, name, callback) {
         },
         defaults: {
             name: name,
+            link:link
         }
     }).then(function (category) {
         var saved_category = category[0];
