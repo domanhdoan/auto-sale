@@ -10,13 +10,6 @@ var g_orm_manager = null;
 
 var g_model_factory = require("../dal/model_factory.js");
 
-function insertPrefixForLink(current_link, home_page) {
-      if (current_link != null && !current_link.startsWith('http')) {
-            current_link = home_page + current_link;
-      }
-      return current_link;
-}
-
 function handleNextPages(page_object, saved_store, saved_category,
       product_pattern) {
       var $ = page_object;
@@ -25,7 +18,7 @@ function handleNextPages(page_object, saved_store, saved_category,
       if (page_list.length > 0) {
             page_list.each(function (i, page) {
                   var link = $(this).attr('href');
-                  link = insertPrefixForLink(link, cur_home_page);
+                  link = common.insertRootLink(link, cur_home_page);
                   var products = extractOneCategory(saved_store, saved_category,
                         link, false);
             });
@@ -99,8 +92,8 @@ function extractOneCategory(saved_store, saved_category, handle_paging, callback
 
                   if (product_thumbnail != undefined && product_thumbnail != "" && product_title != "") {
                         var product_detail_link = $(product_list[i]).find(product_pattern.detail_link).attr('href');
-                        product_detail_link = insertPrefixForLink(product_detail_link, cur_home_page);
-                        product_thumbnail = insertPrefixForLink(product_thumbnail, cur_home_page)
+                        product_detail_link = common.insertRootLink(product_detail_link, cur_home_page);
+                        product_thumbnail = common.insertRootLink(product_thumbnail, cur_home_page)
 
                         if (product_desc == "") {
                               product_desc = product_title;
@@ -167,7 +160,7 @@ function extractCategories(home_page_object, saved_store, callback) {
                   logger.info("Category: " + category);
                   // logger.info("\nmenu_items[" + i + "] = " + $(menu_items[i]));
                   var item_link = item.attr("href");
-                  item_link = insertPrefixForLink(item_link, cur_home_page);
+                  item_link = common.insertRootLink(item_link, cur_home_page);
                   g_model_factory.findAndCreateCategory(saved_store, category, item_link,
                         function (saved_category) {
                               extractOneCategory(saved_store, saved_category, true, callback);
