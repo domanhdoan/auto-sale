@@ -51,18 +51,20 @@ model_factory.init(orm_manager);
 var store_crawling_pattern;
 var crawl_source = common.load_json("./crawl_sources/links.json");
 if (crawl_source != null) {
-    crawl_source.links.forEach(function (link) {
-        store_crawling_pattern = common.load_crawl_pattern(link);
-        if (config.submodule.crawler) {
+    if (config.submodule.crawler) {
+        var async = require('async')
+        async.forEach(Object.keys(crawl_source.links), function (key, next) {
+            store_crawling_pattern = common.load_crawl_pattern(crawl_source.links[key]);
             crawler.init(store_crawling_pattern, orm_manager);
-            crawler.crawlWholeSite(link);
-        }
-
-    });
+            crawler.crawlWholeSite(crawl_source.links[key], function () {
+                next()
+            });
+        });
+    }
 
     if (config.submodule.salebot) {
         shoes_salebot.enable_ai(config.bots.ai_on);
-        shoes_salebot.start(link, store_crawling_pattern,
+        shoes_salebot.start(crawl_source.links[0], store_crawling_pattern,
             product_finder, model_factory);
     }
 } else {

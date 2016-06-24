@@ -1,0 +1,2 @@
+http_requester.bat data_find_product_code.json
+http_requester.bat data_put_to_cart.json
