@@ -269,3 +269,14 @@ String.prototype.latinize = String.prototype.latinise;
 String.prototype.isLatin = function(){
     return this==this.latinise()
 }
+
+module.exports.saveToFile = function (url, content){
+    require('fs').writeFile("./temp/" + url.replaceAll("http://", "").replaceAll("/", "#")+ ".html",
+        content, function (err) {
+            if (err) {
+                return console.log(err);
+            }
+
+            console.log("The file was saved!");
+        });
+}
