@@ -75,7 +75,7 @@ function extractProductDetails(product_pattern, saved_product) {
       });
 }
 
-function extractOneCategory(saved_store, saved_category, handle_paging) {
+function extractOneCategory(saved_store, saved_category, handle_paging, callback) {
       var productlist = [];
       var link = saved_category.dataValues.link;
       logger.info("Sub-category: " + link);
@@ -86,6 +86,9 @@ function extractOneCategory(saved_store, saved_category, handle_paging) {
             }
 
             var $ = cheerio.load(body);
+
+            common.saveToFile(link, body);
+
             var product_pattern = g_crawl_pattern.product_info;
             var product_list = $(product_pattern.product_list);
 
@@ -144,14 +147,19 @@ function extractOneCategory(saved_store, saved_category, handle_paging) {
             if (handle_paging) {
                   handleNextPages($, saved_store, saved_category, product_pattern);
             }
+
+            if (callback != null) {
+                  callback();
+            }
       });
       return productlist;
 }
 
-function extractCategories(home_page_object, saved_store) {
+function extractCategories(home_page_object, saved_store, callback) {
       var $ = home_page_object;
       var menu_items = $(g_crawl_pattern.product_menu.item);
-      for (var i = 0, len = menu_items.length; i < len;i++) {
+      logger.info("Store: " + saved_store.dataValues.home);
+      for (var i = 0, len = menu_items.length; i < len; i++) {
             var item = $(menu_items[i]).find(g_crawl_pattern
                   .product_menu.item_link);
             var category = item.text();
@@ -162,7 +170,7 @@ function extractCategories(home_page_object, saved_store) {
                   item_link = insertPrefixForLink(item_link, cur_home_page);
                   g_model_factory.findAndCreateCategory(saved_store, category, item_link,
                         function (saved_category) {
-                              extractOneCategory(saved_store, saved_category, true);
+                              extractOneCategory(saved_store, saved_category, true, callback);
                         });
             } else {
                   logger.info("Will not extract product list for menu items that contain sub-menu");
@@ -170,13 +178,13 @@ function extractCategories(home_page_object, saved_store) {
       }
 }
 
-exports.init = function (crawl_pattern, orm_manager) {
-      g_crawl_pattern = crawl_pattern;
+exports.init = function (orm_manager) {
       g_orm_manager = orm_manager;
       g_model_factory.init(g_orm_manager);
 }
 
-exports.crawlWholeSite = function (home_page, callback) {
+exports.crawlWholeSite = function (home_page, crawl_pattern, callback) {
+      g_crawl_pattern = crawl_pattern;
       cur_home_page = home_page;
       if (cur_home_page != null && !cur_home_page.startsWith('http')) {
             cur_home_page = "http://" + cur_home_page;
@@ -191,8 +199,8 @@ exports.crawlWholeSite = function (home_page, callback) {
                         }
                         // load the web_content of the page into Cheerio so we can traverse the DOM
                         var $ = cheerio.load(web_content);
-                        extractCategories($, store);
-                        callback();
+                        extractCategories($, store, callback);
+                        common.saveToFile(store.dataValues.home, web_content);
                   });
             });
 }
