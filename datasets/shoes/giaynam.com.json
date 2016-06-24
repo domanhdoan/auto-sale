@@ -1,0 +1,37 @@
+{
+        "product_menu": {
+        "panel": "ul#menu_top",
+        "item": "li a"
+    },
+    "product_info":{
+        "product_list":"li",
+        "code": "",
+        "title": ".p_img a .p_title",
+        "thumbnail":".p_img a img",
+        "desc":".p_img a div",
+        "price": ".p_gia .gia_ban",
+        "discount":".p_gia .gia_giam",
+        "percent":".p_gia .gia_giam",
+        "detail_link":".p_img a",
+        "details": {
+            "code": "p.masp strong",
+            "color": "dd.mausac a",
+            "size": "dd.size span",
+            "brand": "",
+            "instock": "del"
+        },
+        "product_paging": {
+            "page_list": "div.wp-pagenavi",
+            "page_link": "a.page.larger"
+        }
+    },
+    "product_search": "/?s=",
+    "keywords": [
+        "giay",
+        "nam",
+        "nu",
+        "gia re",
+        "the thao"
+    ],
+    "store_type": "shoes"
+}

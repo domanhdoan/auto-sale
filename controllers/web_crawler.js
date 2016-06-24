@@ -11,7 +11,7 @@ var g_orm_manager = null;
 var g_model_factory = require("../dal/model_factory.js");
 
 function insertPrefixForLink(current_link, home_page) {
-      if (!current_link.startsWith('http')) {
+      if (current_link != null && !current_link.startsWith('http')) {
             current_link = home_page + current_link;
       }
       return current_link;
@@ -75,10 +75,10 @@ function extractProductDetails(product_pattern, saved_product) {
       });
 }
 
-function extractOneCategory(saved_store, saved_category,
-      link, handle_paging) {
+function extractOneCategory(saved_store, saved_category, handle_paging) {
       var productlist = [];
-
+      var link = saved_category.dataValues.link;
+      logger.info("Sub-category: " + link);
       request(link, function (error, response, body) {
             if (error) {
                   logger.error("Couldn’t get page " + link + " because of error: " + error);
@@ -89,13 +89,13 @@ function extractOneCategory(saved_store, saved_category,
             var product_pattern = g_crawl_pattern.product_info;
             var product_list = $(product_pattern.product_list);
 
-            product_list.each(function (i, product) {
-                  var product_title = $(this).find(product_pattern.title).text();
-                  var product_thumbnail = $(this).find(product_pattern.thumbnail).attr('src');
-                  var product_desc = $(this).find(product_pattern.desc).text();
+            for (var i = 0, len = product_list.length; i < len; i++) {
+                  var product_title = $(product_list[i]).find(product_pattern.title).text();
+                  var product_thumbnail = $(product_list[i]).find(product_pattern.thumbnail).attr('src');
+                  var product_desc = $(product_list[i]).find(product_pattern.desc).text();
 
-                  if (product_thumbnail != "" && product_title != "") {
-                        var product_detail_link = $(this).find(product_pattern.detail_link).attr('href');
+                  if (product_thumbnail != undefined && product_thumbnail != "" && product_title != "") {
+                        var product_detail_link = $(product_list[i]).find(product_pattern.detail_link).attr('href');
                         product_detail_link = insertPrefixForLink(product_detail_link, cur_home_page);
                         product_thumbnail = insertPrefixForLink(product_thumbnail, cur_home_page)
 
@@ -103,9 +103,9 @@ function extractOneCategory(saved_store, saved_category,
                               product_desc = product_title;
                         }
 
-                        var product_price = $(this).find(product_pattern.price).text();
-                        var product_discount = $(this).find(product_pattern.discount).text();
-                        var product_percent = $(this).find(product_pattern.percent).text();
+                        var product_price = $(product_list[i]).find(product_pattern.price).text();
+                        var product_discount = $(product_list[i]).find(product_pattern.discount).text();
+                        var product_percent = $(product_list[i]).find(product_pattern.percent).text();
 
                         if (product_price == null || product_price == "") {
                               product_price = product_discount;
@@ -139,7 +139,7 @@ function extractOneCategory(saved_store, saved_category,
                   } else {
                         logger.info("Skipped this HTML element\n");
                   }
-            });
+            }
 
             if (handle_paging) {
                   handleNextPages($, saved_store, saved_category, product_pattern);
@@ -148,23 +148,26 @@ function extractOneCategory(saved_store, saved_category,
       return productlist;
 }
 
-function extractCategories(home_page_object, saved_store, menu_items) {
+function extractCategories(home_page_object, saved_store) {
       var $ = home_page_object;
-      menu_items.each(function (i, product) {
-            var item_link = $(this).children('a').attr("href");
-            item_link = insertPrefixForLink(item_link, cur_home_page);
-            var category = $(this).children('a').text();
-            if (category != null) {
-                  logger.info("Category: " + item_link);
-                  g_model_factory.findAndCreateCategory(saved_store, category, 
+      var menu_items = $(g_crawl_pattern.product_menu.item);
+      for (var i = 0, len = menu_items.length; i < len;i++) {
+            var item = $(menu_items[i]).find(g_crawl_pattern
+                  .product_menu.item_link);
+            var category = item.text();
+            if (menu_items[i].children.length == 1) {
+                  logger.info("Category: " + category);
+                  // logger.info("\nmenu_items[" + i + "] = " + $(menu_items[i]));
+                  var item_link = item.attr("href");
+                  item_link = insertPrefixForLink(item_link, cur_home_page);
+                  g_model_factory.findAndCreateCategory(saved_store, category, item_link,
                         function (saved_category) {
-                        extractOneCategory(saved_store, saved_category,
-                              item_link, true);
-                  });
+                              extractOneCategory(saved_store, saved_category, true);
+                        });
             } else {
-                  logger.info("Will not extract product list for null category");
+                  logger.info("Will not extract product list for menu items that contain sub-menu");
             }
-      });
+      }
 }
 
 exports.init = function (crawl_pattern, orm_manager) {
@@ -173,36 +176,37 @@ exports.init = function (crawl_pattern, orm_manager) {
       g_model_factory.init(g_orm_manager);
 }
 
-exports.crawlWholeSite = function (home_page) {
-      request(home_page, function (error, response, body) {
-            var web_content = body;
-            if (error) {
-                  logger.error("Couldn’t get page because of error: " + error);
-                  return;
-            }
-            // load the web_content of the page into Cheerio so we can traverse the DOM
-            cur_home_page = home_page;
-            var $ = cheerio.load(web_content);
-            var menu = $(g_crawl_pattern.product_menu.panel);
-            // var menu_items = menu.find(g_crawl_pattern.product_menu.item);
-            var menu_items = menu.children();
-            var existing_store = g_model_factory.findAndCreateStore(cur_home_page, 
-                  g_crawl_pattern.store_type, function (store) {
-                  extractCategories($, store, menu_items);
+exports.crawlWholeSite = function (home_page, callback) {
+      cur_home_page = home_page;
+      if (cur_home_page != null && !cur_home_page.startsWith('http')) {
+            cur_home_page = "http://" + cur_home_page;
+      }
+      var existing_store = g_model_factory.findAndCreateStore(cur_home_page,
+            g_crawl_pattern.store_type, function (store) {
+                  request(store.dataValues.home, function (error, response, body) {
+                        var web_content = body;
+                        if (error) {
+                              logger.error("Couldn’t get page because of error: " + error);
+                              return;
+                        }
+                        // load the web_content of the page into Cheerio so we can traverse the DOM
+                        var $ = cheerio.load(web_content);
+                        extractCategories($, store);
+                        callback();
+                  });
             });
-      });
 }
 
 exports.extract_product_thumb_link = function (home_page, input_thumb, callback) {
       var encoded_uri = encodeURIComponent(input_thumb);
-      var goole_search_image = "https://www.google.com/searchbyimage?&image_url=" 
-            + encoded_uri +"&as_sitesearch=" + home_page;
+      var goole_search_image = "https://www.google.com/searchbyimage?&image_url="
+            + encoded_uri + "&as_sitesearch=" + home_page;
       request.debug = true;
       request(goole_search_image, {
             followRedirect: true,
       }, function (error, response, body) {
             var options = {
-                  url: response.req._headers.referer+"&as_sitesearch=" + home_page,
+                  url: response.req._headers.referer + "&as_sitesearch=" + home_page,
                   headers: {
                         followRedirect: true,
                         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36'
