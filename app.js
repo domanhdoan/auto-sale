@@ -8,7 +8,7 @@ var orm_manager = require("./models/db_manager.js");
 var product_finder = require('./dal/product_finder.js');
 var model_factory = require("./dal/model_factory.js");
 
-var crawler         = require("./controllers/web_crawler");
+var scraper         = require("./controllers/web_scraping");
 var shoes_salebot   = require("./controllers/shoes_saleman_fbbot_aiapi");
 
 var common = require("./util/common");
@@ -46,7 +46,7 @@ mkdirp(config.crawler.temp_dir, function (err) {
     logger.info("Created temp folder successfully");
 });
 
-product_finder.init(orm_manager, crawler);
+product_finder.init(orm_manager, scraper);
 model_factory.init(orm_manager);
 var store_crawling_pattern;
 var crawl_source = common.load_json("./crawl_sources/links.json");
@@ -55,8 +55,8 @@ if (crawl_source != null) {
         var async = require('async')
         async.forEach(Object.keys(crawl_source.links), function (key, next) {
             store_crawling_pattern = common.load_crawl_pattern(crawl_source.links[key]);
-            crawler.init(store_crawling_pattern, orm_manager);
-            crawler.crawlWholeSite(crawl_source.links[key], function () {
+            scraper.init(store_crawling_pattern, orm_manager);
+            scraper.crawlWholeSite(crawl_source.links[key], function () {
                 next()
             });
         });
