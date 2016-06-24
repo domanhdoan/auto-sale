@@ -19,6 +19,9 @@ var g_model_factory = require("../dal/model_factory.js");
 var SessionManager = require("../dal/session_manager.js");
 var sessionManager = new SessionManager();
 
+var UserIntentParser = require("../processors/user_intent_parser.js");
+var intentParser = new UserIntentParser();
+
 var FBMessenger = require("../dal/fbmessenger.js");
 var fbMessenger = new FBMessenger();
 
@@ -347,7 +350,7 @@ function processTextByAI(text, sender) {
         });
 
     apiaiRequest.on('response', (response) => {
-        if (isDefined(response.result)) {
+        if (common.isDefined(response.result)) {
             let responseText = response.result.fulfillment.speech;
             let responseData = response.result.fulfillment.data;
             let action = response.result.action;
@@ -367,7 +370,7 @@ function processTextByAI(text, sender) {
                 console.log('Response as text message');
                 // facebook API limit for text length is 320,
                 // so we split message if needed
-                var splittedText = splitResponse(responseText);
+                var splittedText = common.splitResponse(responseText);
                 async.eachSeries(splittedText, (textPart, callback) => {
                     fbMessenger.sendTextMessage(sender, textPart);
                 });
@@ -469,6 +472,7 @@ function processPostbackEvent(session, action_details) {
 function processEvent(event) {
     var sender = event.sender.id.toString();
     var current_session = sessionManager.findOrCreateSession(sender);
+
     if (event.message) {
         if (event.message.text) {
             var text = event.message.text;
@@ -476,7 +480,8 @@ function processEvent(event) {
             if (g_ai_using) {
                 processTextByAI(text, sender);
             } else {
-                processTextEvent(current_session, text);
+                //processTextEvent(current_session, text);
+                intentParser.parse(text.latinise());
             }
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
@@ -501,57 +506,6 @@ function processEvent(event) {
             logger.info("Skipp to handle double click");
         }
     }
-}
-
-function splitResponse(str) {
-    if (str.length <= 320) {
-        return [str];
-    }
-
-    var result = chunkString(str, 300);
-
-    return result;
-
-}
-
-function chunkString(s, len) {
-    var curr = len, prev = 0;
-
-    var output = [];
-
-    while (s[curr]) {
-        if (s[curr++] == ' ') {
-            output.push(s.substring(prev, curr));
-            prev = curr;
-            curr += len;
-        }
-        else {
-            var currReverse = curr;
-            do {
-                if (s.substring(currReverse - 1, currReverse) == ' ') {
-                    output.push(s.substring(prev, currReverse));
-                    prev = currReverse;
-                    curr = currReverse + len;
-                    break;
-                }
-                currReverse--;
-            } while (currReverse > prev)
-        }
-    }
-    output.push(s.substr(prev));
-    return output;
-}
-
-function isDefined(obj) {
-    if (typeof obj == 'undefined') {
-        return false;
-    }
-
-    if (!obj) {
-        return false;
-    }
-
-    return obj != null;
 }
 
 //=====================================================================//
@@ -642,7 +596,7 @@ module.exports = {
     start: function (home_page, store_crawling_pattern,
         products_finder, model_factory) {
         g_product_finder = products_finder;
-        g_home_page = home_page;
+        g_home_page = common.insertHttpPrefix(home_page);
         g_store_pattern = store_crawling_pattern;
 
         //fbMessenger.doSubscribeRequest();
@@ -655,7 +609,7 @@ module.exports = {
             ai_webhook.listen(config.bots.ai_port);
         }
 
-        g_product_finder.findStoreByLink(home_page,
+        g_product_finder.findStoreByLink(g_home_page,
             function (store) {
                 g_store_id = store.dataValues.id;
             });

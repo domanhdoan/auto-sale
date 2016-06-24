@@ -30,13 +30,6 @@ const actions = {
     },
     merge(sessionId, context, entities, message, cb) {
         cb(context);
-        // var seach_entitites = (entities.local_search_query != null)? entities.local_search_query:entities.search_query; 
-        // search_entities[sessionId] = seach_entitites;
-        // if(seach_entitites != null){            
-        //     for (var i = 0; i < seach_entitites.length; i++) {
-        //         console.log(JSON.stringify(seach_entitites[i]));
-        //     }
-        // }else{}
         var keySet = Object.keys(entities);
         for (var key in keySet) {
             console.log(JSON.stringify(entities[keySet[key]][0]));
@@ -45,26 +38,22 @@ const actions = {
     error(sessionId, context, error) {
         console.log(error.message);
     },
-    find_categories(sessionId, context, cb) {
+    check_price(sessionId, context, cb) {
         console.log("find_categories Session ID = " + sessionId);
         cb(context);
         find_categories_cb(sessionId);
         g_all_user_session[sessionId].last_action = common.find_categories;
     },
-    find_products(sessionId, context, cb) {
-        console.log("find_product Session ID = " + sessionId);
+    check_product_availability(sessionId, context, cb) {
+        console.log("check_product_availability Session ID = " + sessionId);
         cb(context);
-        var keywords = "";
-        var search_entities_c = search_entities[sessionId];
-        for (var i = 0; i < search_entities_c.length; i++) {
-            console.log("entities.search query = " + search_entities_c[i].value);
-            keywords += search_entities_c[i].value + "+";
-        }
-        keywords = keywords.replaceAll(" ", "+");
-        find_products_cb(sessionId, keywords);
     },
-    validate_delivery_date(sessionId, context, cb) {
-        console.log("validate_delivery_date Session ID = " + sessionId);
+    check_product_availability_byColor(sessionId, context, cb) {
+        console.log("check_product_availability_byColor Session ID = " + sessionId);
+        cb(context);
+    },
+    check_product_availability_bySize(sessionId, context, cb) {
+        console.log("check_product_availability_bySize Session ID = " + sessionId);
         cb(context);
     }
 };
