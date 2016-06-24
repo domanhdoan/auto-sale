@@ -8,8 +8,8 @@ var orm_manager = require("./models/db_manager.js");
 var product_finder = require('./dal/product_finder.js');
 var model_factory = require("./dal/model_factory.js");
 
-var scraper         = require("./controllers/web_scraping");
-var shoes_salebot   = require("./controllers/shoes_saleman_fbbot_aiapi");
+var scraper = require("./processors/web_scraping");
+var shoes_salebot = require("./controllers/shoes_saleman_fbbot_aiapi");
 
 var common = require("./util/common");
 var logger = require("./util/logger");
@@ -52,14 +52,14 @@ var store_crawling_pattern;
 var crawl_source = common.load_json("./crawl_sources/links.json");
 if (crawl_source != null) {
     if (config.submodule.crawler) {
-        var async = require('async')
-        async.forEach(Object.keys(crawl_source.links), function (key, next) {
-            store_crawling_pattern = common.load_crawl_pattern(crawl_source.links[key]);
-            scraper.init(store_crawling_pattern, orm_manager);
-            scraper.crawlWholeSite(crawl_source.links[key], function () {
-                next()
+        scraper.init(orm_manager);
+        var next = true;
+        for(var i = 0, length = crawl_source.links.length; i < length; i++){
+            var link = crawl_source.links[i];
+            store_crawling_pattern = common.load_crawl_pattern(link);
+            scraper.crawlWholeSite(link, store_crawling_pattern, function () {
             });
-        });
+        }
     }
 
     if (config.submodule.salebot) {
