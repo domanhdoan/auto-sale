@@ -1,23 +1,19 @@
 {
-  "object":"page",
-  "entry":[
-    {
-      "id":123456788,
-      "time":1458692752478,
-      "messaging":[
-        {
-          "sender":{
-            "id":"USER_ID"
-          },
-          "recipient":{
-            "id":"PAGE_ID"
-          },
-          "timestamp":1458692752478,
-          "postback":{
-                "payload":"{\"id\":49,\"title\":\"Giày thể thao nam BW6305\",\"action\":\"view\"}"
-          }
-        }
-      ]
-    }
-  ]
+    "object": "page",
+    "entry": [{
+        "id": 123456788,
+        "time": 1458692752478,
+        "messaging": [{
+            "sender": {
+                "id": "100010634326519"
+            },
+            "recipient": {
+                "id": "1622583457969907"
+            },
+            "timestamp": 1458692752478,
+            "postback": {
+                "payload": "{\"id\":49,\"title\":\"Giày thể thao nam BW6305\",\"action\":\"view\"}"
+            }
+        }]
+    }]
 }

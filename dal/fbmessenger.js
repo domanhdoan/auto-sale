@@ -1,31 +1,34 @@
-
 var common = require("../util/common");
 var logger = require("../util/logger.js");
 var config = require("../config/config.js");
 
-function FBMessenger(){
-    this.sendDataToFBMessenger = function (sender, data, callback) {
+function FBMessenger() {
+    this.sendDataToFBMessenger = function(sender, data, callback) {
         logger.info("Data = " + JSON.stringify(data));
-        // require('request')({
-        //     url: 'https://graph.facebook.com/v2.6/me/messages',
-        //     qs: { access_token: config.bots.fb_page_token },
-        //     method: 'POST',
-        //     json: true,
-        //     body: {
-        //         recipient: { id: sender },
-        //         message: data
-        //     }
-        // }, function (error, response, body) {
-        //     if (error) {
-        //         logger.error('Error sending message: ' + error.stack);
-        //     } else if (response.body.error) {
-        //         logger.error('Error: ' + JSON.stringify(response.body.error));
-        //     } else {
-        //         if (callback != null) {
-        //             callback();
-        //         }
-        //     }
-        // });
+        require('request')({
+            url: 'https://graph.facebook.com/v2.6/me/messages',
+            qs: {
+                access_token: config.bots.fb_page_token
+            },
+            method: 'POST',
+            json: true,
+            body: {
+                recipient: {
+                    id: sender
+                },
+                message: data
+            }
+        }, function(error, response, body) {
+            if (error) {
+                logger.error('Error sending message: ' + error.stack);
+            } else if (response.body.error) {
+                logger.error('Error: ' + JSON.stringify(response.body.error));
+            } else {
+                if (callback != null) {
+                    callback();
+                }
+            }
+        });
     }
 }
 
@@ -46,22 +49,19 @@ FBMessenger.prototype.createProductElement = function(title, price, thumbnail_ur
         "title": title,
         "subtitle": price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VNĐ",
         "image_url": thumbnail_url,
-        "buttons": [
-            {
-                "type": "postback",
-                "title": "Xem màu & size",
-                "payload": JSON.stringify(payload1)
-            },
-            {
-                "type": "postback",
-                "title": "Cho vào giỏ hàng",
-                "payload": JSON.stringify(payload2),
-            },
-            {
-                "type": "web_url",
-                "url": link,
-                "title": "Xem trên Web"
-            }]
+        "buttons": [{
+            "type": "postback",
+            "title": "Xem màu & size",
+            "payload": JSON.stringify(payload1)
+        }, {
+            "type": "postback",
+            "title": "Cho vào giỏ hàng",
+            "payload": JSON.stringify(payload2),
+        }, {
+            "type": "web_url",
+            "url": link,
+            "title": "Xem trên Web"
+        }]
     };
     return element;
 }
@@ -75,12 +75,11 @@ FBMessenger.prototype.createSearchOrPurchaseElement = function() {
         "type": "postback",
         "title": "Thêm sản phẩm",
         "payload": JSON.stringify(search_action),
-    },
-        {
-            "type": "postback",
-            "title": "Mua hàng",
-            "payload": JSON.stringify(purchase_action),
-        }];
+    }, {
+        "type": "postback",
+        "title": "Mua hàng",
+        "payload": JSON.stringify(purchase_action),
+    }];
     return template;
 }
 
@@ -89,18 +88,15 @@ FBMessenger.prototype.createConfirmOrCancelElement = function() {
     var cancel_action = {};
     confirm_action.action = common.action_confirm_order;
     cancel_action.action = common.action_cancel_order;
-    var template = [
-        {
-            "type": "postback",
-            "title": "Hủy mua hàng",
-            "payload": JSON.stringify(cancel_action),
-        },
-        {
-            "type": "postback",
-            "title": "Xác nhận",
-            "payload": JSON.stringify(confirm_action),
-        }
-    ];
+    var template = [{
+        "type": "postback",
+        "title": "Hủy mua hàng",
+        "payload": JSON.stringify(cancel_action),
+    }, {
+        "type": "postback",
+        "title": "Xác nhận",
+        "payload": JSON.stringify(confirm_action),
+    }];
     return template;
 }
 
@@ -109,18 +105,15 @@ FBMessenger.prototype.createAddressConfirmElement = function() {
     var cancel_action = {};
     confirm_action.action = common.action_confirm_addr;
     cancel_action.action = common.action_retype_addr;
-    var template = [
-        {
-            "type": "postback",
-            "title": "Nhập lại",
-            "payload": JSON.stringify(cancel_action),
-        },
-        {
-            "type": "postback",
-            "title": "Xác nhận",
-            "payload": JSON.stringify(confirm_action),
-        }
-    ];
+    var template = [{
+        "type": "postback",
+        "title": "Nhập lại",
+        "payload": JSON.stringify(cancel_action),
+    }, {
+        "type": "postback",
+        "title": "Xác nhận",
+        "payload": JSON.stringify(confirm_action),
+    }];
     return template;
 }
 
@@ -146,10 +139,10 @@ FBMessenger.prototype.createAIAPIProductsMessage = function(rich_data) {
 
 FBMessenger.prototype.doSubscribeRequest = function() {
     request({
-        method: 'POST',
-        uri: "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=" + FB_PAGE_ACCESS_TOKEN
-    },
-        function (error, response, body) {
+            method: 'POST',
+            uri: "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=" + FB_PAGE_ACCESS_TOKEN
+        },
+        function(error, response, body) {
             if (error) {
                 console.error('Error while subscription: ', error);
             } else {
@@ -217,16 +210,13 @@ FBMessenger.prototype.generate_invoice_summary = function(sub_total, shipping_co
 }
 
 FBMessenger.prototype.generate_invoice_adjustment = function() {
-    var adjustments = [
-        {
-            "name": "New Customer Discount",
-            "amount": 20
-        },
-        {
-            "name": "$10 Off Coupon",
-            "amount": 10
-        }
-    ];
+    var adjustments = [{
+        "name": "New Customer Discount",
+        "amount": 20
+    }, {
+        "name": "$10 Off Coupon",
+        "amount": 10
+    }];
 
     return adjustments;
 }
@@ -242,8 +232,7 @@ FBMessenger.prototype.sendReceiptMessage = function(sender, invoice_items, invoi
     };
     // Street, city, province, country
     var temp = invoice_details.address.split(",");
-    fullAddress.street_1 = invoice_details.address.replace(","+ temp[temp.length - 2]
-        + "," + temp[temp.length - 1], "");
+    fullAddress.street_1 = invoice_details.address.replace("," + temp[temp.length - 2] + "," + temp[temp.length - 1], "");
     fullAddress.city = temp[temp.length - 2].trim();
     fullAddress.state = temp[temp.length - 2].trim();
 
@@ -278,7 +267,7 @@ FBMessenger.prototype.getUserProfile = function(fbid, callback) {
         },
         json: true
     }
-    request(req, function (error, response, body) {
+    request(req, function(error, response, body) {
         if (error) {
             logger.error('Error sending message: ' + error.stack);
         } else if (response.body.error) {
