@@ -49,11 +49,11 @@ mkdirp(config.crawler.temp_dir, function(err) {
 product_finder.init(orm_manager, scraper);
 model_factory.init(orm_manager);
 var store_config = [];
-var crawl_source = common.load_json("./crawl_sources/links.json");
+var crawl_source = common.loadJson("./crawl_sources/links.json");
 if (crawl_source != null) {
     for (var i = 0, length = crawl_source.links.length; i < length; i++) {
         var link = crawl_source.links[i];
-        store_config[i] = common.load_crawl_pattern(link);
+        store_config[i] = common.loadStoreConfig(link);
     }
 
     if (config.submodule.crawler) {

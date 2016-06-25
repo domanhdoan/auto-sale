@@ -19,8 +19,8 @@ var g_model_factory = require("../dal/model_factory.js");
 var SessionManager = require("../dal/session_manager.js");
 var sessionManager = new SessionManager();
 
-var UserIntentParser = require("../processors/user_intent_parser.js");
-var intentParser = new UserIntentParser();
+var UserIntentParserRegExp = require("../processors/user_intent_parser_regexp.js");
+var intentParserRegExp = new UserIntentParserRegExp();
 
 var FBMessenger = require("../dal/fbmessenger.js");
 var fbMessenger = new FBMessenger();
@@ -29,7 +29,7 @@ var g_store_id = "";
 var g_home_page = "";
 var g_search_path = "";
 var g_product_finder = null;
-var g_store_pattern = {};
+var g_store_config = {};
 
 var g_ai_using = false;
 const APIAI_ACCESS_TOKEN = config.bots.ai_token;
@@ -73,7 +73,7 @@ function createAndSendOrderToFB(session, callback) {
 function createAndSendOrderToStore(session, callback) {
     g_product_finder.getOrderItems(session.last_invoice.id, function(items) {
         for (var i = 0; i < items.length; i++) {
-            var order = g_store_pattern.order_form;
+            var order = g_store_config.order_form;
             request({
                 url: g_home_page,
                 method: 'POST',
@@ -213,7 +213,7 @@ function showAvailableColorNsize(session, show_color, show_size) {
 function searchAndConfirmAddress(session, destination, callback) {
     // Handle a text message from this sender
     //getUserProfile(sender, function () {
-    common.search_address(destination, function(result) {
+    common.searchAddress(destination, function(result) {
         var length = 1; //result.length;
         for (var i = 0; i < length; i++) {
             logger.info("Full address: " + result[i].formattedAddress);
@@ -228,11 +228,11 @@ function searchAndConfirmAddress(session, destination, callback) {
 }
 
 function doProductSearch(session, user_msg, user_msg_trans) {
-    var result = common.extract_product_code(user_msg,
-        g_store_pattern.product_code_pattern);
-    if (common.is_url(user_msg)) {
+    var result = common.extractValue(user_msg,
+        g_store_config.product_code_pattern);
+    if (common.isUrl(user_msg)) {
         findProductByImage(session, user_msg);
-    } else if (result.is_code) {
+    } else if (result.isProductCode) {
         findProductByCode(session, result.code);
     } else {
         findProductByKeywords(session, user_msg_trans);
@@ -485,7 +485,11 @@ function processEvent(event) {
                 processTextByAI(text, sender);
             } else {
                 processTextEvent(current_session, text);
-                intentParser.parse(text.latinise());
+                intentParserRegExp.parse(text.latinise(),
+                    g_store_config.product_code_pattern,
+                    function(info) {
+
+                    });
             }
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
@@ -603,7 +607,7 @@ module.exports = {
         products_finder, model_factory) {
         g_product_finder = products_finder;
         g_home_page = common.insertHttpPrefix(home_page);
-        g_store_pattern = store_crawling_pattern;
+        g_store_config = store_crawling_pattern;
 
         //fbMessenger.doSubscribeRequest();
         server.use(bodyParser.urlencoded({
