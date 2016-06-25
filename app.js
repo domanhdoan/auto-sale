@@ -42,29 +42,30 @@ if (args.length > 0) {
     exit(0);
 }
 
-mkdirp(config.crawler.temp_dir, function (err) {
+mkdirp(config.crawler.temp_dir, function(err) {
     logger.info("Created temp folder successfully");
 });
 
 product_finder.init(orm_manager, scraper);
 model_factory.init(orm_manager);
-var store_crawling_pattern;
+var store_config = [];
 var crawl_source = common.load_json("./crawl_sources/links.json");
 if (crawl_source != null) {
+    for (var i = 0, length = crawl_source.links.length; i < length; i++) {
+        var link = crawl_source.links[i];
+        store_config[i] = common.load_crawl_pattern(link);
+    }
+
     if (config.submodule.crawler) {
         scraper.init(orm_manager);
-        var next = true;
-        for(var i = 0, length = crawl_source.links.length; i < length; i++){
-            var link = crawl_source.links[i];
-            store_crawling_pattern = common.load_crawl_pattern(link);
-            scraper.crawlWholeSite(link, store_crawling_pattern, function () {
-            });
+        for (var i = 0, length = store_config.length; i < length; i++) {
+            scraper.crawlWholeSite(link, store_config[i], function() {});
         }
     }
 
     if (config.submodule.salebot) {
         shoes_salebot.enable_ai(config.bots.ai_on);
-        shoes_salebot.start(crawl_source.links[0], store_crawling_pattern,
+        shoes_salebot.start(crawl_source.links[0], store_config[0],
             product_finder, model_factory);
     }
 } else {
