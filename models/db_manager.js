@@ -28,7 +28,7 @@ var db = {};
 
 fs.readdirSync(__dirname).filter(function (file) {
     return (file.indexOf(".") !== 0) && (file !== "db_manager.js") 
-        && (file !== "model_factory.js");
+        && (file !== "model_factory.js") && (file !== "product_finder.js");
 }).forEach(function (file) {
     var model = sequelize["import"](path.join(__dirname, file));
     if (model != null) {
@@ -47,6 +47,9 @@ Object.keys(db).forEach(function (modelName) {
 //Define relation for Category
 db.Store.hasMany(db.Category, { as: "Store", foreignKeyConstraint:true});
 db.Category.belongsTo(db.Store);
+
+db.Store.hasMany(db.Fanpage, { as: "Store", foreignKeyConstraint:true});
+db.Fanpage.belongsTo(db.Store);
 
 //Define relation for Product
 db.Store.hasMany(db.Product, { as: "Store", foreignKeyConstraint:true});
@@ -68,6 +71,9 @@ db.Color.belongsTo(db.Product);
 db.Size.belongsTo(db.Product);
 // db.Color.sync({force: true});
 // db.Size.sync({force: true});
+
+db.Product.hasMany(db.ProductPhoto, { as: "Product", foreignKeyConstraint:true});
+db.ProductPhoto.belongsTo(db.Product);
 
 db.Color.hasMany(db.FashionItem, { as: "Color", foreignKeyConstraint:true});
 db.Size.hasMany(db.FashionItem, { as: "Size", foreignKeyConstraint:true});

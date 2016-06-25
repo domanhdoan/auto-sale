@@ -24,7 +24,10 @@ module.exports = {
         cover: {
           type: Sequelize.STRING,
         },
-       StoreId: {
+        link: {
+          type: Sequelize.STRING,
+        },
+        StoreId: {
           type: Sequelize.INTEGER,
           references: {
             model: 'Store',

@@ -1,7 +1,7 @@
 {
     "product_menu": {
-        "item": "li.menu-item-object-sanpham_cat",
-        "item_link": "a"
+        "panel": "ul#menu-danh-muc",
+        "item": "li a"
     },
     "product_info": {
         "product_list": "ul.list-tax",

@@ -1,42 +1,72 @@
 require('string.prototype.startswith');
 var mkdirp = require('mkdirp');
 
-var crawler = require("./proccessor/web_crawler");
-var auto_order_bot = require("./proccessor/shoes_saleman_fbbot");
-var product_finder = require('./proccessor/product_finder.js');
-var common = require("./util/common");
-var logger = require("./util/logger");
-var orm_manager = require("./models/db_manager.js");
-var model_factory = require("./models/model_factory.js");
 var config = require("./config/config.js");
 
+var orm_manager = require("./models/db_manager.js");
+
+var product_finder = require('./dal/product_finder.js');
+var model_factory = require("./dal/model_factory.js");
+
+var scraper = require("./processors/web_scraping");
+var shoes_salebot = require("./controllers/shoes_saleman_fbbot_aiapi");
+
+var common = require("./util/common");
+var logger = require("./util/logger");
+
+function show_error() {
+    logger.error("Command: node app.js options");
+    logger.error("Where options: ");
+    logger.error("-c: turn on crawling. Default disable");
+    logger.error("-b: turn on sale bot. Default disable");
+    logger.error("--noai: turn off sale bot. Default enable");
+}
+
+var args = process.argv.slice(2);
+if (args.length > 0) {
+    for (var i = 0; i < args.length; i++) {
+        logger.info("Option = " + args[i]);
+        if (args[i] === '-c') {
+            config.submodule.crawler = true;
+        } else if (args[i] === '-b') {
+            config.submodule.salebot = true;
+        } else if (args[i] === '--noai') {
+            config.bots.ai_on = false;
+        } else {
+            logger.error("Unknown options: " + args[i]);
+            show_error();
+        }
+    }
+} else {
+    show_error();
+    exit(0);
+}
+
 mkdirp(config.crawler.temp_dir, function (err) {
-    // path exists unless there was an error
     logger.info("Created temp folder successfully");
 });
 
-product_finder.init(orm_manager, crawler);
+product_finder.init(orm_manager, scraper);
 model_factory.init(orm_manager);
-
+var store_crawling_pattern;
 var crawl_source = common.load_json("./crawl_sources/links.json");
 if (crawl_source != null) {
-    crawl_source.links.forEach(function (link) {
-        var product_pattern = common.load_crawl_pattern(link);
-        if(config.submodule.crawler){
-            crawler.init(product_pattern, orm_manager);
-            crawler.crawl_alink_withdepth(link);
+    if (config.submodule.crawler) {
+        scraper.init(orm_manager);
+        var next = true;
+        for(var i = 0, length = crawl_source.links.length; i < length; i++){
+            var link = crawl_source.links[i];
+            store_crawling_pattern = common.load_crawl_pattern(link);
+            scraper.crawlWholeSite(link, store_crawling_pattern, function () {
+            });
         }
+    }
 
-        if(config.submodule.salebot){
-            auto_order_bot.start(config.network.port, link, 
-                product_pattern.product_code_pattern, product_finder, model_factory);
-        }
-    });
+    if (config.submodule.salebot) {
+        shoes_salebot.enable_ai(config.bots.ai_on);
+        shoes_salebot.start(crawl_source.links[0], store_crawling_pattern,
+            product_finder, model_factory);
+    }
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
 }
-
-// var url = "https://fbcdn-photos-d-a.akamaihd.net/hphotos-ak-xlp1/v/t34.0-0/p206x206/13413800_256494738048335_1923798606_n.jpg?_nc_ad=z-m&oh=cc3c654f9c45f265055410e9d4239a1a&oe=575D22BF&__gda__=1465670762_b78c51c19f34b830df45462c1fa8c42c";
-// common.generate_remoteimg_hash(url, function(hash){
-//     logger.info(hash);
-// });

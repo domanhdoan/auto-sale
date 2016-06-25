@@ -1,17 +1,17 @@
 {
     "product_menu": {
-        "item": "li.menu-item-object-sanpham_cat",
+        "item": "li.menu-item-object-product_cat",
         "item_link": "a"
     },
     "product_info": {
-        "product_list": "ul.list-tax",
-        "title": ".title a",
-        "thumbnail": ".img a img",
-        "desc": "",
-        "price": ".gia.gia-hok .gia-moi span",
-        "discount": "",
+        "product_list": "li.product",
+        "title": ".product-thumbnail .product-meta h3",
+        "thumbnail": "product-thumbnail .thumbnail-wrapper a img",
+        "desc": ".product-thumbnail .product-meta .product-description ",
+        "price": ".product-thumbnail .product-meta .price del span",
+        "discount": ".product-thumbnail .product-meta .price span",
         "percent": "",
-        "detail_link": ".img a",
+        "detail_link": ".product-thumbnail .product-actions a",
         "details": {
             "code": "p.masp strong",
             "color": "dd.mausac a",
@@ -42,6 +42,6 @@
         "unit_tag": "_wpcf7_unit_tag",
         "once": "_wpnonce"
     },
-    "store_address": "85 Nguyễn Khang,  p.Yên Hòa, q.Cầu Giấy, HN",
+    "store_address": "Số 5 ngõ 59 Chùa Bộc, HN",
     "store_type": "shoes"
 }

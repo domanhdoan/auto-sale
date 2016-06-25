@@ -18,7 +18,7 @@ function parse_keywords(keywords, word_list) {
                 console.log("key = " + last_keyword + " value = " + temp);
                 result[last_keyword] = temp.trim();
                 temp = '';
-            }else{
+            } else {
                 result['giay'] = temp.trim();
             }
             last_keyword = word_list[i];
@@ -55,7 +55,7 @@ function parse_keywords_calibration(keywords, word_list) {
     return results;
 }
 
-function generate_shoesfind_query(keywords) {
+function generate_query_findshoes(keywords) {
     var query = " Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link"
         + " from product as P";
     if (keywords[1].length > 0) {
@@ -71,8 +71,17 @@ function generate_shoesfind_query(keywords) {
     if (keywords[2].length > 0) {
         query += " and S.value = '" + keywords[2] + "'";
     }
-     query += " LIMIT " + common.product_search_max + ";";
-        
+    query += " order by P.id ASC LIMIT " + common.product_search_max + ";";
+
+    return query;
+}
+
+function generate_query_findcolorNsize(product_id) {
+    var query = " Select DISTINCT C.name, S.value"
+        + " from product as P";
+    query += " inner join color as C on P.id = C.ProductId"
+    query += " inner join size as S on P.id = S.ProductId";
+    query += " where P.id = " + product_id + "";
     return query;
 }
 //===================================================//
@@ -124,7 +133,7 @@ exports.findShoesByKeywords = function (user_message, callback) {
     var keywords_value = parse_keywords_calibration(keywords, word_list);
     var count = Object.keys(keywords_value).length;
     if (count != 0) {
-        var query = generate_shoesfind_query(keywords_value);
+        var query = generate_query_findshoes(keywords_value);
         g_orm_manager.sequelize.query(query)
             .spread(function (results, metadata) {
                 if (results == null) {
@@ -141,9 +150,15 @@ exports.findShoesByKeywords = function (user_message, callback) {
 
 }
 
-// exports.findProductsByKeywords = function (search_path, keywords, callback) {
-//     g_web_crawler.crawl_alink_nodepth(search_path + "" + keywords, callback);
-// }
+exports.findProductsById = function (id, callback) {
+    g_orm_manager.Product.findOne({
+        where: {
+            id: id
+        }
+    }).then(function (product) {
+        callback(product);
+    });
+}
 
 exports.findProductsByCode = function (code, callback) {
     g_orm_manager.Product.findOne({
@@ -172,23 +187,38 @@ exports.findProductByFinger = function (finger, callback) {
     });
 }
 
-exports.findProductByThumbnail = function (thumbnail_link, callback) {
-    g_orm_manager.Product.findOne({
-        where: {
-            thumbnail: thumbnail_link.replaceAll('-', '%%')
-        }
-    }).then(function (product) {
-        if (product != null) {
-            logger.info(products[0].dataValues.title);
-            callback(product);
-        } else {
-            logger.debug("Product not found");
-        }
+exports.findProductByThumbnail = function (home_page, thumbnail_link, callback) {
+    require('../controllers/web_crawler').extract_product_thumb_link(
+        home_page, thumbnail_link, function (real_thumb_url) {
+            logger.info("search_item URL = " + real_thumb_url);
+            g_orm_manager.Product.findOne({
+                where: {
+                    thumbnail: real_thumb_url.replaceAll('-', '%%')
+                }
+            }).then(function (product) {
+                if (product != null) {
+                    logger.info(product.dataValues.title);
+                    callback(product);
+                } else {
+                    logger.debug("Product not found");
+                }
+            });
+        });
+}
+
+exports.getColorsNSize = function (product_id, callback) {
+    module.exports.getProductColors(product_id, function (colors) {
+        module.exports.getProductSizes(product_id, function (sizes) {
+            callback(colors, sizes);
+        });
     });
 }
 
 exports.getProductColors = function (product_id, callback) {
     g_orm_manager.Color.findAll({
+        order: [
+            ['value', 'ASC']
+        ],
         where: {
             ProductId: product_id
         }
@@ -199,6 +229,9 @@ exports.getProductColors = function (product_id, callback) {
 
 exports.getProductSizes = function (product_id, callback) {
     g_orm_manager.Size.findAll({
+        order: [
+            ['value', 'ASC']
+        ],
         where: {
             ProductId: product_id
         }
@@ -226,5 +259,36 @@ exports.checkProductBySize = function (product_id, size, callback) {
         }
     }).then(function (size) {
         callback(size);
+    });
+}
+
+exports.getOrderItems = function (invoice_id, callback) {
+    g_orm_manager.FashionItem.findAll({
+        attributes: ['quantity'],
+        order: [
+            ['id', 'ASC']
+        ],
+        where: {
+            InvoiceId: invoice_id
+        },
+        include: [{
+            model: g_orm_manager.Product,
+            attributes: ['title', 'desc', 'thumbnail', 'price', 'discount'],
+            where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+        },
+            {
+                model: g_orm_manager.Color,
+                where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+            },
+            {
+                model: g_orm_manager.Size,
+                where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+            },
+            {
+                model: g_orm_manager.Invoice,
+                where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
+            }]
+    }).then(function (items) {
+        callback(items);
     });
 }

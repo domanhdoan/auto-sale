@@ -1,11 +1,11 @@
 {
     "product_menu": {
-        "item": "li.menu-item-object-sanpham_cat",
-        "item_link": "a"
+        "panel": "ul#.dropdown_mode",
+        "item": "li.cat_item a"
     },
     "product_info": {
-        "product_list": "ul.list-tax",
-        "title": ".title a",
+        "product_list": "ul.products",
+        "title": ".product_item_wrapper .product_thumbnail_wrapper a",
         "thumbnail": ".img a img",
         "desc": "",
         "price": ".gia.gia-hok .gia-moi span",

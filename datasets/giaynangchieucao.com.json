@@ -1,17 +1,17 @@
 {
     "product_menu": {
-        "item": "li.menu-item-object-sanpham_cat",
+        "item": ".noidung ul li",
         "item_link": "a"
     },
     "product_info": {
-        "product_list": "ul.list-tax",
-        "title": ".title a",
-        "thumbnail": ".img a img",
+        "product_list": "div.sanpham",
+        "title": "div.title_sp a",
+        "thumbnail": ".img",
         "desc": "",
-        "price": ".gia.gia-hok .gia-moi span",
+        "price": "label",
         "discount": "",
         "percent": "",
-        "detail_link": ".img a",
+        "detail_link": "a.text_product",
         "details": {
             "code": "p.masp strong",
             "color": "dd.mausac a",
