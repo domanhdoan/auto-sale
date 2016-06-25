@@ -7,6 +7,9 @@ module.exports = function(Sequelize, DataTypes)  {
         },
         cover: {
             type: DataTypes.STRING,
+        },
+        link: {
+            type: DataTypes.STRING,
         }
     },
     {

@@ -6,7 +6,7 @@ var config = {};
 
 config.submodule = {
     crawler: false,
-    salebot: true
+    salebot: false
 };
 
 config.crawler = {
@@ -18,13 +18,22 @@ config.db = {
     db_name: "product_crawl",
     db_user: "doan",
     db_pass: "colen123",
-    engine : 'mysql'
+    engine: 'mysql'
 };
 
-config.network = {
+// AI Camera: //"324d2b5845214d5f91cc6c89b3550929",
+config.bots = {
+    map_key:"AIzaSyChRPQzNkcU8ULGhQTuRJhkzQURQ8nkzcY",
+    map_provider: "google",
+    ai_port: 7000,
+    ai_token: "85845565e4634d99ae09ae0a8921e0b6",
+    ai_webhook: "/joyboxws/",
+    ai_lang: "en",
+    ai_on: true,
     port: 5000,
-    webhook: "/joyboxwebhook/",
-    fb_token: "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD"
+    fb_webhook: "/joyboxwebhook/",
+    fb_verify_token: "verify_me",
+    fb_page_token: "EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD"
 };
 
 config.develop = {
