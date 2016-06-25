@@ -24,16 +24,7 @@ module.exports = {
         type: {
           type: Sequelize.STRING,
           allowNull: false
-        },
-        StoreId: {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'Store',
-            key: 'id'
-          },
-          onUpdate: 'cascade',
-          onDelete: 'cascade'
-        },
+        }
       },
       {
         engine: 'InnoDB', // default: 'InnoDB'
