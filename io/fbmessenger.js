@@ -75,11 +75,11 @@ FBMessenger.prototype.createSearchOrPurchaseElement = function() {
     purchase_action.action = common.action_purchase;
     var template = [{
         "type": "postback",
-        "title": "Thêm sản phẩm",
+        "title": "Thêm sản phẩm khác",
         "payload": JSON.stringify(search_action),
     }, {
         "type": "postback",
-        "title": "Mua hàng",
+        "title": "Mua hàng ngay",
         "payload": JSON.stringify(purchase_action),
     }];
     return template;

@@ -33,6 +33,7 @@ module.exports = {
     set_email: "set_email",
     set_delivery_date: "set_delivery_date",
     notify_product_found: "Sản phẩm còn hàng",
+    notify_product_search: "Bạn vui lòng xem kết quả bên dưới \n(Bạn trượt sang ngang để xem 10 sản phẩm phù hợp nhất)",
     notify_color_notfound: "Không còn màu trong cửa hàng",
     notify_size_notfound: "Không còn size trong cửa hàng",
     notify_product_notfound: "Rất tiếc sản phẩm hiện đang tạm thời hết hàng. Xin vui lòng chọn sản phẩm khác",
