@@ -11,6 +11,7 @@ var common = require("../util/common");
 var logger = require("../util/logger.js");
 
 var gModelFactory = require("../dal/model_factory.js");
+var gProductFinder = require('../dal/product_finder.js');
 
 // Refactory code
 var SessionManager = require("../dal/session_manager.js");
@@ -20,12 +21,11 @@ var ParserFactory = require("../processors/user_intent_parser_factory.js");
 var parserFactory = new ParserFactory();
 var intentParser = null;
 
-var FBMessenger = require("../dal/fbmessenger.js");
+var FBMessenger = require("../io/fbmessenger.js");
 var fbMessenger = new FBMessenger();
 
 var gStoreId = "";
 var gHomepage = "";
-var gProductFinder = require('../dal/product_finder.js');
 var gStoreConfig = {};
 
 var gAiUsingFlag = false;
