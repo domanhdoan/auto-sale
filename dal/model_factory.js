@@ -2,6 +2,7 @@ var gDbManager = require("../models/db_manager.js");
 var logger = require('../util/logger.js');
 var moment = require('moment');
 var common = require('../util/common.js');
+var crypto = require('crypto');
 
 module.exports.findAndCreateStore = function(store_page, store_type, callback) {
     gDbManager.Store.findOrCreate({
@@ -50,67 +51,72 @@ module.exports.findAndCreateProduct = function(
     product_code_pattern,
     callback
 ) {
-    // result = common.extract_product_code(product_detail_link, product_code_pattern);
-    // g_orm_manager.Product.findOrCreate({
-    //     where: {
-    //         link: product_detail_link.replaceAll('-', '%%')
-    //     },
-    //     defaults: {
-    //         title: product_title,
-    //         thumbnail: product_thumbnail.replaceAll('-', '%%'),
-    //         desc: product_desc,
-    //         price: product_price,
-    //         discount: product_discount,
-    //         percent: product_percent,
-    //         link: product_detail_link.replaceAll('-', '%%'),
-    //         finger: product_finger,
-    //         brand: product_brand
-    //     }
-    // }).then(function (product) {
-    //     var saved_product = product[0];
-    //     logger.info("Save new product successfully");
-    //     saved_product.setCategory(saved_category);
-    //     saved_product.setStore(saved_store);
-    //     if (saved_category.cover == null) {
-    //         saved_category.updateAttributes({
-    //             cover: saved_product.thumbnail.replaceAll("%%", "-")
-    //         });
-    //     }
-    //     callback(saved_product);
-    // });
+    product_finger = require('crypto').createHmac('sha256', product_detail_link)
+        .digest('hex');
+    logger.info("Hash = " + product_finger);
 
-    gDbManager.Product.findOne({
+    gDbManager.Product.findOrCreate({
         where: {
-            link: product_detail_link.replaceAll('-', '%%')
+            finger: product_finger
+        },
+        defaults: {
+            title: product_title,
+            thumbnail: product_thumbnail.replaceAll('-', '%%'),
+            desc: product_desc,
+            price: product_price,
+            discount: product_discount,
+            percent: product_percent,
+            link: product_detail_link.replaceAll('-', '%%'),
+            finger: product_finger,
+            brand: product_brand
         }
-    }).then(function(found_product) {
-        if (found_product == null) {
-            gDbManager.Product
-                .build({
-                    title: product_title,
-                    thumbnail: product_thumbnail.replaceAll('-', '%%'),
-                    desc: product_desc,
-                    price: product_price,
-                    discount: product_discount,
-                    percent: product_percent,
-                    link: product_detail_link.replaceAll('-', '%%'),
-                    finger: product_finger,
-                    brand: product_brand
-                })
-                .save().then(function(saved_product) {
-                    saved_product.setCategory(saved_category);
-                    saved_product.setStore(saved_store);
-                    if (saved_category.cover == null) {
-                        saved_category.updateAttributes({
-                            cover: saved_product.thumbnail.replaceAll("%%", "-")
-                        });
-                    }
-                    callback(saved_product);
-                });
-        } else {
-            callback(found_product);
+    }).then(function(product) {
+        var saved_product = product[0];
+        logger.info("Save new product successfully");
+        saved_product.setCategory(saved_category);
+        saved_product.setStore(saved_store);
+        if (saved_category.cover == null) {
+            saved_category.updateAttributes({
+                cover: saved_product.thumbnail.replaceAll("%%", "-")
+            });
         }
+        common.saveToFile("./temp/product_links_save.txt", "save_" + saved_product.dataValues.link);
+        callback(saved_product);
     });
+
+    // gDbManager.Product.findOne({
+    //     where: {
+    //         finger: product_finger
+    //     }
+    // }).then(function(found_product) {
+    //     if (found_product == null) {
+    //         gDbManager.Product
+    //             .build({
+    //                 title: product_title,
+    //                 thumbnail: product_thumbnail.replaceAll('-', '%%'),
+    //                 desc: product_desc,
+    //                 price: product_price,
+    //                 discount: product_discount,
+    //                 percent: product_percent,
+    //                 link: product_detail_link.replaceAll('-', '%%'),
+    //                 finger: product_finger,
+    //                 brand: product_brand
+    //             })
+    //             .save().then(function(saved_product) {
+    //                 saved_product.setCategory(saved_category);
+    //                 saved_product.setStore(saved_store);
+    //                 if (saved_category.cover == null) {
+    //                     saved_category.updateAttributes({
+    //                         cover: saved_product.thumbnail.replaceAll("%%", "-")
+    //                     });
+    //                 }
+    //                 callback(saved_product);
+    //                 common.saveToFile("./temp/product_links_save.txt", "save_" + saved_product.dataValues.link);
+    //             });
+    //     } else {
+    //         callback(found_product);
+    //     }
+    // });
 }
 
 module.exports.create_product_color = function(saved_product, color_name,

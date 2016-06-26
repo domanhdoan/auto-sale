@@ -36,8 +36,6 @@ function extractProductDetails(product_pattern, saved_product) {
         var $ = cheerio.load(body);
         var detailLink = response.request.href;
 
-        common.saveToFile("./temp/product_links_save.txt", "save_" + detailLink);
-
         var size_list = $(product_pattern.details.size);
         var color_list = $(product_pattern.details.color);
         var colors = [];
