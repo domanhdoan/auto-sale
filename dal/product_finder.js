@@ -1,13 +1,13 @@
-var g_orm_manager = null;
-var g_web_crawler = null;
+var gDbManager = require("../models/db_manager.js");
 
 var logger = require("../util/logger.js");
-const common = require('../util/common.js');
+var common = require('../util/common.js');
 
 //===================================================//
 //================= SHOE finding ====================//
 //===================================================//
 var keywords = ['giay', 'mau', 'size'];
+
 function parse_keywords(keywords, word_list) {
     var result = {};
     var temp = '';
@@ -28,6 +28,7 @@ function parse_keywords(keywords, word_list) {
     }
     return result;
 }
+
 function parse_keywords_calibration(keywords, word_list) {
     var results_json = parse_keywords(keywords, word_list);
     var results = [];
@@ -56,8 +57,7 @@ function parse_keywords_calibration(keywords, word_list) {
 }
 
 function generate_query_findshoes(keywords) {
-    var query = " Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link"
-        + " from product as P";
+    var query = " Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link" + " from product as P";
     if (keywords[1].length > 0) {
         query += " inner join color as C on P.id = C.ProductId"
     }
@@ -77,8 +77,7 @@ function generate_query_findshoes(keywords) {
 }
 
 function generate_query_findcolorNsize(product_id) {
-    var query = " Select DISTINCT C.name, S.value"
-        + " from product as P";
+    var query = " Select DISTINCT C.name, S.value" + " from product as P";
     query += " inner join color as C on P.id = C.ProductId"
     query += " inner join size as S on P.id = S.ProductId";
     query += " where P.id = " + product_id + "";
@@ -87,27 +86,22 @@ function generate_query_findcolorNsize(product_id) {
 //===================================================//
 //===================================================//
 
-exports.init = function (orm_manager, web_crawler) {
-    g_orm_manager = orm_manager;
-    g_web_crawler = web_crawler;
-}
-
-exports.findStoreByLink = function (link, callback) {
-    g_orm_manager.Store.findOne({
+exports.findStoreByLink = function(link, callback) {
+    gDbManager.Store.findOne({
         where: {
             home: link
         }
-    }).then(function (store) {
+    }).then(function(store) {
         callback(store);
     });
 }
 
-exports.findCategoriesByStoreId = function (store_id, callback) {
-    g_orm_manager.Category.findAll({
+exports.findCategoriesByStoreId = function(store_id, callback) {
+    gDbManager.Category.findAll({
         where: {
             StoreId: store_id
         }
-    }).then(function (categories) {
+    }).then(function(categories) {
         if (callback != null) {
             callback(categories);
         } else {
@@ -116,26 +110,26 @@ exports.findCategoriesByStoreId = function (store_id, callback) {
     });
 }
 
-exports.findInvoiceById = function (invoice_id, callback) {
-    g_orm_manager.Invoice.findOne({
+exports.findInvoiceById = function(invoice_id, callback) {
+    gDbManager.Invoice.findOne({
         where: {
             id: invoice_id
         }
-    }).then(function (invoice) {
+    }).then(function(invoice) {
         callback(invoice);
     });
 }
 
 // Keyword order: shoes -> color -> size
-exports.findShoesByKeywords = function (user_message, callback) {
+exports.findShoesByKeywords = function(user_message, callback) {
     var products = [];
     var word_list = user_message.split(" ");
     var keywords_value = parse_keywords_calibration(keywords, word_list);
     var count = Object.keys(keywords_value).length;
     if (count != 0) {
         var query = generate_query_findshoes(keywords_value);
-        g_orm_manager.sequelize.query(query)
-            .spread(function (results, metadata) {
+        gDbManager.sequelize.query(query)
+            .spread(function(results, metadata) {
                 if (results == null) {
                     logger.error("Product not found");
                     callback(products);
@@ -150,34 +144,34 @@ exports.findShoesByKeywords = function (user_message, callback) {
 
 }
 
-exports.findProductsById = function (id, callback) {
-    g_orm_manager.Product.findOne({
+exports.findProductsById = function(id, callback) {
+    gDbManager.Product.findOne({
         where: {
             id: id
         }
-    }).then(function (product) {
+    }).then(function(product) {
         callback(product);
     });
 }
 
-exports.findProductsByCode = function (code, callback) {
-    g_orm_manager.Product.findOne({
+exports.findProductsByCode = function(code, callback) {
+    gDbManager.Product.findOne({
         where: {
             title: {
                 $like: "%" + code + "%"
             }
         }
-    }).then(function (product) {
+    }).then(function(product) {
         callback(product);
     });
 }
 
-exports.findProductByFinger = function (finger, callback) {
-    g_orm_manager.Product.findOne({
+exports.findProductByFinger = function(finger, callback) {
+    gDbManager.Product.findOne({
         where: {
             finger: finger
         }
-    }).then(function (product) {
+    }).then(function(product) {
         if (product != null) {
             logger.info(product.dataValues.title);
             callback(product);
@@ -187,15 +181,16 @@ exports.findProductByFinger = function (finger, callback) {
     });
 }
 
-exports.findProductByThumbnail = function (home_page, thumbnail_link, callback) {
-    require('../controllers/web_crawler').extract_product_thumb_link(
-        home_page, thumbnail_link, function (real_thumb_url) {
+exports.findProductByThumbnail = function(home_page, thumbnail_link, callback) {
+    require('../controllers/web_crawler').extractThumbUrl(
+        home_page, thumbnail_link,
+        function(real_thumb_url) {
             logger.info("search_item URL = " + real_thumb_url);
-            g_orm_manager.Product.findOne({
+            gDbManager.Product.findOne({
                 where: {
                     thumbnail: real_thumb_url.replaceAll('-', '%%')
                 }
-            }).then(function (product) {
+            }).then(function(product) {
                 if (product != null) {
                     logger.info(product.dataValues.title);
                     callback(product);
@@ -206,64 +201,64 @@ exports.findProductByThumbnail = function (home_page, thumbnail_link, callback) 
         });
 }
 
-exports.getColorsNSize = function (product_id, callback) {
-    module.exports.getProductColors(product_id, function (colors) {
-        module.exports.getProductSizes(product_id, function (sizes) {
+exports.getColorsNSize = function(product_id, callback) {
+    module.exports.getProductColors(product_id, function(colors) {
+        module.exports.getProductSizes(product_id, function(sizes) {
             callback(colors, sizes);
         });
     });
 }
 
-exports.getProductColors = function (product_id, callback) {
-    g_orm_manager.Color.findAll({
+exports.getProductColors = function(product_id, callback) {
+    gDbManager.Color.findAll({
         order: [
             ['value', 'ASC']
         ],
         where: {
             ProductId: product_id
         }
-    }).then(function (colors) {
+    }).then(function(colors) {
         callback(colors);
     });
 }
 
-exports.getProductSizes = function (product_id, callback) {
-    g_orm_manager.Size.findAll({
+exports.getProductSizes = function(product_id, callback) {
+    gDbManager.Size.findAll({
         order: [
             ['value', 'ASC']
         ],
         where: {
             ProductId: product_id
         }
-    }).then(function (sizes) {
+    }).then(function(sizes) {
         callback(sizes);
     });
 }
 
-exports.checkProductByColor = function (product_id, color, callback) {
-    g_orm_manager.Color.findOne({
+exports.checkProductByColor = function(product_id, color, callback) {
+    gDbManager.Color.findOne({
         where: {
             name: color,
             ProductId: product_id
         }
-    }).then(function (color) {
+    }).then(function(color) {
         callback(color);
     });
 }
 
-exports.checkProductBySize = function (product_id, size, callback) {
-    g_orm_manager.Size.findOne({
+exports.checkProductBySize = function(product_id, size, callback) {
+    gDbManager.Size.findOne({
         where: {
             value: size,
             ProductId: product_id
         }
-    }).then(function (size) {
+    }).then(function(size) {
         callback(size);
     });
 }
 
-exports.getOrderItems = function (invoice_id, callback) {
-    g_orm_manager.FashionItem.findAll({
+exports.getOrderItems = function(invoice_id, callback) {
+    gDbManager.FashionItem.findAll({
         attributes: ['quantity'],
         order: [
             ['id', 'ASC']
@@ -272,23 +267,28 @@ exports.getOrderItems = function (invoice_id, callback) {
             InvoiceId: invoice_id
         },
         include: [{
-            model: g_orm_manager.Product,
+            model: gDbManager.Product,
             attributes: ['title', 'desc', 'thumbnail', 'price', 'discount'],
-            where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
-        },
-            {
-                model: g_orm_manager.Color,
-                where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
-            },
-            {
-                model: g_orm_manager.Size,
-                where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
-            },
-            {
-                model: g_orm_manager.Invoice,
-                where: { id: g_orm_manager.sequelize.col('FashionItem.ProductId') }
-            }]
-    }).then(function (items) {
+            where: {
+                id: gDbManager.sequelize.col('FashionItem.ProductId')
+            }
+        }, {
+            model: gDbManager.Color,
+            where: {
+                id: gDbManager.sequelize.col('FashionItem.ProductId')
+            }
+        }, {
+            model: gDbManager.Size,
+            where: {
+                id: gDbManager.sequelize.col('FashionItem.ProductId')
+            }
+        }, {
+            model: gDbManager.Invoice,
+            where: {
+                id: gDbManager.sequelize.col('FashionItem.ProductId')
+            }
+        }]
+    }).then(function(items) {
         callback(items);
     });
 }

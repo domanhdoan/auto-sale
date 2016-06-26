@@ -15,7 +15,7 @@ function UserIntentParserRegExp() {
         'con ko', 'co ko', 'co hang ko',
         'con k0', 'co k0', 'co hang k0'
     ];
-    var keyword_check_ship = ['ship', 'den dau', 'tu'];
+    var keyword_check_ship = ['ship', 've', 'den', 've den', 'tu'];
     var keyword_ask_pitch = ['do size', 'gia ship'];
     var keyword_ask_material = ['do size', 'gia ship', 'dia chi'];
     var keyword_ask_discount = ['sale off', 'sale-off',
@@ -135,14 +135,14 @@ function UserIntentParserRegExp() {
 
 var method = UserIntentParserRegExp.prototype
 
-method.parse = function(userMsg, codePattern, callback) {
-    if (this.parsePriceInfo(userMsg, codePattern)) {
+method.parse = function(userMsg, options, callback) {
+    if (this.parsePriceInfo(userMsg, options.codePattern)) {
         logger.info('Checking price for customer');
-    } else if (this.parseColorInfo(userMsg, codePattern)) {
+    } else if (this.parseColorInfo(userMsg, options.codePattern)) {
         logger.info('parseColorInfo for customer');
-    } else if (this.parseSizeInfo(userMsg, codePattern)) {
+    } else if (this.parseSizeInfo(userMsg, options.codePattern)) {
         logger.info('parseSizeInfo for customer');
-    } else if (this.parseShipInfo(userMsg, codePattern)) {
+    } else if (this.parseShipInfo(userMsg, options.codePattern)) {
         logger.info('parseShipInfo for customer');
     } else {
         logger.info('not understand message');
