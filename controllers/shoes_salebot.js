@@ -4,6 +4,7 @@ var express = require('express');
 var validator = require("email-validator");
 var request = require('request');
 var JSONbig = require('json-bigint');
+var server = express();
 
 var config = require("../config/config.js");
 var common = require("../util/common");
@@ -470,40 +471,53 @@ function processEvent(event) {
 //=====================================================================//
 //================= FB webhook ========================================//
 //=====================================================================//
-var server = express();
+function initWebHook() {
+    fbMessenger.doSubscribeRequest();
 
-server.get(config.bots.fb_webhook, function(req, res) {
-    if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
-        res.send(req.query['hub.challenge']);
-        console.log("call get");
-        setTimeout(function() {
-            fbMessenger.doSubscribeRequest();
-        }, 3000);
-    } else {
-        res.send('Error, wrong validation token');
-    }
-});
+    server.use(bodyParser.text({
+        type: 'application/json'
+    }));
 
-server.post(config.bots.fb_webhook, function(req, res) {
-    try {
-        var data = JSONbig.parse(req.body);
-        var messaging_events = data.entry[0].messaging;
-        for (var i = 0; i < messaging_events.length; i++) {
-            var event = data.entry[0].messaging[i];
-            processEvent(event);
+    server.use(bodyParser.urlencoded({
+        extended: true
+    }));
+
+    server.get(config.bots.fb_webhook, function(req, res) {
+        if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
+            res.send(req.query['hub.challenge']);
+            console.log("call get");
+            setTimeout(function() {
+                fbMessenger.doSubscribeRequest();
+            }, 3000);
+        } else {
+            res.send('Error, wrong validation token');
         }
-        return res.status(200).json({
-            status: "ok"
-        });
-    } catch (err) {
-        logger.error(err);
-        return res.status(400).json({
-            status: "error",
-            error: err
-        });
-    }
+    });
 
-});
+    server.post(config.bots.fb_webhook, function(req, res) {
+        try {
+            var data = JSONbig.parse(req.body);
+            var messaging_events = data.entry[0].messaging;
+            for (var i = 0; i < messaging_events.length; i++) {
+                var event = data.entry[0].messaging[i];
+                processEvent(event);
+            }
+            return res.status(200).json({
+                status: "ok"
+            });
+        } catch (err) {
+            logger.error(err);
+            return res.status(400).json({
+                status: "error",
+                error: err
+            });
+        }
+    });
+
+    server.listen(config.bots.port, function() {
+        console.log('FB BOT ready to go!');
+    });
+}
 //=====================================================================//
 //================= FB webhook ========================================//
 //=====================================================================//
@@ -513,32 +527,16 @@ module.exports = {
         gAiUsingFlag = use_ai;
     },
     start: function(homepage, storeConfig) {
-        gHomepage = common.insertHttpPrefix(homepage);
         gStoreConfig = storeConfig;
 
-        fbMessenger.doSubscribeRequest();
+        gHomepage = common.insertHttpPrefix(homepage);
 
-        server.use(bodyParser.text({
-            type: 'application/json'
-        }));
-
-        server.use(bodyParser.urlencoded({
-            extended: true
-        }));
-
-        server.listen(config.bots.port, function() {
-            console.log('FB BOT ready to go!');
-        });
+        initWebHook();
 
         if (gAiUsingFlag) {
             intentParser = parserFactory.createParser(ParserFactory.CONSTANT.AI_PARSER);
         } else {
             intentParser = parserFactory.createParser(ParserFactory.CONSTANT.REGEXP_PARSER);
         }
-
-        gProductFinder.findStoreByLink(gHomepage,
-            function(store) {
-                gStoreId = store.dataValues.id;
-            });
     }
 }
