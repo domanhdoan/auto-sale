@@ -1088,14 +1088,14 @@ function chunkString(s, len) {
     return output;
 }
 
-module.exports.saveToFile = function(url, content) {
-    require('fs').writeFile("./temp/" + url.replaceAll("http://", "").replaceAll("/", "#") + ".html",
-        content,
+module.exports.saveToFile = function(path, content) {
+    //require('fs').appendFile("./temp/" + url.replaceAll("http://", "").replaceAll("/", "#") + ".html",
+    require('fs').appendFile(path,
+        content + "\n",
         function(err) {
             if (err) {
                 return console.log(err);
             }
-
             console.log("The file was saved!");
         });
 }
