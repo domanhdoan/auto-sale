@@ -34,8 +34,9 @@ function extractProductDetails(product_pattern, saved_product) {
             return;
         }
         var $ = cheerio.load(body);
+        var detailLink = response.request.href;
 
-        common.saveToFile(response.request.href, body);
+        common.saveToFile("./temp/product_links_save.txt", "save_" + detailLink);
 
         var size_list = $(product_pattern.details.size);
         var color_list = $(product_pattern.details.color);
@@ -81,51 +82,53 @@ function extractOneCategory(saved_store, saved_category, handle_paging, callback
 
         var $ = cheerio.load(body);
 
-        common.saveToFile(response.request.href, body);
+        // common.saveToFile(response.request.href, body);
 
         var product_pattern = gCrawlPattern.product_info;
         var product_list = $(product_pattern.product_list);
 
         for (var i = 0, len = product_list.length; i < len; i++) {
-            var product_title = $(product_list[i]).find(product_pattern.title).text();
-            var product_thumbnail = $(product_list[i]).find(product_pattern.thumbnail).attr('src');
-            var product_desc = $(product_list[i]).find(product_pattern.desc).text();
+            var title = $(product_list[i]).find(product_pattern.title).text();
+            var thumbnailLink = $(product_list[i]).find(product_pattern.thumbnail).attr('src');
+            var desc = $(product_list[i]).find(product_pattern.desc).text();
 
-            if (product_thumbnail != undefined && product_thumbnail != "" && product_title != "") {
-                var product_detail_link = $(product_list[i]).find(product_pattern.detail_link).attr('href');
-                product_detail_link = common.insertRootLink(product_detail_link, curHomepage);
-                product_thumbnail = common.insertRootLink(product_thumbnail, curHomepage)
+            if (thumbnailLink != undefined && thumbnailLink != "" && title != "") {
+                var detailLink = $(product_list[i]).find(product_pattern.detail_link).attr('href');
+                detailLink = common.insertRootLink(detailLink, curHomepage);
+                thumbnailLink = common.insertRootLink(thumbnailLink, curHomepage)
 
-                if (product_desc == "") {
-                    product_desc = product_title;
+                common.saveToFile("./temp/product_links_save.txt", detailLink);
+
+                if (desc == "") {
+                    desc = title;
                 }
 
-                var product_price = $(product_list[i]).find(product_pattern.price).text();
-                var product_discount = $(product_list[i]).find(product_pattern.discount).text();
-                var product_percent = $(product_list[i]).find(product_pattern.percent).text();
+                var priceStr = $(product_list[i]).find(product_pattern.price).text();
+                var discountStr = $(product_list[i]).find(product_pattern.discount).text();
+                var percent = $(product_list[i]).find(product_pattern.percent).text();
 
-                if (product_price == null || product_price == "") {
-                    product_price = product_discount;
+                if (priceStr == null || priceStr == "") {
+                    priceStr = discountStr;
                 }
 
-                if (product_discount == null || product_discount == "") {
-                    product_discount = "0";
+                if (discountStr == null || discountStr == "") {
+                    discountStr = "0";
                 }
 
-                if (product_percent == null || product_percent == "") {
-                    product_percent = "0";
+                if (percent == null || percent == "") {
+                    percent = "0";
                 }
-                var price = common.extract_price(product_price);
-                var discount = common.extract_price(product_discount);
+                var price = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
+                var discount = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
 
                 if (price > 0) {
-                    logger.info("create_product = " + product_detail_link);
+                    logger.info("create_product = " + detailLink);
                     gModelFactory.findAndCreateProduct(
                         saved_store, saved_category,
-                        product_title, product_thumbnail,
-                        product_desc, price,
-                        discount, product_percent,
-                        product_detail_link, "" /*finger*/ , "",
+                        title, thumbnailLink,
+                        desc, price,
+                        discount, percent,
+                        detailLink, "" /*finger*/ , "",
                         gCrawlPattern.product_code_pattern,
                         function(saved_product) {
                             extractProductDetails(product_pattern, saved_product);
@@ -190,7 +193,7 @@ exports.crawlWholeSite = function(home_page, crawl_pattern, callback) {
                 // load the web_content of the page into Cheerio so we can traverse the DOM
                 var $ = cheerio.load(web_content);
                 extractCategories($, store, callback);
-                common.saveToFile(response.request.href, web_content);
+                // common.saveToFile(response.request.href, web_content);
             });
         });
 }
