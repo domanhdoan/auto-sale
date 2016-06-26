@@ -1,6 +1,8 @@
 var common = require("../util/common");
 var logger = require("../util/logger.js");
 var config = require("../config/config.js");
+var request = require('request');
+var bodyParser = require('body-parser');
 
 function FBMessenger() {
     this.sendDataToFBMessenger = function(sender, data, callback) {
@@ -140,7 +142,7 @@ FBMessenger.prototype.createAIAPIProductsMessage = function(rich_data) {
 FBMessenger.prototype.doSubscribeRequest = function() {
     request({
             method: 'POST',
-            uri: "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=" + FB_PAGE_ACCESS_TOKEN
+            uri: "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=" + config.bots.fb_page_token
         },
         function(error, response, body) {
             if (error) {

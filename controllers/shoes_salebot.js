@@ -3,44 +3,37 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var validator = require("email-validator");
 var request = require('request');
-const apiai = require('apiai');
-const uuid = require('node-uuid');
-const JSONbig = require('json-bigint');
-const async = require('async');
+var JSONbig = require('json-bigint');
 
 var config = require("../config/config.js");
-
 var common = require("../util/common");
 var logger = require("../util/logger.js");
 
-var g_model_factory = require("../dal/model_factory.js");
+var gModelFactory = require("../dal/model_factory.js");
 
 // Refactory code
 var SessionManager = require("../dal/session_manager.js");
 var sessionManager = new SessionManager();
 
-var UserIntentParserRegExp = require("../processors/user_intent_parser_regexp.js");
-var intentParserRegExp = new UserIntentParserRegExp();
+var ParserFactory = require("../processors/user_intent_parser_factory.js");
+var parserFactory = new ParserFactory();
+var intentParser = null;
 
 var FBMessenger = require("../dal/fbmessenger.js");
 var fbMessenger = new FBMessenger();
 
-var g_store_id = "";
-var g_home_page = "";
-var g_search_path = "";
-var g_product_finder = null;
-var g_store_config = {};
+var gStoreId = "";
+var gHomepage = "";
+var gProductFinder = require('../dal/product_finder.js');
+var gStoreConfig = {};
 
-var g_ai_using = false;
-const APIAI_ACCESS_TOKEN = config.bots.ai_token;
-const APIAI_LANG = config.bots.ai_lang;
-const FB_VERIFY_TOKEN = config.bots.fb_verify_token;
+var gAiUsingFlag = false;
 
 // Keyword - results
-var search_map = {};
+var searchMap = {};
 
 function createAndSendOrderToFB(session, callback) {
-    g_product_finder.getOrderItems(session.last_invoice.id, function(items) {
+    gProductFinder.getOrderItems(session.last_invoice.id, function(items) {
         var sub_total = 0;
         var invoice_items = [];
         var length = items[0].Invoice.dataValues.creation_date.length;
@@ -71,11 +64,11 @@ function createAndSendOrderToFB(session, callback) {
 }
 
 function createAndSendOrderToStore(session, callback) {
-    g_product_finder.getOrderItems(session.last_invoice.id, function(items) {
+    gProductFinder.getOrderItems(session.last_invoice.id, function(items) {
         for (var i = 0; i < items.length; i++) {
-            var order = g_store_config.order_form;
+            var order = gStoreConfig.order_form;
             request({
-                url: g_home_page,
+                url: gHomepage,
                 method: 'POST',
             }, function(error, response, body) {
                 if (error) {
@@ -122,7 +115,6 @@ function sendSearchResultsToFB(session, products) {
             session.last_product.id = found_products[0].dataValues.id;
         }
     }
-
 }
 
 // =================================================================
@@ -130,13 +122,13 @@ function sendSearchResultsToFB(session, products) {
 // =================================================================
 
 function findProductByImage(session, user_msg) {
-    g_product_finder.findProductByThumbnail(g_home_page, user_msg, function(product) {
+    gProductFinder.findProductByThumbnail(gHomepage, user_msg, function(product) {
         sendSearchResultsToFB(session, product);
     });
 }
 
 function findProductByKeywords(session, message) {
-    g_product_finder.findShoesByKeywords(message, function(products) {
+    gProductFinder.findShoesByKeywords(message, function(products) {
         var product_count = (products.length > common.product_search_max) ? common.product_search_max : products.length;
         if (products.length > 0) {
             // user_sessions[sessionId].last_action = common.find_product;
@@ -160,7 +152,7 @@ function findProductByKeywords(session, message) {
             }
             found_products = found_products1.concat(found_products2);
             fbMessenger.sendGenericMessage(session.fbid, found_products);
-            search_map[message] = found_products;
+            searchMap[message] = found_products;
             session.last_search = message;
         } else {
             fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
@@ -169,7 +161,7 @@ function findProductByKeywords(session, message) {
 }
 
 function findProductByCode(session, message) {
-    g_product_finder.findProductsByCode(message, function(product) {
+    gProductFinder.findProductsByCode(message, function(product) {
         sendSearchResultsToFB(session, product);
     });
 }
@@ -178,7 +170,7 @@ function findProductByCategory(store_id) {}
 
 function showAvailableColorNsize(session, show_color, show_size) {
     var productId = session.last_product.id;
-    g_product_finder.getColorsNSize(productId,
+    gProductFinder.getColorsNSize(productId,
         function(colors, sizes) {
             var available_colors = "";
             if (show_color) {
@@ -229,7 +221,7 @@ function searchAndConfirmAddress(session, destination, callback) {
 
 function doProductSearch(session, user_msg, user_msg_trans) {
     var result = common.extractValue(user_msg,
-        g_store_config.product_code_pattern);
+        gStoreConfig.product_code_pattern);
     if (common.isUrl(user_msg)) {
         findProductByImage(session, user_msg);
     } else if (result.isProductCode) {
@@ -244,7 +236,7 @@ function doProductOrder(session, text) {
     if (session.last_action == common.select_product) {
         // Remove mua word to get color value
         var color_keyword = user_req_trans.replaceAll("mau", "").replaceAll(" ", "").trim();
-        g_product_finder.checkProductByColor(session.last_product.id,
+        gProductFinder.checkProductByColor(session.last_product.id,
             color_keyword,
             function(color) {
                 if (color != null) {
@@ -262,7 +254,7 @@ function doProductOrder(session, text) {
                 }
             });
     } else if (session.last_action == common.select_product_color) {
-        g_product_finder.checkProductBySize(session.last_product.id,
+        gProductFinder.checkProductBySize(session.last_product.id,
             text,
             function(size) {
                 if (size != null) {
@@ -278,7 +270,7 @@ function doProductOrder(session, text) {
             });
     } else if (session.last_action == common.select_product_size) {
         logger.debug("Order Quantity: " + text);
-        g_model_factory.create_fashion_item(parseInt(text),
+        gModelFactory.create_fashion_item(parseInt(text),
             session.last_invoice.id,
             session.last_product.id,
             session.last_product.color,
@@ -291,6 +283,14 @@ function doProductOrder(session, text) {
         var confirm_buttons = createSearchOrPurchaseElement();
         fbMessenger.sendConfirmMessage(session.fbid, "Xác nhận đơn đặt hàng.",
             confirm_buttons);
+        if (session.last_invoice.id == -1) {
+            gModelFactory.create_empty_invoice(session.fbid,
+                function(invoice) {
+                    session.last_invoice.id = invoice.id;
+                });
+        } else {
+
+        }
     }
 }
 
@@ -334,91 +334,41 @@ function doFillOrderDetails(session, text) {
     }
 }
 
-//=====================================================================//
-//================= AI service ========================================//
-//=====================================================================//
-
-const apiAiService = apiai(APIAI_ACCESS_TOKEN, {
-    language: APIAI_LANG,
-    requestSource: "fb"
-});
-const aiSessionIds = new Map();
-
-function processTextByAI(text, sender) {
-    if (!aiSessionIds.has(sender)) {
-        aiSessionIds.set(sender, uuid.v1());
-    }
-    let apiaiRequest = apiAiService.textRequest(text, {
-        sessionId: aiSessionIds.get(sender)
-    });
-
-    apiaiRequest.on('response', (response) => {
-        if (common.isDefined(response.result)) {
-            let responseText = response.result.fulfillment.speech;
-            let responseData = response.result.fulfillment.data;
-            let action = response.result.action;
-
-            console.log("response fulfillment: ", response.result.fulfillment);
-            console.log("response data: ", responseData);
-
-            if (isDefined(responseData) && isDefined(responseData.facebook)) {
-                try {
-                    console.log('Response as formatted message');
-                    //fbMessenger.sendTextMessage(sender, responseData.facebook);
-                    sendDataToFBMessenger(sender, responseData.facebook)
-                } catch (err) {
-                    fbMessenger.sendTextMessage(sender, {
-                        text: err.message
-                    });
-                }
-            } else if (isDefined(responseText)) {
-                console.log('Response as text message');
-                // facebook API limit for text length is 320,
-                // so we split message if needed
-                var splittedText = common.splitResponse(responseText);
-                async.eachSeries(splittedText, (textPart, callback) => {
-                    fbMessenger.sendTextMessage(sender, textPart);
-                });
-            }
-        }
-    });
-
-    apiaiRequest.on('error', (error) => console.error(error));
-    apiaiRequest.end();
+function doCancelOrder(session) {
+    var invoice_id = session.last_invoice.id;
+    var status = "cancel";
+    session.last_invoice.is_ordering = false;
+    gModelFactory.cancel_invoice(invoice_id, status,
+        function(invoice) {
+            session.last_invoice.id = -1;
+            session.last_product.id = -1;
+            session.last_invoice.id = -1;
+            session.last_invoice.status = "cancel";
+        });
+    fbMessenger.sendTextMessage(session.fbid, common.pls_reset_buying);
+    session.last_action = common.say_greetings;
+    fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
 }
+
 //=====================================================================//
-//================= AI service ========================================//
+//================= Process FB Message=================================//
 //=====================================================================//
+
 function processTextEvent(session, user_msg) {
     var user_req_trans = user_msg.latinise().toLowerCase();
     var last_action_key = session.last_action;
     var last_action = common.sale_steps.get(last_action_key);
+    var selectProductAction = common.sale_steps.get(common.select_product);
+    var selectQuantityAction = common.sale_steps.get(common.set_quantity);
+    var selectDeliveryDateAction = common.sale_steps.get(common.set_delivery_date);
+
     if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
-        var invoice_id = session.last_invoice.id;
-        var status = "cancel";
-        session.last_invoice.is_ordering = false;
-        g_model_factory.cancel_invoice(invoice_id, status,
-            function(invoice) {
-                session.last_invoice.id = -1;
-                session.last_product.id = -1;
-                session.last_invoice.id = -1;
-                session.last_invoice.status = "cancel";
-            });
-        fbMessenger.sendTextMessage(session.fbid, common.pls_reset_buying);
-        session.last_action = common.say_greetings;
-        fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
-        /*Handle what user send to fanpage*/
+        doCancelOrder(session);
     } else if (last_action_key == common.say_greetings) {
-        if (session.last_invoice.id == -1) {
-            g_model_factory.create_empty_invoice(session.fbid,
-                function(invoice) {
-                    session.last_invoice.id = invoice.id;
-                });
-        } else {}
         doProductSearch(session, user_msg, user_req_trans);
-    } else if ((last_action >= common.sale_steps.get(common.select_product)) && last_action < common.sale_steps.get(common.set_quantity)) {
+    } else if ((last_action >= selectProductAction) && last_action < selectQuantityAction) {
         doProductOrder(session, user_msg);
-    } else if ((last_action >= common.sale_steps.get(common.set_quantity)) && last_action <= common.sale_steps.get(common.set_delivery_date)) {
+    } else if ((last_action >= selectQuantityAction) && last_action <= selectDeliveryDateAction) {
         doFillOrderDetails(session, user_msg);
     } else {
         logger.error("Unknow message: " + user_msg);
@@ -456,13 +406,13 @@ function processPostbackEvent(session, action_details) {
         fbMessenger.sendTextMessage(session.fbid, common.pls_enter_address);
     } else if (user_action.indexOf(common.action_confirm_order) >= 0) {
         session.last_invoice.status = "confirm";
-        g_model_factory.update_invoice(session.last_invoice, function(invoice) {
+        gModelFactory.update_invoice(session.last_invoice, function(invoice) {
             logger.info(invoice);
             sessionManager.resetSession(session.fbid);
             fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
         });
     } else if (user_action.indexOf(common.action_cancel_order) >= 0) {
-        g_model_factory.cancel_invoice(session.last_invoice.id, "cancel", function(invoice) {
+        gModelFactory.cancel_invoice(session.last_invoice.id, "cancel", function(invoice) {
             if (invoice != null) {
                 user_sessions[session.sessionId] = initSession(session.fbid);
                 fbMessenger.sendTextMessage(session.fbid, common.say_greetings);
@@ -475,22 +425,23 @@ function processPostbackEvent(session, action_details) {
 
 function processEvent(event) {
     var sender = event.sender.id.toString();
+    var receiver = event.recipient.id.toString();
     var current_session = sessionManager.findOrCreateSession(sender);
 
     if (event.message) {
         if (event.message.text) {
             var text = event.message.text;
 
-            if (g_ai_using) {
-                processTextByAI(text, sender);
-            } else {
-                processTextEvent(current_session, text);
-                intentParserRegExp.parse(text.latinise(),
-                    g_store_config.product_code_pattern,
-                    function(info) {
+            var options = {
+                fbid: sender,
+                pageId: receiver,
+                codePattern: gStoreConfig.product_code_pattern
+            };
+            intentParser.parse(text, options,
+                function handle(info) {
 
-                    });
-            }
+                });
+            processTextEvent(current_session, text);
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
             // handle the case when user send an image for searching product
@@ -520,9 +471,6 @@ function processEvent(event) {
 //================= FB webhook ========================================//
 //=====================================================================//
 var server = express();
-server.use(bodyParser.text({
-    type: 'application/json'
-}));
 
 server.get(config.bots.fb_webhook, function(req, res) {
     if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
@@ -560,72 +508,37 @@ server.post(config.bots.fb_webhook, function(req, res) {
 //================= FB webhook ========================================//
 //=====================================================================//
 
-//=====================================================================//
-//================= AI webhook ========================================//
-//=====================================================================//
-var ai_webhook = express();
-ai_webhook.use(bodyParser.json());
-ai_webhook.post(config.bots.ai_webhook, function(req, res) {
-    // get the parameters
-    var action = req.body.result.action
-    action = req.body.result.action
-    console.log("request action: ", action);
-    var user_msg_trans = translator("giày nam mầu xanh lam size 36");
-    g_product_finder.findShoesByKeywords(user_msg_trans, function(products) {
-        var product_count = (products.length > common.product_search_max) ?
-            common.product_search_max : products.length;
-        if (products.length > 0) {
-            var found_products = [];
-            for (var i = 0; i < product_count; i++) {
-                var product_object = fbMessenger.createProductElement(
-                    products[i].title,
-                    products[i].price,
-                    products[i].thumbnail.replaceAll("%%", "-"),
-                    products[i].link.replaceAll("%%", "-"),
-                    products[i].code,
-                    products[i].id);
-                found_products.push(product_object);
-            }
-            var response = createAIAPIProductsMessage(found_products);
-            logger.info(JSON.stringify(response));
-            res.setHeader('content-type', 'application/json');
-            res.send(response);
-        } else {
-            fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
-        }
-    });
-});
-//=====================================================================//
-//================= AI webhook ========================================//
-//=====================================================================//
-
 module.exports = {
     enable_ai: function(use_ai) {
-        g_ai_using = use_ai;
+        gAiUsingFlag = use_ai;
     },
-    start: function(home_page, store_crawling_pattern,
-        products_finder, model_factory) {
-        g_product_finder = products_finder;
-        g_home_page = common.insertHttpPrefix(home_page);
-        g_store_config = store_crawling_pattern;
+    start: function(homepage, storeConfig) {
+        gHomepage = common.insertHttpPrefix(homepage);
+        gStoreConfig = storeConfig;
 
-        //fbMessenger.doSubscribeRequest();
+        fbMessenger.doSubscribeRequest();
+
+        server.use(bodyParser.text({
+            type: 'application/json'
+        }));
+
         server.use(bodyParser.urlencoded({
             extended: true
         }));
+
         server.listen(config.bots.port, function() {
             console.log('FB BOT ready to go!');
         });
 
-        if (g_ai_using) {
-            ai_webhook.listen(config.bots.ai_port);
+        if (gAiUsingFlag) {
+            intentParser = parserFactory.createParser(ParserFactory.CONSTANT.AI_PARSER);
+        } else {
+            intentParser = parserFactory.createParser(ParserFactory.CONSTANT.REGEXP_PARSER);
         }
 
-        g_product_finder.findStoreByLink(g_home_page,
+        gProductFinder.findStoreByLink(gHomepage,
             function(store) {
-                g_store_id = store.dataValues.id;
+                gStoreId = store.dataValues.id;
             });
-
-        g_model_factory = model_factory;
     }
 }

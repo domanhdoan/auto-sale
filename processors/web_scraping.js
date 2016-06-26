@@ -4,11 +4,11 @@ var common = require("../util/common.js");
 
 var cheerio = require("cheerio");
 var request = require("request");
-var cur_home_page = "";
-var g_crawl_pattern = null;
-var g_orm_manager = null;
+var curHomepage = "";
 
-var g_model_factory = require("../dal/model_factory.js");
+var gCrawlPattern = null;
+var gDbManager = require("../models/db_manager.js");
+var gModelFactory = require("../dal/model_factory.js");
 
 function handleNextPages(page_object, saved_store, saved_category,
     product_pattern) {
@@ -18,7 +18,7 @@ function handleNextPages(page_object, saved_store, saved_category,
     if (page_list.length > 0) {
         page_list.each(function(i, page) {
             var link = $(this).attr('href');
-            link = common.insertRootLink(link, cur_home_page);
+            link = common.insertRootLink(link, curHomepage);
             var products = extractOneCategory(saved_store, saved_category,
                 link, false);
         });
@@ -48,7 +48,7 @@ function extractProductDetails(product_pattern, saved_product) {
             if (instock.length > 0) {
                 console.log("Size out of stock = " + instock.text().trim());
             } else {
-                g_model_factory.create_product_size(saved_product, size_value,
+                gModelFactory.create_product_size(saved_product, size_value,
                     function(save_size) {});
             }
         });
@@ -57,7 +57,7 @@ function extractProductDetails(product_pattern, saved_product) {
             var color_name = $(color).text().trim();
             var color_value = $(color).text().trim();
             colors.push($(color).text().trim());
-            g_model_factory.create_product_color(saved_product, color_name,
+            gModelFactory.create_product_color(saved_product, color_name,
                 color_value,
                 function(save_size) {});
         });
@@ -83,7 +83,7 @@ function extractOneCategory(saved_store, saved_category, handle_paging, callback
 
         common.saveToFile(response.request.href, body);
 
-        var product_pattern = g_crawl_pattern.product_info;
+        var product_pattern = gCrawlPattern.product_info;
         var product_list = $(product_pattern.product_list);
 
         for (var i = 0, len = product_list.length; i < len; i++) {
@@ -93,8 +93,8 @@ function extractOneCategory(saved_store, saved_category, handle_paging, callback
 
             if (product_thumbnail != undefined && product_thumbnail != "" && product_title != "") {
                 var product_detail_link = $(product_list[i]).find(product_pattern.detail_link).attr('href');
-                product_detail_link = common.insertRootLink(product_detail_link, cur_home_page);
-                product_thumbnail = common.insertRootLink(product_thumbnail, cur_home_page)
+                product_detail_link = common.insertRootLink(product_detail_link, curHomepage);
+                product_thumbnail = common.insertRootLink(product_thumbnail, curHomepage)
 
                 if (product_desc == "") {
                     product_desc = product_title;
@@ -120,13 +120,13 @@ function extractOneCategory(saved_store, saved_category, handle_paging, callback
 
                 if (price > 0) {
                     logger.info("create_product = " + product_detail_link);
-                    g_model_factory.findAndCreateProduct(
+                    gModelFactory.findAndCreateProduct(
                         saved_store, saved_category,
                         product_title, product_thumbnail,
                         product_desc, price,
                         discount, product_percent,
                         product_detail_link, "" /*finger*/ , "",
-                        g_crawl_pattern.product_code_pattern,
+                        gCrawlPattern.product_code_pattern,
                         function(saved_product) {
                             extractProductDetails(product_pattern, saved_product);
                         });
@@ -151,18 +151,18 @@ function extractOneCategory(saved_store, saved_category, handle_paging, callback
 
 function extractCategories(home_page_object, saved_store, callback) {
     var $ = home_page_object;
-    var menu_items = $(g_crawl_pattern.product_menu.item);
+    var menu_items = $(gCrawlPattern.product_menu.item);
     logger.info("Store: " + saved_store.dataValues.home);
     for (var i = 0, len = menu_items.length; i < len; i++) {
-        var item = $(menu_items[i]).find(g_crawl_pattern
+        var item = $(menu_items[i]).find(gCrawlPattern
             .product_menu.item_link);
         var category = item.text();
         if (menu_items[i].children.length == 1) {
             logger.info("Category: " + category);
             // logger.info("\nmenu_items[" + i + "] = " + $(menu_items[i]));
             var item_link = item.attr("href");
-            item_link = common.insertRootLink(item_link, cur_home_page);
-            g_model_factory.findAndCreateCategory(saved_store, category, item_link,
+            item_link = common.insertRootLink(item_link, curHomepage);
+            gModelFactory.findAndCreateCategory(saved_store, category, item_link,
                 function(saved_category) {
                     extractOneCategory(saved_store, saved_category, true, callback);
                 });
@@ -172,19 +172,14 @@ function extractCategories(home_page_object, saved_store, callback) {
     }
 }
 
-exports.init = function(orm_manager) {
-    g_orm_manager = orm_manager;
-    g_model_factory.init(g_orm_manager);
-}
-
 exports.crawlWholeSite = function(home_page, crawl_pattern, callback) {
-    g_crawl_pattern = crawl_pattern;
-    cur_home_page = home_page;
-    if (cur_home_page != null && !cur_home_page.startsWith('http')) {
-        cur_home_page = "http://" + cur_home_page;
+    gCrawlPattern = crawl_pattern;
+    curHomepage = home_page;
+    if (curHomepage != null && !curHomepage.startsWith('http')) {
+        curHomepage = "http://" + curHomepage;
     }
-    var existing_store = g_model_factory.findAndCreateStore(cur_home_page,
-        g_crawl_pattern.store_type,
+    var existing_store = gModelFactory.findAndCreateStore(curHomepage,
+        gCrawlPattern.store_type,
         function(store) {
             request(store.dataValues.home, function(error, response, body) {
                 var web_content = body;
@@ -200,10 +195,11 @@ exports.crawlWholeSite = function(home_page, crawl_pattern, callback) {
         });
 }
 
-exports.extract_product_thumb_link = function(home_page, input_thumb, callback) {
+exports.extractThumbUrl = function(home_page, input_thumb, callback) {
     var encoded_uri = encodeURIComponent(input_thumb);
-    var goole_search_image = "https://www.google.com/searchbyimage?&image_url=" + encoded_uri + "&as_sitesearch=" + home_page;
-    request.debug = true;
+    var goole_search_image = "https://www.google.com/searchbyimage?&image_url="
+    goole_search_image += encoded_uri + "&as_sitesearch=" + home_page;
+    //    request.debug = true;
     request(goole_search_image, {
         followRedirect: true,
     }, function(error, response, body) {
