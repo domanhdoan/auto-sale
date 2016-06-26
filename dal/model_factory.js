@@ -1,14 +1,10 @@
-var g_orm_manager = null;
+var gDbManager = require("../models/db_manager.js");
 var logger = require('../util/logger.js');
 var moment = require('moment');
 var common = require('../util/common.js');
 
-module.exports.init = function (orm_manager) {
-    g_orm_manager = orm_manager;
-}
-
-module.exports.findAndCreateStore = function (store_page, store_type, callback) {
-    g_orm_manager.Store.findOrCreate({
+module.exports.findAndCreateStore = function(store_page, store_type, callback) {
+    gDbManager.Store.findOrCreate({
         where: {
             home: store_page
         },
@@ -16,30 +12,30 @@ module.exports.findAndCreateStore = function (store_page, store_type, callback) 
             home: store_page,
             type: store_type
         }
-    }).then(function (store) {
+    }).then(function(store) {
         var saved_store = store[0];
         callback(saved_store);
     });
 }
 
-module.exports.findAndCreateCategory = function (store_object, name, link, callback) {
-    g_orm_manager.Category.findOrCreate({
+module.exports.findAndCreateCategory = function(store_object, name, link, callback) {
+    gDbManager.Category.findOrCreate({
         where: {
             name: name,
             StoreId: store_object.id
         },
         defaults: {
             name: name,
-            link:link
+            link: link
         }
-    }).then(function (category) {
+    }).then(function(category) {
         var saved_category = category[0];
         saved_category.setStore(store_object);
         callback(saved_category);
     });
 }
 
-module.exports.findAndCreateProduct = function (
+module.exports.findAndCreateProduct = function(
     saved_store,
     saved_category,
     product_title,
@@ -83,13 +79,13 @@ module.exports.findAndCreateProduct = function (
     //     callback(saved_product);
     // });
 
-    g_orm_manager.Product.findOne({
+    gDbManager.Product.findOne({
         where: {
             link: product_detail_link.replaceAll('-', '%%')
         }
-    }).then(function (found_product) {
+    }).then(function(found_product) {
         if (found_product == null) {
-            g_orm_manager.Product
+            gDbManager.Product
                 .build({
                     title: product_title,
                     thumbnail: product_thumbnail.replaceAll('-', '%%'),
@@ -101,10 +97,7 @@ module.exports.findAndCreateProduct = function (
                     finger: product_finger,
                     brand: product_brand
                 })
-                .save().then(function (saved_product) {
-                    logger.info("Added product: " + product_title
-                        + " Save id: " + saved_product.dataValues.id
-                        + " Save title: " + saved_product.dataValues.title);
+                .save().then(function(saved_product) {
                     saved_product.setCategory(saved_category);
                     saved_product.setStore(saved_store);
                     if (saved_category.cover == null) {
@@ -115,33 +108,30 @@ module.exports.findAndCreateProduct = function (
                     callback(saved_product);
                 });
         } else {
-            logger.info("Added product: " + product_title
-                + " Found id: " + found_product.dataValues.id
-                + " Found title: " + found_product.dataValues.title);
             callback(found_product);
         }
     });
 }
 
-module.exports.create_product_color = function (saved_product, color_name,
+module.exports.create_product_color = function(saved_product, color_name,
     color_value, callback) {
-    g_orm_manager.Color.findOne({
+    gDbManager.Color.findOne({
         where: {
             name: color_name,
             ProductId: saved_product.dataValues.id
         }
-    }).then(function (result) {
+    }).then(function(result) {
         if (result == null) {
-            g_orm_manager.Color
+            gDbManager.Color
                 .build({
                     name: color_name,
                     value: color_value
                 })
                 .save()
-                .then(function (saved_color) {
+                .then(function(saved_color) {
                     saved_color.setProduct(saved_product);
                     callback(saved_color);
-                }).catch(function (error) {
+                }).catch(function(error) {
                     logger.error(error);
                 });
 
@@ -151,23 +141,23 @@ module.exports.create_product_color = function (saved_product, color_name,
     });
 }
 
-module.exports.create_product_size = function (saved_product, size, callback) {
-    g_orm_manager.Size.findOne({
+module.exports.create_product_size = function(saved_product, size, callback) {
+    gDbManager.Size.findOne({
         where: {
             value: size,
             ProductId: saved_product.dataValues.id
         }
-    }).then(function (result) {
+    }).then(function(result) {
         if (result == null) {
-            g_orm_manager.Size
+            gDbManager.Size
                 .build({
                     value: size
                 })
                 .save()
-                .then(function (saved_size) {
+                .then(function(saved_size) {
                     saved_size.setProduct(saved_product);
                     callback(saved_size);
-                }).catch(function (error) {
+                }).catch(function(error) {
                     logger.error(error);
                 });
 
@@ -177,34 +167,42 @@ module.exports.create_product_size = function (saved_product, size, callback) {
     });
 }
 
-module.exports.create_empty_invoice = function (fbid, callback) {
-    g_orm_manager.Invoice
+module.exports.create_empty_invoice = function(fbid, callback) {
+    gDbManager.Invoice
         .build({
             fbid: fbid,
             creation_date: moment.now(),
             status: "created"
         })
         .save()
-        .then(function (saved_invoice) {
+        .then(function(saved_invoice) {
             callback(saved_invoice);
-        }).catch(function (error) {
+        }).catch(function(error) {
             logger.error(error);
         });
 }
 
-module.exports.cancel_invoice = function (id, status, callback) {
-    g_orm_manager.Invoice.findOne({ where: { id: id } }).then(function (invoice) {
+module.exports.cancel_invoice = function(id, status, callback) {
+    gDbManager.Invoice.findOne({
+        where: {
+            id: id
+        }
+    }).then(function(invoice) {
         if (invoice) { // if the record exists in the db
             invoice.updateAttributes({
                 status: "cancel"
             });
-        } else { }
+        } else {}
         callback(invoice);
     })
 }
 
-module.exports.update_invoice = function (invoice_info, callback) {
-    g_orm_manager.Invoice.findOne({ where: { id: invoice_info.id } }).then(function (invoice) {
+module.exports.update_invoice = function(invoice_info, callback) {
+    gDbManager.Invoice.findOne({
+        where: {
+            id: invoice_info.id
+        }
+    }).then(function(invoice) {
         if (invoice) { // if the record exists in the db
             invoice.updateAttributes({
                 name: invoice_info.name,
@@ -214,14 +212,14 @@ module.exports.update_invoice = function (invoice_info, callback) {
                 plan_delivery_date: invoice_info.delivery,
                 status: invoice_info.status
             });
-        } else { }
+        } else {}
         callback(callback);
     })
 }
 
-module.exports.create_fashion_item = function (quantity, saved_invoice,
+module.exports.create_fashion_item = function(quantity, saved_invoice,
     saved_product, saved_color, saved_size, callback) {
-    g_orm_manager.FashionItem
+    gDbManager.FashionItem
         .build({
             quantity: quantity,
             InvoiceId: saved_invoice,
@@ -230,9 +228,9 @@ module.exports.create_fashion_item = function (quantity, saved_invoice,
             SizeId: saved_size
         })
         .save()
-        .then(function (saved_item) {
+        .then(function(saved_item) {
             callback(saved_item);
-        }).catch(function (error) {
+        }).catch(function(error) {
             logger.error(error);
         });
 }
