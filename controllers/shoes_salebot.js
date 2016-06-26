@@ -103,17 +103,17 @@ function sendSearchResultsToFB(session, products) {
             common.product_search_max : found_products.length;
         for (var i = 0; i < product_count; i++) {
             var product_object = fbMessenger.createProductElement(
-                found_products[i].dataValues.title,
-                found_products[i].dataValues.price,
-                found_products[i].dataValues.thumbnail.replaceAll("%%", "-"),
-                found_products[i].dataValues.link.replaceAll("%%", "-"),
-                found_products[i].dataValues.code,
-                found_products[i].dataValues.id);
+                found_products[i].title,
+                found_products[i].price,
+                found_products[i].thumbnail.replaceAll("%%", "-"),
+                found_products[i].link.replaceAll("%%", "-"),
+                found_products[i].code,
+                found_products[i].id);
             results.push(product_object);
         }
         fbMessenger.sendGenericMessage(session.fbid, results);
         if (product_count == 1) {
-            session.last_product.id = found_products[0].dataValues.id;
+            session.last_product.id = found_products[0].id;
         }
     }
 }
@@ -130,34 +130,7 @@ function findProductByImage(session, user_msg) {
 
 function findProductByKeywords(session, message) {
     gProductFinder.findShoesByKeywords(message, function(products) {
-        var product_count = (products.length > common.product_search_max) ? common.product_search_max : products.length;
-        if (products.length > 0) {
-            // user_sessions[sessionId].last_action = common.find_product;
-            var found_products1 = [];
-            var found_products2 = [];
-            var found_products = [];
-            for (var i = 0; i < product_count; i++) {
-                var product_object = fbMessenger.createProductElement(
-                    products[i].title,
-                    products[i].price,
-                    products[i].thumbnail.replaceAll("%%", "-"),
-                    products[i].link.replaceAll("%%", "-"),
-                    products[i].code,
-                    products[i].id);
-                if (session.last_product.id <= products[i].id) {
-                    found_products1.push(product_object);
-                } else {
-                    found_products2.push(product_object);
-                }
-
-            }
-            found_products = found_products1.concat(found_products2);
-            fbMessenger.sendGenericMessage(session.fbid, found_products);
-            searchMap[message] = found_products;
-            session.last_search = message;
-        } else {
-            fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
-        }
+        sendSearchResultsToFB(session, products);
     });
 }
 
@@ -178,9 +151,9 @@ function showAvailableColorNsize(session, show_color, show_size) {
                 available_colors = "\n - Màu sắc: ";
                 if (colors != null && colors.length > 0) {
                     for (var i = 0; i < (colors.length - 1); i++) {
-                        available_colors += common.get_color_vn(colors[i].dataValues.name) + ", ";
+                        available_colors += common.get_color_vn(colors[i].name) + ", ";
                     }
-                    available_colors += common.get_color_vn(colors[(colors.length - 1)].dataValues.name);
+                    available_colors += common.get_color_vn(colors[(colors.length - 1)].name);
                 } else {
                     available_colors += common.updating;
                 }
@@ -191,9 +164,9 @@ function showAvailableColorNsize(session, show_color, show_size) {
                 var available_sizes = "\n - Size: ";
                 if (sizes != null && sizes.length > 0) {
                     for (var i = 0; i < (sizes.length - 1); i++) {
-                        available_sizes += sizes[i].dataValues.value + ", ";
+                        available_sizes += sizes[i].value + ", ";
                     }
-                    available_sizes += sizes[(sizes.length - 1)].dataValues.value;
+                    available_sizes += sizes[(sizes.length - 1)].value;
                 } else {
                     available_sizes += common.updating;
                 }
@@ -221,12 +194,11 @@ function searchAndConfirmAddress(session, destination, callback) {
 }
 
 function doProductSearch(session, user_msg, user_msg_trans) {
-    var result = common.extractValue(user_msg,
-        gStoreConfig.product_code_pattern);
+    var result = common.extractValue(user_msg, gStoreConfig.product_code_pattern);
     if (common.isUrl(user_msg)) {
         findProductByImage(session, user_msg);
-    } else if (result.isProductCode) {
-        findProductByCode(session, result.code);
+    } else if (result != "") {
+        findProductByCode(session, result);
     } else {
         findProductByKeywords(session, user_msg_trans);
     }
@@ -242,7 +214,7 @@ function doProductOrder(session, text) {
             function(color) {
                 if (color != null) {
                     session.last_action = common.select_product_color;
-                    session.last_product.color = color.dataValues.id;
+                    session.last_product.color = color.id;
                     fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_size, function() {
                         showAvailableColorNsize(session, false, true);
                     });
@@ -260,7 +232,7 @@ function doProductOrder(session, text) {
             function(size) {
                 if (size != null) {
                     session.last_action = common.select_product_size;
-                    session.last_product.size = size.dataValues.id;
+                    session.last_product.size = size.id;
                     fbMessenger.sendTextMessage(session.fbid, common.pls_enter_quantity);
                 } else {
                     fbMessenger.sendTextMessage(session.fbid, common.notify_size_notfound,

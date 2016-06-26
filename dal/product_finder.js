@@ -76,13 +76,19 @@ function generate_query_findshoes(keywords) {
     return query;
 }
 
-function generate_query_findcolorNsize(product_id) {
-    var query = " Select DISTINCT C.name, S.value" + " from product as P";
-    query += " inner join color as C on P.id = C.ProductId"
-    query += " inner join size as S on P.id = S.ProductId";
-    query += " where P.id = " + product_id + "";
-    return query;
+function converDBObjectToJson(object) {
+    var jsonObj = null;
+    if (Array.isArray(object)) {
+        jsonObj = [];
+        for (var i = 0, length = object.length; i < length; i++) {
+            jsonObj.push(object[i].dataValues);
+        }
+    } else {
+        jsonObj = (object != null) ? object.dataValues : {};
+    }
+    return jsonObj;
 }
+
 //===================================================//
 //===================================================//
 
@@ -162,22 +168,8 @@ exports.findProductsByCode = function(code, callback) {
             }
         }
     }).then(function(product) {
-        callback(product);
-    });
-}
-
-exports.findProductByFinger = function(finger, callback) {
-    gDbManager.Product.findOne({
-        where: {
-            finger: finger
-        }
-    }).then(function(product) {
-        if (product != null) {
-            logger.info(product.dataValues.title);
-            callback(product);
-        } else {
-            logger.debug("Product not found");
-        }
+        var jsonObj = converDBObjectToJson(product);
+        callback(jsonObj);
     });
 }
 
@@ -192,8 +184,8 @@ exports.findProductByThumbnail = function(home_page, thumbnail_link, callback) {
                 }
             }).then(function(product) {
                 if (product != null) {
-                    logger.info(product.dataValues.title);
-                    callback(product);
+                    var jsonObj = converDBObjectToJson(product);
+                    callback(jsonObj);
                 } else {
                     logger.debug("Product not found");
                 }
@@ -218,7 +210,8 @@ exports.getProductColors = function(product_id, callback) {
             ProductId: product_id
         }
     }).then(function(colors) {
-        callback(colors);
+        var jsonColorObj = converDBObjectToJson(colors);
+        callback(jsonColorObj);
     });
 }
 
@@ -231,7 +224,8 @@ exports.getProductSizes = function(product_id, callback) {
             ProductId: product_id
         }
     }).then(function(sizes) {
-        callback(sizes);
+        var jsonSizeObj = converDBObjectToJson(sizes);
+        callback(jsonSizeObj);
     });
 }
 
@@ -242,7 +236,8 @@ exports.checkProductByColor = function(product_id, color, callback) {
             ProductId: product_id
         }
     }).then(function(color) {
-        callback(color);
+        var jsonColorObj = converDBObjectToJson(color);
+        callback(jsonColorObj);
     });
 }
 
@@ -253,7 +248,8 @@ exports.checkProductBySize = function(product_id, size, callback) {
             ProductId: product_id
         }
     }).then(function(size) {
-        callback(size);
+        var jsonSizeObj = converDBObjectToJson(size);
+        callback(jsonSizeObj);
     });
 }
 
