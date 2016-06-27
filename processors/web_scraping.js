@@ -36,11 +36,13 @@ function extractProductDetails(product_pattern, saved_product) {
         var $ = cheerio.load(body);
         var detailLink = response.request.href;
 
-        var size_list = $(product_pattern.details.size);
-        var color_list = $(product_pattern.details.color);
         var colors = [];
         var sizes = [];
-        size_list.each(function(i, size) {
+        var sizeList = $(product_pattern.details.size);
+        var colorList = $(product_pattern.details.color);
+        var productPhotos = $(product_pattern.details.photo);
+
+        sizeList.each(function(i, size) {
             var size_value = $(size).text().trim();
             console.log("Size = " + size_value);
             var instock = $(size).find(product_pattern.details.instock);
@@ -52,13 +54,18 @@ function extractProductDetails(product_pattern, saved_product) {
             }
         });
 
-        color_list.each(function(i, color) {
+        colorList.each(function(i, color) {
             var color_name = $(color).text().trim();
             var color_value = $(color).text().trim();
             colors.push($(color).text().trim());
             gModelFactory.create_product_color(saved_product, color_name,
                 color_value,
                 function(save_size) {});
+        });
+
+        productPhotos.each(function(i, photo) {
+            var link = $(photo).attr('href');
+            logger.info("Link = " + link);
         });
 
         var code = $(product_pattern.details.code);

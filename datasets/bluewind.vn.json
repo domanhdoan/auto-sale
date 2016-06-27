@@ -17,7 +17,8 @@
             "color": "dd.mausac a",
             "size": "dd.size span",
             "brand": "",
-            "instock": "del"
+            "instock": "del",
+            "photo": "div.entry-content p a"
         },
         "product_paging": {
             "page_list": "div.wp-pagenavi",
@@ -28,7 +29,7 @@
     "keywords": {
         "code": "bw*"
     },
-    "order_form":{
+    "order_form": {
         "title": "dynamictext-99",
         "color": "menu-760",
         "size": "menu-750",
