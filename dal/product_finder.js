@@ -174,7 +174,7 @@ exports.findProductsByCode = function(code, callback) {
 }
 
 exports.findProductByThumbnail = function(home_page, thumbnail_link, callback) {
-    require('../controllers/web_crawler').extractThumbUrl(
+    require('../processors/web_scraping').extractThumbUrl(
         home_page, thumbnail_link,
         function(real_thumb_url) {
             logger.info("search_item URL = " + real_thumb_url);
