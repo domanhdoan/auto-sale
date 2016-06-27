@@ -1,11 +1,13 @@
 'use strict';
-module.exports = function (Sequelize, DataTypes) {
+module.exports = function(Sequelize, DataTypes) {
     var ProductPhoto = Sequelize.define('ProductPhoto', {
-        thumbnail: {
+        link: {
             type: DataTypes.STRING
+        },
+        thumbFlag: {
+            type: DataTypes.BOOLEAN
         }
-    },
-    {
+    }, {
         freezeTableName: true
     });
 
