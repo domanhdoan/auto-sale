@@ -5,7 +5,7 @@ module.exports = function(Sequelize, DataTypes) {
             type: DataTypes.STRING
         },
         thumbFlag: {
-            type: DataTypes.BOOLEAN
+            type: DataTypes.INTEGER
         }
     }, {
         freezeTableName: true
