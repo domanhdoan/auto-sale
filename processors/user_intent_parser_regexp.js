@@ -6,16 +6,24 @@ function UserIntentParserRegExp() {
         'khong', 'ko', '?', 'the nao', 'tnao'
     ];
 
-    var keyword_check_price = ['bao nhieu', 'bn', 'bao nhieu', 'gia'];
-    var keyword_check_size = ['size', 'sz', 'saiz', 'co'];
-    var keyword_check_color = ['mau', 'color'];
+    var keyword_check_price = ['bao nhieu', 'bn',
+        'bao nhieu', 'gia'
+    ];
 
     var keyword_check_availability = [
         'con khong', 'co khong', 'co hang khong',
         'con ko', 'co ko', 'co hang ko',
         'con k0', 'co k0', 'co hang k0'
     ];
+
+    var keyword_check_size = ['size', 'sz',
+        'saiz', 'co'
+    ];
+
+    var keyword_check_color = ['mau', 'color'];
+
     var keyword_check_ship = ['ship', 've', 'den', 've den', 'tu'];
+
     var keyword_ask_pitch = ['do size', 'gia ship'];
     var keyword_ask_material = ['do size', 'gia ship', 'dia chi'];
     var keyword_ask_discount = ['sale off', 'sale-off',
@@ -137,7 +145,7 @@ var method = UserIntentParserRegExp.prototype
 
 method.parse = function(userMsg, options, callback) {
     if (this.parsePriceInfo(userMsg, options.codePattern)) {
-        logger.info('Checking price for customer');
+        logger.info('parsePriceInfo for customer');
     } else if (this.parseColorInfo(userMsg, options.codePattern)) {
         logger.info('parseColorInfo for customer');
     } else if (this.parseSizeInfo(userMsg, options.codePattern)) {
@@ -146,6 +154,10 @@ method.parse = function(userMsg, options, callback) {
         logger.info('parseShipInfo for customer');
     } else {
         logger.info('not understand message');
+    }
+
+    if (callback != null) {
+        callback(null);
     }
 }
 
