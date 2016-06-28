@@ -56,7 +56,7 @@ function parse_keywords_calibration(keywords, word_list) {
     return results;
 }
 
-function generate_query_findshoes(keywords) {
+function generateFindshoesQuery(storeId, keywords) {
     var query = " Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link" + " from product as P";
     if (keywords[1].length > 0) {
         query += " inner join color as C on P.id = C.ProductId"
@@ -64,7 +64,7 @@ function generate_query_findshoes(keywords) {
     if (keywords[2].length > 0) {
         query += " inner join size as S on P.id = S.ProductId";
     }
-    query += " where P.link like '%" + keywords[0] + "%'";
+    query += " where P.StoreId = '" + storeId + "'and P.link like '%" + keywords[0] + "%'";
     if (keywords[1].length > 0) {
         query += " and C.name = '" + keywords[1] + "'"
     }
@@ -98,21 +98,19 @@ exports.findStoreByLink = function(link, callback) {
             home: link
         }
     }).then(function(store) {
-        callback(store);
+        var jsonObj = converDBObjectToJson(store);
+        callback(jsonObj);
     });
 }
 
-exports.findCategoriesByStoreId = function(store_id, callback) {
+exports.findCategoriesByStoreId = function(storeid, callback) {
     gDbManager.Category.findAll({
         where: {
-            StoreId: store_id
+            StoreId: storeid
         }
     }).then(function(categories) {
-        if (callback != null) {
-            callback(categories);
-        } else {
-            logger.info(" NO Cagegory");
-        }
+        var jsonObj = converDBObjectToJson(categories);
+        callback(jsonObj);
     });
 }
 
@@ -127,13 +125,13 @@ exports.findInvoiceById = function(invoice_id, callback) {
 }
 
 // Keyword order: shoes -> color -> size
-exports.findShoesByKeywords = function(user_message, callback) {
+exports.findShoesByKeywords = function(storeId, user_message, callback) {
     var products = [];
     var word_list = user_message.split(" ");
     var keywords_value = parse_keywords_calibration(keywords, word_list);
     var count = Object.keys(keywords_value).length;
     if (count != 0) {
-        var query = generate_query_findshoes(keywords_value);
+        var query = generateFindshoesQuery(storeId, keywords_value);
         gDbManager.sequelize.query(query)
             .spread(function(results, metadata) {
                 if (results == null) {
@@ -160,12 +158,13 @@ exports.findProductsById = function(id, callback) {
     });
 }
 
-exports.findProductsByCode = function(code, callback) {
+exports.findProductByCode = function(storeId, code, callback) {
     gDbManager.Product.findOne({
         where: {
             title: {
                 $like: "%" + code + "%"
-            }
+            },
+            StoreId: storeId
         }
     }).then(function(product) {
         var jsonObj = converDBObjectToJson(product);
@@ -193,10 +192,53 @@ exports.findProductByThumbnail = function(home_page, thumbnail_link, callback) {
         });
 }
 
-exports.getColorsNSize = function(product_id, callback) {
-    module.exports.getProductColors(product_id, function(colors) {
-        module.exports.getProductSizes(product_id, function(sizes) {
-            callback(colors, sizes);
+exports.findProductsByCategory = function(storeId, categoryId, callback) {
+    gDbManager.Product.findAll({
+        order: [
+            ['id', 'ASC']
+        ],
+        where: {
+            CategoryId: categoryId,
+            StoreId: storeId
+        }
+    }).then(function(products) {
+        var jsonObj = converDBObjectToJson(products);
+        callback(jsonObj);
+    });
+}
+
+exports.findProductsByPriceRange = function(storeId, priceMin, priceMax, callback) {
+    gDbManager.Product.findAll({
+        order: [
+            ['price', 'ASC']
+        ],
+        where: {
+            CategoryId: categoryId,
+            StoreId: storeId
+        }
+    }).then(function(products) {
+        var jsonObj = converDBObjectToJson(products);
+        callback(jsonObj);
+    });
+}
+
+exports.findProductPhotos = function(productid, callback) {
+    gDbManager.ProductPhoto.findAll({
+        where: {
+            ProductId: productid
+        }
+    }).then(function(photos) {
+        var jsonObj = converDBObjectToJson(photos);
+        callback(jsonObj);
+    });
+}
+
+exports.getColorsNSizeNPhotos = function(productid, callback) {
+    module.exports.getProductColors(productid, function(colors) {
+        module.exports.getProductSizes(productid, function(sizes) {
+            module.exports.findProductPhotos(productid, function(photos) {
+                callback(colors, sizes, photos);
+            });
         });
     });
 }
