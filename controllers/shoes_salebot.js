@@ -145,30 +145,33 @@ function sendProductSearchResultsToFB(session, products) {
             }
         ]);
     } else {
-        // send suggestion for products in same category
-        async.series([
-            function(callback) {
-                fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
-                callback(null);
-            },
-            function(callback) {
-                fbMessenger.sendTextMessage(session.fbid, common.notify_product_similar);
-                callback(null);
-            },
-            function(callback) {
-                if (session.last_product.categoryid >= 0) {
-                    findProductByCategory(session);
-                } else {
-                    findCategories(session);
-                }
-            }
-        ]);
+        showSimilarProductSuggestion();
     }
 }
 
 // =================================================================
 // Methods for search product
 // =================================================================
+function showSimilarProductSuggestion(session) {
+    // send suggestion for products in same category
+    async.series([
+        function(callback) {
+            fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
+            callback(null);
+        },
+        function(callback) {
+            fbMessenger.sendTextMessage(session.fbid, common.notify_product_similar);
+            callback(null);
+        },
+        function(callback) {
+            if (session.last_product.categoryid >= 0) {
+                findProductByCategory(session);
+            } else {
+                findCategories(session);
+            }
+        }
+    ]);
+}
 
 function findProductByImage(session, user_msg) {
     gProductFinder.findProductByThumbnail(gHomepage, user_msg, function(product) {
@@ -570,9 +573,22 @@ function setUpUserIntentListener() {
             //send message to user for notify
             gProductFinder.findProductByCode(session.storeid, data.code, function(product) {
                 if (Object.keys(product).length) {
-                    sendProductSearchResultsToFB(session, product);
+                    async.series([
+                        function(callback) {
+                            if (!common.isDefined(data.type)) {
+                                var price = (product.price > product.discount) ? product.discount : product.price;
+                                var saleoffmsg = product.price > product.discount ? "(Có khuyến mại)" : "(Không có khuyến mại)";
+                                var message = product.title + saleoffmsg + ": " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ");
+                                fbMessenger.sendTextMessage(data.fbid, message);
+                            }
+                            callback(null);
+                        },
+                        function() {
+                            sendProductSearchResultsToFB(session, product);
+                        }
+                    ]);
                 } else {
-                    // product not found
+                    showSimilarProductSuggestion(session);
                 }
             });
         } else if (data.id >= 0) {

@@ -70,12 +70,17 @@ function UserIntentParserRegExp() {
 
     this.isCheckQuestion = function(userMsg, keywords) {
         var result = false
-        for (var i = 0; i < keywords.length; i++) {
-            var index = userMsg.indexOf(keywords[i])
-            if (index >= 0) {
-                result = true
-                break
-            }
+            // for (var i = 0; i < keywords.length; i++) {
+            //     var index = userMsg.indexOf(keywords[i])
+            //     if (index >= 0) {
+            //         result = true;
+            //         break
+            //     }
+            // }
+        var checkString = keywords.toString();
+        var similarity = strSimilarityChecker.compareTwoStrings(userMsg, checkString);
+        if (similarity >= 0.1) {
+            result = true;
         }
         return result
     }
@@ -89,6 +94,7 @@ function UserIntentParserRegExp() {
             }
         }
     }
+
     this.parseAndHandlePriceIntent = function(userMsg, options) {
         var ret = false;
         var isCheckPriceQuest = this.isCheckQuestion(userMsg,
@@ -111,9 +117,7 @@ function UserIntentParserRegExp() {
             }
 
             if (productQuantity.length == 0) {
-                for (var i = 0, length = productQuantity.length; i < length; i++) {
-                    productQuantity[i] = "1";
-                }
+                productQuantity[0] = "1";
             }
 
             this.emitter.emit(common.INTENT_CHECK_PRICE, {
