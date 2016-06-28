@@ -577,11 +577,11 @@ function setUpUserIntentListener() {
                         function(callback) {
                             var price = (product.price > product.discount) ? product.discount : product.price;
                             var saleoffmsg = product.price > product.discount ? " (Có KM)" : " (Không KM)";
-                            var message = product.title + saleoffmsg;
+                            var message = product.title;
                             fbMessenger.sendTextMessage(data.fbid, message, function() {
                                 message = "";
-                                if (!common.isDefined(data.type)) {
-                                    message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ");
+                                if (data.type.length == 0) {
+                                    message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
                                 } else {
                                     for (var i = 0, length = data.type.length; i < length; i++) {
                                         price = common.extractValue(product.title, data.type[i] + " \\d+k");
@@ -591,13 +591,13 @@ function setUpUserIntentListener() {
                                                 var malePrice = common.extractValues(prices[0], "\\d+");
                                                 var femalePrice = common.extractValues(prices[1], "\\d+");
                                                 var total = parseInt(malePrice) + parseInt(femalePrice);
-                                                message = "- 1 Combo " + " giá " + common.toCurrencyString(total * 1000, " VNĐ");
+                                                message = "- 1 Combo " + " giá " + common.toCurrencyString(total * 1000, " VNĐ") + saleoffmsg;
                                             } else {
                                                 message = "- Sản phẩm này không có kiểu " + data.type[i] + " bạn đang tìm.";
                                             }
 
                                         } else {
-                                            message = "- " + price.toUpperCase();
+                                            message = "- " + price.toUpperCase() + saleoffmsg;
                                         }
                                     }
                                 }
