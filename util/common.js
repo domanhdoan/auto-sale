@@ -39,7 +39,8 @@ module.exports = {
     notify_product_search2: "(Bạn trượt sang ngang để xem những sản phẩm khác nhé)",
     notify_color_notfound: "Không còn màu trong cửa hàng",
     notify_size_notfound: "Không còn size trong cửa hàng",
-    notify_product_notfound: "Rất tiếc sản phẩm hiện đang tạm thời hết hàng. Bạn xem sản phẩm tương tự bên dưới nhé",
+    notify_product_notfound: "Rất tiếc sản phẩm hiện đang tạm thời hết hàng",
+    notify_product_similar: "Bạn xem sản phẩm tương tự bên dưới nhé",
 
     action_terminate_order: "huy",
     action_continue_search: "search",
