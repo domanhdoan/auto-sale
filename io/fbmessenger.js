@@ -32,91 +32,185 @@ function FBMessenger() {
             }
         });
     }
+
+    this.createCategoryElement = function(id, name, link, cover) {
+        var payload1 = {};
+        payload1.id = id;
+        payload1.title = name;
+        payload1.action = common.action_view_details;
+        var element = {
+            "title": "Danh mục: " + name,
+            "subtitle": "Nhấn nút bên dưới để xem danh sách sản phẩm trong danh mục",
+            "image_url": cover,
+            "buttons": [{
+                "type": "postback",
+                "title": "Xem sản phẩm",
+                "payload": JSON.stringify(payload1)
+            }]
+        };
+        return element;
+    }
+
+    this.createProductElement = function(title, price, discount,
+        thumbnail_url, link, code, id) {
+        var payload1 = {};
+        payload1.id = id;
+        payload1.title = title;
+        payload1.action = common.action_view_details;
+        var payload2 = {};
+        payload2.id = id;
+        payload2.title = title;
+        payload2.action = common.action_order;
+        var priceRegExp = /\B(?=(\d{3})+(?!\d))/g;
+        var priceInfo = "";
+        if (discount < price) {
+            priceInfo = " - Giá KM: " + discount.toString().replace(priceRegExp, ",") + " VNĐ";
+            priceInfo += "\n - Giá Gốc: " + price.toString().replace(priceRegExp, ",") + " VNĐ";
+        } else {
+            priceInfo = "Giá hiện tại: " + price.toString().replace(priceRegExp, ",") + " VNĐ\n";
+        }
+        var element = {
+            "title": title,
+            "subtitle": priceInfo,
+            "image_url": thumbnail_url,
+            "buttons": [{
+                "type": "postback",
+                "title": "Chi tiết sản phẩm",
+                "payload": JSON.stringify(payload1)
+            }, {
+                "type": "postback",
+                "title": "Cho vào giỏ hàng",
+                "payload": JSON.stringify(payload2),
+            }, {
+                "type": "web_url",
+                "url": link,
+                "title": "Xem trên Web"
+            }]
+        };
+        return element;
+    }
+    this.createProductPhotoElement = function(id, title, colorNsize, photo) {
+        var payload2 = {};
+        payload2.id = id;
+        payload2.title = title;
+        payload2.action = common.action_order;
+        var element = {
+            "title": title,
+            "subtitle": colorNsize,
+            "image_url": photo.link,
+            "buttons": [{
+                "type": "postback",
+                "title": "Cho vào giỏ hàng",
+                "payload": JSON.stringify(payload2),
+            }]
+        };
+        return element;
+    }
+
+    this.createSearchOrPurchaseElement = function() {
+        var purchase_action = {};
+        var search_action = {};
+        search_action.action = common.action_continue_search;
+        purchase_action.action = common.action_purchase;
+        var template = [{
+            "type": "postback",
+            "title": "Thêm sản phẩm khác",
+            "payload": JSON.stringify(search_action),
+        }, {
+            "type": "postback",
+            "title": "Mua hàng ngay",
+            "payload": JSON.stringify(purchase_action),
+        }];
+        return template;
+    }
+
+    this.createConfirmOrCancelElement = function() {
+        var confirm_action = {};
+        var cancel_action = {};
+        confirm_action.action = common.action_confirm_order;
+        cancel_action.action = common.action_cancel_order;
+        var template = [{
+            "type": "postback",
+            "title": "Hủy mua hàng",
+            "payload": JSON.stringify(cancel_action),
+        }, {
+            "type": "postback",
+            "title": "Xác nhận",
+            "payload": JSON.stringify(confirm_action),
+        }];
+        return template;
+    }
+
+    this.createAddressConfirmElement = function() {
+        var confirm_action = {};
+        var cancel_action = {};
+        confirm_action.action = common.action_confirm_addr;
+        cancel_action.action = common.action_retype_addr;
+        var template = [{
+            "type": "postback",
+            "title": "Nhập lại",
+            "payload": JSON.stringify(cancel_action),
+        }, {
+            "type": "postback",
+            "title": "Xác nhận",
+            "payload": JSON.stringify(confirm_action),
+        }];
+        return template;
+    }
 }
 
 // =================================================================
 // Methods for sending message to target user FB messager
 // =================================================================
 // https://developers.facebook.com/docs/messenger-platform/webhook-reference
-FBMessenger.prototype.createProductElement = function(title, price, thumbnail_url, link, code, id) {
-    var payload1 = {};
-    payload1.id = id;
-    payload1.title = title;
-    payload1.action = common.action_view_details;
-    var payload2 = {};
-    payload2.id = id;
-    payload2.title = title;
-    payload2.action = common.action_order;
-    var element = {
-        "title": title,
-        "subtitle": price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VNĐ",
-        "image_url": thumbnail_url,
-        "buttons": [{
-            "type": "postback",
-            "title": "Xem màu & size",
-            "payload": JSON.stringify(payload1)
-        }, {
-            "type": "postback",
-            "title": "Cho vào giỏ hàng",
-            "payload": JSON.stringify(payload2),
-        }, {
-            "type": "web_url",
-            "url": link,
-            "title": "Xem trên Web"
-        }]
-    };
-    return element;
+FBMessenger.prototype.sendProductElements = function(sender, foundProducts) {
+    var messageData = [];
+    var productCount = (foundProducts.length > common.product_search_max) ?
+        common.product_search_max : foundProducts.length;
+    for (var i = 0; i < productCount; i++) {
+        var productElement = this.createProductElement(
+            foundProducts[i].title,
+            foundProducts[i].price,
+            foundProducts[i].discount,
+            foundProducts[i].thumbnail.replaceAll("%%", "-"),
+            foundProducts[i].link.replaceAll("%%", "-"),
+            foundProducts[i].code,
+            foundProducts[i].id);
+        messageData.push(productElement);
+    }
+    if (messageData.length >= 2) {
+        this.sendTextMessage(sender, common.notify_product_search2);
+    }
+    this.sendGenericMessage(sender, messageData);
 }
 
-FBMessenger.prototype.createSearchOrPurchaseElement = function() {
-    var purchase_action = {};
-    var search_action = {};
-    search_action.action = common.action_continue_search;
-    purchase_action.action = common.action_purchase;
-    var template = [{
-        "type": "postback",
-        "title": "Thêm sản phẩm khác",
-        "payload": JSON.stringify(search_action),
-    }, {
-        "type": "postback",
-        "title": "Mua hàng ngay",
-        "payload": JSON.stringify(purchase_action),
-    }];
-    return template;
+FBMessenger.prototype.sendCategoriesElements = function(sender, foundCategories) {
+    var messageData = [];
+    var categoryCount = (foundCategories.length > common.product_search_max) ?
+        common.product_search_max : foundCategories.length;
+    for (var i = 0; i < categoryCount; i++) {
+        if (foundCategories[i].cover != null) {
+            var categoryElement = this.createCategoryElement(
+                foundCategories[i].id,
+                foundCategories[i].name,
+                foundCategories[i].link,
+                foundCategories[i].cover);
+            messageData.push(categoryElement);
+        }
+    }
+    if (messageData.length >= 2) {
+        this.sendTextMessage(sender, common.notify_product_search2);
+    }
+    this.sendGenericMessage(sender, messageData);
 }
 
-FBMessenger.prototype.createConfirmOrCancelElement = function() {
-    var confirm_action = {};
-    var cancel_action = {};
-    confirm_action.action = common.action_confirm_order;
-    cancel_action.action = common.action_cancel_order;
-    var template = [{
-        "type": "postback",
-        "title": "Hủy mua hàng",
-        "payload": JSON.stringify(cancel_action),
-    }, {
-        "type": "postback",
-        "title": "Xác nhận",
-        "payload": JSON.stringify(confirm_action),
-    }];
-    return template;
-}
-
-FBMessenger.prototype.createAddressConfirmElement = function() {
-    var confirm_action = {};
-    var cancel_action = {};
-    confirm_action.action = common.action_confirm_addr;
-    cancel_action.action = common.action_retype_addr;
-    var template = [{
-        "type": "postback",
-        "title": "Nhập lại",
-        "payload": JSON.stringify(cancel_action),
-    }, {
-        "type": "postback",
-        "title": "Xác nhận",
-        "payload": JSON.stringify(confirm_action),
-    }];
-    return template;
+FBMessenger.prototype.sendProductPhotoElements = function(sender, id, title, colorNsize, photoLinks) {
+    var photoElements = [];
+    for (var i = 0, length = photoLinks.length; i < length; i++) {
+        var photoElement = this.createProductPhotoElement(id, title, colorNsize, photoLinks[i]);
+        photoElements.push(photoElement);
+    }
+    this.sendGenericMessage(sender, photoElements);
 }
 
 FBMessenger.prototype.createAIAPIProductsMessage = function(rich_data) {
@@ -172,6 +266,21 @@ FBMessenger.prototype.sendGenericMessage = function(sender, rich_data) {
         }
     };
     this.sendDataToFBMessenger(sender, messageData, null);
+}
+
+FBMessenger.prototype.sendPurchaseConfirmMessage = function(sender, message) {
+    var buttons = this.createSearchOrPurchaseElement();
+    this.sendConfirmMessage(sender, message, buttons);
+}
+
+FBMessenger.prototype.sendAddressConfirmMessage = function(sender, message) {
+    var buttons = this.createAddressConfirmElement();
+    this.sendConfirmMessage(sender, message, buttons);
+}
+
+FBMessenger.prototype.sendOrderConfirmMessage = function(sender, message) {
+    var buttons = this.createConfirmOrCancelElement();
+    this.sendConfirmMessage(sender, message, buttons);
 }
 
 FBMessenger.prototype.sendConfirmMessage = function(sender, message, buttons) {

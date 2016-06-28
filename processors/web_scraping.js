@@ -20,7 +20,7 @@ function handleNextPages(page_object, saved_store, saved_category,
         page_list.each(function(i, page) {
             var link = $(this).attr('href');
             link = common.insertRootLink(link, curHomepage);
-            var products = extractOneCategory(saved_store, saved_category,
+            var products = extractProductsForOneCategory(saved_store, saved_category,
                 link, false);
         });
     } else {
@@ -87,7 +87,7 @@ function extractProductDetails(productPattern, savedProduct, savedStore) {
     });
 }
 
-function extractOneCategory(savedStore, savedCategory, handle_paging, callback) {
+function extractProductsForOneCategory(savedStore, savedCategory, handlePaging, callback) {
     var productlist = [];
     var link = savedCategory.dataValues.link;
     logger.info("Sub-category: " + link);
@@ -105,7 +105,7 @@ function extractOneCategory(savedStore, savedCategory, handle_paging, callback) 
         var productList = $(productPattern.product_list);
 
         //for (var i = 0, len = product_list.length; i < len; i++) {
-        async.eachSeries(productList, function(productElememt, callback) {
+        async.each(productList, function(productElememt, callback) {
             var title = $(productElememt).find(productPattern.title).text();
             var thumbnailLink = $(productElememt).find(productPattern.thumbnail).attr('src');
             var desc = $(productElememt).find(productPattern.desc).text();
@@ -158,7 +158,7 @@ function extractOneCategory(savedStore, savedCategory, handle_paging, callback) 
             }
         });
 
-        if (handle_paging) {
+        if (handlePaging) {
             handleNextPages($, savedStore, savedCategory, productPattern);
         }
 
@@ -171,25 +171,24 @@ function extractOneCategory(savedStore, savedCategory, handle_paging, callback) 
 
 function extractCategories(home_page_object, savedStore, callback) {
     var $ = home_page_object;
-    var menu_items = $(gCrawlPattern.product_menu.item);
+    var menuItems = $(gCrawlPattern.product_menu.item);
     logger.info("Store: " + savedStore.dataValues.home);
-    //for (var i = 0, len = menu_items.length; i < len; i++) {
-    async.eachSeries(menu_items, function(menuitem, callback) {
-        var item = $(menuitem).find(gCrawlPattern
+    for (var i = 0, len = menuItems.length; i < len; i++) {
+        var item = $(menuItems[i]).find(gCrawlPattern
             .product_menu.item_link);
         var category = item.text();
-        if (menuitem.children.length == 1) {
+        if (menuItems[i].children.length == 1) {
             logger.info("Category: " + category);
             var item_link = item.attr("href");
             item_link = common.insertRootLink(item_link, curHomepage);
             gModelFactory.findAndCreateCategory(savedStore, category, item_link,
                 function(savedCategory) {
-                    extractOneCategory(savedStore, savedCategory, true, callback);
+                    extractProductsForOneCategory(savedStore, savedCategory, true, callback);
                 });
         } else {
             logger.info("Will not extract product list for menu items that contain sub-menu");
         }
-    });
+    }
 }
 
 exports.crawlWholeSite = function(home_page, crawl_pattern, callback) {
