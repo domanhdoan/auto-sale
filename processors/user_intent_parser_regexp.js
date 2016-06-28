@@ -93,6 +93,7 @@ function UserIntentParserRegExp() {
                 break;
             }
         }
+        return productType;
     }
 
     this.parseAndHandlePriceIntent = function(userMsg, options) {
@@ -118,6 +119,12 @@ function UserIntentParserRegExp() {
 
             if (productQuantity.length == 0) {
                 productQuantity[0] = "1";
+            }
+
+            if (productType.length > 0) {
+                for (var i = 0, length = productType.length; i < (length - 1); i++) {
+                    productQuantity[i] = "1";
+                }
             }
 
             this.emitter.emit(common.INTENT_CHECK_PRICE, {

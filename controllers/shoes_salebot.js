@@ -575,16 +575,39 @@ function setUpUserIntentListener() {
                 if (Object.keys(product).length) {
                     async.series([
                         function(callback) {
-                            if (!common.isDefined(data.type)) {
-                                var price = (product.price > product.discount) ? product.discount : product.price;
-                                var saleoffmsg = product.price > product.discount ? "(Có khuyến mại)" : "(Không có khuyến mại)";
-                                var message = product.title + saleoffmsg + ": " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ");
+                            var price = (product.price > product.discount) ? product.discount : product.price;
+                            var saleoffmsg = product.price > product.discount ? " (Có KM)" : " (Không KM)";
+                            var message = product.title + saleoffmsg;
+                            fbMessenger.sendTextMessage(data.fbid, message, function() {
+                                message = "";
+                                if (!common.isDefined(data.type)) {
+                                    message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ");
+                                } else {
+                                    for (var i = 0, length = data.type.length; i < length; i++) {
+                                        price = common.extractValue(product.title, data.type[i] + " \\d+k");
+                                        if (price === "") {
+                                            if ((data.type[i] === 'combo') || (data.type[i] === 'cb')) {
+                                                var prices = common.extractValues(product.title, "\\d+k");
+                                                var malePrice = common.extractValues(prices[0], "\\d+");
+                                                var femalePrice = common.extractValues(prices[1], "\\d+");
+                                                var total = parseInt(malePrice) + parseInt(femalePrice);
+                                                message = "- 1 Combo " + " giá " + common.toCurrencyString(total * 1000, " VNĐ");
+                                            } else {
+                                                message = "- Sản phẩm này không có kiểu " + data.type[i] + " bạn đang tìm.";
+                                            }
+
+                                        } else {
+                                            message = "- " + price.toUpperCase();
+                                        }
+                                    }
+                                }
                                 fbMessenger.sendTextMessage(data.fbid, message);
-                            }
-                            callback(null);
+                                callback(null);
+                            });
+
                         },
                         function() {
-                            sendProductSearchResultsToFB(session, product);
+
                         }
                     ]);
                 } else {
