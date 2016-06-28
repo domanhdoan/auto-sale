@@ -35,7 +35,7 @@ module.exports = {
     set_delivery_date: "set_delivery_date",
 
     notify_product_found: "Sản phẩm còn hàng nhé.",
-    notify_product_search: "Bạn vui lòng xem kết quả bên dưới\n(Nhấn \"Chi tiết sản phẩm\" để xem hình ảnh, màu sắc và size)",
+    notify_product_search: "Bạn vui lòng xem thêm thông tin chi tiết phía dưới\n(Nhấn \"Chi tiết sản phẩm\" để xem hình ảnh, màu sắc và size)",
     notify_product_search2: "(Bạn trượt sang ngang để xem những sản phẩm khác nhé)",
     notify_color_notfound: "Không còn màu trong cửa hàng",
     notify_size_notfound: "Không còn size trong cửa hàng",
@@ -127,6 +127,13 @@ module.exports.extract_numeric = function(text) {
         ret = results[0];
     }
     return ret;
+}
+
+module.exports.toCurrencyString = function(value, currency) {
+    var priceRegExp = /\B(?=(\d{3})+(?!\d))/g;
+    var string = value.toString().replace(priceRegExp, ",") + currency;
+    return string;
+
 }
 
 module.exports.extractValue = function(text, regExpStr) {

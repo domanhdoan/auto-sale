@@ -6,31 +6,34 @@ var bodyParser = require('body-parser');
 
 function FBMessenger() {
     this.sendDataToFBMessenger = function(sender, data, callback) {
-        logger.info("Data = " + JSON.stringify(data));
-        require('request')({
-            url: 'https://graph.facebook.com/v2.6/me/messages',
-            qs: {
-                access_token: config.bots.fb_page_token
-            },
-            method: 'POST',
-            json: true,
-            body: {
-                recipient: {
-                    id: sender
+        // Delay 500 ms for typing like human
+        setTimeout(function() {
+            logger.info("Data = " + JSON.stringify(data));
+            require('request')({
+                url: 'https://graph.facebook.com/v2.6/me/messages',
+                qs: {
+                    access_token: config.bots.fb_page_token
                 },
-                message: data
-            }
-        }, function(error, response, body) {
-            if (error) {
-                logger.error('Error sending message: ' + error.stack);
-            } else if (response.body.error) {
-                logger.error('Error: ' + JSON.stringify(response.body.error));
-            } else {
-                if (callback != null) {
-                    callback();
+                method: 'POST',
+                json: true,
+                body: {
+                    recipient: {
+                        id: sender
+                    },
+                    message: data
                 }
-            }
-        });
+            }, function(error, response, body) {
+                if (error) {
+                    logger.error('Error sending message: ' + error.stack);
+                } else if (response.body.error) {
+                    logger.error('Error: ' + JSON.stringify(response.body.error));
+                } else {
+                    if (callback != null) {
+                        callback();
+                    }
+                }
+            });
+        }, 2000);
     }
 
     this.createCategoryElement = function(id, name, link, cover) {
@@ -61,13 +64,12 @@ function FBMessenger() {
         payload2.id = id;
         payload2.title = title;
         payload2.action = common.action_order;
-        var priceRegExp = /\B(?=(\d{3})+(?!\d))/g;
         var priceInfo = "";
         if (discount < price) {
-            priceInfo = " - Giá KM: " + discount.toString().replace(priceRegExp, ",") + " VNĐ";
-            priceInfo += "\n - Giá Gốc: " + price.toString().replace(priceRegExp, ",") + " VNĐ";
+            priceInfo = " - Giá KM: " + common.toCurrencyString(discount, " VNĐ");
+            priceInfo += "\n - Giá Gốc: " + common.toCurrencyString(price, " VNĐ");
         } else {
-            priceInfo = "Giá hiện tại: " + price.toString().replace(priceRegExp, ",") + " VNĐ\n";
+            priceInfo = "Giá hiện tại: " + common.toCurrencyString(price, " VNĐ");
         }
         var element = {
             "title": title,
@@ -81,12 +83,13 @@ function FBMessenger() {
                 "type": "postback",
                 "title": "Cho vào giỏ hàng",
                 "payload": JSON.stringify(payload2),
-            }, {
-                "type": "web_url",
-                "url": link,
-                "title": "Xem trên Web"
             }]
         };
+        // , {
+        //         "type": "web_url",
+        //         "url": link,
+        //         "title": "Xem trên Web"
+        //     }
         return element;
     }
     this.createProductPhotoElement = function(id, title, colorNsize, photo) {
