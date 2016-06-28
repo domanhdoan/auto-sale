@@ -20,6 +20,7 @@ module.exports = {
     pls_reset_buying: "Hủy đơn hàng. Xin vui lòng bắt đầu lại quá trình đặt hàng",
     pls_end_buying: "Kết thúc đặt hàng. Xin vui lòng nhập OK để bắt đầu đơn hàng mới",
     start_order_process: "Bắt đầu quá trình đặt hàng",
+
     find_categories: "find_categories",
     find_product: "find_product",
     find_details: "find_details", // ask about size, color and in-stock status
@@ -32,12 +33,15 @@ module.exports = {
     set_phone: "set_phone",
     set_email: "set_email",
     set_delivery_date: "set_delivery_date",
-    notify_product_found: "Sản phẩm còn hàng",
-    notify_product_search: "Bạn vui lòng xem kết quả bên dưới \n(Bạn trượt sang ngang để xem 10 sản phẩm phù hợp nhất)",
+
+    notify_product_found: "Sản phẩm còn hàng nhé.",
+    notify_product_search: "Bạn vui lòng xem kết quả bên dưới\n(Nhấn \"Chi tiết sản phẩm\" để xem hình ảnh, màu sắc và size)",
+    notify_product_search2: "(Bạn trượt sang ngang để xem những sản phẩm khác nhé)",
     notify_color_notfound: "Không còn màu trong cửa hàng",
     notify_size_notfound: "Không còn size trong cửa hàng",
-    notify_product_notfound: "Rất tiếc sản phẩm hiện đang tạm thời hết hàng. Xin vui lòng chọn sản phẩm khác",
-    cmd_terminate_order: "huy",
+    notify_product_notfound: "Rất tiếc sản phẩm hiện đang tạm thời hết hàng. Bạn xem sản phẩm tương tự bên dưới nhé",
+
+    action_terminate_order: "huy",
     action_continue_search: "search",
     action_view_details: "view",
     action_order: "order",
@@ -45,10 +49,15 @@ module.exports = {
     action_purchase: "purchase",
     action_confirm_order: "ok",
     action_cancel_order: "cancel",
-    updating: "Đang cập nhật",
     action_confirm_addr: "confirm_addr",
     action_retype_addr: "retype_addr",
-    product_search_max: 10
+
+    status_updating: "Đang cập nhật",
+    product_search_max: 10,
+    INTENT_CHECK_PRICE: 'check_price',
+    INTENT_CHECK_AVAILABILITY: 'check_availability',
+    INTENT_CHECK_SHIP: 'check_ship',
+    INTENT_GENERAL_SEARCH: 'general_search',
 }
 
 module.exports.typical_question = {
@@ -127,6 +136,15 @@ module.exports.extractValue = function(text, regExpStr) {
         ret = results[0];
     }
     return ret;
+}
+
+module.exports.extractValues = function(text, regExpStr) {
+    var regExp = new RegExp(regExpStr, "gi");
+    var results = text.match(regExp);
+    if (results == null) {
+        results = [];
+    }
+    return results;
 }
 
 module.exports.extractProductCode = function(text, pattern) {

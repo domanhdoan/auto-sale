@@ -1,49 +1,51 @@
 {
-  "name": "data_crawler",
-  "description": "",
-  "version": "0.0.1",
-  "author": {
-    "name": "Do Manh Doan",
-    "url": "http://vsbabu.org/"
-  },
-  "private": true,
-  "scripts": {
-    "start": "node app.js"
-  },
-  "licenses": [],
-  "dependencies": {
-    "body-parser": "1.15.1",
-    "cheerio": ">=0.11.0",
-    "express": "4.13.4",
-    "mysql": ">=2.10.0",
-    "node.io": ">=0.5.1",
-    "prototypes": ">=1.2.1",
-    "request": ">=2.21.0",
-    "sequelize": ">=3.23.1",
-    "sequelize-cli": "^2.4.0",
-    "email-validator": ">=1.0.4",
-    "node-wit": "3.3.2",
-    "uri-js": "2.1.1",
-    "winston": "2.2.0",
-    "string.prototype.startswith":"0.2.0",
-    "phone": ">=1.0.7",
-    "speakingurl": "9.0.0",
-    "png-js": "0.1.1",
-    "jpeg-js": "0.1.2",
-    "imghash":"0.0.2",
-    "crypto": "0.0.3",
-    "mkdirp": "0.5.1",
-    "moment":"2.13.0",
-    "enum": "2.3.0",
-    "https": "1.0.0",
-    "node-uuid": "1.4.7",
-    "apiai": "2.0.5",
-    "json-bigint":"0.2.0",
-    "async":"2.0.0-rc.6",
-    "node-geocoder": "3.11.0",
-    "google-distance": "1.0.1"
-  },
-  "devDependencies": {
-    "gulp-sequelize": "0.0.2"
-  }
+    "name": "data_crawler",
+    "description": "",
+    "version": "0.0.1",
+    "author": {
+        "name": "Do Manh Doan",
+        "url": "http://vsbabu.org/"
+    },
+    "private": true,
+    "scripts": {
+        "start": "node app.js"
+    },
+    "licenses": [],
+    "dependencies": {
+        "body-parser": "1.15.1",
+        "cheerio": ">=0.11.0",
+        "express": "4.13.4",
+        "mysql": ">=2.10.0",
+        "node.io": ">=0.5.1",
+        "prototypes": ">=1.2.1",
+        "request": ">=2.21.0",
+        "sequelize": ">=3.23.1",
+        "sequelize-cli": "^2.4.0",
+        "email-validator": ">=1.0.4",
+        "node-wit": "3.3.2",
+        "uri-js": "2.1.1",
+        "winston": "2.2.0",
+        "string.prototype.startswith": "0.2.0",
+        "phone": ">=1.0.7",
+        "speakingurl": "9.0.0",
+        "png-js": "0.1.1",
+        "jpeg-js": "0.1.2",
+        "imghash": "0.0.2",
+        "crypto": "0.0.3",
+        "mkdirp": "0.5.1",
+        "moment": "2.13.0",
+        "enum": "2.3.0",
+        "https": "1.0.0",
+        "node-uuid": "1.4.7",
+        "apiai": "2.0.5",
+        "json-bigint": "0.2.0",
+        "async": "2.0.0-rc.6",
+        "node-geocoder": "3.11.0",
+        "google-distance": "1.0.1",
+        "events": "1.1.1",
+        "string-similarity": "1.1.0"
+    },
+    "devDependencies": {
+        "gulp-sequelize": "0.0.2"
+    }
 }

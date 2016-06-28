@@ -81,39 +81,39 @@ module.exports.findAndCreateProduct = function(
     //     callback(saved_product);
     // });
 
-    gDbManager.Product.findOne({
-        where: {
-            // finger: product_finger
-            title: product_title
-        }
-    }).then(function(found_product) {
-        if (found_product == null) {
-            gDbManager.Product
-                .create({
-                    title: product_title,
-                    thumbnail: product_thumbnail.replaceAll('-', '%%'),
-                    desc: product_desc,
-                    price: product_price,
-                    discount: product_discount,
-                    percent: product_percent,
-                    link: product_detail_link.replaceAll('-', '%%'),
-                    finger: product_finger,
-                    brand: product_brand
-                }).then(function(savedProduct) {
-                    savedProduct.setCategory(saved_category);
-                    savedProduct.setStore(saved_store);
-                    if (saved_category.cover == null) {
-                        saved_category.updateAttributes({
-                            cover: savedProduct.thumbnail.replaceAll("%%", "-")
-                        });
-                    }
-                    callback(savedProduct);
-                    common.saveToFile("./temp/product_links_save.txt", "save_" + product_title);
+    // gDbManager.Product.findOne({
+    //     where: {
+    //         // finger: product_finger
+    //         title: product_title
+    //     }
+    // }).then(function(found_product) {
+    //     if (found_product == null) {
+    gDbManager.Product
+        .create({
+            title: product_title,
+            thumbnail: product_thumbnail.replaceAll('-', '%%'),
+            desc: product_desc,
+            price: product_price,
+            discount: product_discount,
+            percent: product_percent,
+            link: product_detail_link.replaceAll('-', '%%'),
+            finger: product_finger,
+            brand: product_brand
+        }).then(function(savedProduct) {
+            savedProduct.setCategory(saved_category);
+            savedProduct.setStore(saved_store);
+            if (saved_category.cover == null) {
+                saved_category.updateAttributes({
+                    cover: savedProduct.thumbnail.replaceAll("%%", "-")
                 });
-        } else {
-            callback(found_product);
-        }
-    });
+            }
+            callback(savedProduct);
+            common.saveToFile("./temp/product_links_save.txt", "save_" + product_title);
+        });
+    //     } else {
+    //         callback(found_product);
+    //     }
+    // });
 }
 
 module.exports.findAndCreateProductColor = function(saved_product, color_name,

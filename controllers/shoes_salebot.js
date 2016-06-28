@@ -5,6 +5,8 @@ var validator = require("email-validator");
 var request = require('request');
 var JSONbig = require('json-bigint');
 var server = express();
+var EventEmitter = require('events');
+var emitter = new EventEmitter();
 
 var config = require("../config/config.js");
 var common = require("../util/common");
@@ -30,8 +32,12 @@ var gStoreConfig = {};
 
 var gAiUsingFlag = false;
 
+var async = require("async");
+
 // Keyword - results
 var searchMap = {};
+
+var storeId = -1;
 
 function createAndSendOrderToFB(session, callback) {
     gProductFinder.getOrderItems(session.last_invoice.id, function(items) {
@@ -86,39 +92,73 @@ function createAndSendOrderToStore(session, callback) {
     });
 }
 
-function sendSearchResultsToFB(session, products) {
-    if (products == null) {
-        // send suggestion for products in same category
-        fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
+function sendCategorySearchResultsToFB(session, categories) {
+    if (categories.length > 0) {
+        async.series([
+            function(callback) {
+                // fbMessenger.sendTextMessage(session.fbid, "Bạn xem danh mục sản phẩm bên dưới nhé");
+                callback(null);
+            },
+            function sendResultsToFB() {
+                var foundCategories = null;
+                var results = [];
+                if (Array.isArray(categories)) {
+                    foundCategories = categories;
+                } else {
+                    foundCategories = [];
+                    foundCategories.push(categories);
+                }
+                fbMessenger.sendCategoriesElements(session.fbid, foundCategories);
+                if (foundCategories.length == 1) {
+                    session.last_product.categoryid = foundCategories[0].id;
+                }
+            }
+        ]);
+    } else {}
+}
+
+function sendProductSearchResultsToFB(session, products) {
+    var keys = Object.keys(products);
+    if (keys.length > 0) {
+        async.series([
+            function(callback) {
+                fbMessenger.sendTextMessage(session.fbid, common.notify_product_found);
+                callback(null);
+            },
+            function(callback) {
+                fbMessenger.sendTextMessage(session.fbid, common.notify_product_search);
+                callback(null);
+            },
+            function sendResultsToFB() {
+                var found_products = null;
+                var results = [];
+                if (Array.isArray(products)) {
+                    found_products = products;
+                } else {
+                    found_products = [];
+                    found_products.push(products);
+                }
+                fbMessenger.sendProductElements(session.fbid, found_products);
+                if (found_products.length == 1) {
+                    session.last_product.id = found_products[0].id;
+                }
+            }
+        ]);
     } else {
-        fbMessenger.sendTextMessage(session.fbid, common.notify_product_search, function() {
-            var found_products = null;
-            var results = [];
-            if (Array.isArray(products)) {
-                found_products = products;
-            } else {
-                found_products = [];
-                found_products.push(products);
+        // send suggestion for products in same category
+        async.series([
+            function(callback) {
+                fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound);
+                callback(null);
+            },
+            function(callback) {
+                if (session.last_product.categoryid >= 0) {
+                    findProductByCategory(session.last_product.categoryid);
+                } else {
+                    findCategories(session);
+                }
             }
-            var product_count = (found_products.length > common.product_search_max) ?
-                common.product_search_max : found_products.length;
-            for (var i = 0; i < product_count; i++) {
-                var product_object = fbMessenger.createProductElement(
-                    found_products[i].title,
-                    found_products[i].price,
-                    found_products[i].thumbnail.replaceAll("%%", "-"),
-                    found_products[i].link.replaceAll("%%", "-"),
-                    found_products[i].code,
-                    found_products[i].id);
-                results.push(product_object);
-            }
-            fbMessenger.sendGenericMessage(session.fbid, results);
-            if (product_count == 1) {
-                session.last_product.id = found_products[0].id;
-            }
-        });
-
-
+        ]);
     }
 }
 
@@ -128,28 +168,54 @@ function sendSearchResultsToFB(session, products) {
 
 function findProductByImage(session, user_msg) {
     gProductFinder.findProductByThumbnail(gHomepage, user_msg, function(product) {
-        sendSearchResultsToFB(session, product);
+        sendProductSearchResultsToFB(session, product);
+        session.last_product.categoryid = product.CategoryId;
     });
 }
 
 function findProductByKeywords(session, message) {
-    gProductFinder.findShoesByKeywords(message, function(products) {
-        sendSearchResultsToFB(session, products);
+    gProductFinder.findShoesByKeywords(session.storeid, message, function(products) {
+        sendProductSearchResultsToFB(session, products);
     });
 }
 
 function findProductByCode(session, message) {
-    gProductFinder.findProductsByCode(message, function(product) {
-        sendSearchResultsToFB(session, product);
+    gProductFinder.findProductByCode(session.storeid, message, function(product) {
+        sendProductSearchResultsToFB(session, product);
+        session.last_product.categoryid = product.CategoryId;
     });
 }
 
-function findProductByCategory(store_id) {}
+function findProductByCategory(categoryid) {
+    gProductFinder.findProductsByCategory(session.storeid, categoryid, function(products) {
+        sendProductSearchResultsToFB(session, products);
+        if (Object.keys(products).length > 0) {
+            session.last_product.categoryid = categoryid;
+        }
+    });
+}
 
-function showAvailableColorNsize(session, show_color, show_size) {
+function findProductByCategory(session) {
+    gProductFinder.findProductsByCategory(session.storeid,
+        session.last_product.categoryid,
+        function(products) {
+            sendProductSearchResultsToFB(session, products);
+            if (Object.keys(products).length > 0) {
+                session.last_product.categoryid = categoryid;
+            }
+        });
+}
+
+function findCategories(session) {
+    gProductFinder.findCategoriesByStoreId(session.storeid, function(categories) {
+        sendCategorySearchResultsToFB(session, categories);
+    });
+}
+
+function showAvailableColorNsize(session, show_color, show_size, show_photo) {
     var productId = session.last_product.id;
-    gProductFinder.getColorsNSize(productId,
-        function(colors, sizes) {
+    gProductFinder.getColorsNSizeNPhotos(productId,
+        function(colors, sizes, photos) {
             var available_colors = "";
             if (show_color) {
                 available_colors = "\n - Màu sắc: ";
@@ -159,7 +225,7 @@ function showAvailableColorNsize(session, show_color, show_size) {
                     }
                     available_colors += common.get_color_vn(colors[(colors.length - 1)].name);
                 } else {
-                    available_colors += common.updating;
+                    available_colors += common.status_updating;
                 }
             }
 
@@ -172,11 +238,17 @@ function showAvailableColorNsize(session, show_color, show_size) {
                     }
                     available_sizes += sizes[(sizes.length - 1)].value;
                 } else {
-                    available_sizes += common.updating;
+                    available_sizes += common.status_updating;
                 }
             }
-            logger.info("Product id = " + productId + "Details - " + available_colors + available_sizes);
-            fbMessenger.sendTextMessage(session.fbid, session.last_product.title + available_colors + available_sizes);
+            logger.info("Product id = " + productId + " \nDetails - " + available_colors + available_sizes);
+            if (show_photo) {
+                fbMessenger.sendProductPhotoElements(session.fbid, session.last_product.id,
+                    session.last_product.title, available_colors + available_sizes, photos);
+            } else {
+                fbMessenger.sendTextMessage(session.fbid,
+                    session.last_product.title + available_colors + available_sizes);
+            }
         });
 }
 
@@ -189,8 +261,7 @@ function searchAndConfirmAddress(session, destination, callback) {
             logger.info("Full address: " + result[i].formattedAddress);
             //logger.info("City = " + result[i].city);
             //logger.info("Province / State = " + result[i].administrativeLevels.level1long);
-            var buttons = fbMessenger.createAddressConfirmElement();
-            fbMessenger.sendConfirmMessage(session.fbid, result[i].formattedAddress, buttons);
+            fbMessenger.sendAddressConfirmMessage(session.fbid, result[i].formattedAddress);
             callback(result[i].formattedAddress);
         }
     });
@@ -227,13 +298,13 @@ function doProductOrder(session, text) {
                     session.last_action = common.select_product_color;
                     session.last_product.color = color.id;
                     fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_size, function() {
-                        showAvailableColorNsize(session, false, true);
+                        showAvailableColorNsize(session, false, true, false);
                     });
                 } else {
                     logger.debug("Product not found");
                     fbMessenger.sendTextMessage(session.fbid, common.notify_color_notfound,
                         function() {
-                            showAvailableColorNsize(session, true, false);
+                            showAvailableColorNsize(session, true, false, false);
                         });
                 }
             });
@@ -248,7 +319,7 @@ function doProductOrder(session, text) {
                 } else {
                     fbMessenger.sendTextMessage(session.fbid, common.notify_size_notfound,
                         function() {
-                            showAvailableColorNsize(session, false, true);
+                            showAvailableColorNsize(session, false, true, false);
                         });
                 }
             });
@@ -264,9 +335,7 @@ function doProductOrder(session, text) {
             });
 
         session.last_action = common.say_search_continue_message;
-        var confirm_buttons = fbMessenger.createSearchOrPurchaseElement();
-        fbMessenger.sendConfirmMessage(session.fbid, "Bạn muốn tiếp tục chọn sản phẩm hay chốt đặt hàng?",
-            confirm_buttons);
+        fbMessenger.sendPurchaseConfirmMessage(session.fbid, "Bạn muốn tiếp tục chọn sản phẩm hay đặt hàng ngay?");
     }
 }
 
@@ -302,8 +371,7 @@ function doFillOrderDetails(session, text) {
         session.last_action = common.set_delivery_date;
     } else if (session.last_action == common.set_delivery_date) {
         createAndSendOrderToFB(session, function() {
-            var buttons = createConfirmOrCancelElement();
-            fbMessenger.sendConfirmMessage(session.fbid, buttons);
+            fbMessenger.sendOrderConfirmMessage(session.fbid, "Xác nhận đơ hàng!");
         });
     } else {
         logger.info("Unknow action = " + text);
@@ -338,9 +406,9 @@ function processTextEvent(session, user_msg) {
     var selectQuantityAction = common.sale_steps.get(common.set_quantity);
     var selectDeliveryDateAction = common.sale_steps.get(common.set_delivery_date);
 
-    if (user_req_trans.indexOf(common.cmd_terminate_order) >= 0) {
+    if (user_req_trans === common.action_terminate_order) {
         doCancelOrder(session);
-    } else if (last_action_key == common.say_greetings) {
+    } else if (last_action_key === common.say_greetings) {
         doProductSearch(session, user_msg, user_req_trans);
     } else if ((last_action >= selectProductAction) && last_action < selectQuantityAction) {
         doProductOrder(session, user_msg);
@@ -356,7 +424,7 @@ function processPostbackEvent(session, action_details) {
     if (user_action.indexOf(common.action_view_details) >= 0) {
         session.last_product.id = action_details.id;
         session.last_product.title = action_details.title;
-        showAvailableColorNsize(session, true, true);
+        showAvailableColorNsize(session, true, true, true);
     } else if (user_action.indexOf(common.action_order) >= 0) {
         session.last_product.id = action_details.id;
         session.last_action = common.select_product;
@@ -365,7 +433,7 @@ function processPostbackEvent(session, action_details) {
         fbMessenger.sendTextMessage(session.fbid, "     Bắt đầu đặt hàng\n" +
             common.pls_select_product_color,
             function() {
-                showAvailableColorNsize(session, true, false);
+                showAvailableColorNsize(session, true, false, false);
             });
     } else if (session.last_invoice.is_ordering &&
         (user_action.indexOf(common.action_continue_search) >= 0)) {
@@ -401,28 +469,26 @@ function processPostbackEvent(session, action_details) {
 function processEvent(event) {
     var sender = event.sender.id.toString();
     var receiver = event.recipient.id.toString();
-    var current_session = sessionManager.findOrCreateSession(sender);
+    var currentSession = sessionManager.findOrCreateSession(storeId, receiver, sender);
 
     if (event.message) {
         if (event.message.text) {
             var text = event.message.text;
 
             var options = {
+                storeid: currentSession.storeid,
+                pageid: receiver,
                 fbid: sender,
-                pageId: receiver,
+                productid: currentSession.last_product.id,
                 codePattern: gStoreConfig.product_code_pattern
             };
-            intentParser.parse(text, options,
-                function handle(info) {
-
-                });
-            processTextEvent(current_session, text);
+            intentParser.parse(text.latinise().toLowerCase(), options);
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
             // handle the case when user send an image for searching product
             for (var i = 0; i < attachments.length; i++) {
                 if (attachments[i].type === 'image') {
-                    processTextEvent(current_session, attachments[i].payload.url);
+                    processTextEvent(currentSession, attachments[i].payload.url);
                 } else {
                     logger.info("Skipp to handle attachment");
                 }
@@ -432,10 +498,10 @@ function processEvent(event) {
         }
     } else if (event.postback) {
         var postback = JSON.parse(event.postback.payload);
-        var delta = event.timestamp - current_session.timestamp;
+        var delta = event.timestamp - currentSession.timestamp;
         if (delta > 150 /*avoid double click*/ ) {
-            current_session.timestamp = event.timestamp;
-            processPostbackEvent(current_session, postback);
+            currentSession.timestamp = event.timestamp;
+            processPostbackEvent(currentSession, postback);
         } else {
             logger.info("Skipp to handle double click");
         }
@@ -492,6 +558,44 @@ function initWebHook() {
         console.log('FB BOT ready to go!');
     });
 }
+
+function setUpUserIntentListener() {
+    emitter.on(common.INTENT_CHECK_PRICE, function(data) {
+        var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
+        if (data.code != '') {
+            //send message to user for notify
+            gProductFinder.findProductByCode(session.storeid, data.code, function(product) {
+                if (Object.keys(product).length) {
+                    sendProductSearchResultsToFB(session, product);
+                } else {
+                    // product not found
+                }
+            });
+        } else if (data.id >= 0) {
+            gProductFinder.findProductById(data.id, function(product) {
+                if (Object.keys(product).length) {
+                    sendProductSearchResultsToFB(session, product);
+                } else {
+                    // product not found
+                }
+            });
+        } else {
+
+        }
+    });
+
+    emitter.on(common.INTENT_CHECK_AVAILABILITY, function(data) {
+        if (data.code === '') {
+
+        }
+    });
+
+    emitter.on(common.INTENT_GENERAL_SEARCH, function(data) {
+        var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
+        processTextEvent(session, data.msg);
+    });
+}
+
 //=====================================================================//
 //================= FB webhook ========================================//
 //=====================================================================//
@@ -512,5 +616,11 @@ module.exports = {
         } else {
             intentParser = parserFactory.createParser(ParserFactory.CONSTANT.REGEXP_PARSER);
         }
+        setUpUserIntentListener();
+        intentParser.setEmitter(emitter);
+
+        gProductFinder.findStoreByLink(gHomepage, function(store) {
+            storeId = store.id;
+        });
     }
 }

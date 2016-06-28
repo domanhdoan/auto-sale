@@ -76,7 +76,7 @@ function UserIntentParserAIAPI() {
 
 var method = UserIntentParserAIAPI.prototype
 
-method.parse = function(userMsg, codePattern, callback) {
+method.parse = function(userMsg, codePattern) {
 
 }
 module.exports = UserIntentParserAIAPI;
