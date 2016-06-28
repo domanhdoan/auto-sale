@@ -122,7 +122,7 @@ function sendProductSearchResultsToFB(session, products) {
     if (keys.length > 0) {
         async.series([
             function(callback) {
-                fbMessenger.sendTextMessage(session.fbid, common.notify_product_found);
+                // fbMessenger.sendTextMessage(session.fbid, common.notify_product_found);
                 callback(null);
             },
             function(callback) {
@@ -152,8 +152,12 @@ function sendProductSearchResultsToFB(session, products) {
                 callback(null);
             },
             function(callback) {
+                fbMessenger.sendTextMessage(session.fbid, common.notify_product_similar);
+                callback(null);
+            },
+            function(callback) {
                 if (session.last_product.categoryid >= 0) {
-                    findProductByCategory(session.last_product.categoryid);
+                    findProductByCategory(session);
                 } else {
                     findCategories(session);
                 }
