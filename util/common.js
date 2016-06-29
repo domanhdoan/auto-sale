@@ -119,6 +119,14 @@ module.exports.isUrl = function(text) {
     return is_url_flag;
 }
 
+module.exports.isThumbUrl = function(text) {
+    var is_url_flag = false;
+    if (text.endsWith('png') || text.endsWith('jpg') || text.endsWith('jpeg')) {
+        is_url_flag = true;
+    }
+    return is_url_flag;
+}
+
 module.exports.extract_numeric = function(text) {
     var myRe = new RegExp(/\d{2}/);
     var ret = "";

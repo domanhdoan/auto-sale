@@ -14,6 +14,9 @@ function UserIntentParserRegExp() {
     ];
 
     var keyword_check_availability = [
+        'san hang khong', 'co san khong',
+        'san hang ko', 'co san k0',
+        'san ko', 'san k0',
         'con hang khong', 'co hang khong',
         'con hang kh0ng', 'co hang kh0ng',
         'con hang ko', 'co hang ko',

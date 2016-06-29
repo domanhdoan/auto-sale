@@ -173,6 +173,18 @@ exports.findProductByCode = function(storeId, code, callback) {
     });
 }
 
+exports.findProductByLink = function(storeId, link, callback) {
+    gDbManager.Product.findOne({
+        where: {
+            link: link.replaceAll('-', "%%"),
+            StoreId: storeId
+        }
+    }).then(function(product) {
+        var jsonObj = converDBObjectToJson(product);
+        callback(jsonObj);
+    });
+}
+
 exports.findProductByThumbnail = function(home_page, thumbnail_link, callback) {
     require('../processors/web_scraping').extractThumbUrl(
         home_page, thumbnail_link,
