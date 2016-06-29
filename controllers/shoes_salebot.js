@@ -217,35 +217,56 @@ function findCategories(session) {
     });
 }
 
+function getAvailableColorString(show_color, colors, reference) {
+    var available_colors = "";
+    var referColorsString = reference.toString().replaceAll(" ", '');
+    referColorsString = referColorsString.replaceAll(",", '');
+    referColorsString = referColorsString.toLowerCase();
+
+    if (show_color) {
+        available_colors = "\n - Màu sắc: ";
+        if (colors != null && colors.length > 0) {
+            for (var i = 0; i < colors.length; i++) {
+                if (referColorsString.indexOf(colors[i].name) >= 0) {
+                    available_colors += common.get_color_vn(colors[i].name) + ", ";
+                } else {
+
+                }
+            }
+            //available_colors = available_colors.subString(0, available_colors.length - 1);
+        } else {
+            available_colors += common.status_updating;
+        }
+    }
+    return available_colors;
+}
+
+function getAvailableSizeString(show_size, sizes, reference) {
+    var available_sizes = "";
+    if (show_size) {
+        available_sizes = "\n - Size: ";
+        if (sizes != null && sizes.length > 0) {
+            for (var i = 0; i < (sizes.length - 1); i++) {
+                if (reference.indexOf(sizes[i].value) >= 0) {
+                    available_sizes += sizes[i].value + ", ";
+                } else {
+
+                }
+            }
+            available_sizes += sizes[(sizes.length - 1)].value;
+        } else {
+            available_sizes += common.status_updating;
+        }
+    }
+    return available_sizes;
+}
+
 function showAvailableColorNsize(session, show_color, show_size, show_photo) {
     var productId = session.last_product.id;
     gProductFinder.getColorsNSizeNPhotos(productId,
         function(colors, sizes, photos) {
-            var available_colors = "";
-            if (show_color) {
-                available_colors = "\n - Màu sắc: ";
-                if (colors != null && colors.length > 0) {
-                    for (var i = 0; i < (colors.length - 1); i++) {
-                        available_colors += common.get_color_vn(colors[i].name) + ", ";
-                    }
-                    available_colors += common.get_color_vn(colors[(colors.length - 1)].name);
-                } else {
-                    available_colors += common.status_updating;
-                }
-            }
-
-            var available_sizes = "";
-            if (show_size) {
-                var available_sizes = "\n - Size: ";
-                if (sizes != null && sizes.length > 0) {
-                    for (var i = 0; i < (sizes.length - 1); i++) {
-                        available_sizes += sizes[i].value + ", ";
-                    }
-                    available_sizes += sizes[(sizes.length - 1)].value;
-                } else {
-                    available_sizes += common.status_updating;
-                }
-            }
+            var available_colors = getAvailableColorString(show_color, colors, colors);
+            var available_sizes = getAvailableSizeString(show_size, sizes, sizes);
             logger.info("Product id = " + productId + " \nDetails - " + available_colors + available_sizes);
             if (show_photo) {
                 fbMessenger.sendProductPhotoElements(session.fbid, session.last_product.id,
@@ -572,6 +593,10 @@ function initWebHook() {
 }
 
 function handlePriceIntent(session, data, product) {
+
+    session.last_product.id = product.id;
+    session.last_product.CategoryId = product.CategoryId;
+
     if (Object.keys(product).length) {
         async.series([
             function(callback) {
@@ -613,11 +638,48 @@ function handlePriceIntent(session, data, product) {
     }
 }
 
+function handleAvailabilityIntent(session, data) {
+    async.series([
+        function checkColor(callback) {
+            if (data.color.length > 0) {
+                gProductFinder.getProductColors(session.last_product.id, function(colors) {
+                    if (colors.length > 0) {
+                        var availableColors = getAvailableColorString(true, colors, data.color);
+                        fbMessenger.sendTextMessage(session.fbid, availableColors, function() {
+                            callback(null, data);
+                        });
+                    } else {
+                        // Only show similar but not show product have same color`
+                        showSimilarProductSuggestion();
+                        callback(null, null);
+                    }
+                });
+            } else {
+                callback(null, data);
+            }
+        },
+        function checkSize(data) {
+            if (data != null) {
+                gProductFinder.getProductSizes(session.last_product.id, function(sizes) {
+                    if (sizes.length > 0) {
+                        var availableSizes = getAvailableColorString(true, sizes, data.size);
+                        fbMessenger.sendTextMessage(session.fbid, availableSizes);
+                    } else {
+                        // Only show similar but not show product have same color`
+                        showSimilarProductSuggestion();
+                    }
+                });
+            } else {
+
+            }
+        }
+    ]);
+}
+
 function setUpUserIntentListener() {
     emitter.on(common.INTENT_CHECK_PRICE, function(data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         if (data.code != '') {
-            //send message to user for notify
             gProductFinder.findProductByCode(session.storeid, data.code, function(product) {
                 handlePriceIntent(session, data, product);
             });
@@ -626,15 +688,26 @@ function setUpUserIntentListener() {
                 handlePriceIntent(session, data, product)
             });
         } else {
-
+            showSimilarProductSuggestion();
         }
     });
 
     emitter.on(common.INTENT_CHECK_AVAILABILITY, function(data) {
-        if (data.code === '') {
-
+        var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
+        if (data.code != '') {
+            gProductFinder.findProductByCode(session.storeid, data.code, function(product) {
+                session.last_product.id = product.id;
+                session.last_product.CategoryId = product.CategoryId;
+                handleAvailabilityIntent(session, data);
+            });
+        } else if (data.productid >= 0) {
+            handleAvailabilityIntent(session, data);
+        } else {
+            showSimilarProductSuggestion();
         }
     });
+
+    emitter.on(common.INTENT_CHECK_SHIP, function(data) {});
 
     emitter.on(common.INTENT_GENERAL_SEARCH, function(data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);

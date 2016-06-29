@@ -4,8 +4,9 @@ var strSimilarityChecker = require('string-similarity');
 var nlpChecker = require('natural');
 
 function UserIntentParserRegExp() {
-    var question_indicator = [
-        'khong', 'ko', '?', 'the nao', 'tnao'
+
+    var keyword_type = [
+        "nam", "nu", "combo", "cb"
     ];
 
     var keyword_check_price = [
@@ -24,19 +25,19 @@ function UserIntentParserRegExp() {
         'con hang k0', 'co hang k0',
         'con khong', 'co khong',
         'con ko', 'co ko',
-        'con k0', 'co k0'
+        'con du', 'co den', "co nhung",
+        "saiz nao", "size nao", "sz nao", "co nao", "mau nao"
     ];
 
-    var keyword_check_size = ['size', 'sz',
-        'saiz', 'co'
+    var keyword_check_ship = ['ship', 've',
+        'den', 've den', 'tu',
+        'free ship', "COD", "gia ship",
+        "bao lau", " het bao nhieu"
     ];
 
-    var keyword_check_color = ['mau', 'color'];
+    var keyword_ask_consult = ['do size', 'gia ship'];
+    var keyword_ask_location = ['dia chi'];
 
-    var keyword_check_ship = ['ship', 've', 'den', 've den', 'tu'];
-
-    var keyword_ask_pitch = ['do size', 'gia ship'];
-    var keyword_ask_material = ['do size', 'gia ship', 'dia chi'];
     var keyword_ask_discount = ['sale off', 'sale-off',
         'giam gia', 'khuyen mai', 'chiet khau'
     ];
@@ -51,36 +52,34 @@ function UserIntentParserRegExp() {
     ];
 
     var sizeRegexp = [
-        "size \\d+", "sz \\d+",
-        "saiz \\d+", "co \\d+",
-        "size \\d+ va \\d+",
-        "sz \\d+ va \\d+",
-        "saiz \\d+ va \\d+",
-        "co \\d+ va \\d+",
+        "size \\d+ \\w+ size \\d+",
+        "size \\d+ \\w+ \\d+",
+        "size \\w+ \\d+ \\w+ \\d+",
+        "size \\d+",
         "size nam \\d+", "size nu \\d+",
-        "size", "co", "saiz", "sz",
-    ];
-
-    var colorRegexp = [
-        "mau \\w+ \\w+",
-        "mau \\w+",
-        "mau \\w+ va \\w+",
-        "mau \\w+ va \\w+ \\w+",
-        "mau \\w+ \\w+ va \\w+ \\w+",
-        "mau \\w+ \\w+ va \\w+",
-        "color \\w+ \\w+", "color \\w+",
-        "mau"
+        "size"
     ];
 
     this.emitter = null;
 
     var intentClassifier = new nlpChecker.BayesClassifier();
+    var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier();
 
     this.initClassifier = function(classifier, dataSet, intent) {
         for (var i = 0; i < dataSet.length; i++) {
             classifier.addDocument(dataSet[i], intent);
         }
         classifier.train();
+    }
+
+    this.trainColorClassifier = function() {
+        var colorsVn = common.getAllcolorVn();
+        var keys = Object.keys(colorsVn);
+        for (var i = 0, length = keys.length; i < length; i++) {
+            var color_invn = colorsVn[keys[i]].latinise();
+            propertiesClassifier.addDocument(color_invn, color_invn);
+        }
+        propertiesClassifier.train();
     }
 
     this.trainPriceClassifier = function() {
@@ -92,10 +91,13 @@ function UserIntentParserRegExp() {
     }
 
     this.trainShipClassifier = function() {
-        this.initClassifier(intentClassifier, this.keyword_check_ship, common.INTENT_CHECK_SHIP);
+        this.initClassifier(intentClassifier, keyword_check_ship, common.INTENT_CHECK_SHIP);
     }
 
     this.getIntent = function(message) {
+        var classifications = intentClassifier.getClassifications(message);
+        logger.info("message = " + message);
+        logger.info("Classification = " + JSON.stringify(classifications));
         return intentClassifier.classify(message);
     }
 
@@ -137,7 +139,7 @@ function UserIntentParserRegExp() {
             }
         }
 
-        this.emitter.emit(common.INTENT_CHECK_PRICE, {
+        this.emitter.emit(common.INTENT_CHECK_AVAILABILITY, {
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,
@@ -149,12 +151,17 @@ function UserIntentParserRegExp() {
         });
     }
 
+
     this.parseColorInfo = function(userMsg) {
-        var productColor = "";
-        for (var i = 0, length = colorRegexp.length; i < length; i++) {
-            productColor = common.extractValue(userMsg, colorRegexp[i]);
-            if (productColor != "") {
-                break;
+        var productColor = [];
+        var classifications = propertiesClassifier.getClassifications(userMsg);
+        for (var i = 0, length = classifications.length; i < length; i++) {
+            var classification = classifications[i];
+            if (classifications[i].value > 0.5) {
+                logger.info("High probility = " + JSON.stringify(classification));
+                productColor.push(classification.label.toLowerCase());
+            } else {
+                logger.info("Low probility = " + JSON.stringify(classification));
             }
         }
         return productColor;
@@ -162,6 +169,9 @@ function UserIntentParserRegExp() {
 
     this.parseSizeInfo = function(userMsg) {
         var productSize = "";
+        userMsg = userMsg.replaceAll("saiz", "size");
+        userMsg = userMsg.replaceAll("sz", "size");
+        userMsg = userMsg.replaceAll("co", "size");
         for (var i = 0, length = sizeRegexp.length; i < length; i++) {
             productSize = common.extractValue(userMsg, sizeRegexp[i]);
             if (productSize != "") {
@@ -176,18 +186,27 @@ function UserIntentParserRegExp() {
         var productCode = common.extractProductCode(userMsg, options.codePattern).code;
         var color = this.parseColorInfo(userMsg);
         var size = this.parseSizeInfo(userMsg);
-        this.emitter.emit(common.INTENT_CHECK_PRICE, {
+        this.emitter.emit(common.INTENT_CHECK_AVAILABILITY, {
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,
             productid: options.productid,
+            code: productCode,
             color: color,
             size: size,
             msg: userMsg
         });
     }
 
-    this.parseShipIntentInfo = function(userMsg, codePattern) {}
+    this.parseShipIntentInfo = function(userMsg, options) {
+        this.emitter.emit(common.INTENT_CHECK_SHIP, {
+            storeid: options.storeid,
+            pageid: options.pageid,
+            fbid: options.fbid,
+            productid: options.productid,
+            msg: userMsg
+        });
+    }
 }
 
 var method = UserIntentParserRegExp.prototype;
@@ -196,6 +215,8 @@ method.setEmitter = function(emitter) {
 
     this.trainPriceClassifier();
     this.trainAvailabilityClassifier();
+    this.trainShipClassifier();
+    this.trainColorClassifier();
 }
 
 method.parse = function(userMsg, options) {

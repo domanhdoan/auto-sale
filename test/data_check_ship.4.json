@@ -1,4 +1,4 @@
-"size", {
+{
     "object": "page",
     "entry": [{
         "id": "PAGE_ID",
@@ -14,7 +14,7 @@
             "message": {
                 "mid": "mid.1460245671959:dad2ec9421b03d6f78",
                 "seq": 216,
-                "text": "BW6882 nam con mau xanh la cay va do dun khong"
+                "text": "Free ship hả shop?"
             }
         }]
     }]
