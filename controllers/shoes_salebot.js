@@ -566,61 +566,59 @@ function initWebHook() {
     });
 }
 
+function handlePriceIntent(session, data, product) {
+    if (Object.keys(product).length) {
+        async.series([
+            function(callback) {
+                var price = (product.price > product.discount) ? product.discount : product.price;
+                var saleoffmsg = product.price > product.discount ? " (Có KM)" : " (Không KM)";
+                var message = product.title;
+                fbMessenger.sendTextMessage(data.fbid, message, function() {
+                    message = "";
+                    if (data.type.length == 0) {
+                        message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
+                    } else {
+                        for (var i = 0, length = data.type.length; i < length; i++) {
+                            var prices = common.extractValues(product.title, "\\d+k");
+                            if (product.title.indexOf(data.type[i]) > 0) {
+                                price = common.extractValue(product.title, data.type[i] + " \\d+k");
+                                message = "- " + price.toUpperCase() + saleoffmsg;
+                            } else if (((data.type[i] === 'combo') || (data.type[i] === 'cb')) && prices.length > 0) {
+                                var malePrice = common.extractValues(prices[0], "\\d+");
+                                var femalePrice = common.extractValues(prices[1], "\\d+");
+                                var total = parseInt(malePrice) + parseInt(femalePrice);
+                                message = "- 1 Combo (Nam + Nữ) " + " giá " + common.toCurrencyString(total * 1000, " VNĐ") + saleoffmsg;
+                            } else {
+                                message = "- Sản phẩm này không có kiểu " + data.type[i] + " bạn đang tìm.";
+                            }
+                            fbMessenger.sendTextMessage(data.fbid, message);
+                        }
+                    }
+
+                    callback(null);
+                });
+
+            },
+            function() {
+
+            }
+        ]);
+    } else {
+        showSimilarProductSuggestion(session);
+    }
+}
+
 function setUpUserIntentListener() {
     emitter.on(common.INTENT_CHECK_PRICE, function(data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         if (data.code != '') {
             //send message to user for notify
             gProductFinder.findProductByCode(session.storeid, data.code, function(product) {
-                if (Object.keys(product).length) {
-                    async.series([
-                        function(callback) {
-                            var price = (product.price > product.discount) ? product.discount : product.price;
-                            var saleoffmsg = product.price > product.discount ? " (Có KM)" : " (Không KM)";
-                            var message = product.title;
-                            fbMessenger.sendTextMessage(data.fbid, message, function() {
-                                message = "";
-                                if (data.type.length == 0) {
-                                    message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
-                                } else {
-                                    for (var i = 0, length = data.type.length; i < length; i++) {
-                                        price = common.extractValue(product.title, data.type[i] + " \\d+k");
-                                        if (price === "") {
-                                            if ((data.type[i] === 'combo') || (data.type[i] === 'cb')) {
-                                                var prices = common.extractValues(product.title, "\\d+k");
-                                                var malePrice = common.extractValues(prices[0], "\\d+");
-                                                var femalePrice = common.extractValues(prices[1], "\\d+");
-                                                var total = parseInt(malePrice) + parseInt(femalePrice);
-                                                message = "- 1 Combo " + " giá " + common.toCurrencyString(total * 1000, " VNĐ") + saleoffmsg;
-                                            } else {
-                                                message = "- Sản phẩm này không có kiểu " + data.type[i] + " bạn đang tìm.";
-                                            }
-
-                                        } else {
-                                            message = "- " + price.toUpperCase() + saleoffmsg;
-                                        }
-                                    }
-                                }
-                                fbMessenger.sendTextMessage(data.fbid, message);
-                                callback(null);
-                            });
-
-                        },
-                        function() {
-
-                        }
-                    ]);
-                } else {
-                    showSimilarProductSuggestion(session);
-                }
+                handlePriceIntent(session, data, product);
             });
-        } else if (data.id >= 0) {
-            gProductFinder.findProductById(data.id, function(product) {
-                if (Object.keys(product).length) {
-                    sendProductSearchResultsToFB(session, product);
-                } else {
-                    // product not found
-                }
+        } else if (data.productid >= 0) {
+            gProductFinder.findProductById(data.productid, function(product) {
+                handlePriceIntent(session, data, product)
             });
         } else {
 
