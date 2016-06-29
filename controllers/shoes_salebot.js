@@ -265,10 +265,10 @@ function showAvailableColorNsize(session, show_color, show_size, show_photo) {
     var productId = session.last_product.id;
     gProductFinder.getColorsNSizeNPhotos(productId,
         function(colors, sizes, photos) {
-            var available_colors = getAvailableColorString(show_color, colors, colors);
-            var available_sizes = getAvailableSizeString(show_size, sizes, sizes);
+            var available_colors = getAvailableColorString(show_color, colors, JSON.stringify(colors));
+            var available_sizes = getAvailableSizeString(show_size, sizes, JSON.stringify(sizes));
             logger.info("Product id = " + productId + " \nDetails - " + available_colors + available_sizes);
-            if (show_photo) {
+            if (show_photo && photos.length > 0) {
                 fbMessenger.sendProductPhotoElements(session.fbid, session.last_product.id,
                     session.last_product.title, available_colors + available_sizes, photos);
             } else {
