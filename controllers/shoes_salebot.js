@@ -658,7 +658,7 @@ function handleAvailabilityIntent(session, data) {
                 callback(null, data);
             }
         },
-        function checkSize(data) {
+        function checkSize(data2) {
             if (data != null) {
                 gProductFinder.getProductSizes(session.last_product.id, function(sizes) {
                     if (sizes.length > 0) {
