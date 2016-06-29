@@ -148,13 +148,14 @@ exports.findShoesByKeywords = function(storeId, user_message, callback) {
 
 }
 
-exports.findProductsById = function(id, callback) {
+exports.findProductById = function(id, callback) {
     gDbManager.Product.findOne({
         where: {
             id: id
         }
     }).then(function(product) {
-        callback(product);
+        var jsonObj = converDBObjectToJson(product);
+        callback(jsonObj);
     });
 }
 

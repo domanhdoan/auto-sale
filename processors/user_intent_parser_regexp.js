@@ -185,9 +185,9 @@ function UserIntentParserRegExp() {
         var ret = false;
         var isAvailableQuestion = this.isCheckQuestion(userMsg, keyword_check_availability);
         if (isAvailableQuestion) {
-            if (this.parseColorInfo(userMsg, options)) {
+            if (this.parseAndHandleColorIntent(userMsg, options)) {
                 logger.info('parseColorInfo for customer');
-            } else if (this.parseSizeInfo(userMsg, options)) {
+            } else if (this.parseAndHandleSizeInfo(userMsg, options)) {
                 logger.info('parseSizeInfo for customer');
             }
             ret = true;
@@ -212,7 +212,7 @@ method.parse = function(userMsg, options) {
     if (this.parseAndHandlePriceIntent(userMsg, options)) {
         logger.info('parsePriceInfo for customer');
     } else if (this.parseAndHandleAvailabilityIntent(userMsg, options)) {
-        logger.info('parseShipInfo for customer');
+        logger.info('parseAndHandleAvailabilityIntent for customer');
     } else if (this.parseAndHandleShipIntent(userMsg, options)) {
         logger.info('parseShipInfo for customer');
     } else {
