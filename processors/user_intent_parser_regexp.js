@@ -54,6 +54,9 @@ function UserIntentParserRegExp() {
     var sizeRegexp = [
         "size \\d+ \\w+ size \\d+",
         "size \\d+ \\w+ \\d+",
+        "size \\d+ \\d+",
+        "size \\d+-\\d+",
+        "size \\d+ - \\d+",
         "size \\w+ \\d+ \\w+ \\d+",
         "size \\d+",
         "size nam \\d+", "size nu \\d+",
