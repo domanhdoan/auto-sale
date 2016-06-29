@@ -163,7 +163,7 @@ exports.findProductByCode = function(storeId, code, callback) {
     gDbManager.Product.findOne({
         where: {
             title: {
-                $like: "%" + code + "%"
+                $like: "%" + code.toLowerCase() + "%"
             },
             StoreId: storeId
         }
