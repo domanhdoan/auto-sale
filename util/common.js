@@ -106,6 +106,10 @@ module.exports.get_color_vn = function(value) {
     return color_vn[value];
 }
 
+module.exports.getAllcolorVn = function() {
+    return color_vn;
+}
+
 module.exports.loadJson = function(path) {
     var json_object = JSON.parse(require('fs').readFileSync(path, 'utf8'));
     return json_object;
