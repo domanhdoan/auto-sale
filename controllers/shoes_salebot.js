@@ -173,32 +173,30 @@ function showSimilarProductSuggestion(session) {
     ]);
 }
 
-function findProductByImage(session, user_msg) {
-    gProductFinder.findProductByThumbnail(gHomepage, user_msg, function(product) {
+function findProductByThumbLink(session, thumbLink) {
+    gProductFinder.findProductByThumbnail(gHomepage, thumbLink, function(product) {
         sendProductSearchResultsToFB(session, product);
         session.last_product.categoryid = product.CategoryId;
     });
 }
 
-function findProductByKeywords(session, message) {
-    gProductFinder.findShoesByKeywords(session.storeid, message, function(products) {
-        sendProductSearchResultsToFB(session, products);
-    });
-}
-
-function findProductByCode(session, message) {
-    gProductFinder.findProductByCode(session.storeid, message, function(product) {
+function findProductByDetailLink(session, link) {
+    gProductFinder.findProductByLink(session.storeid, link, function(product) {
         sendProductSearchResultsToFB(session, product);
         session.last_product.categoryid = product.CategoryId;
     });
 }
 
-function findProductByCategory(categoryid) {
-    gProductFinder.findProductsByCategory(session.storeid, categoryid, function(products) {
+function findProductByKeywords(session, keywords) {
+    gProductFinder.findShoesByKeywords(session.storeid, keywords, function(products) {
         sendProductSearchResultsToFB(session, products);
-        if (Object.keys(products).length > 0) {
-            session.last_product.categoryid = categoryid;
-        }
+    });
+}
+
+function findProductByCode(session, productCode) {
+    gProductFinder.findProductByCode(session.storeid, productCode, function(product) {
+        sendProductSearchResultsToFB(session, product);
+        session.last_product.categoryid = product.CategoryId;
     });
 }
 
@@ -277,8 +275,10 @@ function searchAndConfirmAddress(session, destination, callback) {
 
 function doProductSearch(session, user_msg, user_msg_trans) {
     var result = common.extractValue(user_msg, gStoreConfig.product_code_pattern);
-    if (common.isUrl(user_msg)) {
-        findProductByImage(session, user_msg);
+    if (common.isThumbUrl(user_msg)) {
+        findProductByThumbLink(session, user_msg);
+    } else if (common.isUrl(user_msg)) {
+        findProductByDetailLink(session, user_msg);
     } else if (result != "") {
         findProductByCode(session, result);
     } else {
@@ -481,15 +481,20 @@ function processEvent(event) {
     if (event.message) {
         if (event.message.text) {
             var text = event.message.text;
+            var isURL = common.isUrl(text);
+            if (!isURL) {
+                var options = {
+                    storeid: currentSession.storeid,
+                    pageid: receiver,
+                    fbid: sender,
+                    productid: currentSession.last_product.id,
+                    codePattern: gStoreConfig.product_code_pattern
+                };
 
-            var options = {
-                storeid: currentSession.storeid,
-                pageid: receiver,
-                fbid: sender,
-                productid: currentSession.last_product.id,
-                codePattern: gStoreConfig.product_code_pattern
-            };
-            intentParser.parse(text.latinise().toLowerCase(), options);
+                intentParser.parse(text.latinise().toLowerCase(), options);
+            } else {
+                processTextEvent(currentSession, text);
+            }
         } else if (event.message.attachments != null) {
             var attachments = event.message.attachments;
             // handle the case when user send an image for searching product
