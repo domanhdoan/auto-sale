@@ -43,7 +43,8 @@
         "node-geocoder": "3.11.0",
         "google-distance": "1.0.1",
         "events": "1.1.1",
-        "string-similarity": "1.1.0"
+        "string-similarity": "1.1.0",
+        "natural": "0.4.0"
     },
     "devDependencies": {
         "gulp-sequelize": "0.0.2"
