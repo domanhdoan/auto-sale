@@ -256,6 +256,82 @@ module.exports.searchAddress = function(origin, callback) {
     });
 }
 
+function chunkString(s, len) {
+    var curr = len,
+        prev = 0;
+
+    var output = [];
+
+    while (s[curr]) {
+        if (s[curr++] == ' ') {
+            output.push(s.substring(prev, curr));
+            prev = curr;
+            curr += len;
+        } else {
+            var currReverse = curr;
+            do {
+                if (s.substring(currReverse - 1, currReverse) == ' ') {
+                    output.push(s.substring(prev, currReverse));
+                    prev = currReverse;
+                    curr = currReverse + len;
+                    break;
+                }
+                currReverse--;
+            } while (currReverse > prev)
+        }
+    }
+    output.push(s.substr(prev));
+    return output;
+}
+
+module.exports.saveToFile = function(path, content) {
+    //require('fs').appendFile("./temp/" + url.replaceAll("http://", "").replaceAll("/", "#") + ".html",
+    require('fs').appendFile(path,
+        content + "\n",
+        function(err) {
+            if (err) {
+                return console.log(err);
+            }
+        });
+}
+
+module.exports.splitResponse = function(str) {
+    if (str.length <= 320) {
+        return [str];
+    }
+
+    var result = chunkString(str, 300);
+
+    return result;
+
+}
+
+module.exports.isDefined = function(obj) {
+    if (typeof obj == 'undefined') {
+        return false;
+    }
+
+    if (!obj) {
+        return false;
+    }
+
+    return obj != null;
+}
+
+module.exports.insertRootLink = function(current_link, home_page) {
+    if (current_link != null && !current_link.startsWith('http')) {
+        current_link = home_page + current_link;
+    }
+    return current_link;
+}
+
+module.exports.insertHttpPrefix = function(current_link) {
+    if (current_link != null && !current_link.startsWith('http')) {
+        current_link = "http://" + current_link;
+    }
+    return current_link;
+}
+
 var Latinise = {};
 Latinise.latin_map = {
     "Á": "A",
@@ -1092,80 +1168,4 @@ String.prototype.latinise = function() {
 String.prototype.latinize = String.prototype.latinise;
 String.prototype.isLatin = function() {
     return this == this.latinise()
-}
-
-function chunkString(s, len) {
-    var curr = len,
-        prev = 0;
-
-    var output = [];
-
-    while (s[curr]) {
-        if (s[curr++] == ' ') {
-            output.push(s.substring(prev, curr));
-            prev = curr;
-            curr += len;
-        } else {
-            var currReverse = curr;
-            do {
-                if (s.substring(currReverse - 1, currReverse) == ' ') {
-                    output.push(s.substring(prev, currReverse));
-                    prev = currReverse;
-                    curr = currReverse + len;
-                    break;
-                }
-                currReverse--;
-            } while (currReverse > prev)
-        }
-    }
-    output.push(s.substr(prev));
-    return output;
-}
-
-module.exports.saveToFile = function(path, content) {
-    //require('fs').appendFile("./temp/" + url.replaceAll("http://", "").replaceAll("/", "#") + ".html",
-    require('fs').appendFile(path,
-        content + "\n",
-        function(err) {
-            if (err) {
-                return console.log(err);
-            }
-        });
-}
-
-module.exports.splitResponse = function(str) {
-    if (str.length <= 320) {
-        return [str];
-    }
-
-    var result = chunkString(str, 300);
-
-    return result;
-
-}
-
-module.exports.isDefined = function(obj) {
-    if (typeof obj == 'undefined') {
-        return false;
-    }
-
-    if (!obj) {
-        return false;
-    }
-
-    return obj != null;
-}
-
-module.exports.insertRootLink = function(current_link, home_page) {
-    if (current_link != null && !current_link.startsWith('http')) {
-        current_link = home_page + current_link;
-    }
-    return current_link;
-}
-
-module.exports.insertHttpPrefix = function(current_link) {
-    if (current_link != null && !current_link.startsWith('http')) {
-        current_link = "http://" + current_link;
-    }
-    return current_link;
 }

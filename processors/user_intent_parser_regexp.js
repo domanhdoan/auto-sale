@@ -1,6 +1,7 @@
 var logger = require('../util/logger.js');
 var common = require('../util/common.js');
 var strSimilarityChecker = require('string-similarity');
+var nlpChecker = require('natural');
 
 function UserIntentParserRegExp() {
     var question_indicator = [
@@ -56,7 +57,8 @@ function UserIntentParserRegExp() {
         "sz \\d+ va \\d+",
         "saiz \\d+ va \\d+",
         "co \\d+ va \\d+",
-        "size nam \\d+", "size nu \\d+"
+        "size nam \\d+", "size nu \\d+",
+        "size", "co", "saiz", "sz",
     ];
 
     var colorRegexp = [
@@ -66,26 +68,35 @@ function UserIntentParserRegExp() {
         "mau \\w+ va \\w+ \\w+",
         "mau \\w+ \\w+ va \\w+ \\w+",
         "mau \\w+ \\w+ va \\w+",
-        "color \\w+ \\w+", "color \\w+"
+        "color \\w+ \\w+", "color \\w+",
+        "mau"
     ];
 
     this.emitter = null;
 
-    this.isCheckQuestion = function(userMsg, keywords) {
-        var result = false
-            // for (var i = 0; i < keywords.length; i++) {
-            //     var index = userMsg.indexOf(keywords[i])
-            //     if (index >= 0) {
-            //         result = true;
-            //         break
-            //     }
-            // }
-        var checkString = keywords.toString();
-        var similarity = strSimilarityChecker.compareTwoStrings(userMsg, checkString);
-        if (similarity >= 0.1) {
-            result = true;
+    var intentClassifier = new nlpChecker.BayesClassifier();
+
+    this.initClassifier = function(classifier, dataSet, intent) {
+        for (var i = 0; i < dataSet.length; i++) {
+            classifier.addDocument(dataSet[i], intent);
         }
-        return result
+        classifier.train();
+    }
+
+    this.trainPriceClassifier = function() {
+        this.initClassifier(intentClassifier, keyword_check_price, common.INTENT_CHECK_PRICE);
+    }
+
+    this.trainAvailabilityClassifier = function() {
+        this.initClassifier(intentClassifier, keyword_check_availability, common.INTENT_CHECK_AVAILABILITY);
+    }
+
+    this.trainShipClassifier = function() {
+        this.initClassifier(intentClassifier, this.keyword_check_ship, common.INTENT_CHECK_SHIP);
+    }
+
+    this.getIntent = function(message) {
+        return intentClassifier.classify(message);
     }
 
     this.parseProductType = function(userMsg) {
@@ -99,125 +110,105 @@ function UserIntentParserRegExp() {
         return productType;
     }
 
-    this.parseAndHandlePriceIntent = function(userMsg, options) {
-        var ret = false;
-        var isCheckPriceQuest = this.isCheckQuestion(userMsg,
-            keyword_check_price);
-        if (isCheckPriceQuest) {
-            var productCode = common.extractProductCode(userMsg,
-                options.codePattern).code;
-            var productType = this.parseProductType(userMsg);
-            var productQuantity = [];
+    this.parsePriceIntentInfo = function(userMsg, options) {
+        var productCode = common.extractProductCode(userMsg,
+            options.codePattern).code;
+        var productType = this.parseProductType(userMsg);
+        var productQuantity = [];
 
-            for (var i = 0, length = quantityRegexp.length; i < length; i++) {
-                productQuantity = common.extractValues(userMsg, quantityRegexp[i]);
-                if (productQuantity.length > 0) {
-                    for (var i = 0, length = productQuantity.length; i < length; i++) {
-                        var quantity = productQuantity[i].match(/\d+/)[0];
-                        productQuantity[i] = quantity;
-                    }
-                    break;
+        for (var i = 0, length = quantityRegexp.length; i < length; i++) {
+            productQuantity = common.extractValues(userMsg, quantityRegexp[i]);
+            if (productQuantity.length > 0) {
+                for (var i = 0, length = productQuantity.length; i < length; i++) {
+                    var quantity = productQuantity[i].match(/\d+/)[0];
+                    productQuantity[i] = quantity;
                 }
+                break;
             }
-
-            if (productQuantity.length == 0) {
-                productQuantity[0] = "1";
-            }
-
-            if (productType.length > 0) {
-                for (var i = 0, length = productType.length; i < (length - 1); i++) {
-                    productQuantity[i] = "1";
-                }
-            }
-
-            this.emitter.emit(common.INTENT_CHECK_PRICE, {
-                storeid: options.storeid,
-                pageid: options.pageid,
-                fbid: options.fbid,
-                productid: options.productid,
-                code: productCode,
-                type: productType,
-                quantity: productQuantity,
-                msg: userMsg
-            });
-            ret = true;
         }
-        return ret;
+
+        if (productQuantity.length == 0) {
+            productQuantity[0] = "1";
+        }
+
+        if (productType.length > 0) {
+            for (var i = 0, length = productType.length; i < (length - 1); i++) {
+                productQuantity[i] = "1";
+            }
+        }
+
+        this.emitter.emit(common.INTENT_CHECK_PRICE, {
+            storeid: options.storeid,
+            pageid: options.pageid,
+            fbid: options.fbid,
+            productid: options.productid,
+            code: productCode,
+            type: productType,
+            quantity: productQuantity,
+            msg: userMsg
+        });
     }
 
-    this.parseAndHandleColorIntent = function(userMsg, options) {
-        var isCheckColorQuestion = this.isCheckQuestion(userMsg, keyword_check_color);
-        if (isCheckColorQuestion) {
-            var productCode = common.extractProductCode(userMsg, options.codePattern).code;
-            var productColor = "";
-            for (var i = 0, length = colorRegexp.length; i < length; i++) {
-                productColor = common.extractValue(userMsg, colorRegexp[i]);
-                if (productColor != "") {
-                    break;
-                }
+    this.parseColorInfo = function(userMsg) {
+        var productColor = "";
+        for (var i = 0, length = colorRegexp.length; i < length; i++) {
+            productColor = common.extractValue(userMsg, colorRegexp[i]);
+            if (productColor != "") {
+                break;
             }
-            logger.info("Code = " + productCode);
-            logger.info("Color = " + productColor);
-            return true;
-        } else {
-            return false;
         }
+        return productColor;
     }
 
-    this.parseAndHandleSizeInfo = function(userMsg, options) {
-        var isCheckSizeQuestion = this.isCheckQuestion(userMsg, keyword_check_size);
-        if (isCheckSizeQuestion) {
-            var productCode = common.extractProductCode(userMsg, options.codePattern).code;
-            var productSize = "";
-            for (var i = 0, length = sizeRegexp.length; i < length; i++) {
-                productSize = common.extractValue(userMsg, sizeRegexp[i]);
-                if (productSize != "") {
-                    productSize = productSize.match(/\d+/g);
-                    break;
-                }
+    this.parseSizeInfo = function(userMsg) {
+        var productSize = "";
+        for (var i = 0, length = sizeRegexp.length; i < length; i++) {
+            productSize = common.extractValue(userMsg, sizeRegexp[i]);
+            if (productSize != "") {
+                productSize = productSize.match(/\d+/g);
+                break;
             }
-            logger.info("Code = " + productCode);
-            logger.info("Size = " + productSize);
-            return true;
-        } else {
-            return false;
         }
+        return productSize;
     }
 
-    this.parseAndHandleAvailabilityIntent = function(userMsg, options) {
-        var ret = false;
-        var isAvailableQuestion = this.isCheckQuestion(userMsg, keyword_check_availability);
-        if (isAvailableQuestion) {
-            if (this.parseAndHandleColorIntent(userMsg, options)) {
-                logger.info('parseColorInfo for customer');
-            } else if (this.parseAndHandleSizeInfo(userMsg, options)) {
-                logger.info('parseSizeInfo for customer');
-            }
-            ret = true;
-        }
-        return ret;
+    this.parseAvailabilityIntentInfo = function(userMsg, options) {
+        var productCode = common.extractProductCode(userMsg, options.codePattern).code;
+        var color = this.parseColorInfo(userMsg);
+        var size = this.parseSizeInfo(userMsg);
+        this.emitter.emit(common.INTENT_CHECK_PRICE, {
+            storeid: options.storeid,
+            pageid: options.pageid,
+            fbid: options.fbid,
+            productid: options.productid,
+            color: color,
+            size: size,
+            msg: userMsg
+        });
     }
 
-    this.parseAndHandleShipIntent = function(userMsg, codePattern) {
-        var isQuestion = this.isCheckQuestion(userMsg, question_indicator);
-        if (isQuestion && this.isCheckQuestion(userMsg, keyword_check_ship)) {
-            return true;
-        }
-    }
+    this.parseShipIntentInfo = function(userMsg, codePattern) {}
 }
 
 var method = UserIntentParserRegExp.prototype;
 method.setEmitter = function(emitter) {
     this.emitter = emitter;
+
+    this.trainPriceClassifier();
+    this.trainAvailabilityClassifier();
 }
 
 method.parse = function(userMsg, options) {
-    if (this.parseAndHandlePriceIntent(userMsg, options)) {
+    var intent = this.getIntent(userMsg);
+    if (intent === common.INTENT_CHECK_PRICE) {
         logger.info('parsePriceInfo for customer');
-    } else if (this.parseAndHandleAvailabilityIntent(userMsg, options)) {
-        logger.info('parseAndHandleAvailabilityIntent for customer');
-    } else if (this.parseAndHandleShipIntent(userMsg, options)) {
+        this.parsePriceIntentInfo(userMsg, options);
+    } else if (intent === common.INTENT_CHECK_AVAILABILITY) {
+        logger.info('parseAvailabilityIntentData for customer');
+        this.parseAvailabilityIntentInfo(userMsg, options);
+    } else if (intent === common.INTENT_CHECK_SHIP) {
         logger.info('parseShipInfo for customer');
+        this.parseShipIntentInfo(userMsg, options);
     } else {
         logger.info('not parse message ==> will apply search approach');
         this.emitter.emit(common.INTENT_GENERAL_SEARCH, {
