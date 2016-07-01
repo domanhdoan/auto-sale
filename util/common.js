@@ -299,6 +299,16 @@ module.exports.saveToFile = function(path, content) {
         });
 }
 
+module.exports.saveToHTMLFile = function(url, content) {
+    require('fs').appendFile("./temp/" + url.replaceAll("http://", "").replaceAll("/", "#") + ".html",
+        content + "\n",
+        function(err) {
+            if (err) {
+                return console.log(err);
+            }
+        });
+}
+
 module.exports.splitResponse = function(str) {
     if (str.length <= 320) {
         return [str];
