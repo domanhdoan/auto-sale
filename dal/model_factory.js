@@ -37,59 +37,19 @@ module.exports.findAndCreateCategory = function(savedStore, name, link, callback
 }
 
 module.exports.findAndCreateProduct = function(
-    saved_store,
-    saved_category,
-    product_title,
-    product_thumbnail,
-    product_desc,
-    product_price,
-    product_discount,
-    product_percent,
-    product_detail_link,
-    product_brand,
-    product_code_pattern,
-    callback
+    saved_store, saved_category, product_title,
+    product_thumbnail, product_desc, product_price,
+    product_discount, product_percent, product_detail_link,
+    product_brand, product_code, callback
 ) {
     var product_finger = require('crypto').createHmac('sha256', product_detail_link)
         .digest('hex');
-    // gDbManager.Product.findOrCreate({
-    //     where: {
-    //         finger: product_finger
-    //     },
-    //     defaults: {
-    //         title: product_title,
-    //         thumbnail: product_thumbnail.replaceAll('-', '%%'),
-    //         desc: product_desc,
-    //         price: product_price,
-    //         discount: product_discount,
-    //         percent: product_percent,
-    //         link: product_detail_link.replaceAll('-', '%%'),
-    //         finger: product_finger,
-    //         brand: product_brand
-    //     }
-    // }).then(function(product) {
-    //     var saved_product = product[0];
-    //     logger.info("Save new product successfully");
-    //     saved_product.setCategory(saved_category);
-    //     saved_product.setStore(saved_store);
-    //     if (saved_category.cover == null) {
-    //         saved_category.updateAttributes({
-    //             cover: saved_product.thumbnail.replaceAll("%%", "-")
-    //         });
-    //     }
-    //     common.saveToFile("./temp/product_links_save.txt", "save_" + saved_product.dataValues.link);
-    //     callback(saved_product);
-    // });
 
-    // gDbManager.Product.findOne({
-    //     where: {
-    //         // finger: product_finger
-    //         title: product_title
-    //     }
-    // }).then(function(found_product) {
-    //     if (found_product == null) {
-    gDbManager.Product
-        .create({
+    gDbManager.Product.findOrCreate({
+        where: {
+            finger: product_finger
+        },
+        defaults: {
             title: product_title,
             thumbnail: product_thumbnail.replaceAll('-', '%%'),
             desc: product_desc,
@@ -98,22 +58,21 @@ module.exports.findAndCreateProduct = function(
             percent: product_percent,
             link: product_detail_link.replaceAll('-', '%%'),
             finger: product_finger,
-            brand: product_brand
-        }).then(function(savedProduct) {
-            savedProduct.setCategory(saved_category);
-            savedProduct.setStore(saved_store);
-            if (saved_category.cover == null) {
-                saved_category.updateAttributes({
-                    cover: savedProduct.thumbnail.replaceAll("%%", "-")
-                });
-            }
-            callback(savedProduct);
-            common.saveToFile("./temp/product_links_save.txt", "save_" + product_title);
-        });
-    //     } else {
-    //         callback(found_product);
-    //     }
-    // });
+            brand: product_brand,
+            code: product_code,
+        }
+    }).then(function(product) {
+        var savedProduct = product[0];
+        logger.info("Save new product successfully");
+        savedProduct.setCategory(saved_category);
+        savedProduct.setStore(saved_store);
+        if (saved_category.cover == null) {
+            saved_category.updateAttributes({
+                cover: savedProduct.thumbnail.replaceAll("%%", "-")
+            });
+        }
+        callback(savedProduct);
+    });
 }
 
 module.exports.findAndCreateProductColor = function(saved_product, color_name,
