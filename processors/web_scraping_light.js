@@ -11,6 +11,34 @@ var gCrawlPattern = null;
 var gDbManager = require("../models/db_manager.js");
 var gModelFactory = require("../dal/model_factory.js");
 
+Array.prototype.unique = function() {
+    return this.filter(function(value, index, array) {
+        return array.indexOf(value, index + 1) < 0;
+    });
+};
+
+function insertLinksWithoutDuplication(source, destination) {
+    for (var i = 0, length = source.length; i < length; i++) {
+        if (destination.indexOf(source[i]) < 0) {
+            destination.push(source[i]);
+        } else {
+            logger.info("NOt insert due to duplication: " + source[i]);
+        }
+    }
+    return destination;
+}
+
+function insertLinkWithoutDuplication(link, destination) {
+    if (destination.indexOf(link) < 0) {
+        destination.push(link);
+        common.saveToFile("links.txt", "PASS - " + link);
+    } else {
+        logger.info("Duplication: " + link);
+        common.saveToFile("links.txt", "DUP - " + link);
+
+    }
+}
+
 function extractProductDetails(link, productPattern, savedStore) {
     request(link, function(error, response, body) {
         var $ = cheerio.load(body);
@@ -134,7 +162,7 @@ function extractAllProductDetailsLink(index, categoryLink, handlePaging, product
             var detailLink = $(productList[i]).attr('href');
             detailLink = common.insertRootLink(detailLink, curHomepage);
             // logger.info("Product link: " + detailLink);
-            productLinks.push(detailLink);
+            insertLinkWithoutDuplication(detailLink, productLinks);
         }
 
         var nextPageLinks = $(gCrawlPattern.paging.page_link);
@@ -164,23 +192,6 @@ function classifyCategory(savedStore, menuItems) {
     return categoryLinks;
 }
 
-function insertWithoutDuplication(source, destination) {
-    for (var i = 0, length = source.length; i < length; i++) {
-        if (destination.indexOf(source[i]) < 0) {
-            destination.push(source[i]);
-        } else {
-            logger.info("NOt insert due to duplication: " + source[i]);
-        }
-    }
-    return destination;
-}
-
-Array.prototype.unique = function() {
-    return this.filter(function(value, index, array) {
-        return array.indexOf(value, index + 1) < 0;
-    });
-};
-
 function extractAllCategoryLink(savedStore, callback) {
     logger.info("Store: " + savedStore.dataValues.home);
     request(savedStore.dataValues.home, function(error, response, body) {
@@ -200,7 +211,7 @@ function extractAllCategoryLink(savedStore, callback) {
             extractAllProductDetailsLink(i, categoryLinks[i], true, allProductLinks, function(index, productLinks) {
                 categoryCount++;
                 logger.info("Category index = " + index);
-                allProductLinks = insertWithoutDuplication(productLinks, allProductLinks);
+                // allProductLinks = insertLinksWithoutDuplication(productLinks, allProductLinks);
                 if ((categoryCount == length) && (callback != null)) {
                     // allProductLinks = allProductLinks.unique();
                     callback(allProductLinks);
@@ -209,7 +220,6 @@ function extractAllCategoryLink(savedStore, callback) {
         }
     });
 }
-
 
 exports.crawlWholeSite = function(home_page, crawl_pattern, callback) {
     gCrawlPattern = crawl_pattern;
