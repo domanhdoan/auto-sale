@@ -11,116 +11,102 @@ var gCrawlPattern = null;
 var gDbManager = require("../models/db_manager.js");
 var gModelFactory = require("../dal/model_factory.js");
 
-function extractProductDetails(productPattern, savedProduct, savedStore) {
-    // request(savedProduct.link.replaceAll("%%", "-"), function(error, response, body) {
-    //     //for (var i = 0, len = product_list.length; i < len; i++) {
-    //     async.each(productList, function(productElememt, callback) {
-    //         var title = $(productElememt).find(productPattern.title).text();
-    //         var thumbnailLink = $(productElememt).find(productPattern.thumbnail).attr('src');
-    //         var desc = $(productElememt).find(productPattern.desc).text();
+function extractProductDetails(link, productPattern, savedStore) {
+    request(link, function(error, response, body) {
+        var $ = cheerio.load(body);
+        var detailLink = response.request.href;
 
-    //         if (thumbnailLink != undefined && thumbnailLink != "" && title != "") {
-    //             var detailLink = $(productElememt).find(productPattern.detail_link).attr('href');
-    //             detailLink = common.insertRootLink(detailLink, curHomepage);
-    //             thumbnailLink = common.insertRootLink(thumbnailLink, curHomepage)
+        var sizeList = $(productPattern.details.size);
+        var colorList = $(productPattern.details.color);
+        var productPhotos = $(productPattern.details.photo);
 
-    //             common.saveToFile("./temp/product_links_save.txt", detailLink);
+        var title = $(productElememt).find(productPattern.title).text();
+        var thumbnailLink = $(productElememt).find(productPattern.thumbnail).attr('src');
+        var desc = $(productElememt).find(productPattern.desc).text();
 
-    //             if (desc == "") {
-    //                 desc = title;
-    //             }
+        if (thumbnailLink != undefined && thumbnailLink != "" && title != "") {
+            var detailLink = $(productElememt).find(productPattern.detail_link).attr('href');
+            detailLink = common.insertRootLink(detailLink, curHomepage);
+            thumbnailLink = common.insertRootLink(thumbnailLink, curHomepage)
 
-    //             var priceStr = $(productElememt).find(productPattern.price).text();
-    //             var discountStr = $(productElememt).find(productPattern.discount).text();
-    //             var percent = $(productElememt).find(productPattern.percent).text();
+            if (desc == "") {
+                desc = title;
+            }
 
-    //             if (priceStr == null || priceStr == "") {
-    //                 priceStr = discountStr;
-    //             }
+            var priceStr = $(productElememt).find(productPattern.price).text();
+            var discountStr = $(productElememt).find(productPattern.discount).text();
+            var percent = $(productElememt).find(productPattern.percent).text();
 
-    //             if (discountStr == null || discountStr == "") {
-    //                 discountStr = "0";
-    //             }
+            if (priceStr == null || priceStr == "") {
+                priceStr = discountStr;
+            }
 
-    //             if (percent == null || percent == "") {
-    //                 percent = "0";
-    //             }
-    //             var price = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
-    //             var discount = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
+            if (discountStr == null || discountStr == "") {
+                discountStr = "0";
+            }
 
-    //             if (price > 0) {
-    //                 gModelFactory.findAndCreateProduct(
-    //                     savedStore, savedCategory,
-    //                     title, thumbnailLink,
-    //                     desc, price,
-    //                     discount, percent,
-    //                     detailLink, "",
-    //                     gCrawlPattern.product_code_pattern,
-    //                     function(savedProduct) {
-    //                         extractProductDetails(productPattern, savedProduct, savedStore);
-    //                     });
-    //             } else if (price == 0) {
-    //                 logger.info("Not save product which not have price\n");
-    //             }
-    //         } else {
-    //             logger.info("Skipped this HTML element\n");
-    //         }
-    //     });
-    //     if (error) {
-    //         logger.error("Couldn’t get page " + savedProduct.link + " because of error: " + error);
-    //         return;
-    //     }
-    //     var $ = cheerio.load(body);
-    //     var detailLink = response.request.href;
+            if (percent == null || percent == "") {
+                percent = "0";
+            }
+            var price = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
+            var discount = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
 
-    //     var sizeList = $(productPattern.details.size);
-    //     var colorList = $(productPattern.details.color);
-    //     var productPhotos = $(productPattern.details.photo);
+            var code = $(productPattern.details.code);
 
+            if (price > 0) {
+                gModelFactory.findAndCreateProduct(
+                    savedStore, savedCategory,
+                    title, thumbnailLink,
+                    desc, price,
+                    discount, percent,
+                    detailLink, "",
+                    gCrawlPattern.product_code_pattern,
+                    function(savedProduct) {
+                        async.eachSeries(sizeList, function(size, callback) {
+                            var value = $(size).text().trim();
+                            var instock = $(size).find(productPattern.details.instock);
+                            if (instock.length > 0) {
+                                console.log("Size out of stock = " + instock.text().trim());
+                            } else {
+                                gModelFactory.findAndCreateProductSize(savedProduct, value,
+                                    function(size) {
+                                        callback();
+                                    });
+                            }
+                        }, function alert(err) {
+                            logger.info("err = " + err);
+                        });
 
-    //     async.eachSeries(sizeList, function(size, callback) {
-    //         var value = $(size).text().trim();
-    //         var instock = $(size).find(productPattern.details.instock);
-    //         if (instock.length > 0) {
-    //             console.log("Size out of stock = " + instock.text().trim());
-    //         } else {
-    //             gModelFactory.findAndCreateProductSize(savedProduct, value,
-    //                 function(size) {
-    //                     callback();
-    //                 });
-    //         }
-    //     }, function alert(err) {
-    //         logger.info("err = " + err);
-    //     });
+                        async.eachSeries(colorList, function(color, callback) {
+                            var name = $(color).text().trim();
+                            var value = $(color).text().trim();
+                            gModelFactory.findAndCreateProductColor(savedProduct,
+                                name, value,
+                                function(color) {
+                                    callback();
+                                });
+                        }, function alert(err) {
+                            logger.info("err = " + err);
+                        });
 
-    //     async.eachSeries(colorList, function(color, callback) {
-    //         var name = $(color).text().trim();
-    //         var value = $(color).text().trim();
-    //         gModelFactory.findAndCreateProductColor(savedProduct,
-    //             name, value,
-    //             function(color) {
-    //                 callback();
-    //             });
-    //     }, function alert(err) {
-    //         logger.info("err = " + err);
-    //     });
-
-    //     async.eachSeries(productPhotos, function(photo, callback) {
-    //         var link = $(photo).attr('href');
-    //         gModelFactory.findAndCreateProductPhoto(savedStore, savedProduct,
-    //             link, 0 /*false*/ ,
-    //             function() {
-    //                 callback();
-    //             });
-    //     }, function alert(err) {
-    //         logger.info("err = " + err);
-    //     });
-
-    //     var code = $(productPattern.details.code);
-    //     savedProduct.updateAttributes({
-    //         code: code.text().trim()
-    //     });
-    // });
+                        async.eachSeries(productPhotos, function(photo, callback) {
+                            var link = $(photo).attr('href');
+                            gModelFactory.findAndCreateProductPhoto(savedStore, savedProduct,
+                                link, 0 /*false*/ ,
+                                function() {
+                                    callback();
+                                });
+                        }, function alert(err) {
+                            logger.info("err = " + err);
+                        });
+                    });
+            } else if (price == 0) {
+                logger.info("Not save product which not have price\n");
+            }
+        } else {
+            logger.info("Skipped this HTML element\n");
+        }
+    });
 }
 
 function handleNextPages(index, page_object, pagingPattern, productLinks, callback) {
@@ -178,6 +164,23 @@ function classifyCategory(savedStore, menuItems) {
     return categoryLinks;
 }
 
+function insertWithoutDuplication(source, destination) {
+    for (var i = 0, length = source.length; i < length; i++) {
+        if (destination.indexOf(source[i]) < 0) {
+            destination.push(source[i]);
+        } else {
+            logger.info("NOt insert due to duplication: " + source[i]);
+        }
+    }
+    return destination;
+}
+
+Array.prototype.unique = function() {
+    return this.filter(function(value, index, array) {
+        return array.indexOf(value, index + 1) < 0;
+    });
+};
+
 function extractAllCategoryLink(savedStore, callback) {
     logger.info("Store: " + savedStore.dataValues.home);
     request(savedStore.dataValues.home, function(error, response, body) {
@@ -195,14 +198,11 @@ function extractAllCategoryLink(savedStore, callback) {
         var categoryCount = 0;
         for (var i = 0, length = categoryLinks.length; i < length; i++) {
             extractAllProductDetailsLink(i, categoryLinks[i], true, allProductLinks, function(index, productLinks) {
-                logger.info("Category index = " + index);
-                if (Array.isArray(productLinks)) {
-                    allProductLinks = allProductLinks.concat(productLinks);
-                } else {
-                    allProductLinks.push(productLinks);
-                }
                 categoryCount++;
+                logger.info("Category index = " + index);
+                allProductLinks = insertWithoutDuplication(productLinks, allProductLinks);
                 if ((categoryCount == length) && (callback != null)) {
+                    // allProductLinks = allProductLinks.unique();
                     callback();
                 }
             });
