@@ -203,7 +203,7 @@ function extractAllCategoryLink(savedStore, callback) {
                 allProductLinks = insertWithoutDuplication(productLinks, allProductLinks);
                 if ((categoryCount == length) && (callback != null)) {
                     // allProductLinks = allProductLinks.unique();
-                    callback();
+                    callback(allProductLinks);
                 }
             });
         }
@@ -220,7 +220,7 @@ exports.crawlWholeSite = function(home_page, crawl_pattern, callback) {
     var existing_store = gModelFactory.findAndCreateStore(
         curHomepage, gCrawlPattern.store_type,
         function(store) {
-            extractAllCategoryLink(store, function() {
+            extractAllCategoryLink(store, function(allProductLinks) {
                 logger.info("Done extracting product links");
             });
         });
