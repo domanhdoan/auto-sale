@@ -137,18 +137,7 @@ function extractProductDetails(link, productPattern, savedStore) {
     });
 }
 
-function handleNextPages(index, page_object, pagingPattern, productLinks, callback) {
-    var $ = page_object;
-    // Extract data from remain pages
-    var nextPageLinks = $(pagingPattern.page_link);
-    nextPageLinks.each(function(i, page) {
-        var pageLink = $(this).attr('href');
-        pageLink = common.insertRootLink(pageLink, curHomepage);
-        var products = extractAllProductDetailsLink(index, pageLink, false, productLinks, callback);
-    });
-}
-
-function extractAllProductDetailsLink(index, categoryLink, handlePaging, productLinks, callback) {
+function extractAllProductDetailsLink(index, categoryLink, productLinks, callback) {
     request(categoryLink, function(error, response, body) {
         if (error) {
             logger.error("Couldn’t get page " + link + " because of error: " + error);
@@ -167,7 +156,12 @@ function extractAllProductDetailsLink(index, categoryLink, handlePaging, product
 
         var nextPageLinks = $(gCrawlPattern.paging.page_link);
         if ((nextPageLinks.length > 0) && handlePaging) {
-            handleNextPages(index, $, gCrawlPattern.paging, productLinks, callback);
+            handleNextPages(index, nextPageLinks, gCrawlPattern.paging, productLinks, callback);
+            nextPageLinks.each(function(i, page) {
+                var pageLink = $(this).attr('href');
+                pageLink = common.insertRootLink(pageLink, curHomepage);
+                var products = extractAllProductDetailsLink(index, pageLink, productLinks, callback);
+            });
         } else {
             callback(index, productLinks);
         }
@@ -208,7 +202,7 @@ function extractAllCategoryLink(savedStore, callback) {
         var allProductLinks = [];
         var categoryCount = 0;
         for (var i = 0, length = categoryLinks.length; i < length; i++) {
-            extractAllProductDetailsLink(i, categoryLinks[i], true, allProductLinks, function(index, productLinks) {
+            extractAllProductDetailsLink(i, categoryLinks[i], allProductLinks, function(index, productLinks) {
                 categoryCount++;
                 logger.info("Category index = " + index);
                 // allProductLinks = insertLinksWithoutDuplication(productLinks, allProductLinks);
