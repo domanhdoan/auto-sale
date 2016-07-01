@@ -39,47 +39,30 @@ function insertLinkWithoutDuplication(link, destination) {
     }
 }
 
-function extractProductDetails(link, productPattern, savedStore) {
+function extractProductDetails(link, detailPattern, savedStore) {
     request(link, function(error, response, body) {
         var $ = cheerio.load(body);
         var detailLink = response.request.href;
+        detailLink = common.insertRootLink(detailLink, curHomepage);
 
-        var sizeList = $(productPattern.details.size);
-        var colorList = $(productPattern.details.color);
-        var productPhotos = $(productPattern.details.photo);
+        var productElememt = $(detailPattern.content_area);
 
-        var title = $(productElememt).find(productPattern.title).text();
-        var thumbnailLink = $(productElememt).find(productPattern.thumbnail).attr('src');
-        var desc = $(productElememt).find(productPattern.desc).text();
+        var title = $(productElememt).find(detailPattern.title).text();
+        var thumbnailLink = $(productElememt).find(detailPattern.thumbnail).attr('src');
+        var desc = $(productElememt).find(detailPattern.desc).text();
+        var priceStr = $(productElememt).find(detailPattern.price).text();
+        var discountStr = $(productElememt).find(detailPattern.discount).text();
+        var percent = $(productElememt).find(detailPattern.percent).text();
+        var price = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
+        var discount = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
+        var code = $(detailPattern.details.code);
 
         if (thumbnailLink != undefined && thumbnailLink != "" && title != "") {
-            var detailLink = $(productElememt).find(productPattern.detail_link).attr('href');
-            detailLink = common.insertRootLink(detailLink, curHomepage);
             thumbnailLink = common.insertRootLink(thumbnailLink, curHomepage)
-
-            if (desc == "") {
-                desc = title;
-            }
-
-            var priceStr = $(productElememt).find(productPattern.price).text();
-            var discountStr = $(productElememt).find(productPattern.discount).text();
-            var percent = $(productElememt).find(productPattern.percent).text();
-
-            if (priceStr == null || priceStr == "") {
-                priceStr = discountStr;
-            }
-
-            if (discountStr == null || discountStr == "") {
-                discountStr = "0";
-            }
-
-            if (percent == null || percent == "") {
-                percent = "0";
-            }
-            var price = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
-            var discount = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
-
-            var code = $(productPattern.details.code);
+            desc = (desc === "") ? title : desc;
+            priceStr = (priceStr == null || priceStr == "") ? discountStr : priceStr;
+            discountStr = (discountStr == null || discountStr == "") ? "0" : discountStr;
+            percent = (percent == null || percent == "") ? percent : "0";
 
             if (price > 0) {
                 gModelFactory.findAndCreateProduct(
@@ -87,12 +70,14 @@ function extractProductDetails(link, productPattern, savedStore) {
                     title, thumbnailLink,
                     desc, price,
                     discount, percent,
-                    detailLink, "",
-                    gCrawlPattern.product_code_pattern,
+                    detailLink, "", code,
                     function(savedProduct) {
+                        var sizeList = $(detailPattern.details.size);
+                        var colorList = $(detailPattern.details.color);
+                        var productPhotos = $(detailPattern.details.photo);
                         async.eachSeries(sizeList, function(size, callback) {
                             var value = $(size).text().trim();
-                            var instock = $(size).find(productPattern.details.instock);
+                            var instock = $(size).find(detailPattern.details.instock);
                             if (instock.length > 0) {
                                 console.log("Size out of stock = " + instock.text().trim());
                             } else {

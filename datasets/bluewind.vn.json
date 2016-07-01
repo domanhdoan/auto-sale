@@ -5,6 +5,7 @@
     "product_info": {
         "link": "ul.list-tax li.img a",
         "details": {
+            "content_area": "content-show",
             "title": ".title a",
             "desc": "",
             "thumbnail": ".img a img",
