@@ -1,0 +1,1224 @@
+{"level":"info","message":"Option = -c","timestamp":"2016-07-01T09:59:27.796Z"}
+{"level":"info","message":"Option = --noai","timestamp":"2016-07-01T09:59:27.796Z"}
+{"level":"info","message":"Created temp folder successfully","timestamp":"2016-07-01T09:59:27.933Z"}
+{"level":"info","message":"Executing (26a5e038-1542-4377-876b-515aa082784c): START TRANSACTION;","timestamp":"2016-07-01T09:59:27.943Z"}
+{"level":"info","message":"Executing (26a5e038-1542-4377-876b-515aa082784c): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:27.946Z"}
+{"level":"info","message":"Executing (26a5e038-1542-4377-876b-515aa082784c): SET autocommit = 1;","timestamp":"2016-07-01T09:59:27.946Z"}
+{"level":"info","message":"Executing (26a5e038-1542-4377-876b-515aa082784c): SELECT `id`, `home`, `type` FROM `Store` AS `Store` WHERE `Store`.`home` = 'http://bluewind.vn' LIMIT 1;","timestamp":"2016-07-01T09:59:27.948Z"}
+{"level":"info","message":"Executing (26a5e038-1542-4377-876b-515aa082784c): COMMIT;","timestamp":"2016-07-01T09:59:27.951Z"}
+{"level":"info","message":"Store: http://bluewind.vn","timestamp":"2016-07-01T09:59:27.951Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T09:59:29.500Z"}
+{"level":"info","message":"Category: Giày Jordan","timestamp":"2016-07-01T09:59:29.503Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T09:59:29.503Z"}
+{"level":"info","message":"Category: Giày Nike","timestamp":"2016-07-01T09:59:29.505Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T09:59:29.505Z"}
+{"level":"info","message":"Category: Giày thể thao nam Adidas","timestamp":"2016-07-01T09:59:29.505Z"}
+{"level":"info","message":"Category: Giày thể thao nam Nike","timestamp":"2016-07-01T09:59:29.505Z"}
+{"level":"info","message":"Category: Loại khác","timestamp":"2016-07-01T09:59:29.505Z"}
+{"level":"info","message":"Category: Giày thể thao đôi","timestamp":"2016-07-01T09:59:29.508Z"}
+{"level":"info","message":"Category: Giày tập GYM nam nữ","timestamp":"2016-07-01T09:59:29.508Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T09:59:29.508Z"}
+{"level":"info","message":"Category: Slip On","timestamp":"2016-07-01T09:59:29.508Z"}
+{"level":"info","message":"Category: Oxford đế bằng","timestamp":"2016-07-01T09:59:29.508Z"}
+{"level":"info","message":"Category: Oxford cao gót","timestamp":"2016-07-01T09:59:29.510Z"}
+{"level":"info","message":"Category: Giày bệt – búp bê","timestamp":"2016-07-01T09:59:29.510Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T09:59:29.510Z"}
+{"level":"info","message":"Category: Giày ORDER","timestamp":"2016-07-01T09:59:29.510Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T09:59:29.510Z"}
+{"level":"info","message":"Category: Giày Jordan","timestamp":"2016-07-01T09:59:29.513Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T09:59:29.513Z"}
+{"level":"info","message":"Category: Giày Nike","timestamp":"2016-07-01T09:59:29.513Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T09:59:29.513Z"}
+{"level":"info","message":"Category: Giày thể thao nam Adidas","timestamp":"2016-07-01T09:59:29.513Z"}
+{"level":"info","message":"Category: Giày thể thao nam Nike","timestamp":"2016-07-01T09:59:29.513Z"}
+{"level":"info","message":"Category: Loại khác","timestamp":"2016-07-01T09:59:29.515Z"}
+{"level":"info","message":"Category: Giày thể thao đôi","timestamp":"2016-07-01T09:59:29.515Z"}
+{"level":"info","message":"Category: Giày tập GYM nam nữ","timestamp":"2016-07-01T09:59:29.515Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T09:59:29.518Z"}
+{"level":"info","message":"Category: Slip On","timestamp":"2016-07-01T09:59:29.518Z"}
+{"level":"info","message":"Category: Oxford đế bằng","timestamp":"2016-07-01T09:59:29.518Z"}
+{"level":"info","message":"Category: Oxford cao gót","timestamp":"2016-07-01T09:59:29.518Z"}
+{"level":"info","message":"Category: Giày bệt – búp bê","timestamp":"2016-07-01T09:59:29.520Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T09:59:29.520Z"}
+{"level":"info","message":"Category: Giày ORDER","timestamp":"2016-07-01T09:59:29.520Z"}
+{"level":"info","message":"Executing (75e39111-1ea9-4041-ad4f-978ed3411036): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.533Z"}
+{"level":"info","message":"Executing (75e39111-1ea9-4041-ad4f-978ed3411036): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.565Z"}
+{"level":"info","message":"Executing (75e39111-1ea9-4041-ad4f-978ed3411036): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.578Z"}
+{"level":"info","message":"Executing (ec58e4e6-6efd-4c7a-b692-5065296a73df): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.580Z"}
+{"level":"info","message":"Executing (c0c7a39d-de2d-463a-9894-c1ce42cd3137): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.580Z"}
+{"level":"info","message":"Executing (899fb53f-c9f1-4392-84e8-8aa3b23a7cb3): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.583Z"}
+{"level":"info","message":"Executing (1ec75e8d-3b31-45d4-a60d-7674bfb2cae5): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.583Z"}
+{"level":"info","message":"Executing (df511e81-ea7e-49b1-a52f-dc717a4299c1): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.583Z"}
+{"level":"info","message":"Executing (f773b1ca-4e61-493e-bb9f-eaa845726634): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.585Z"}
+{"level":"info","message":"Executing (37b9a1e2-a1a8-47d7-8b7e-de41b68fb9a8): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.585Z"}
+{"level":"info","message":"Executing (5c79c42a-bc08-43d9-a4f8-39ae9fd2a372): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.585Z"}
+{"level":"info","message":"Executing (a5ac58cc-a698-41d1-b4fa-1163141873cd): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.588Z"}
+{"level":"info","message":"Executing (bf98acc6-5749-4b3d-8a72-d15babc9687c): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.588Z"}
+{"level":"info","message":"Executing (df31cf36-ccaa-4ece-afd6-dc19e96e8326): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.588Z"}
+{"level":"info","message":"Executing (d35b74e0-f5fa-4992-beea-7c34e26bceb6): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.588Z"}
+{"level":"info","message":"Executing (9ba5268e-fbf5-406a-a588-e7e31058f9d1): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.590Z"}
+{"level":"info","message":"Executing (2fd67a8d-87e8-499f-ba80-8e11d9a90827): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.590Z"}
+{"level":"info","message":"Executing (6bc78ff7-de45-4e64-95b8-461cc64bc34d): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.590Z"}
+{"level":"info","message":"Executing (8e21eb89-e6f7-4fe9-81fc-be4c675d3131): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.590Z"}
+{"level":"info","message":"Executing (b127b5eb-17f2-4ee6-87b0-2bb1bfcf47b6): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.590Z"}
+{"level":"info","message":"Executing (da8fa9e9-e552-466b-a885-452740ae579c): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.593Z"}
+{"level":"info","message":"Executing (fb5383e4-c708-4a03-afae-e435f10f17d0): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.593Z"}
+{"level":"info","message":"Executing (75e39111-1ea9-4041-ad4f-978ed3411036): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Jordan' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.603Z"}
+{"level":"info","message":"Executing (ec58e4e6-6efd-4c7a-b692-5065296a73df): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.605Z"}
+{"level":"info","message":"Executing (899fb53f-c9f1-4392-84e8-8aa3b23a7cb3): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.608Z"}
+{"level":"info","message":"Executing (5c79c42a-bc08-43d9-a4f8-39ae9fd2a372): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.608Z"}
+{"level":"info","message":"Executing (c0c7a39d-de2d-463a-9894-c1ce42cd3137): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.608Z"}
+{"level":"info","message":"Executing (1ec75e8d-3b31-45d4-a60d-7674bfb2cae5): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.608Z"}
+{"level":"info","message":"Executing (df511e81-ea7e-49b1-a52f-dc717a4299c1): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.608Z"}
+{"level":"info","message":"Executing (f773b1ca-4e61-493e-bb9f-eaa845726634): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.610Z"}
+{"level":"info","message":"Executing (37b9a1e2-a1a8-47d7-8b7e-de41b68fb9a8): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.610Z"}
+{"level":"info","message":"Executing (a5ac58cc-a698-41d1-b4fa-1163141873cd): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.613Z"}
+{"level":"info","message":"Executing (bf98acc6-5749-4b3d-8a72-d15babc9687c): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.613Z"}
+{"level":"info","message":"Executing (df31cf36-ccaa-4ece-afd6-dc19e96e8326): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.615Z"}
+{"level":"info","message":"Executing (d35b74e0-f5fa-4992-beea-7c34e26bceb6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.615Z"}
+{"level":"info","message":"Executing (9ba5268e-fbf5-406a-a588-e7e31058f9d1): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.615Z"}
+{"level":"info","message":"Executing (2fd67a8d-87e8-499f-ba80-8e11d9a90827): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.618Z"}
+{"level":"info","message":"Executing (6bc78ff7-de45-4e64-95b8-461cc64bc34d): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.618Z"}
+{"level":"info","message":"Executing (8e21eb89-e6f7-4fe9-81fc-be4c675d3131): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.618Z"}
+{"level":"info","message":"Executing (b127b5eb-17f2-4ee6-87b0-2bb1bfcf47b6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.620Z"}
+{"level":"info","message":"Executing (da8fa9e9-e552-466b-a885-452740ae579c): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.620Z"}
+{"level":"info","message":"Executing (fb5383e4-c708-4a03-afae-e435f10f17d0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.623Z"}
+{"level":"info","message":"Executing (75e39111-1ea9-4041-ad4f-978ed3411036): COMMIT;","timestamp":"2016-07-01T09:59:29.623Z"}
+{"level":"info","message":"Executing (ec58e4e6-6efd-4c7a-b692-5065296a73df): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.628Z"}
+{"level":"info","message":"Executing (899fb53f-c9f1-4392-84e8-8aa3b23a7cb3): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.628Z"}
+{"level":"info","message":"Executing (5c79c42a-bc08-43d9-a4f8-39ae9fd2a372): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.630Z"}
+{"level":"info","message":"Executing (c0c7a39d-de2d-463a-9894-c1ce42cd3137): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.630Z"}
+{"level":"info","message":"Executing (1ec75e8d-3b31-45d4-a60d-7674bfb2cae5): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.630Z"}
+{"level":"info","message":"Executing (df511e81-ea7e-49b1-a52f-dc717a4299c1): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.633Z"}
+{"level":"info","message":"Executing (f773b1ca-4e61-493e-bb9f-eaa845726634): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.633Z"}
+{"level":"info","message":"Executing (37b9a1e2-a1a8-47d7-8b7e-de41b68fb9a8): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.633Z"}
+{"level":"info","message":"Executing (a5ac58cc-a698-41d1-b4fa-1163141873cd): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.635Z"}
+{"level":"info","message":"Executing (bf98acc6-5749-4b3d-8a72-d15babc9687c): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.635Z"}
+{"level":"info","message":"Executing (df31cf36-ccaa-4ece-afd6-dc19e96e8326): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.635Z"}
+{"level":"info","message":"Executing (d35b74e0-f5fa-4992-beea-7c34e26bceb6): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.635Z"}
+{"level":"info","message":"Executing (9ba5268e-fbf5-406a-a588-e7e31058f9d1): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.635Z"}
+{"level":"info","message":"Executing (2fd67a8d-87e8-499f-ba80-8e11d9a90827): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.638Z"}
+{"level":"info","message":"Executing (6bc78ff7-de45-4e64-95b8-461cc64bc34d): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.638Z"}
+{"level":"info","message":"Executing (8e21eb89-e6f7-4fe9-81fc-be4c675d3131): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.638Z"}
+{"level":"info","message":"Executing (b127b5eb-17f2-4ee6-87b0-2bb1bfcf47b6): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.638Z"}
+{"level":"info","message":"Executing (da8fa9e9-e552-466b-a885-452740ae579c): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.640Z"}
+{"level":"info","message":"Executing (fb5383e4-c708-4a03-afae-e435f10f17d0): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.640Z"}
+{"level":"info","message":"Executing (2c18af90-ebcc-4063-8279-ec7f6ceb9fe0): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.643Z"}
+{"level":"info","message":"Executing (ec58e4e6-6efd-4c7a-b692-5065296a73df): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.675Z"}
+{"level":"info","message":"Executing (899fb53f-c9f1-4392-84e8-8aa3b23a7cb3): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.675Z"}
+{"level":"info","message":"Executing (5c79c42a-bc08-43d9-a4f8-39ae9fd2a372): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Slip On' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.675Z"}
+{"level":"info","message":"Executing (c0c7a39d-de2d-463a-9894-c1ce42cd3137): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.678Z"}
+{"level":"info","message":"Executing (1ec75e8d-3b31-45d4-a60d-7674bfb2cae5): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.678Z"}
+{"level":"info","message":"Executing (df511e81-ea7e-49b1-a52f-dc717a4299c1): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Loại khác' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.678Z"}
+{"level":"info","message":"Executing (f773b1ca-4e61-493e-bb9f-eaa845726634): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao đôi' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.680Z"}
+{"level":"info","message":"Executing (37b9a1e2-a1a8-47d7-8b7e-de41b68fb9a8): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày tập GYM nam nữ' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.680Z"}
+{"level":"info","message":"Executing (a5ac58cc-a698-41d1-b4fa-1163141873cd): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford đế bằng' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.680Z"}
+{"level":"info","message":"Executing (bf98acc6-5749-4b3d-8a72-d15babc9687c): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford cao gót' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.680Z"}
+{"level":"info","message":"Executing (df31cf36-ccaa-4ece-afd6-dc19e96e8326): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày bệt – búp bê' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.683Z"}
+{"level":"info","message":"Executing (d35b74e0-f5fa-4992-beea-7c34e26bceb6): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.683Z"}
+{"level":"info","message":"Executing (9ba5268e-fbf5-406a-a588-e7e31058f9d1): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày ORDER' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.683Z"}
+{"level":"info","message":"Executing (2fd67a8d-87e8-499f-ba80-8e11d9a90827): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Jordan' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.685Z"}
+{"level":"info","message":"Executing (6bc78ff7-de45-4e64-95b8-461cc64bc34d): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.685Z"}
+{"level":"info","message":"Executing (8e21eb89-e6f7-4fe9-81fc-be4c675d3131): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.688Z"}
+{"level":"info","message":"Executing (b127b5eb-17f2-4ee6-87b0-2bb1bfcf47b6): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.688Z"}
+{"level":"info","message":"Executing (da8fa9e9-e552-466b-a885-452740ae579c): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.688Z"}
+{"level":"info","message":"Executing (2c18af90-ebcc-4063-8279-ec7f6ceb9fe0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.690Z"}
+{"level":"info","message":"Executing (fb5383e4-c708-4a03-afae-e435f10f17d0): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Loại khác' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.695Z"}
+{"level":"info","message":"Executing (ec58e4e6-6efd-4c7a-b692-5065296a73df): COMMIT;","timestamp":"2016-07-01T09:59:29.710Z"}
+{"level":"info","message":"Executing (899fb53f-c9f1-4392-84e8-8aa3b23a7cb3): COMMIT;","timestamp":"2016-07-01T09:59:29.710Z"}
+{"level":"info","message":"Executing (5c79c42a-bc08-43d9-a4f8-39ae9fd2a372): COMMIT;","timestamp":"2016-07-01T09:59:29.710Z"}
+{"level":"info","message":"Executing (c0c7a39d-de2d-463a-9894-c1ce42cd3137): COMMIT;","timestamp":"2016-07-01T09:59:29.713Z"}
+{"level":"info","message":"Executing (1ec75e8d-3b31-45d4-a60d-7674bfb2cae5): COMMIT;","timestamp":"2016-07-01T09:59:29.713Z"}
+{"level":"info","message":"Executing (df511e81-ea7e-49b1-a52f-dc717a4299c1): COMMIT;","timestamp":"2016-07-01T09:59:29.713Z"}
+{"level":"info","message":"Executing (f773b1ca-4e61-493e-bb9f-eaa845726634): COMMIT;","timestamp":"2016-07-01T09:59:29.715Z"}
+{"level":"info","message":"Executing (37b9a1e2-a1a8-47d7-8b7e-de41b68fb9a8): COMMIT;","timestamp":"2016-07-01T09:59:29.715Z"}
+{"level":"info","message":"Executing (a5ac58cc-a698-41d1-b4fa-1163141873cd): COMMIT;","timestamp":"2016-07-01T09:59:29.718Z"}
+{"level":"info","message":"Executing (bf98acc6-5749-4b3d-8a72-d15babc9687c): COMMIT;","timestamp":"2016-07-01T09:59:29.718Z"}
+{"level":"info","message":"Executing (df31cf36-ccaa-4ece-afd6-dc19e96e8326): COMMIT;","timestamp":"2016-07-01T09:59:29.720Z"}
+{"level":"info","message":"Executing (d35b74e0-f5fa-4992-beea-7c34e26bceb6): COMMIT;","timestamp":"2016-07-01T09:59:29.720Z"}
+{"level":"info","message":"Executing (9ba5268e-fbf5-406a-a588-e7e31058f9d1): COMMIT;","timestamp":"2016-07-01T09:59:29.720Z"}
+{"level":"info","message":"Executing (2fd67a8d-87e8-499f-ba80-8e11d9a90827): COMMIT;","timestamp":"2016-07-01T09:59:29.723Z"}
+{"level":"info","message":"Executing (6bc78ff7-de45-4e64-95b8-461cc64bc34d): COMMIT;","timestamp":"2016-07-01T09:59:29.723Z"}
+{"level":"info","message":"Executing (8e21eb89-e6f7-4fe9-81fc-be4c675d3131): COMMIT;","timestamp":"2016-07-01T09:59:29.723Z"}
+{"level":"info","message":"Executing (b127b5eb-17f2-4ee6-87b0-2bb1bfcf47b6): COMMIT;","timestamp":"2016-07-01T09:59:29.723Z"}
+{"level":"info","message":"Executing (da8fa9e9-e552-466b-a885-452740ae579c): COMMIT;","timestamp":"2016-07-01T09:59:29.723Z"}
+{"level":"info","message":"Executing (2c18af90-ebcc-4063-8279-ec7f6ceb9fe0): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.725Z"}
+{"level":"info","message":"Executing (fb5383e4-c708-4a03-afae-e435f10f17d0): COMMIT;","timestamp":"2016-07-01T09:59:29.728Z"}
+{"level":"info","message":"Executing (7fddf94a-29ba-45ab-ac84-a675bf3f102d): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.733Z"}
+{"level":"info","message":"Executing (e25a7474-6b61-4d8f-8a96-416f163270fc): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.733Z"}
+{"level":"info","message":"Executing (b6728e86-2e3c-4684-b0c4-e1477e601525): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.735Z"}
+{"level":"info","message":"Executing (cd8899e2-d56a-4302-94ab-118ca54825a8): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.735Z"}
+{"level":"info","message":"Executing (a06a59b6-c073-4648-8092-6bde0bf3501d): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.735Z"}
+{"level":"info","message":"Executing (3116a9f0-2d08-479a-947c-51dabf5cdc15): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.738Z"}
+{"level":"info","message":"Executing (58ef3d73-de1a-414a-a167-9911f5f4ff7b): START TRANSACTION;","timestamp":"2016-07-01T09:59:29.738Z"}
+{"level":"info","message":"Executing (2c18af90-ebcc-4063-8279-ec7f6ceb9fe0): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao đôi' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.768Z"}
+{"level":"info","message":"Executing (7fddf94a-29ba-45ab-ac84-a675bf3f102d): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.778Z"}
+{"level":"info","message":"Executing (e25a7474-6b61-4d8f-8a96-416f163270fc): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.778Z"}
+{"level":"info","message":"Executing (b6728e86-2e3c-4684-b0c4-e1477e601525): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.778Z"}
+{"level":"info","message":"Executing (cd8899e2-d56a-4302-94ab-118ca54825a8): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.778Z"}
+{"level":"info","message":"Executing (a06a59b6-c073-4648-8092-6bde0bf3501d): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.780Z"}
+{"level":"info","message":"Executing (3116a9f0-2d08-479a-947c-51dabf5cdc15): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.780Z"}
+{"level":"info","message":"Executing (58ef3d73-de1a-414a-a167-9911f5f4ff7b): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:29.780Z"}
+{"level":"info","message":"Executing (2c18af90-ebcc-4063-8279-ec7f6ceb9fe0): COMMIT;","timestamp":"2016-07-01T09:59:29.783Z"}
+{"level":"info","message":"Executing (7fddf94a-29ba-45ab-ac84-a675bf3f102d): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.785Z"}
+{"level":"info","message":"Executing (e25a7474-6b61-4d8f-8a96-416f163270fc): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.785Z"}
+{"level":"info","message":"Executing (b6728e86-2e3c-4684-b0c4-e1477e601525): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.785Z"}
+{"level":"info","message":"Executing (cd8899e2-d56a-4302-94ab-118ca54825a8): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.785Z"}
+{"level":"info","message":"Executing (a06a59b6-c073-4648-8092-6bde0bf3501d): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.785Z"}
+{"level":"info","message":"Executing (3116a9f0-2d08-479a-947c-51dabf5cdc15): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.788Z"}
+{"level":"info","message":"Executing (58ef3d73-de1a-414a-a167-9911f5f4ff7b): SET autocommit = 1;","timestamp":"2016-07-01T09:59:29.788Z"}
+{"level":"info","message":"Executing (7fddf94a-29ba-45ab-ac84-a675bf3f102d): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày tập GYM nam nữ' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.798Z"}
+{"level":"info","message":"Executing (e25a7474-6b61-4d8f-8a96-416f163270fc): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Slip On' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.800Z"}
+{"level":"info","message":"Executing (b6728e86-2e3c-4684-b0c4-e1477e601525): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford đế bằng' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.800Z"}
+{"level":"info","message":"Executing (cd8899e2-d56a-4302-94ab-118ca54825a8): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford cao gót' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.800Z"}
+{"level":"info","message":"Executing (a06a59b6-c073-4648-8092-6bde0bf3501d): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày bệt – búp bê' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.800Z"}
+{"level":"info","message":"Executing (3116a9f0-2d08-479a-947c-51dabf5cdc15): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.803Z"}
+{"level":"info","message":"Executing (58ef3d73-de1a-414a-a167-9911f5f4ff7b): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày ORDER' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T09:59:29.803Z"}
+{"level":"info","message":"Executing (7fddf94a-29ba-45ab-ac84-a675bf3f102d): COMMIT;","timestamp":"2016-07-01T09:59:29.808Z"}
+{"level":"info","message":"Executing (e25a7474-6b61-4d8f-8a96-416f163270fc): COMMIT;","timestamp":"2016-07-01T09:59:29.808Z"}
+{"level":"info","message":"Executing (b6728e86-2e3c-4684-b0c4-e1477e601525): COMMIT;","timestamp":"2016-07-01T09:59:29.808Z"}
+{"level":"info","message":"Executing (cd8899e2-d56a-4302-94ab-118ca54825a8): COMMIT;","timestamp":"2016-07-01T09:59:29.810Z"}
+{"level":"info","message":"Executing (a06a59b6-c073-4648-8092-6bde0bf3501d): COMMIT;","timestamp":"2016-07-01T09:59:29.810Z"}
+{"level":"info","message":"Executing (3116a9f0-2d08-479a-947c-51dabf5cdc15): COMMIT;","timestamp":"2016-07-01T09:59:29.810Z"}
+{"level":"info","message":"Executing (58ef3d73-de1a-414a-a167-9911f5f4ff7b): COMMIT;","timestamp":"2016-07-01T09:59:29.813Z"}
+{"level":"info","message":"Category index = 8","timestamp":"2016-07-01T09:59:30.768Z"}
+{"level":"info","message":"Category index = 25","timestamp":"2016-07-01T09:59:30.788Z"}
+{"level":"info","message":"Category index = 18","timestamp":"2016-07-01T09:59:30.805Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-luoi-nu-bw3104/","timestamp":"2016-07-01T09:59:30.830Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-bet-tom-bw3103/","timestamp":"2016-07-01T09:59:30.830Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-cao-su-bw3102/","timestamp":"2016-07-01T09:59:30.833Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T09:59:30.838Z"}
+{"level":"info","message":"Category index = 11","timestamp":"2016-07-01T09:59:30.838Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T09:59:30.848Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T09:59:30.853Z"}
+{"level":"info","message":"Category index = 7","timestamp":"2016-07-01T09:59:30.855Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T09:59:30.878Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T09:59:30.878Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T09:59:30.880Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T09:59:30.880Z"}
+{"level":"info","message":"Category index = 2","timestamp":"2016-07-01T09:59:30.880Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T09:59:31.055Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T09:59:31.058Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T09:59:31.060Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T09:59:31.060Z"}
+{"level":"info","message":"Category index = 6","timestamp":"2016-07-01T09:59:31.068Z"}
+{"level":"info","message":"Category index = 0","timestamp":"2016-07-01T09:59:31.268Z"}
+{"level":"info","message":"Category index = 24","timestamp":"2016-07-01T09:59:31.632Z"}
+{"level":"info","message":"Category index = 27","timestamp":"2016-07-01T09:59:31.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T09:59:31.781Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T09:59:31.781Z"}
+{"level":"info","message":"Category index = 26","timestamp":"2016-07-01T09:59:31.786Z"}
+{"level":"info","message":"Category index = 23","timestamp":"2016-07-01T09:59:31.806Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T09:59:31.819Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T09:59:31.819Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T09:59:31.819Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T09:59:31.819Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T09:59:31.821Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6889/","timestamp":"2016-07-01T09:59:31.821Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T09:59:31.821Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T09:59:31.821Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-6861/","timestamp":"2016-07-01T09:59:31.821Z"}
+{"level":"info","message":"Category index = 21","timestamp":"2016-07-01T09:59:31.824Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T09:59:31.831Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T09:59:31.834Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T09:59:31.834Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T09:59:31.834Z"}
+{"level":"info","message":"Category index = 16","timestamp":"2016-07-01T09:59:31.836Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T09:59:31.991Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T09:59:31.991Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T09:59:31.994Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T09:59:31.994Z"}
+{"level":"info","message":"Category index = 15","timestamp":"2016-07-01T09:59:31.994Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6896-nam-400k-nu-380k-combo-700k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-nam-nu-bw6876-nam-380k-nu-350k-cb-650k/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6874/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6868/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6866/","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Category index = 20","timestamp":"2016-07-01T09:59:32.136Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T09:59:32.277Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T09:59:32.277Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T09:59:32.279Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T09:59:32.279Z"}
+{"level":"info","message":"Category index = 4","timestamp":"2016-07-01T09:59:32.279Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T09:59:32.614Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T09:59:32.614Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T09:59:32.617Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T09:59:32.617Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T09:59:32.617Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T09:59:32.619Z"}
+{"level":"info","message":"Category index = 5","timestamp":"2016-07-01T09:59:32.619Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5202/","timestamp":"2016-07-01T09:59:32.672Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5201/","timestamp":"2016-07-01T09:59:32.672Z"}
+{"level":"info","message":"Category index = 10","timestamp":"2016-07-01T09:59:32.674Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T09:59:32.697Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T09:59:32.697Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T09:59:32.697Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T09:59:32.697Z"}
+{"level":"info","message":"Category index = 3","timestamp":"2016-07-01T09:59:32.699Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw-8104/","timestamp":"2016-07-01T09:59:32.732Z"}
+{"level":"info","message":"Category index = 13","timestamp":"2016-07-01T09:59:32.732Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T09:59:32.754Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T09:59:32.757Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T09:59:32.757Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T09:59:32.757Z"}
+{"level":"info","message":"Category index = 1","timestamp":"2016-07-01T09:59:32.757Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6533/","timestamp":"2016-07-01T09:59:32.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6532/","timestamp":"2016-07-01T09:59:32.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6531/","timestamp":"2016-07-01T09:59:32.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-moi-nhat-bw6530/","timestamp":"2016-07-01T09:59:32.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T09:59:32.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T09:59:32.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T09:59:32.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T09:59:32.767Z"}
+{"level":"info","message":"Category index = 17","timestamp":"2016-07-01T09:59:32.767Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T09:59:32.864Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T09:59:32.867Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T09:59:32.867Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T09:59:32.867Z"}
+{"level":"info","message":"Category index = 12","timestamp":"2016-07-01T09:59:32.867Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-jordan-nu-bw6200/","timestamp":"2016-07-01T09:59:33.252Z"}
+{"level":"info","message":"Category index = 14","timestamp":"2016-07-01T09:59:33.252Z"}
+{"level":"info","message":"Category index = 9","timestamp":"2016-07-01T09:59:33.631Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T09:59:33.631Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T09:59:33.631Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T09:59:33.631Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T09:59:33.631Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6882-nam-320k-nu-280k-cb-570k/","timestamp":"2016-07-01T09:59:33.631Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T09:59:33.631Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T09:59:33.631Z"}
+{"level":"info","message":"Category index = 19","timestamp":"2016-07-01T09:59:33.631Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5300/","timestamp":"2016-07-01T09:59:33.699Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5301/","timestamp":"2016-07-01T09:59:33.699Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-5302-2/","timestamp":"2016-07-01T09:59:33.699Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-luoi-nu-bw5302/","timestamp":"2016-07-01T09:59:33.699Z"}
+{"level":"info","message":"Category index = 22","timestamp":"2016-07-01T09:59:33.699Z"}
+{"level":"info","message":"Done extracting product links","timestamp":"2016-07-01T09:59:33.699Z"}
+{"level":"info","message":"Option = -c","timestamp":"2016-07-01T09:59:58.754Z"}
+{"level":"info","message":"Option = --noai","timestamp":"2016-07-01T09:59:58.754Z"}
+{"level":"info","message":"Created temp folder successfully","timestamp":"2016-07-01T09:59:58.895Z"}
+{"level":"info","message":"Executing (137228ca-c13f-4310-96a6-f9da9ba9f368): START TRANSACTION;","timestamp":"2016-07-01T09:59:58.895Z"}
+{"level":"info","message":"Executing (137228ca-c13f-4310-96a6-f9da9ba9f368): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T09:59:58.895Z"}
+{"level":"info","message":"Executing (137228ca-c13f-4310-96a6-f9da9ba9f368): SET autocommit = 1;","timestamp":"2016-07-01T09:59:58.895Z"}
+{"level":"info","message":"Executing (137228ca-c13f-4310-96a6-f9da9ba9f368): SELECT `id`, `home`, `type` FROM `Store` AS `Store` WHERE `Store`.`home` = 'http://bluewind.vn' LIMIT 1;","timestamp":"2016-07-01T09:59:58.910Z"}
+{"level":"info","message":"Executing (137228ca-c13f-4310-96a6-f9da9ba9f368): COMMIT;","timestamp":"2016-07-01T09:59:58.910Z"}
+{"level":"info","message":"Store: http://bluewind.vn","timestamp":"2016-07-01T09:59:58.910Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày Jordan","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày Nike","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày thể thao nam Adidas","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày thể thao nam Nike","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Loại khác","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày thể thao đôi","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày tập GYM nam nữ","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Slip On","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Oxford đế bằng","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Oxford cao gót","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày bệt – búp bê","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày ORDER","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày Jordan","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày Nike","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày thể thao nam Adidas","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày thể thao nam Nike","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Loại khác","timestamp":"2016-07-01T10:00:00.568Z"}
+{"level":"info","message":"Category: Giày thể thao đôi","timestamp":"2016-07-01T10:00:00.584Z"}
+{"level":"info","message":"Category: Giày tập GYM nam nữ","timestamp":"2016-07-01T10:00:00.584Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:00.584Z"}
+{"level":"info","message":"Category: Slip On","timestamp":"2016-07-01T10:00:00.584Z"}
+{"level":"info","message":"Category: Oxford đế bằng","timestamp":"2016-07-01T10:00:00.584Z"}
+{"level":"info","message":"Category: Oxford cao gót","timestamp":"2016-07-01T10:00:00.584Z"}
+{"level":"info","message":"Category: Giày bệt – búp bê","timestamp":"2016-07-01T10:00:00.584Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:00:00.584Z"}
+{"level":"info","message":"Category: Giày ORDER","timestamp":"2016-07-01T10:00:00.584Z"}
+{"level":"info","message":"Executing (8aa5ce3b-48c3-47d8-8841-7a7d72c9c537): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.600Z"}
+{"level":"info","message":"Executing (8aa5ce3b-48c3-47d8-8841-7a7d72c9c537): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.615Z"}
+{"level":"info","message":"Executing (8aa5ce3b-48c3-47d8-8841-7a7d72c9c537): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.631Z"}
+{"level":"info","message":"Executing (4231bb39-50c1-4842-a8c6-605e97e998d2): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.631Z"}
+{"level":"info","message":"Executing (6e99ae9a-7c7e-4e87-bbd8-043315e1bab9): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.631Z"}
+{"level":"info","message":"Executing (d06dc01e-c2fe-4037-b784-5855504010a0): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.631Z"}
+{"level":"info","message":"Executing (e32f702e-189e-4dfc-9216-90aee1ce1577): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.631Z"}
+{"level":"info","message":"Executing (82b01764-895e-42c6-ab53-2ce6f6566fd3): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.631Z"}
+{"level":"info","message":"Executing (76f216c6-124f-4c3c-98a3-579cf4872cb0): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (5c683f4f-e638-4c32-bdf9-3d7ea1390495): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (1ed50006-b405-48ad-b7cb-d99beced833d): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (08cd7b4d-00b0-45ee-942b-c9b615f2fa14): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (5bc73232-3202-495b-bae4-279728744396): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (cd57525c-d987-4784-98fc-0d27ce7c0904): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (4fad2e2a-02e6-42c7-b6ce-5f5cd00d4648): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (a4b5d75d-a96c-4ae8-a965-5f2661a2d335): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (c5bb5902-64b1-4d64-88e0-1644bec0b2cc): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (b132d4a0-1dc9-4023-aabd-2a71965febab): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (0d1f4b8c-928e-412f-be86-ee023f89b95d): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (276f6739-5905-414b-aa08-a7c0137def79): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (59835400-d836-4469-a1c1-b4f0bfc448d2): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (f07c1e9b-57dc-48fd-a9d2-9fc36522322c): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (8aa5ce3b-48c3-47d8-8841-7a7d72c9c537): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Jordan' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.646Z"}
+{"level":"info","message":"Executing (4231bb39-50c1-4842-a8c6-605e97e998d2): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (6e99ae9a-7c7e-4e87-bbd8-043315e1bab9): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (d06dc01e-c2fe-4037-b784-5855504010a0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (a4b5d75d-a96c-4ae8-a965-5f2661a2d335): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (e32f702e-189e-4dfc-9216-90aee1ce1577): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (82b01764-895e-42c6-ab53-2ce6f6566fd3): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (76f216c6-124f-4c3c-98a3-579cf4872cb0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (5c683f4f-e638-4c32-bdf9-3d7ea1390495): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (1ed50006-b405-48ad-b7cb-d99beced833d): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (08cd7b4d-00b0-45ee-942b-c9b615f2fa14): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (5bc73232-3202-495b-bae4-279728744396): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (cd57525c-d987-4784-98fc-0d27ce7c0904): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (4fad2e2a-02e6-42c7-b6ce-5f5cd00d4648): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (c5bb5902-64b1-4d64-88e0-1644bec0b2cc): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (b132d4a0-1dc9-4023-aabd-2a71965febab): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.662Z"}
+{"level":"info","message":"Executing (0d1f4b8c-928e-412f-be86-ee023f89b95d): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (276f6739-5905-414b-aa08-a7c0137def79): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (59835400-d836-4469-a1c1-b4f0bfc448d2): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (f07c1e9b-57dc-48fd-a9d2-9fc36522322c): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (8aa5ce3b-48c3-47d8-8841-7a7d72c9c537): COMMIT;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (4231bb39-50c1-4842-a8c6-605e97e998d2): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (6e99ae9a-7c7e-4e87-bbd8-043315e1bab9): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (d06dc01e-c2fe-4037-b784-5855504010a0): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (a4b5d75d-a96c-4ae8-a965-5f2661a2d335): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (e32f702e-189e-4dfc-9216-90aee1ce1577): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (82b01764-895e-42c6-ab53-2ce6f6566fd3): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (76f216c6-124f-4c3c-98a3-579cf4872cb0): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (5c683f4f-e638-4c32-bdf9-3d7ea1390495): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (1ed50006-b405-48ad-b7cb-d99beced833d): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (08cd7b4d-00b0-45ee-942b-c9b615f2fa14): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.678Z"}
+{"level":"info","message":"Executing (5bc73232-3202-495b-bae4-279728744396): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (cd57525c-d987-4784-98fc-0d27ce7c0904): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (4fad2e2a-02e6-42c7-b6ce-5f5cd00d4648): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (c5bb5902-64b1-4d64-88e0-1644bec0b2cc): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (b132d4a0-1dc9-4023-aabd-2a71965febab): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (0d1f4b8c-928e-412f-be86-ee023f89b95d): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (276f6739-5905-414b-aa08-a7c0137def79): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (59835400-d836-4469-a1c1-b4f0bfc448d2): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (f07c1e9b-57dc-48fd-a9d2-9fc36522322c): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (a5297027-8eda-4490-b1ab-620205b281ea): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.693Z"}
+{"level":"info","message":"Executing (4231bb39-50c1-4842-a8c6-605e97e998d2): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (6e99ae9a-7c7e-4e87-bbd8-043315e1bab9): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (d06dc01e-c2fe-4037-b784-5855504010a0): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (a4b5d75d-a96c-4ae8-a965-5f2661a2d335): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày ORDER' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (e32f702e-189e-4dfc-9216-90aee1ce1577): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (82b01764-895e-42c6-ab53-2ce6f6566fd3): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Loại khác' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (76f216c6-124f-4c3c-98a3-579cf4872cb0): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao đôi' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (5c683f4f-e638-4c32-bdf9-3d7ea1390495): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày tập GYM nam nữ' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (1ed50006-b405-48ad-b7cb-d99beced833d): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Slip On' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (08cd7b4d-00b0-45ee-942b-c9b615f2fa14): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford đế bằng' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (5bc73232-3202-495b-bae4-279728744396): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford cao gót' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (cd57525c-d987-4784-98fc-0d27ce7c0904): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày bệt – búp bê' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (4fad2e2a-02e6-42c7-b6ce-5f5cd00d4648): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (c5bb5902-64b1-4d64-88e0-1644bec0b2cc): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Jordan' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (b132d4a0-1dc9-4023-aabd-2a71965febab): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (0d1f4b8c-928e-412f-be86-ee023f89b95d): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (276f6739-5905-414b-aa08-a7c0137def79): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (59835400-d836-4469-a1c1-b4f0bfc448d2): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (a5297027-8eda-4490-b1ab-620205b281ea): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.740Z"}
+{"level":"info","message":"Executing (f07c1e9b-57dc-48fd-a9d2-9fc36522322c): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Loại khác' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.756Z"}
+{"level":"info","message":"Executing (4231bb39-50c1-4842-a8c6-605e97e998d2): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (6e99ae9a-7c7e-4e87-bbd8-043315e1bab9): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (d06dc01e-c2fe-4037-b784-5855504010a0): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (a4b5d75d-a96c-4ae8-a965-5f2661a2d335): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (e32f702e-189e-4dfc-9216-90aee1ce1577): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (82b01764-895e-42c6-ab53-2ce6f6566fd3): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (76f216c6-124f-4c3c-98a3-579cf4872cb0): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (5c683f4f-e638-4c32-bdf9-3d7ea1390495): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (1ed50006-b405-48ad-b7cb-d99beced833d): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (08cd7b4d-00b0-45ee-942b-c9b615f2fa14): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (5bc73232-3202-495b-bae4-279728744396): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (cd57525c-d987-4784-98fc-0d27ce7c0904): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (4fad2e2a-02e6-42c7-b6ce-5f5cd00d4648): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (c5bb5902-64b1-4d64-88e0-1644bec0b2cc): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (b132d4a0-1dc9-4023-aabd-2a71965febab): COMMIT;","timestamp":"2016-07-01T10:00:00.771Z"}
+{"level":"info","message":"Executing (0d1f4b8c-928e-412f-be86-ee023f89b95d): COMMIT;","timestamp":"2016-07-01T10:00:00.787Z"}
+{"level":"info","message":"Executing (276f6739-5905-414b-aa08-a7c0137def79): COMMIT;","timestamp":"2016-07-01T10:00:00.787Z"}
+{"level":"info","message":"Executing (59835400-d836-4469-a1c1-b4f0bfc448d2): COMMIT;","timestamp":"2016-07-01T10:00:00.787Z"}
+{"level":"info","message":"Executing (a5297027-8eda-4490-b1ab-620205b281ea): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.787Z"}
+{"level":"info","message":"Executing (f07c1e9b-57dc-48fd-a9d2-9fc36522322c): COMMIT;","timestamp":"2016-07-01T10:00:00.787Z"}
+{"level":"info","message":"Executing (e53c1a90-0f2f-4b1d-81d6-c370795c9ce7): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.802Z"}
+{"level":"info","message":"Executing (1ff71857-b2c0-4b1b-ac1c-f5761ed19a54): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.802Z"}
+{"level":"info","message":"Executing (d92bbdc4-41cc-406e-ac3f-724fd6325d38): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.802Z"}
+{"level":"info","message":"Executing (cb13fb1d-fa70-49ce-b4a9-d472ab7888c5): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.802Z"}
+{"level":"info","message":"Executing (493e6e22-c2f7-4dc3-bd89-aa490fb56ee6): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.802Z"}
+{"level":"info","message":"Executing (29dbc3bd-294e-429f-a938-0c0ed2114cfc): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.802Z"}
+{"level":"info","message":"Executing (26817419-7e45-4bbf-ac5f-f6ed9358937f): START TRANSACTION;","timestamp":"2016-07-01T10:00:00.802Z"}
+{"level":"info","message":"Executing (a5297027-8eda-4490-b1ab-620205b281ea): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao đôi' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.818Z"}
+{"level":"info","message":"Executing (e53c1a90-0f2f-4b1d-81d6-c370795c9ce7): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.818Z"}
+{"level":"info","message":"Executing (1ff71857-b2c0-4b1b-ac1c-f5761ed19a54): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.818Z"}
+{"level":"info","message":"Executing (d92bbdc4-41cc-406e-ac3f-724fd6325d38): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (cb13fb1d-fa70-49ce-b4a9-d472ab7888c5): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (493e6e22-c2f7-4dc3-bd89-aa490fb56ee6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (29dbc3bd-294e-429f-a938-0c0ed2114cfc): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (26817419-7e45-4bbf-ac5f-f6ed9358937f): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (a5297027-8eda-4490-b1ab-620205b281ea): COMMIT;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (e53c1a90-0f2f-4b1d-81d6-c370795c9ce7): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (1ff71857-b2c0-4b1b-ac1c-f5761ed19a54): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (d92bbdc4-41cc-406e-ac3f-724fd6325d38): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (cb13fb1d-fa70-49ce-b4a9-d472ab7888c5): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (493e6e22-c2f7-4dc3-bd89-aa490fb56ee6): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (29dbc3bd-294e-429f-a938-0c0ed2114cfc): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (26817419-7e45-4bbf-ac5f-f6ed9358937f): SET autocommit = 1;","timestamp":"2016-07-01T10:00:00.834Z"}
+{"level":"info","message":"Executing (e53c1a90-0f2f-4b1d-81d6-c370795c9ce7): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày tập GYM nam nữ' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.849Z"}
+{"level":"info","message":"Executing (1ff71857-b2c0-4b1b-ac1c-f5761ed19a54): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Slip On' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.849Z"}
+{"level":"info","message":"Executing (d92bbdc4-41cc-406e-ac3f-724fd6325d38): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford đế bằng' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.849Z"}
+{"level":"info","message":"Executing (cb13fb1d-fa70-49ce-b4a9-d472ab7888c5): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford cao gót' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.849Z"}
+{"level":"info","message":"Executing (493e6e22-c2f7-4dc3-bd89-aa490fb56ee6): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày bệt – búp bê' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.849Z"}
+{"level":"info","message":"Executing (29dbc3bd-294e-429f-a938-0c0ed2114cfc): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.849Z"}
+{"level":"info","message":"Executing (26817419-7e45-4bbf-ac5f-f6ed9358937f): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày ORDER' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:00.849Z"}
+{"level":"info","message":"Executing (e53c1a90-0f2f-4b1d-81d6-c370795c9ce7): COMMIT;","timestamp":"2016-07-01T10:00:00.849Z"}
+{"level":"info","message":"Executing (1ff71857-b2c0-4b1b-ac1c-f5761ed19a54): COMMIT;","timestamp":"2016-07-01T10:00:00.865Z"}
+{"level":"info","message":"Executing (d92bbdc4-41cc-406e-ac3f-724fd6325d38): COMMIT;","timestamp":"2016-07-01T10:00:00.865Z"}
+{"level":"info","message":"Executing (cb13fb1d-fa70-49ce-b4a9-d472ab7888c5): COMMIT;","timestamp":"2016-07-01T10:00:00.865Z"}
+{"level":"info","message":"Executing (493e6e22-c2f7-4dc3-bd89-aa490fb56ee6): COMMIT;","timestamp":"2016-07-01T10:00:00.865Z"}
+{"level":"info","message":"Executing (29dbc3bd-294e-429f-a938-0c0ed2114cfc): COMMIT;","timestamp":"2016-07-01T10:00:00.865Z"}
+{"level":"info","message":"Executing (26817419-7e45-4bbf-ac5f-f6ed9358937f): COMMIT;","timestamp":"2016-07-01T10:00:00.865Z"}
+{"level":"info","message":"Category index = 27","timestamp":"2016-07-01T10:00:01.641Z"}
+{"level":"info","message":"Category index = 24","timestamp":"2016-07-01T10:00:01.649Z"}
+{"level":"info","message":"Category index = 8","timestamp":"2016-07-01T10:00:01.696Z"}
+{"level":"info","message":"Category index = 15","timestamp":"2016-07-01T10:00:01.769Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:01.781Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:01.781Z"}
+{"level":"info","message":"Category index = 17","timestamp":"2016-07-01T10:00:01.784Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T10:00:02.604Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:02.604Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:02.604Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T10:00:02.604Z"}
+{"level":"info","message":"Category index = 26","timestamp":"2016-07-01T10:00:02.606Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:02.634Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:02.634Z"}
+{"level":"info","message":"Category index = 20","timestamp":"2016-07-01T10:00:02.639Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T10:00:02.661Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:02.661Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:02.664Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T10:00:02.664Z"}
+{"level":"info","message":"Category index = 12","timestamp":"2016-07-01T10:00:02.666Z"}
+{"level":"info","message":"Category index = 23","timestamp":"2016-07-01T10:00:02.706Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:02.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T10:00:02.764Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T10:00:02.766Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:02.766Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T10:00:02.766Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T10:00:02.769Z"}
+{"level":"info","message":"Category index = 19","timestamp":"2016-07-01T10:00:02.769Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:02.799Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:02.799Z"}
+{"level":"info","message":"Category index = 4","timestamp":"2016-07-01T10:00:02.801Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw-8104/","timestamp":"2016-07-01T10:00:03.409Z"}
+{"level":"info","message":"Category index = 13","timestamp":"2016-07-01T10:00:03.409Z"}
+{"level":"info","message":"Category index = 9","timestamp":"2016-07-01T10:00:03.632Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:03.667Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T10:00:03.670Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T10:00:03.670Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:03.670Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6882-nam-320k-nu-280k-cb-570k/","timestamp":"2016-07-01T10:00:03.670Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T10:00:03.670Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T10:00:03.670Z"}
+{"level":"info","message":"Category index = 5","timestamp":"2016-07-01T10:00:03.672Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T10:00:03.752Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:03.752Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:03.755Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T10:00:03.755Z"}
+{"level":"info","message":"Category index = 1","timestamp":"2016-07-01T10:00:03.757Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:03.767Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:03.770Z"}
+{"level":"info","message":"Category index = 2","timestamp":"2016-07-01T10:00:03.772Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5202/","timestamp":"2016-07-01T10:00:03.845Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5201/","timestamp":"2016-07-01T10:00:03.845Z"}
+{"level":"info","message":"Category index = 10","timestamp":"2016-07-01T10:00:03.845Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5300/","timestamp":"2016-07-01T10:00:03.867Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5301/","timestamp":"2016-07-01T10:00:03.867Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-5302-2/","timestamp":"2016-07-01T10:00:03.867Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-luoi-nu-bw5302/","timestamp":"2016-07-01T10:00:03.867Z"}
+{"level":"info","message":"Category index = 22","timestamp":"2016-07-01T10:00:03.872Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T10:00:03.885Z"}
+{"level":"info","message":"Category index = 25","timestamp":"2016-07-01T10:00:03.885Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T10:00:03.995Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T10:00:03.997Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T10:00:03.997Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T10:00:03.997Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T10:00:03.997Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T10:00:03.997Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:04.000Z"}
+{"level":"info","message":"Category index = 7","timestamp":"2016-07-01T10:00:04.002Z"}
+{"level":"info","message":"Category index = 0","timestamp":"2016-07-01T10:00:04.010Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6896-nam-400k-nu-380k-combo-700k/","timestamp":"2016-07-01T10:00:04.112Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:04.115Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:04.115Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:04.115Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T10:00:04.115Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T10:00:04.115Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:04.115Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T10:00:04.115Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:04.117Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:04.117Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T10:00:04.117Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T10:00:04.117Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-nam-nu-bw6876-nam-380k-nu-350k-cb-650k/","timestamp":"2016-07-01T10:00:04.117Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6874/","timestamp":"2016-07-01T10:00:04.117Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6868/","timestamp":"2016-07-01T10:00:04.117Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6866/","timestamp":"2016-07-01T10:00:04.120Z"}
+{"level":"info","message":"Category index = 6","timestamp":"2016-07-01T10:00:04.120Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-jordan-nu-bw6200/","timestamp":"2016-07-01T10:00:04.537Z"}
+{"level":"info","message":"Category index = 14","timestamp":"2016-07-01T10:00:04.537Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-luoi-nu-bw3104/","timestamp":"2016-07-01T10:00:04.647Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-bet-tom-bw3103/","timestamp":"2016-07-01T10:00:04.647Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-cao-su-bw3102/","timestamp":"2016-07-01T10:00:04.649Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T10:00:04.649Z"}
+{"level":"info","message":"Category index = 11","timestamp":"2016-07-01T10:00:04.649Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T10:00:04.657Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T10:00:04.657Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T10:00:04.659Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T10:00:04.659Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T10:00:04.659Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6889/","timestamp":"2016-07-01T10:00:04.659Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T10:00:04.659Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:04.659Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-6861/","timestamp":"2016-07-01T10:00:04.659Z"}
+{"level":"info","message":"Category index = 21","timestamp":"2016-07-01T10:00:04.662Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T10:00:04.669Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T10:00:04.669Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:04.672Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:04.672Z"}
+{"level":"info","message":"Category index = 16","timestamp":"2016-07-01T10:00:04.672Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T10:00:04.850Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T10:00:04.850Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:04.850Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:04.850Z"}
+{"level":"info","message":"Category index = 18","timestamp":"2016-07-01T10:00:04.850Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6533/","timestamp":"2016-07-01T10:00:04.850Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6532/","timestamp":"2016-07-01T10:00:04.850Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6531/","timestamp":"2016-07-01T10:00:04.850Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-moi-nhat-bw6530/","timestamp":"2016-07-01T10:00:04.865Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T10:00:04.865Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T10:00:04.865Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:04.865Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:04.865Z"}
+{"level":"info","message":"Category index = 3","timestamp":"2016-07-01T10:00:04.865Z"}
+{"level":"info","message":"Done extracting product links","timestamp":"2016-07-01T10:00:04.865Z"}
+{"level":"info","message":"Option = -c","timestamp":"2016-07-01T10:00:45.162Z"}
+{"level":"info","message":"Option = --noai","timestamp":"2016-07-01T10:00:45.162Z"}
+{"level":"info","message":"Created temp folder successfully","timestamp":"2016-07-01T10:00:45.287Z"}
+{"level":"info","message":"Executing (c79fb2bf-ba59-47ca-a89f-87a9662bb0e9): START TRANSACTION;","timestamp":"2016-07-01T10:00:45.307Z"}
+{"level":"info","message":"Executing (c79fb2bf-ba59-47ca-a89f-87a9662bb0e9): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:45.307Z"}
+{"level":"info","message":"Executing (c79fb2bf-ba59-47ca-a89f-87a9662bb0e9): SET autocommit = 1;","timestamp":"2016-07-01T10:00:45.307Z"}
+{"level":"info","message":"Executing (c79fb2bf-ba59-47ca-a89f-87a9662bb0e9): SELECT `id`, `home`, `type` FROM `Store` AS `Store` WHERE `Store`.`home` = 'http://bluewind.vn' LIMIT 1;","timestamp":"2016-07-01T10:00:45.307Z"}
+{"level":"info","message":"Executing (c79fb2bf-ba59-47ca-a89f-87a9662bb0e9): COMMIT;","timestamp":"2016-07-01T10:00:45.307Z"}
+{"level":"info","message":"Store: http://bluewind.vn","timestamp":"2016-07-01T10:00:45.307Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:47.088Z"}
+{"level":"info","message":"Category: Giày Jordan","timestamp":"2016-07-01T10:00:47.088Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:00:47.088Z"}
+{"level":"info","message":"Category: Giày Nike","timestamp":"2016-07-01T10:00:47.088Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:47.088Z"}
+{"level":"info","message":"Category: Giày thể thao nam Adidas","timestamp":"2016-07-01T10:00:47.088Z"}
+{"level":"info","message":"Category: Giày thể thao nam Nike","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Loại khác","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày thể thao đôi","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày tập GYM nam nữ","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Slip On","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Oxford đế bằng","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Oxford cao gót","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày bệt – búp bê","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày ORDER","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày Jordan","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày Nike","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày thể thao nam Adidas","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày thể thao nam Nike","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Loại khác","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày thể thao đôi","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày tập GYM nam nữ","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Slip On","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Oxford đế bằng","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Oxford cao gót","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày bệt – búp bê","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Category: Giày ORDER","timestamp":"2016-07-01T10:00:47.104Z"}
+{"level":"info","message":"Executing (ed952935-83c4-446e-b706-a6dc9c6bda73): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.120Z"}
+{"level":"info","message":"Executing (ed952935-83c4-446e-b706-a6dc9c6bda73): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.151Z"}
+{"level":"info","message":"Executing (ed952935-83c4-446e-b706-a6dc9c6bda73): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.166Z"}
+{"level":"info","message":"Executing (ca963e98-b740-43a1-8412-01b71e766dc0): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.166Z"}
+{"level":"info","message":"Executing (461566b9-6b11-4017-b79a-ca8159167aca): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (7e1a7f85-6a1f-4b54-a48a-881f9d3519a7): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (a124489c-58ce-44dd-9ce0-f956cc75a3c0): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (fc83fcc9-ed0b-4210-a947-7da160f2cc50): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (11e3b451-f2e4-42c4-855b-35d387c75d01): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (20422f72-5e2b-48b9-8c22-39597a9098dc): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (23c86516-73ca-46db-ab22-d7ba22c717c9): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (ac3d0451-d4ad-4598-a9fa-80896bc9a3c2): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (c590f735-4e5d-4991-bd6d-e120e4c97845): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (7af739f6-1217-45e1-b121-882816e9e9b3): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (db8bf1fa-4c05-4d56-b688-b2dfaf826722): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (8c4f6aae-9a1d-427d-8025-3e1f949c64ad): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (c55b84a9-3fdf-4c03-911d-50db8b652ae6): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (81769a71-9aa7-48f1-acfe-6eb9f0a9daf6): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (7c82a51e-83db-422a-a5b4-1467e8698e57): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (38c17f78-58f4-4f0b-8185-e363176dfdf6): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (714a472d-6b0a-442c-ae80-f95388108940): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (50a02c5c-e1e8-42e9-a260-30426759f911): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.182Z"}
+{"level":"info","message":"Executing (ed952935-83c4-446e-b706-a6dc9c6bda73): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Jordan' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (ca963e98-b740-43a1-8412-01b71e766dc0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (7e1a7f85-6a1f-4b54-a48a-881f9d3519a7): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (ac3d0451-d4ad-4598-a9fa-80896bc9a3c2): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (7c82a51e-83db-422a-a5b4-1467e8698e57): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (461566b9-6b11-4017-b79a-ca8159167aca): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (a124489c-58ce-44dd-9ce0-f956cc75a3c0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (fc83fcc9-ed0b-4210-a947-7da160f2cc50): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (11e3b451-f2e4-42c4-855b-35d387c75d01): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (20422f72-5e2b-48b9-8c22-39597a9098dc): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (23c86516-73ca-46db-ab22-d7ba22c717c9): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (c590f735-4e5d-4991-bd6d-e120e4c97845): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.198Z"}
+{"level":"info","message":"Executing (7af739f6-1217-45e1-b121-882816e9e9b3): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (db8bf1fa-4c05-4d56-b688-b2dfaf826722): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (8c4f6aae-9a1d-427d-8025-3e1f949c64ad): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (c55b84a9-3fdf-4c03-911d-50db8b652ae6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (81769a71-9aa7-48f1-acfe-6eb9f0a9daf6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (38c17f78-58f4-4f0b-8185-e363176dfdf6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (714a472d-6b0a-442c-ae80-f95388108940): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (50a02c5c-e1e8-42e9-a260-30426759f911): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (ed952935-83c4-446e-b706-a6dc9c6bda73): COMMIT;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (ca963e98-b740-43a1-8412-01b71e766dc0): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (7e1a7f85-6a1f-4b54-a48a-881f9d3519a7): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (ac3d0451-d4ad-4598-a9fa-80896bc9a3c2): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (7c82a51e-83db-422a-a5b4-1467e8698e57): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (461566b9-6b11-4017-b79a-ca8159167aca): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (a124489c-58ce-44dd-9ce0-f956cc75a3c0): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (fc83fcc9-ed0b-4210-a947-7da160f2cc50): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.213Z"}
+{"level":"info","message":"Executing (11e3b451-f2e4-42c4-855b-35d387c75d01): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.229Z"}
+{"level":"info","message":"Executing (20422f72-5e2b-48b9-8c22-39597a9098dc): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.229Z"}
+{"level":"info","message":"Executing (23c86516-73ca-46db-ab22-d7ba22c717c9): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.229Z"}
+{"level":"info","message":"Executing (c590f735-4e5d-4991-bd6d-e120e4c97845): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.231Z"}
+{"level":"info","message":"Executing (7af739f6-1217-45e1-b121-882816e9e9b3): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.231Z"}
+{"level":"info","message":"Executing (db8bf1fa-4c05-4d56-b688-b2dfaf826722): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.231Z"}
+{"level":"info","message":"Executing (8c4f6aae-9a1d-427d-8025-3e1f949c64ad): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.231Z"}
+{"level":"info","message":"Executing (c55b84a9-3fdf-4c03-911d-50db8b652ae6): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.234Z"}
+{"level":"info","message":"Executing (81769a71-9aa7-48f1-acfe-6eb9f0a9daf6): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.234Z"}
+{"level":"info","message":"Executing (38c17f78-58f4-4f0b-8185-e363176dfdf6): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.234Z"}
+{"level":"info","message":"Executing (714a472d-6b0a-442c-ae80-f95388108940): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.236Z"}
+{"level":"info","message":"Executing (50a02c5c-e1e8-42e9-a260-30426759f911): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.236Z"}
+{"level":"info","message":"Executing (697438a8-dd31-4067-a604-984fad24ff1e): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.239Z"}
+{"level":"info","message":"Executing (ca963e98-b740-43a1-8412-01b71e766dc0): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (7e1a7f85-6a1f-4b54-a48a-881f9d3519a7): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (ac3d0451-d4ad-4598-a9fa-80896bc9a3c2): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford đế bằng' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (7c82a51e-83db-422a-a5b4-1467e8698e57): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (461566b9-6b11-4017-b79a-ca8159167aca): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (a124489c-58ce-44dd-9ce0-f956cc75a3c0): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (fc83fcc9-ed0b-4210-a947-7da160f2cc50): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Loại khác' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (11e3b451-f2e4-42c4-855b-35d387c75d01): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao đôi' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (20422f72-5e2b-48b9-8c22-39597a9098dc): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày tập GYM nam nữ' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (23c86516-73ca-46db-ab22-d7ba22c717c9): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Slip On' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (c590f735-4e5d-4991-bd6d-e120e4c97845): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford cao gót' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (7af739f6-1217-45e1-b121-882816e9e9b3): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày bệt – búp bê' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (db8bf1fa-4c05-4d56-b688-b2dfaf826722): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (8c4f6aae-9a1d-427d-8025-3e1f949c64ad): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày ORDER' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.259Z"}
+{"level":"info","message":"Executing (c55b84a9-3fdf-4c03-911d-50db8b652ae6): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Jordan' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.275Z"}
+{"level":"info","message":"Executing (81769a71-9aa7-48f1-acfe-6eb9f0a9daf6): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.275Z"}
+{"level":"info","message":"Executing (38c17f78-58f4-4f0b-8185-e363176dfdf6): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.275Z"}
+{"level":"info","message":"Executing (714a472d-6b0a-442c-ae80-f95388108940): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.275Z"}
+{"level":"info","message":"Executing (697438a8-dd31-4067-a604-984fad24ff1e): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.275Z"}
+{"level":"info","message":"Executing (50a02c5c-e1e8-42e9-a260-30426759f911): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Loại khác' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.275Z"}
+{"level":"info","message":"Executing (ca963e98-b740-43a1-8412-01b71e766dc0): COMMIT;","timestamp":"2016-07-01T10:00:47.293Z"}
+{"level":"info","message":"Executing (7e1a7f85-6a1f-4b54-a48a-881f9d3519a7): COMMIT;","timestamp":"2016-07-01T10:00:47.296Z"}
+{"level":"info","message":"Executing (ac3d0451-d4ad-4598-a9fa-80896bc9a3c2): COMMIT;","timestamp":"2016-07-01T10:00:47.296Z"}
+{"level":"info","message":"Executing (7c82a51e-83db-422a-a5b4-1467e8698e57): COMMIT;","timestamp":"2016-07-01T10:00:47.296Z"}
+{"level":"info","message":"Executing (461566b9-6b11-4017-b79a-ca8159167aca): COMMIT;","timestamp":"2016-07-01T10:00:47.296Z"}
+{"level":"info","message":"Executing (a124489c-58ce-44dd-9ce0-f956cc75a3c0): COMMIT;","timestamp":"2016-07-01T10:00:47.298Z"}
+{"level":"info","message":"Executing (fc83fcc9-ed0b-4210-a947-7da160f2cc50): COMMIT;","timestamp":"2016-07-01T10:00:47.298Z"}
+{"level":"info","message":"Executing (11e3b451-f2e4-42c4-855b-35d387c75d01): COMMIT;","timestamp":"2016-07-01T10:00:47.301Z"}
+{"level":"info","message":"Executing (20422f72-5e2b-48b9-8c22-39597a9098dc): COMMIT;","timestamp":"2016-07-01T10:00:47.301Z"}
+{"level":"info","message":"Executing (23c86516-73ca-46db-ab22-d7ba22c717c9): COMMIT;","timestamp":"2016-07-01T10:00:47.301Z"}
+{"level":"info","message":"Executing (c590f735-4e5d-4991-bd6d-e120e4c97845): COMMIT;","timestamp":"2016-07-01T10:00:47.301Z"}
+{"level":"info","message":"Executing (7af739f6-1217-45e1-b121-882816e9e9b3): COMMIT;","timestamp":"2016-07-01T10:00:47.303Z"}
+{"level":"info","message":"Executing (db8bf1fa-4c05-4d56-b688-b2dfaf826722): COMMIT;","timestamp":"2016-07-01T10:00:47.303Z"}
+{"level":"info","message":"Executing (8c4f6aae-9a1d-427d-8025-3e1f949c64ad): COMMIT;","timestamp":"2016-07-01T10:00:47.303Z"}
+{"level":"info","message":"Executing (c55b84a9-3fdf-4c03-911d-50db8b652ae6): COMMIT;","timestamp":"2016-07-01T10:00:47.303Z"}
+{"level":"info","message":"Executing (81769a71-9aa7-48f1-acfe-6eb9f0a9daf6): COMMIT;","timestamp":"2016-07-01T10:00:47.303Z"}
+{"level":"info","message":"Executing (38c17f78-58f4-4f0b-8185-e363176dfdf6): COMMIT;","timestamp":"2016-07-01T10:00:47.303Z"}
+{"level":"info","message":"Executing (714a472d-6b0a-442c-ae80-f95388108940): COMMIT;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (697438a8-dd31-4067-a604-984fad24ff1e): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (50a02c5c-e1e8-42e9-a260-30426759f911): COMMIT;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (cb038ead-8eda-40e0-ae57-e1d548415978): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (abc96e46-3dd0-4e7b-b5b3-dc9b331f5ff9): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (71aa2f13-046f-4ea7-befb-2fa930621108): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (a5341aee-4ec2-4123-a971-d657f4a66f7c): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (85812deb-703a-4b39-92ac-f74d996305c2): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (55b60b03-4453-4935-98aa-b315c36b58a6): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (c1e3e355-70fb-464e-93c5-7f4e0fe02104): START TRANSACTION;","timestamp":"2016-07-01T10:00:47.306Z"}
+{"level":"info","message":"Executing (697438a8-dd31-4067-a604-984fad24ff1e): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao đôi' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.337Z"}
+{"level":"info","message":"Executing (cb038ead-8eda-40e0-ae57-e1d548415978): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.337Z"}
+{"level":"info","message":"Executing (abc96e46-3dd0-4e7b-b5b3-dc9b331f5ff9): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.337Z"}
+{"level":"info","message":"Executing (71aa2f13-046f-4ea7-befb-2fa930621108): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.337Z"}
+{"level":"info","message":"Executing (a5341aee-4ec2-4123-a971-d657f4a66f7c): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.337Z"}
+{"level":"info","message":"Executing (85812deb-703a-4b39-92ac-f74d996305c2): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.337Z"}
+{"level":"info","message":"Executing (55b60b03-4453-4935-98aa-b315c36b58a6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.337Z"}
+{"level":"info","message":"Executing (c1e3e355-70fb-464e-93c5-7f4e0fe02104): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:00:47.337Z"}
+{"level":"info","message":"Executing (697438a8-dd31-4067-a604-984fad24ff1e): COMMIT;","timestamp":"2016-07-01T10:00:47.337Z"}
+{"level":"info","message":"Executing (cb038ead-8eda-40e0-ae57-e1d548415978): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.352Z"}
+{"level":"info","message":"Executing (abc96e46-3dd0-4e7b-b5b3-dc9b331f5ff9): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.352Z"}
+{"level":"info","message":"Executing (71aa2f13-046f-4ea7-befb-2fa930621108): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.352Z"}
+{"level":"info","message":"Executing (a5341aee-4ec2-4123-a971-d657f4a66f7c): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.352Z"}
+{"level":"info","message":"Executing (85812deb-703a-4b39-92ac-f74d996305c2): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.352Z"}
+{"level":"info","message":"Executing (55b60b03-4453-4935-98aa-b315c36b58a6): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.352Z"}
+{"level":"info","message":"Executing (c1e3e355-70fb-464e-93c5-7f4e0fe02104): SET autocommit = 1;","timestamp":"2016-07-01T10:00:47.352Z"}
+{"level":"info","message":"Executing (cb038ead-8eda-40e0-ae57-e1d548415978): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày tập GYM nam nữ' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (abc96e46-3dd0-4e7b-b5b3-dc9b331f5ff9): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Slip On' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (71aa2f13-046f-4ea7-befb-2fa930621108): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford đế bằng' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (a5341aee-4ec2-4123-a971-d657f4a66f7c): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford cao gót' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (85812deb-703a-4b39-92ac-f74d996305c2): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày bệt – búp bê' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (55b60b03-4453-4935-98aa-b315c36b58a6): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (c1e3e355-70fb-464e-93c5-7f4e0fe02104): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày ORDER' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (cb038ead-8eda-40e0-ae57-e1d548415978): COMMIT;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (abc96e46-3dd0-4e7b-b5b3-dc9b331f5ff9): COMMIT;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (71aa2f13-046f-4ea7-befb-2fa930621108): COMMIT;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (a5341aee-4ec2-4123-a971-d657f4a66f7c): COMMIT;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (85812deb-703a-4b39-92ac-f74d996305c2): COMMIT;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (55b60b03-4453-4935-98aa-b315c36b58a6): COMMIT;","timestamp":"2016-07-01T10:00:47.368Z"}
+{"level":"info","message":"Executing (c1e3e355-70fb-464e-93c5-7f4e0fe02104): COMMIT;","timestamp":"2016-07-01T10:00:47.384Z"}
+{"level":"info","message":"Category index = 26","timestamp":"2016-07-01T10:00:48.388Z"}
+{"level":"info","message":"Category index = 25","timestamp":"2016-07-01T10:00:48.495Z"}
+{"level":"info","message":"Category index = 22","timestamp":"2016-07-01T10:00:48.515Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T10:00:48.570Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:48.570Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:48.570Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T10:00:48.570Z"}
+{"level":"info","message":"Category index = 15","timestamp":"2016-07-01T10:00:48.573Z"}
+{"level":"info","message":"Category index = 10","timestamp":"2016-07-01T10:00:48.620Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:48.628Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:48.630Z"}
+{"level":"info","message":"Category index = 3","timestamp":"2016-07-01T10:00:48.630Z"}
+{"level":"info","message":"Category index = 0","timestamp":"2016-07-01T10:00:48.645Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-jordan-nu-bw6200/","timestamp":"2016-07-01T10:00:48.743Z"}
+{"level":"info","message":"Category index = 14","timestamp":"2016-07-01T10:00:48.745Z"}
+{"level":"info","message":"Category index = 19","timestamp":"2016-07-01T10:00:48.848Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-luoi-nu-bw3104/","timestamp":"2016-07-01T10:00:49.048Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-bet-tom-bw3103/","timestamp":"2016-07-01T10:00:49.050Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-cao-su-bw3102/","timestamp":"2016-07-01T10:00:49.053Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T10:00:49.053Z"}
+{"level":"info","message":"Category index = 11","timestamp":"2016-07-01T10:00:49.055Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:49.484Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T10:00:49.484Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T10:00:49.487Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:49.487Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6882-nam-320k-nu-280k-cb-570k/","timestamp":"2016-07-01T10:00:49.489Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T10:00:49.492Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T10:00:49.492Z"}
+{"level":"info","message":"Category index = 5","timestamp":"2016-07-01T10:00:49.494Z"}
+{"level":"info","message":"Category index = 18","timestamp":"2016-07-01T10:00:49.569Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T10:00:49.609Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T10:00:49.609Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T10:00:49.609Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T10:00:49.609Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:49.609Z"}
+{"level":"info","message":"Category index = 21","timestamp":"2016-07-01T10:00:49.609Z"}
+{"level":"info","message":"Category index = 23","timestamp":"2016-07-01T10:00:49.747Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T10:00:49.949Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:49.949Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:49.949Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T10:00:49.949Z"}
+{"level":"info","message":"Category index = 1","timestamp":"2016-07-01T10:00:49.949Z"}
+{"level":"info","message":"Category index = 13","timestamp":"2016-07-01T10:00:49.980Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Category index = 6","timestamp":"2016-07-01T10:00:50.011Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5202/","timestamp":"2016-07-01T10:00:50.027Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5201/","timestamp":"2016-07-01T10:00:50.027Z"}
+{"level":"info","message":"Category index = 24","timestamp":"2016-07-01T10:00:50.027Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T10:00:50.099Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T10:00:50.099Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:50.099Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:50.099Z"}
+{"level":"info","message":"Category index = 4","timestamp":"2016-07-01T10:00:50.102Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T10:00:50.139Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T10:00:50.142Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T10:00:50.142Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T10:00:50.144Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T10:00:50.144Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6889/","timestamp":"2016-07-01T10:00:50.144Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T10:00:50.144Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:50.147Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-6861/","timestamp":"2016-07-01T10:00:50.147Z"}
+{"level":"info","message":"Category index = 7","timestamp":"2016-07-01T10:00:50.147Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6533/","timestamp":"2016-07-01T10:00:50.182Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6532/","timestamp":"2016-07-01T10:00:50.182Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6531/","timestamp":"2016-07-01T10:00:50.182Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-moi-nhat-bw6530/","timestamp":"2016-07-01T10:00:50.184Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T10:00:50.184Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T10:00:50.184Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:50.184Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:50.184Z"}
+{"level":"info","message":"Category index = 17","timestamp":"2016-07-01T10:00:50.187Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6896-nam-400k-nu-380k-combo-700k/","timestamp":"2016-07-01T10:00:50.217Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:50.217Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:50.217Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:50.219Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T10:00:50.219Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T10:00:50.219Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:00:50.219Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T10:00:50.222Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:50.222Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:50.222Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T10:00:50.222Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T10:00:50.224Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-nam-nu-bw6876-nam-380k-nu-350k-cb-650k/","timestamp":"2016-07-01T10:00:50.224Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6874/","timestamp":"2016-07-01T10:00:50.224Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6868/","timestamp":"2016-07-01T10:00:50.224Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6866/","timestamp":"2016-07-01T10:00:50.224Z"}
+{"level":"info","message":"Category index = 20","timestamp":"2016-07-01T10:00:50.224Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T10:00:50.229Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:00:50.229Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:00:50.229Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T10:00:50.229Z"}
+{"level":"info","message":"Category index = 12","timestamp":"2016-07-01T10:00:50.232Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw-8104/","timestamp":"2016-07-01T10:00:50.234Z"}
+{"level":"info","message":"Category index = 27","timestamp":"2016-07-01T10:00:50.234Z"}
+{"level":"info","message":"Category index = 9","timestamp":"2016-07-01T10:00:50.480Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T10:00:50.543Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T10:00:50.543Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:50.543Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:50.543Z"}
+{"level":"info","message":"Category index = 16","timestamp":"2016-07-01T10:00:50.543Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T10:00:50.726Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T10:00:50.728Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:00:50.728Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:00:50.733Z"}
+{"level":"info","message":"Category index = 2","timestamp":"2016-07-01T10:00:50.736Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5300/","timestamp":"2016-07-01T10:00:50.965Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5301/","timestamp":"2016-07-01T10:00:50.965Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-5302-2/","timestamp":"2016-07-01T10:00:50.965Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-luoi-nu-bw5302/","timestamp":"2016-07-01T10:00:50.965Z"}
+{"level":"info","message":"Category index = 8","timestamp":"2016-07-01T10:00:50.965Z"}
+{"level":"info","message":"Done extracting product links","timestamp":"2016-07-01T10:00:50.965Z"}
+{"level":"info","message":"Option = -c","timestamp":"2016-07-01T10:02:03.124Z"}
+{"level":"info","message":"Option = --noai","timestamp":"2016-07-01T10:02:03.140Z"}
+{"level":"info","message":"Created temp folder successfully","timestamp":"2016-07-01T10:02:03.265Z"}
+{"level":"info","message":"Executing (59d07fe5-f6d2-4a55-87bb-b479aec17ed3): START TRANSACTION;","timestamp":"2016-07-01T10:02:03.265Z"}
+{"level":"info","message":"Executing (59d07fe5-f6d2-4a55-87bb-b479aec17ed3): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:03.265Z"}
+{"level":"info","message":"Executing (59d07fe5-f6d2-4a55-87bb-b479aec17ed3): SET autocommit = 1;","timestamp":"2016-07-01T10:02:03.265Z"}
+{"level":"info","message":"Executing (59d07fe5-f6d2-4a55-87bb-b479aec17ed3): SELECT `id`, `home`, `type` FROM `Store` AS `Store` WHERE `Store`.`home` = 'http://bluewind.vn' LIMIT 1;","timestamp":"2016-07-01T10:02:03.280Z"}
+{"level":"info","message":"Executing (59d07fe5-f6d2-4a55-87bb-b479aec17ed3): COMMIT;","timestamp":"2016-07-01T10:02:03.280Z"}
+{"level":"info","message":"Store: http://bluewind.vn","timestamp":"2016-07-01T10:02:03.280Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:02:04.959Z"}
+{"level":"info","message":"Category: Giày Jordan","timestamp":"2016-07-01T10:02:04.959Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:02:04.962Z"}
+{"level":"info","message":"Category: Giày Nike","timestamp":"2016-07-01T10:02:04.962Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:02:04.964Z"}
+{"level":"info","message":"Category: Giày thể thao nam Adidas","timestamp":"2016-07-01T10:02:04.964Z"}
+{"level":"info","message":"Category: Giày thể thao nam Nike","timestamp":"2016-07-01T10:02:04.964Z"}
+{"level":"info","message":"Category: Loại khác","timestamp":"2016-07-01T10:02:04.967Z"}
+{"level":"info","message":"Category: Giày thể thao đôi","timestamp":"2016-07-01T10:02:04.967Z"}
+{"level":"info","message":"Category: Giày tập GYM nam nữ","timestamp":"2016-07-01T10:02:04.967Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:02:04.969Z"}
+{"level":"info","message":"Category: Slip On","timestamp":"2016-07-01T10:02:04.969Z"}
+{"level":"info","message":"Category: Oxford đế bằng","timestamp":"2016-07-01T10:02:04.969Z"}
+{"level":"info","message":"Category: Oxford cao gót","timestamp":"2016-07-01T10:02:04.969Z"}
+{"level":"info","message":"Category: Giày bệt – búp bê","timestamp":"2016-07-01T10:02:04.969Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:02:04.969Z"}
+{"level":"info","message":"Category: Giày ORDER","timestamp":"2016-07-01T10:02:04.969Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:02:04.972Z"}
+{"level":"info","message":"Category: Giày Jordan","timestamp":"2016-07-01T10:02:04.972Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:02:04.972Z"}
+{"level":"info","message":"Category: Giày Nike","timestamp":"2016-07-01T10:02:04.974Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:02:04.974Z"}
+{"level":"info","message":"Category: Giày thể thao nam Adidas","timestamp":"2016-07-01T10:02:04.974Z"}
+{"level":"info","message":"Category: Giày thể thao nam Nike","timestamp":"2016-07-01T10:02:04.974Z"}
+{"level":"info","message":"Category: Loại khác","timestamp":"2016-07-01T10:02:04.974Z"}
+{"level":"info","message":"Category: Giày thể thao đôi","timestamp":"2016-07-01T10:02:04.974Z"}
+{"level":"info","message":"Category: Giày tập GYM nam nữ","timestamp":"2016-07-01T10:02:04.977Z"}
+{"level":"info","message":"Will not extract product list for menu items that contain sub-menu","timestamp":"2016-07-01T10:02:04.977Z"}
+{"level":"info","message":"Category: Slip On","timestamp":"2016-07-01T10:02:04.977Z"}
+{"level":"info","message":"Category: Oxford đế bằng","timestamp":"2016-07-01T10:02:04.977Z"}
+{"level":"info","message":"Category: Oxford cao gót","timestamp":"2016-07-01T10:02:04.979Z"}
+{"level":"info","message":"Category: Giày bệt – búp bê","timestamp":"2016-07-01T10:02:04.982Z"}
+{"level":"info","message":"Category: Giày Adidas","timestamp":"2016-07-01T10:02:04.982Z"}
+{"level":"info","message":"Category: Giày ORDER","timestamp":"2016-07-01T10:02:04.984Z"}
+{"level":"info","message":"Executing (76469b83-7e1b-47b0-81ff-7a5474d2ad18): START TRANSACTION;","timestamp":"2016-07-01T10:02:04.999Z"}
+{"level":"info","message":"Executing (76469b83-7e1b-47b0-81ff-7a5474d2ad18): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.037Z"}
+{"level":"info","message":"Executing (76469b83-7e1b-47b0-81ff-7a5474d2ad18): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.042Z"}
+{"level":"info","message":"Executing (ae002883-ced5-4b3d-8ddd-3fcfc7875bd3): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (639cef60-51c5-4794-818a-3d55ff1c97bd): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (379e271d-95a1-44a6-b2b2-70c27c854a81): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (369b0dc8-08f9-4484-9b8d-cee3943b678f): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (f91e55a6-f95d-4edf-b4b1-7e0603d9ebe8): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (284a6444-e9cf-40cd-b1c4-e7600a568571): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (848348c8-213c-45b5-bb85-c5a83a7575b0): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (fa6d49db-21dc-44c9-b0eb-0a54ac1c7736): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (ee3a89ae-032c-4b69-9c89-3f6e291b5814): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (b2f9eb6f-d947-4ead-9dea-39cc38c5161e): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (a75eb71b-fcdb-4463-9e67-d308c3f5142c): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (eff8aa55-b83e-4012-8161-ad7c3d8cea33): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.057Z"}
+{"level":"info","message":"Executing (4300e744-922e-4690-a8df-45b1a7072b3d): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.073Z"}
+{"level":"info","message":"Executing (5802287b-06d6-446e-bc9a-a87625bde219): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.073Z"}
+{"level":"info","message":"Executing (9c5c024c-5658-43d4-a138-181be18d860d): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.073Z"}
+{"level":"info","message":"Executing (2aa2885b-eec0-4034-af18-f4ded053c4d5): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.073Z"}
+{"level":"info","message":"Executing (5fca39a4-ca4d-4298-9dbc-d2fb6b5bbee8): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.073Z"}
+{"level":"info","message":"Executing (15dcd0ec-1fdb-4526-813d-50adef5d9999): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.073Z"}
+{"level":"info","message":"Executing (5dfbacbb-6f8e-4c73-9fba-6478acfba8a2): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.073Z"}
+{"level":"info","message":"Executing (76469b83-7e1b-47b0-81ff-7a5474d2ad18): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Jordan' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.089Z"}
+{"level":"info","message":"Executing (ae002883-ced5-4b3d-8ddd-3fcfc7875bd3): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (639cef60-51c5-4794-818a-3d55ff1c97bd): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (379e271d-95a1-44a6-b2b2-70c27c854a81): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (369b0dc8-08f9-4484-9b8d-cee3943b678f): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (f91e55a6-f95d-4edf-b4b1-7e0603d9ebe8): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (284a6444-e9cf-40cd-b1c4-e7600a568571): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (848348c8-213c-45b5-bb85-c5a83a7575b0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (fa6d49db-21dc-44c9-b0eb-0a54ac1c7736): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (ee3a89ae-032c-4b69-9c89-3f6e291b5814): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (b2f9eb6f-d947-4ead-9dea-39cc38c5161e): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (a75eb71b-fcdb-4463-9e67-d308c3f5142c): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (eff8aa55-b83e-4012-8161-ad7c3d8cea33): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (4300e744-922e-4690-a8df-45b1a7072b3d): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (5802287b-06d6-446e-bc9a-a87625bde219): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (9c5c024c-5658-43d4-a138-181be18d860d): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (2aa2885b-eec0-4034-af18-f4ded053c4d5): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (5fca39a4-ca4d-4298-9dbc-d2fb6b5bbee8): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.091Z"}
+{"level":"info","message":"Executing (15dcd0ec-1fdb-4526-813d-50adef5d9999): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (5dfbacbb-6f8e-4c73-9fba-6478acfba8a2): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (76469b83-7e1b-47b0-81ff-7a5474d2ad18): COMMIT;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (ae002883-ced5-4b3d-8ddd-3fcfc7875bd3): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (639cef60-51c5-4794-818a-3d55ff1c97bd): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (379e271d-95a1-44a6-b2b2-70c27c854a81): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (369b0dc8-08f9-4484-9b8d-cee3943b678f): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (f91e55a6-f95d-4edf-b4b1-7e0603d9ebe8): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (284a6444-e9cf-40cd-b1c4-e7600a568571): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (848348c8-213c-45b5-bb85-c5a83a7575b0): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (fa6d49db-21dc-44c9-b0eb-0a54ac1c7736): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (ee3a89ae-032c-4b69-9c89-3f6e291b5814): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (b2f9eb6f-d947-4ead-9dea-39cc38c5161e): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (a75eb71b-fcdb-4463-9e67-d308c3f5142c): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.107Z"}
+{"level":"info","message":"Executing (eff8aa55-b83e-4012-8161-ad7c3d8cea33): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.122Z"}
+{"level":"info","message":"Executing (4300e744-922e-4690-a8df-45b1a7072b3d): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.122Z"}
+{"level":"info","message":"Executing (5802287b-06d6-446e-bc9a-a87625bde219): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.122Z"}
+{"level":"info","message":"Executing (9c5c024c-5658-43d4-a138-181be18d860d): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.122Z"}
+{"level":"info","message":"Executing (2aa2885b-eec0-4034-af18-f4ded053c4d5): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.122Z"}
+{"level":"info","message":"Executing (5fca39a4-ca4d-4298-9dbc-d2fb6b5bbee8): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.122Z"}
+{"level":"info","message":"Executing (15dcd0ec-1fdb-4526-813d-50adef5d9999): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.122Z"}
+{"level":"info","message":"Executing (5dfbacbb-6f8e-4c73-9fba-6478acfba8a2): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.122Z"}
+{"level":"info","message":"Executing (e49ec1bd-7396-4da4-9597-281970c71ce5): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.122Z"}
+{"level":"info","message":"Executing (ae002883-ced5-4b3d-8ddd-3fcfc7875bd3): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.182Z"}
+{"level":"info","message":"Executing (639cef60-51c5-4794-818a-3d55ff1c97bd): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.184Z"}
+{"level":"info","message":"Executing (379e271d-95a1-44a6-b2b2-70c27c854a81): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.184Z"}
+{"level":"info","message":"Executing (369b0dc8-08f9-4484-9b8d-cee3943b678f): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.184Z"}
+{"level":"info","message":"Executing (f91e55a6-f95d-4edf-b4b1-7e0603d9ebe8): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Loại khác' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.184Z"}
+{"level":"info","message":"Executing (284a6444-e9cf-40cd-b1c4-e7600a568571): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao đôi' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.187Z"}
+{"level":"info","message":"Executing (848348c8-213c-45b5-bb85-c5a83a7575b0): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày tập GYM nam nữ' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.187Z"}
+{"level":"info","message":"Executing (fa6d49db-21dc-44c9-b0eb-0a54ac1c7736): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Slip On' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.187Z"}
+{"level":"info","message":"Executing (ee3a89ae-032c-4b69-9c89-3f6e291b5814): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford đế bằng' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.194Z"}
+{"level":"info","message":"Executing (b2f9eb6f-d947-4ead-9dea-39cc38c5161e): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford cao gót' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.194Z"}
+{"level":"info","message":"Executing (a75eb71b-fcdb-4463-9e67-d308c3f5142c): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày bệt – búp bê' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.197Z"}
+{"level":"info","message":"Executing (eff8aa55-b83e-4012-8161-ad7c3d8cea33): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.197Z"}
+{"level":"info","message":"Executing (4300e744-922e-4690-a8df-45b1a7072b3d): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày ORDER' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.197Z"}
+{"level":"info","message":"Executing (5802287b-06d6-446e-bc9a-a87625bde219): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Jordan' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.197Z"}
+{"level":"info","message":"Executing (9c5c024c-5658-43d4-a138-181be18d860d): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.199Z"}
+{"level":"info","message":"Executing (2aa2885b-eec0-4034-af18-f4ded053c4d5): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.199Z"}
+{"level":"info","message":"Executing (5fca39a4-ca4d-4298-9dbc-d2fb6b5bbee8): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.199Z"}
+{"level":"info","message":"Executing (15dcd0ec-1fdb-4526-813d-50adef5d9999): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao nam Nike' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.199Z"}
+{"level":"info","message":"Executing (e49ec1bd-7396-4da4-9597-281970c71ce5): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.199Z"}
+{"level":"info","message":"Executing (5dfbacbb-6f8e-4c73-9fba-6478acfba8a2): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Loại khác' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.199Z"}
+{"level":"info","message":"Executing (ae002883-ced5-4b3d-8ddd-3fcfc7875bd3): COMMIT;","timestamp":"2016-07-01T10:02:05.215Z"}
+{"level":"info","message":"Executing (639cef60-51c5-4794-818a-3d55ff1c97bd): COMMIT;","timestamp":"2016-07-01T10:02:05.215Z"}
+{"level":"info","message":"Executing (379e271d-95a1-44a6-b2b2-70c27c854a81): COMMIT;","timestamp":"2016-07-01T10:02:05.215Z"}
+{"level":"info","message":"Executing (369b0dc8-08f9-4484-9b8d-cee3943b678f): COMMIT;","timestamp":"2016-07-01T10:02:05.215Z"}
+{"level":"info","message":"Executing (f91e55a6-f95d-4edf-b4b1-7e0603d9ebe8): COMMIT;","timestamp":"2016-07-01T10:02:05.215Z"}
+{"level":"info","message":"Executing (284a6444-e9cf-40cd-b1c4-e7600a568571): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (848348c8-213c-45b5-bb85-c5a83a7575b0): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (fa6d49db-21dc-44c9-b0eb-0a54ac1c7736): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (ee3a89ae-032c-4b69-9c89-3f6e291b5814): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (b2f9eb6f-d947-4ead-9dea-39cc38c5161e): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (a75eb71b-fcdb-4463-9e67-d308c3f5142c): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (eff8aa55-b83e-4012-8161-ad7c3d8cea33): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (4300e744-922e-4690-a8df-45b1a7072b3d): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (5802287b-06d6-446e-bc9a-a87625bde219): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (9c5c024c-5658-43d4-a138-181be18d860d): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (2aa2885b-eec0-4034-af18-f4ded053c4d5): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (5fca39a4-ca4d-4298-9dbc-d2fb6b5bbee8): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (15dcd0ec-1fdb-4526-813d-50adef5d9999): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (e49ec1bd-7396-4da4-9597-281970c71ce5): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (5dfbacbb-6f8e-4c73-9fba-6478acfba8a2): COMMIT;","timestamp":"2016-07-01T10:02:05.230Z"}
+{"level":"info","message":"Executing (f1416da8-f7a7-43cf-a57b-e7c95732e8a1): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.246Z"}
+{"level":"info","message":"Executing (af0ba24c-0f2b-47a3-9911-dc45c18037e4): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.246Z"}
+{"level":"info","message":"Executing (81659f0c-e57a-4564-af57-e6784dd3fbd6): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.246Z"}
+{"level":"info","message":"Executing (f7e339eb-2429-445d-bddc-92176526b423): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.246Z"}
+{"level":"info","message":"Executing (be87b22f-a0c1-40d3-bc9a-0e6808b41de0): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.246Z"}
+{"level":"info","message":"Executing (c32c3e82-8aad-47d4-8a81-3026a005f789): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.246Z"}
+{"level":"info","message":"Executing (4f64330d-0ec4-4555-9f69-f692f40a3bd2): START TRANSACTION;","timestamp":"2016-07-01T10:02:05.246Z"}
+{"level":"info","message":"Executing (e49ec1bd-7396-4da4-9597-281970c71ce5): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày thể thao đôi' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.261Z"}
+{"level":"info","message":"Executing (f1416da8-f7a7-43cf-a57b-e7c95732e8a1): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.261Z"}
+{"level":"info","message":"Executing (af0ba24c-0f2b-47a3-9911-dc45c18037e4): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.261Z"}
+{"level":"info","message":"Executing (81659f0c-e57a-4564-af57-e6784dd3fbd6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.261Z"}
+{"level":"info","message":"Executing (f7e339eb-2429-445d-bddc-92176526b423): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (be87b22f-a0c1-40d3-bc9a-0e6808b41de0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (c32c3e82-8aad-47d4-8a81-3026a005f789): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (4f64330d-0ec4-4555-9f69-f692f40a3bd2): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (e49ec1bd-7396-4da4-9597-281970c71ce5): COMMIT;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (f1416da8-f7a7-43cf-a57b-e7c95732e8a1): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (af0ba24c-0f2b-47a3-9911-dc45c18037e4): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (81659f0c-e57a-4564-af57-e6784dd3fbd6): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (f7e339eb-2429-445d-bddc-92176526b423): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (be87b22f-a0c1-40d3-bc9a-0e6808b41de0): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (c32c3e82-8aad-47d4-8a81-3026a005f789): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (4f64330d-0ec4-4555-9f69-f692f40a3bd2): SET autocommit = 1;","timestamp":"2016-07-01T10:02:05.277Z"}
+{"level":"info","message":"Executing (f1416da8-f7a7-43cf-a57b-e7c95732e8a1): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày tập GYM nam nữ' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (af0ba24c-0f2b-47a3-9911-dc45c18037e4): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Slip On' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (81659f0c-e57a-4564-af57-e6784dd3fbd6): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford đế bằng' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (f7e339eb-2429-445d-bddc-92176526b423): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Oxford cao gót' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (be87b22f-a0c1-40d3-bc9a-0e6808b41de0): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày bệt – búp bê' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (c32c3e82-8aad-47d4-8a81-3026a005f789): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày Adidas' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (4f64330d-0ec4-4555-9f69-f692f40a3bd2): SELECT `id`, `name`, `cover`, `link`, `StoreId` FROM `Category` AS `Category` WHERE `Category`.`name` = 'Giày ORDER' AND `Category`.`StoreId` = 3 LIMIT 1;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (f1416da8-f7a7-43cf-a57b-e7c95732e8a1): COMMIT;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (af0ba24c-0f2b-47a3-9911-dc45c18037e4): COMMIT;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (81659f0c-e57a-4564-af57-e6784dd3fbd6): COMMIT;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (f7e339eb-2429-445d-bddc-92176526b423): COMMIT;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (be87b22f-a0c1-40d3-bc9a-0e6808b41de0): COMMIT;","timestamp":"2016-07-01T10:02:05.293Z"}
+{"level":"info","message":"Executing (c32c3e82-8aad-47d4-8a81-3026a005f789): COMMIT;","timestamp":"2016-07-01T10:02:05.308Z"}
+{"level":"info","message":"Executing (4f64330d-0ec4-4555-9f69-f692f40a3bd2): COMMIT;","timestamp":"2016-07-01T10:02:05.308Z"}
+{"level":"info","message":"Category index = 18","timestamp":"2016-07-01T10:02:06.212Z"}
+{"level":"info","message":"Category index = 14","timestamp":"2016-07-01T10:02:06.222Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T10:02:06.235Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T10:02:06.237Z"}
+{"level":"info","message":"Category index = 7","timestamp":"2016-07-01T10:02:06.240Z"}
+{"level":"info","message":"Category index = 23","timestamp":"2016-07-01T10:02:06.252Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T10:02:06.280Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T10:02:06.282Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:02:06.282Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:02:06.282Z"}
+{"level":"info","message":"Category index = 2","timestamp":"2016-07-01T10:02:06.285Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T10:02:06.305Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T10:02:06.307Z"}
+{"level":"info","message":"Category index = 17","timestamp":"2016-07-01T10:02:06.312Z"}
+{"level":"info","message":"Category index = 24","timestamp":"2016-07-01T10:02:06.320Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:02:06.330Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:02:06.330Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:02:06.332Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:02:06.332Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:02:06.332Z"}
+{"level":"info","message":"Category index = 6","timestamp":"2016-07-01T10:02:06.335Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T10:02:06.342Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T10:02:06.342Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T10:02:06.342Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T10:02:06.345Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T10:02:06.345Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6889/","timestamp":"2016-07-01T10:02:06.347Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T10:02:06.347Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:02:06.347Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-6861/","timestamp":"2016-07-01T10:02:06.347Z"}
+{"level":"info","message":"Category index = 21","timestamp":"2016-07-01T10:02:06.347Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5202/","timestamp":"2016-07-01T10:02:06.387Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5201/","timestamp":"2016-07-01T10:02:06.387Z"}
+{"level":"info","message":"Category index = 10","timestamp":"2016-07-01T10:02:06.390Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:02:06.965Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:02:06.965Z"}
+{"level":"info","message":"Category index = 15","timestamp":"2016-07-01T10:02:06.965Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T10:02:07.058Z"}
+{"level":"info","message":"Category index = 25","timestamp":"2016-07-01T10:02:07.058Z"}
+{"level":"info","message":"Category index = 8","timestamp":"2016-07-01T10:02:07.179Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-luoi-nu-bw3104/","timestamp":"2016-07-01T10:02:07.225Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-bet-tom-bw3103/","timestamp":"2016-07-01T10:02:07.225Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-cao-su-bw3102/","timestamp":"2016-07-01T10:02:07.225Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T10:02:07.225Z"}
+{"level":"info","message":"Category index = 11","timestamp":"2016-07-01T10:02:07.225Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:02:07.241Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T10:02:07.241Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T10:02:07.241Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:02:07.241Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T10:02:07.241Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T10:02:07.241Z"}
+{"level":"info","message":"Category index = 19","timestamp":"2016-07-01T10:02:07.241Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T10:02:07.305Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:02:07.305Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:02:07.305Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T10:02:07.305Z"}
+{"level":"info","message":"Category index = 1","timestamp":"2016-07-01T10:02:07.308Z"}
+{"level":"info","message":"Category index = 27","timestamp":"2016-07-01T10:02:07.428Z"}
+{"level":"info","message":"Category index = 9","timestamp":"2016-07-01T10:02:07.453Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-tap-gym-nu-bw6310/","timestamp":"2016-07-01T10:02:07.458Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6309/","timestamp":"2016-07-01T10:02:07.458Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:02:07.458Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:02:07.458Z"}
+{"level":"info","message":"Category index = 16","timestamp":"2016-07-01T10:02:07.458Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-bw6896-nam-400k-nu-380k-combo-700k/","timestamp":"2016-07-01T10:02:07.465Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:02:07.465Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:02:07.465Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:02:07.465Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-tom-de-coi-bw3101-nu-210k-nam-230k/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-nam-nu-bw6876-nam-380k-nu-350k-cb-650k/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6874/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6868/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6866/","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Category index = 20","timestamp":"2016-07-01T10:02:07.468Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T10:02:07.478Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:02:07.478Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:02:07.478Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T10:02:07.478Z"}
+{"level":"info","message":"Category index = 12","timestamp":"2016-07-01T10:02:07.478Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6527/","timestamp":"2016-07-01T10:02:07.673Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:02:07.673Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:02:07.675Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-yeezy-boots-bw6505/","timestamp":"2016-07-01T10:02:07.675Z"}
+{"level":"info","message":"Category index = 26","timestamp":"2016-07-01T10:02:07.675Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6892-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:02:07.994Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-luoi-nam-nu/","timestamp":"2016-07-01T10:02:07.994Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6884-nam-380k-nu-350k-cb-680k/","timestamp":"2016-07-01T10:02:07.996Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6883-nam-420k-nu-380k-cb-720k/","timestamp":"2016-07-01T10:02:07.996Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-doi-bw6882-nam-320k-nu-280k-cb-570k/","timestamp":"2016-07-01T10:02:07.996Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-cao-co-bw6880-nam-350k-nu-320k-cb-620k/","timestamp":"2016-07-01T10:02:07.996Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-doi-the-thao-bw6879/","timestamp":"2016-07-01T10:02:07.996Z"}
+{"level":"info","message":"Category index = 5","timestamp":"2016-07-01T10:02:07.996Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5300/","timestamp":"2016-07-01T10:02:08.031Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-bw5301/","timestamp":"2016-07-01T10:02:08.031Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-slip-on-5302-2/","timestamp":"2016-07-01T10:02:08.031Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-luoi-nu-bw5302/","timestamp":"2016-07-01T10:02:08.034Z"}
+{"level":"info","message":"Category index = 22","timestamp":"2016-07-01T10:02:08.036Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6533/","timestamp":"2016-07-01T10:02:08.051Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6532/","timestamp":"2016-07-01T10:02:08.054Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6531/","timestamp":"2016-07-01T10:02:08.054Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-moi-nhat-bw6530/","timestamp":"2016-07-01T10:02:08.054Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-nam-tot-nhat-bwbww6529/","timestamp":"2016-07-01T10:02:08.054Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6528/","timestamp":"2016-07-01T10:02:08.054Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nmd-bw6526-nam-450-nu-400k-cb-765k/","timestamp":"2016-07-01T10:02:08.054Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nu-bw6508/","timestamp":"2016-07-01T10:02:08.054Z"}
+{"level":"info","message":"Category index = 3","timestamp":"2016-07-01T10:02:08.054Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6305/","timestamp":"2016-07-01T10:02:08.071Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw6307/","timestamp":"2016-07-01T10:02:08.074Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-force-bw6306-nam-320k-nu-280k/","timestamp":"2016-07-01T10:02:08.076Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-flyknit-chukka-bw6304-nam-420k-nu-400k/","timestamp":"2016-07-01T10:02:08.076Z"}
+{"level":"info","message":"Category index = 4","timestamp":"2016-07-01T10:02:08.079Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-jordan-nu-bw6200/","timestamp":"2016-07-01T10:02:08.424Z"}
+{"level":"info","message":"Category index = 0","timestamp":"2016-07-01T10:02:08.426Z"}
+{"level":"info","message":"Duplication: http://bluewind.vn/sanpham/giay-the-thao-nam-bw-8104/","timestamp":"2016-07-01T10:02:08.451Z"}
+{"level":"info","message":"Category index = 13","timestamp":"2016-07-01T10:02:08.454Z"}
+{"level":"info","message":"Done extracting product links","timestamp":"2016-07-01T10:02:24.753Z"}
