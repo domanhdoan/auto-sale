@@ -1,29 +1,27 @@
 {
     "product_menu": {
-        "item": "li.menu-item-object-sanpham_cat",
-        "item_link": "a"
+        "item": "li.menu-item-object-sanpham_cat"
     },
     "product_info": {
-        "product_list": "ul.list-tax",
-        "title": ".title a",
-        "thumbnail": ".img a img",
-        "desc": "",
-        "price": ".gia.gia-hok .gia-moi span",
-        "discount": "",
-        "percent": "",
-        "detail_link": ".img a",
+        "link": "ul.list-tax li.img a",
         "details": {
+            "title": ".title a",
+            "desc": "",
+            "thumbnail": ".img a img",
+            "price": ".gia.gia-hok .gia-moi span",
+            "discount": "",
+            "percent": "",
             "code": "p.masp strong",
             "color": "dd.mausac a",
             "size": "dd.size span",
             "brand": "",
             "instock": "del",
             "photo": "div.entry-content p a"
-        },
-        "product_paging": {
-            "page_list": "div.wp-pagenavi",
-            "page_link": "a.page.larger"
         }
+    },
+    "paging": {
+        "page_list": "div.wp-pagenavi",
+        "page_link": "a.page.larger"
     },
     "product_code_pattern": "BW(\\d+)",
     "keywords": {
