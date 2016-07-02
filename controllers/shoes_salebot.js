@@ -238,7 +238,7 @@ function getAvailableColorMsg(show_color, colors, reference) {
             }
             if (matchColorStr === "") {
                 availableColorMessage = "Màu sắc bạn tìm hiện tại không còn.";
-                availableColorMessage += "\nBạn vui lòng xem màu còn hàng bên dưới nhé: \n";
+                availableColorMessage += "Bạn vui lòng xem màu còn hàng bên dưới nhé: \n";
                 availableColorMessage += " - " + availableColors.slice(0, -2);
 
             } else {
@@ -268,7 +268,7 @@ function getAvailableSizeMsg(show_size, sizes, reference) {
                 availableSizes += sizes[i].value + ", ";
             }
             if (matchSizes === "") {
-                availableSizesMesage = "Size bạn tìm hiện tại không còn.\n";
+                availableSizesMesage = "Size bạn tìm hiện tại không còn.";
                 availableSizesMesage += "Bạn vui lòng xem size còn hàng bên dưới nhé: \n";
                 availableSizesMesage += "- " + availableSizes.slice(0, -2);
             } else {
@@ -679,19 +679,20 @@ function handleAvailabilityIntent(session, data) {
                     if (colors.length > 0) {
                         var availableColors = getAvailableColorMsg(true, colors, data.color);
                         fbMessenger.sendTextMessage(session.fbid, availableColors, function() {
-                            callback(null, data);
+                            callback(null, colors);
                         });
                     } else {
                         // Only show similar but not show product have same color`
-                        showSimilarProductSuggestion(session);
-                        callback(null, null);
+                        //showSimilarProductSuggestion(session);
+                        findProductByKeywords(session, data.msg);
+                        callback(null, colors);
                     }
                 });
             } else {
-                callback(null, data);
+                callback(null, colors);
             }
         },
-        function checkSize(data2) {
+        function checkSize(colors, callback) {
             if (data.size != null && data.size.length > 0) {
                 gProductFinder.getProductSizes(session.last_product.id, function(sizes) {
                     var availableSizes = "";
@@ -703,9 +704,13 @@ function handleAvailabilityIntent(session, data) {
                     }
                     fbMessenger.sendTextMessage(session.fbid, availableSizes);
                 });
+                //callback(null, colors, sizes);
             } else {
-                showSimilarProductSuggestion(session);
+                findProductByKeywords(session, data.msg);
             }
+        },
+        function showProduct(colors, sizes) {
+
         }
     ]);
 }
