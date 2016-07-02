@@ -80,4 +80,55 @@ SessionManager.prototype.deteleSession = function(sessionId) {
     delete user_sessions[sessionId];
 }
 
+SessionManager.prototype.setCategoryId = function(session, categoryid) {
+    this.setProductInfo(session, {
+        categoryid: categoryid
+    });
+}
+
+SessionManager.prototype.setProductIdNTitle = function(session, productId, title) {
+    this.setProductInfo(session, {
+        id: productId,
+    });
+}
+
+SessionManager.prototype.setUserAction = function(session, last_action) {
+    this.setSessionInfo(session, {
+        last_action: last_action
+    });
+}
+
+SessionManager.prototype.setProductInfo = function(session, info) {
+    var keys = Object.keys(info);
+    for (var i = 0; i < keys.length; i++) {
+        session.last_product[keys[i]] = info[keys[i]];
+    }
+}
+
+SessionManager.prototype.setOrderStatusInfo = function(session, status) {
+    this.setOrderInfo(session, {
+        is_ordering: status
+    });
+}
+
+SessionManager.prototype.setOrderConfirmStatusInfo = function(session, status) {
+    this.setOrderInfo(session, {
+        status: status
+    });
+}
+
+SessionManager.prototype.setOrderInfo = function(session, info) {
+    var keys = Object.keys(info);
+    for (var i = 0; i < keys.length; i++) {
+        session.last_invoice[keys[i]] = info[keys[i]];
+    }
+}
+
+SessionManager.prototype.setSessionInfo = function(session, info) {
+    var keys = Object.keys(info);
+    for (var i = 0; i < keys.length; i++) {
+        session[keys[i]] = info[keys[i]];
+    }
+}
+
 module.exports = SessionManager;

@@ -162,7 +162,7 @@ function UserIntentParserRegExp() {
         logger.info("User message: " + userMsg);
         for (var i = 0, length = classifications.length; i < length; i++) {
             var classification = classifications[i];
-            if (classifications[i].value > 0.5) {
+            if (classifications[i].value > 0.9) {
                 logger.info("High probility = " + JSON.stringify(classification));
                 productColor.push(classification.label.toLowerCase());
             } else {
@@ -180,7 +180,7 @@ function UserIntentParserRegExp() {
         for (var i = 0, length = sizeRegexp.length; i < length; i++) {
             productSizes = common.extractValue(userMsg, sizeRegexp[i]);
             if (productSizes != "") {
-                productSizes = common.extractValues(userMsg, "\d+");
+                productSizes = common.extractValues(productSizes, "\\d+");
                 if (productSizes.length === 0) {
                     productSizes.push("all");
                 }
