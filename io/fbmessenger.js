@@ -181,9 +181,9 @@ FBMessenger.prototype.sendProductElements = function(sender, foundProducts) {
             foundProducts[i].id);
         messageData.push(productElement);
     }
-    if (messageData.length >= 2) {
-        this.sendTextMessage(sender, common.notify_product_search2);
-    }
+    // if (messageData.length >= 2) {
+    //     this.sendTextMessage(sender, common.notify_product_search2);
+    // }
     this.sendGenericMessage(sender, messageData);
 }
 
