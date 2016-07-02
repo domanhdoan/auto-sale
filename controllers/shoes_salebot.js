@@ -236,11 +236,11 @@ function getAvailableColorString(show_color, colors, reference) {
             }
             if (matchColorStr === "") {
                 availableColorMessage = "Màu sắc bạn tìm hiện tại không còn.";
-                availableColorMessage += "\nBạn vui lòng chọn trong những màu bên dưới nhé: \n";
-                availableColorMessage += " - " + availableColors.slice(0, -1);;
+                availableColorMessage += "\nBạn vui lòng xem màu còn hàng bên dưới nhé: \n";
+                availableColorMessage += " - " + availableColors.slice(0, -2);
 
             } else {
-                availableColorMessage += matchColorStr.slice(0, -1);
+                availableColorMessage += matchColorStr.slice(0, -2) + " còn hàng nhé";
             }
         } else {
             availableColorMessage += common.status_updating;
@@ -250,23 +250,30 @@ function getAvailableColorString(show_color, colors, reference) {
 }
 
 function getAvailableSizeString(show_size, sizes, reference) {
-    var available_sizes = "";
+    var availableSizesMesage = "";
     if (show_size) {
-        available_sizes = "\n - Size: ";
+        availableSizesMesage = "\n - Size: ";
+        var matchSizes = "";
+        var availableSizes = "";
         if (sizes != null && sizes.length > 0) {
             for (var i = 0; i < (sizes.length - 1); i++) {
                 if (reference.indexOf(sizes[i].value) >= 0) {
-                    available_sizes += sizes[i].value + ", ";
-                } else {
-
-                }
+                    matchSizes += sizes[i].value + ", ";
+                } else {}
+                availableSizes += sizes[i].value + ", ";
             }
-            available_sizes += sizes[(sizes.length - 1)].value;
+            if (matchSizes === "") {
+                availableSizesMesage = "Màu sắc bạn tìm hiện tại không còn.";
+                availableSizesMesage += "\nBạn vui lòng xem size còn hàng bên dưới nhé: \n";
+                availableSizesMesage += " - " + availableSizes.slice(0, -2);
+            } else {
+                availableSizesMesage += matchSizes.slice(0, -2) + " còn hàng nhé";
+            }
         } else {
-            available_sizes += common.status_updating;
+            availableSizesMesage += common.status_updating;
         }
     }
-    return available_sizes;
+    return availableSizesMesage;
 }
 
 function showAvailableColorNsize(session, show_color, show_size, show_photo) {
@@ -647,6 +654,7 @@ function handlePriceIntent(session, data, product) {
 }
 
 function handleAvailabilityIntent(session, data) {
+    logger.info("Extracted data: " + JSON.stringify(data));
     async.series([
         function checkColor(callback) {
             if (data.color.length > 0) {
@@ -658,7 +666,7 @@ function handleAvailabilityIntent(session, data) {
                         });
                     } else {
                         // Only show similar but not show product have same color`
-                        showSimilarProductSuggestion();
+                        showSimilarProductSuggestion(session);
                         callback(null, null);
                     }
                 });
@@ -674,7 +682,7 @@ function handleAvailabilityIntent(session, data) {
                         fbMessenger.sendTextMessage(session.fbid, availableSizes);
                     } else {
                         // Only show similar but not show product have same color`
-                        showSimilarProductSuggestion();
+                        showSimilarProductSuggestion(session);
                     }
                 });
             } else {
