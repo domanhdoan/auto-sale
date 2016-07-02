@@ -173,7 +173,7 @@ function getAvailableColorMsg(show_color, colors, reference) {
     referColorsString = referColorsString.toLowerCase();
 
     if (show_color) {
-        availableColorMessage = "\n - Màu sắc: ";
+        availableColorMessage = "\n- Màu sắc: ";
         var matchColorStr = "";
         var availableColors = "";
         if (colors != null && colors.length > 0) {
@@ -185,11 +185,11 @@ function getAvailableColorMsg(show_color, colors, reference) {
             }
             if (matchColorStr === "") {
                 availableColorMessage = "Màu sắc bạn tìm hiện tại không còn.";
-                availableColorMessage += "Bạn vui lòng xem màu còn hàng bên dưới nhé: \n";
+                availableColorMessage += "Bạn vui lòng xem màu còn hàng bên dưới: \n";
                 availableColorMessage += " - " + availableColors.slice(0, -2);
 
             } else {
-                availableColorMessage += matchColorStr.slice(0, -2) + " còn hàng nhé";
+                availableColorMessage += matchColorStr.slice(0, -2) + " còn hàng";
             }
         } else {
             availableColorMessage += common.status_updating;
@@ -216,10 +216,10 @@ function getAvailableSizeMsg(show_size, sizes, reference) {
             }
             if (matchSizes === "") {
                 availableSizesMesage = "Size bạn tìm hiện tại không còn.";
-                availableSizesMesage += "Bạn vui lòng xem size còn hàng bên dưới nhé: \n";
+                availableSizesMesage += "Bạn vui lòng xem size còn hàng bên dưới: \n";
                 availableSizesMesage += "- " + availableSizes.slice(0, -2);
             } else {
-                availableSizesMesage += matchSizes.slice(0, -2) + " còn hàng nhé";
+                availableSizesMesage += matchSizes.slice(0, -2) + " còn hàng";
             }
         } else {
             availableSizesMesage += common.status_updating;
