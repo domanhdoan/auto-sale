@@ -44,7 +44,7 @@ function UserIntentParserRegExp() {
     ];
 
     var typeRegexp = ['nam', 'nu',
-        'combo', 'cb' //, 'doi'
+        'combo', 'cb'
     ];
 
     var quantityRegexp = [
@@ -53,6 +53,11 @@ function UserIntentParserRegExp() {
     ];
 
     var sizeRegexp = [
+        "co \\d+ \\w+ co \\d+",
+        "co \\d+ \\w+ \\d+",
+        "co \\d+ \\d+",
+        "co \\d+ - \\d+",
+        "co \\d+-\\d+",
         "size \\d+ \\w+ size \\d+",
         "size \\d+ \\w+ \\d+",
         "size \\d+ \\d+",
@@ -109,9 +114,9 @@ function UserIntentParserRegExp() {
     this.parseProductType = function(userMsg) {
         var productType = [];
         for (var i = 0, length = typeRegexp.length; i < length; i++) {
-            productType = common.extractValues(userMsg, typeRegexp[i]);
-            if (productType.length > 0) {
-                break;
+            var type = common.extractValues(userMsg, typeRegexp[i]);
+            if (type != "") {
+                productType.push(type);
             }
         }
         return productType;
@@ -161,16 +166,18 @@ function UserIntentParserRegExp() {
         var productColor = [];
         var classifications = propertiesClassifier.getClassifications(userMsg);
         logger.info("User message: " + userMsg);
-        for (var i = 0, length = classifications.length; i < length; i++) {
-            var classification = classifications[i];
-            if (classifications[i].value > 0.9) {
-                logger.info("High probility = " + JSON.stringify(classification));
-                //productColor.push(classification.label.toLowerCase());
-            } else {
-                logger.info("Low probility = " + JSON.stringify(classification));
+        if (userMsg.indexOf("mau") >= 0) {
+            for (var i = 0, length = classifications.length; i < length; i++) {
+                var classification = classifications[i];
+                if (classifications[i].value > 0.9) {
+                    logger.info("High probility = " + JSON.stringify(classification));
+                    //productColor.push(classification.label.toLowerCase());
+                } else {
+                    logger.info("Low probility = " + JSON.stringify(classification));
+                }
             }
+            productColor.push(propertiesClassifier.classify(userMsg));
         }
-        productColor.push(propertiesClassifier.classify(userMsg));
         return productColor;
     }
 
@@ -178,7 +185,6 @@ function UserIntentParserRegExp() {
         var productSizes = [];
         userMsg = userMsg.replaceAll("saiz", "size");
         userMsg = userMsg.replaceAll("sz", "size");
-        userMsg = userMsg.replaceAll("co", "size");
         for (var i = 0, length = sizeRegexp.length; i < length; i++) {
             productSizes = common.extractValue(userMsg, sizeRegexp[i]);
             if (productSizes != "") {
@@ -189,13 +195,21 @@ function UserIntentParserRegExp() {
                 break;
             }
         }
+        if (productSizes === "") {
+            productSizes = [];
+        }
         return productSizes;
     }
 
     this.parseAvailabilityIntentInfo = function(userMsg, options) {
         var productCode = common.extractProductCode(userMsg, options.codePattern).code;
-        var color = this.parseColorInfo(userMsg);
         var size = this.parseSizeInfo(userMsg);
+        var color = this.parseColorInfo(userMsg);
+
+        if (size.length == 0 && color.length == 0) {
+            size[0] = "all";
+            color[0] = "all";
+        }
         this.emitter.emit(common.INTENT_CHECK_AVAILABILITY, {
             storeid: options.storeid,
             pageid: options.pageid,
