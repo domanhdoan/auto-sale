@@ -36,6 +36,10 @@ function UserIntentParserRegExp() {
         "bao lau", "het bao nhieu"
     ];
 
+    var keyword_category = [
+        "the thao", "the thao doi", "the thao nam", "the thao nu",
+        "adidas", "nike", "ked", "slip on", "oxford", "bet", "bup be"
+    ];
     var keyword_ask_consult = ['do size', 'gia ship'];
     var keyword_ask_location = ['dia chi'];
 
@@ -73,6 +77,7 @@ function UserIntentParserRegExp() {
 
     var intentClassifier = new nlpChecker.BayesClassifier();
     var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier();
+    var categoryClassifier = new nlpChecker.LogisticRegressionClassifier();
 
     this.initClassifier = function(classifier, dataSet, intent) {
         for (var i = 0; i < dataSet.length; i++) {
@@ -102,6 +107,10 @@ function UserIntentParserRegExp() {
 
     this.trainShipClassifier = function() {
         this.initClassifier(intentClassifier, keyword_check_ship, common.INTENT_CHECK_SHIP);
+    }
+
+    this.trainCatergoryClassifier = function() {
+        this.initClassifier(categoryClassifier, keyword_category, common.INTENT_GENERAL_SEARCH);
     }
 
     this.getIntent = function(message) {
@@ -167,15 +176,15 @@ function UserIntentParserRegExp() {
         var classifications = propertiesClassifier.getClassifications(userMsg);
         logger.info("User message: " + userMsg);
         if (userMsg.indexOf("mau") >= 0) {
-            for (var i = 0, length = classifications.length; i < length; i++) {
-                var classification = classifications[i];
-                if (classifications[i].value > 0.9) {
-                    logger.info("High probility = " + JSON.stringify(classification));
-                    //productColor.push(classification.label.toLowerCase());
-                } else {
-                    logger.info("Low probility = " + JSON.stringify(classification));
-                }
-            }
+            // for (var i = 0, length = classifications.length; i < length; i++) {
+            //     var classification = classifications[i];
+            //     if (classifications[i].value > 0.9) {
+            //         logger.info("High probility = " + JSON.stringify(classification));
+            //         //productColor.push(classification.label.toLowerCase());
+            //     } else {
+            //         logger.info("Low probility = " + JSON.stringify(classification));
+            //     }
+            // }
             productColor.push(propertiesClassifier.classify(userMsg));
         }
         return productColor;
@@ -202,24 +211,34 @@ function UserIntentParserRegExp() {
     }
 
     this.parseAvailabilityIntentInfo = function(userMsg, options) {
-        var productCode = common.extractProductCode(userMsg, options.codePattern).code;
-        var size = this.parseSizeInfo(userMsg);
-        var color = this.parseColorInfo(userMsg);
+        var categorySearch = categoryClassifier.classify(userMsg);
+        var classifications = categoryClassifier.getClassifications(userMsg);
+        var classification = classifications[0];
+        var intent = (classification.value >= 0.8) ? categorySearch : common.INTENT_CHECK_AVAILABILITY;
 
-        if (size.length == 0 && color.length == 0) {
-            size[0] = "all";
-            color[0] = "all";
-        }
-        this.emitter.emit(common.INTENT_CHECK_AVAILABILITY, {
+        var data = {
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,
             productid: options.productid,
-            code: productCode,
-            color: color,
-            size: size,
             msg: userMsg
-        });
+        };
+
+
+        if (categoryClassifier != common.INTENT_GENERAL_SEARCH) {
+            var productCode = common.extractProductCode(userMsg, options.codePattern).code;
+            var size = this.parseSizeInfo(userMsg);
+            var color = this.parseColorInfo(userMsg);
+            if (size.length == 0 && color.length == 0) {
+                size[0] = "all";
+                color[0] = "all";
+            }
+            data.code = productCode;
+            data.color = color;
+            data.size = size;
+        }
+        this.emitter.emit(intent, data);
+
     }
 
     this.parseShipIntentInfo = function(userMsg, options) {
@@ -241,6 +260,7 @@ method.setEmitter = function(emitter) {
     this.trainAvailabilityClassifier();
     this.trainShipClassifier();
     this.trainColorClassifier();
+    this.trainCatergoryClassifier();
 }
 
 method.parse = function(userMsg, options) {
