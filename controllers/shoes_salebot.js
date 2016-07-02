@@ -774,8 +774,10 @@ function setUpUserIntentListener() {
             if (product != null) {
                 sessionManager.setProductInfo(session, {
                     id: product.id,
-                    categoryid: product.CategoryId
+                    title: product.title
                 });
+                sessionManager.setCategoryId(session, product.CategoryId);
+
                 if (data.size.length * data.color.length > 0) {
                     handleAvailabilityIntent(session, data, product);
                 } else if (data.size.length) {
