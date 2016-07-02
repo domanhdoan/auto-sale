@@ -33,7 +33,7 @@ function FBMessenger() {
                     }
                 }
             });
-        }, 1500);
+        }, 1000);
     }
 
     this.createCategoryElement = function(id, name, link, cover) {
