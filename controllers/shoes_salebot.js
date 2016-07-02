@@ -225,15 +225,18 @@ function getAvailableColorString(show_color, colors, reference) {
 
     if (show_color) {
         available_colors = "\n - Màu sắc: ";
+        var colorStr = "";
         if (colors != null && colors.length > 0) {
             for (var i = 0; i < colors.length; i++) {
                 if (referColorsString.indexOf(colors[i].name) >= 0) {
-                    available_colors += common.get_color_vn(colors[i].name) + ", ";
-                } else {
-
-                }
+                    colorStr += common.get_color_vn(colors[i].name) + ", ";
+                } else {}
             }
-            //available_colors = available_colors.subString(0, available_colors.length - 1);
+            if (colorStr === "") {
+                available_colors = "Màu sắc bạn tìm hiện tại không có trong cửa hàng";
+            } else {
+                available_colors += colorStr.subString(0, colorStr.length - 2);
+            }
         } else {
             available_colors += common.status_updating;
         }
@@ -659,10 +662,10 @@ function handleAvailabilityIntent(session, data) {
             }
         },
         function checkSize(data2) {
-            if (data != null) {
+            if (data.size != null && data.size.length > 0) {
                 gProductFinder.getProductSizes(session.last_product.id, function(sizes) {
                     if (sizes.length > 0) {
-                        var availableSizes = getAvailableColorString(true, sizes, data.size);
+                        var availableSizes = getAvailableSizeString(true, sizes, data.size);
                         fbMessenger.sendTextMessage(session.fbid, availableSizes);
                     } else {
                         // Only show similar but not show product have same color`

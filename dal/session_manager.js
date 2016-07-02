@@ -38,7 +38,7 @@ function SessionManager() {
 }
 
 SessionManager.prototype.getFirstMessagingEntry = function(body) {
-    const val = body.object == 'page' &&
+    var val = body.object == 'page' &&
         body.entry &&
         Array.isArray(body.entry) &&
         body.entry.length > 0 &&
