@@ -217,7 +217,7 @@ function findCategories(session) {
     });
 }
 
-function getAvailableColorString(show_color, colors, reference) {
+function getAvailableColorMsg(show_color, colors, reference) {
     var availableColorMessage = "";
     var referColorsString = reference.toString().replaceAll(" ", '');
     referColorsString = referColorsString.replaceAll(",", '');
@@ -249,22 +249,25 @@ function getAvailableColorString(show_color, colors, reference) {
     return availableColorMessage;
 }
 
-function getAvailableSizeString(show_size, sizes, reference) {
+function getAvailableSizeMsg(show_size, sizes, reference) {
     var availableSizesMesage = "";
+    var referSizesString = reference.toString().replaceAll(" ", '');
+    referSizesString = referSizesString.replaceAll(",", '');
+    referSizesString = referSizesString.toLowerCase();
     if (show_size) {
         availableSizesMesage = "\n - Size: ";
         var matchSizes = "";
         var availableSizes = "";
         if (sizes != null && sizes.length > 0) {
             for (var i = 0; i < (sizes.length - 1); i++) {
-                if (reference.indexOf(sizes[i].value) >= 0) {
+                if (referSizesString.indexOf(sizes[i].value) >= 0) {
                     matchSizes += sizes[i].value + ", ";
                 } else {}
                 availableSizes += sizes[i].value + ", ";
             }
             if (matchSizes === "") {
-                availableSizesMesage = "Màu sắc bạn tìm hiện tại không còn.";
-                availableSizesMesage += "\nBạn vui lòng xem size còn hàng bên dưới nhé: \n";
+                availableSizesMesage = "Size bạn tìm hiện tại không còn.\n";
+                availableSizesMesage += "Bạn vui lòng xem size còn hàng bên dưới nhé: \n";
                 availableSizesMesage += " - " + availableSizes.slice(0, -2);
             } else {
                 availableSizesMesage += matchSizes.slice(0, -2) + " còn hàng nhé";
@@ -280,8 +283,8 @@ function showAvailableColorNsize(session, show_color, show_size, show_photo) {
     var productId = session.last_product.id;
     gProductFinder.getColorsNSizeNPhotos(productId,
         function(colors, sizes, photos) {
-            var available_colors = getAvailableColorString(show_color, colors, JSON.stringify(colors));
-            var available_sizes = getAvailableSizeString(show_size, sizes, JSON.stringify(sizes));
+            var available_colors = getAvailableColorMsg(show_color, colors, JSON.stringify(colors));
+            var available_sizes = getAvailableSizeMsg(show_size, sizes, JSON.stringify(sizes));
             logger.info("Product id = " + productId + " \nDetails - " + available_colors + available_sizes);
             if (show_photo && photos.length > 0) {
                 fbMessenger.sendProductPhotoElements(session.fbid, session.last_product.id,
@@ -660,7 +663,7 @@ function handleAvailabilityIntent(session, data) {
             if (data.color.length > 0) {
                 gProductFinder.getProductColors(session.last_product.id, function(colors) {
                     if (colors.length > 0) {
-                        var availableColors = getAvailableColorString(true, colors, data.color);
+                        var availableColors = getAvailableColorMsg(true, colors, data.color);
                         fbMessenger.sendTextMessage(session.fbid, availableColors, function() {
                             callback(null, data);
                         });
@@ -677,16 +680,17 @@ function handleAvailabilityIntent(session, data) {
         function checkSize(data2) {
             if (data.size != null && data.size.length > 0) {
                 gProductFinder.getProductSizes(session.last_product.id, function(sizes) {
-                    if (sizes.length > 0) {
-                        var availableSizes = getAvailableSizeString(true, sizes, data.size);
-                        fbMessenger.sendTextMessage(session.fbid, availableSizes);
-                    } else {
+                    var availableSizes = "";
+                    if (data.size.indexOf("all") >= 0) {
                         // Only show similar but not show product have same color`
-                        showSimilarProductSuggestion(session);
+                        availableSizes = getAvailableSizeMsg(true, sizes, JSON.stringify(sizes));
+                    } else {
+                        availableSizes = getAvailableSizeMsg(true, sizes, data.size);
                     }
+                    fbMessenger.sendTextMessage(session.fbid, availableSizes);
                 });
             } else {
-
+                showSimilarProductSuggestion(session);
             }
         }
     ]);
