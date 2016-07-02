@@ -14,7 +14,12 @@
             "message": {
                 "mid": "mid.1460245671959:dad2ec9421b03d6f78",
                 "seq": 216,
-                "text": "6305 mau đen size 40"
+                "attachments": [{
+                    "type": "image",
+                    "payload": {
+                        "url": "https://fbcdn-photos-c-a.akamaihd.net/hphotos-ak-xfa1/v/t34.0-0/p206x206/13598964_268295553534920_957977679_n.jpg?oh=188b324af166b91fbfad7e38a8818083&oe=5779CC31&__gda__=1467598919_1a193cd5f45eb327c1dc87abfd489302"
+                    }
+                }]
             }
         }]
     }]
