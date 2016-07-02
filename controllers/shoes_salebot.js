@@ -140,7 +140,11 @@ function sendProductSearchResultsToFB(session, products) {
                 }
                 fbMessenger.sendProductElements(session.fbid, found_products);
                 if (found_products.length == 1) {
-                    session.last_product.id = found_products[0].id;
+                    sessionManager.setProductInfo(session, {
+                        id: found_products[0].id,
+                        title: found_products[0].title
+                    });
+                    sessionManager.setCategoryId(session, found_products[0].CategoryId);
                 }
             }
         ]);
@@ -275,6 +279,7 @@ function findProductByThumbLink(session, thumbLink) {
     gProductFinder.findProductByThumbnail(gHomepage, thumbLink, function(product) {
         sendProductSearchResultsToFB(session, product);
         session.last_product.categoryid = product.CategoryId;
+
     });
 }
 
@@ -658,15 +663,15 @@ function handlePriceIntent(session, data, product) {
     logger.info("Extracted INTENT data: " + JSON.stringify(data));
     sessionManager.setProductInfo(session, {
         id: product.id,
-        categoryid: product.CategoryId
+        title: product.title
     });
-
+    sessionManager.setCategoryId(session, product.CategoryId);
     if (Object.keys(product).length) {
         async.series([
             function(callback) {
                 var price = (product.price > product.discount) ? product.discount : product.price;
                 var delta = (product.price - product.discount) / 1000;
-                var saleoffmsg = product.price > product.discount ? " (Có KM " + parseInt(delta) + "K VNĐ)" : " (Không KM)";
+                var saleoffmsg = product.price > product.discount ? " (Có KM " + parseInt(delta) + "K VNĐ)" : " (Không có KM)";
                 var message = product.title;
                 fbMessenger.sendTextMessage(data.fbid, message, function() {
                     message = "";
