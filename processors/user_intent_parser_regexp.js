@@ -12,7 +12,7 @@ function UserIntentParserRegExp() {
     var keyword_check_price = [
         'bao nhieu', 'ba0 nhieu', 'bao nhjeu',
         'bnhieu', 'bn',
-        'gia the nao', 'the nao'
+        'gia the nao', 'thi the nao'
     ];
 
     var keyword_check_availability = [
