@@ -123,6 +123,10 @@ SessionManager.prototype.setOrdeTrigerStatusInfo = function(session, isOrdering)
     });
 }
 
+SessionManager.prototype.isOrdeTrigerStatusInfo = function(session) {
+    return session.last_invoice.isOrdering;
+}
+
 SessionManager.prototype.setOrderConfirmStatusInfo = function(session, status) {
     this.setOrderInfo(session, {
         status: status
