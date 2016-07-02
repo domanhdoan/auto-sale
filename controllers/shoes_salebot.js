@@ -727,7 +727,6 @@ function handleAvailabilityColorIntent(session, data) {
                 fbMessenger.sendTextMessage(session.fbid, availableColors, function() {});
             } else {
                 // Only show similar but not show product have same color`
-                //showSimilarProductSuggestion(session);
                 findProductByKeywords(session, data.msg);
             }
         });
