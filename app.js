@@ -14,7 +14,7 @@ function show_error() {
     logger.error("Where options: ");
     logger.error("-c: turn on crawling. Default disable");
     logger.error("-b: turn on sale bot. Default disable");
-    logger.error("--noai: turn off using AI for processing use message. Default enable");
+    logger.error("--noai: turn off using AI for processing use message. Default disable");
 }
 
 var args = process.argv.slice(2);
