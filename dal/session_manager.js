@@ -70,16 +70,19 @@ SessionManager.prototype.findOrCreateSession = function(storeid, pageid, fbid) {
     if (!sessionId) {
         // No session found for user fbid, let's create a new one
         sessionId = new Date().toISOString();
-        user_sessions[sessionId] = this.createNewSession(storeid, pageid, fbid);
+        var session = this.createNewSession(storeid, pageid, fbid);
+        session.sessionId = sessionId;
+        user_sessions[sessionId] = session;
     }
     return user_sessions[sessionId];
 };
 
-SessionManager.prototype.resetSession = function(sessionId) {
-    var storeid = user_sessions[sessionId].storeid;
-    var pageid = user_sessions[sessionId].pageid;
-    var fbid = user_sessions[sessionId].fbid;
-    user_sessions[sessionId] = this.createNewSession(storeid, pageid, fbid);
+SessionManager.prototype.resetSession = function(session) {
+    var storeid = session.storeid;
+    var pageid = session.pageid;
+    var fbid = session.fbid;
+    this.deteleSession(session.sessionId);
+    session = findOrCreateSession(storeid, pageid, fbid);
 }
 
 SessionManager.prototype.deteleSession = function(sessionId) {
