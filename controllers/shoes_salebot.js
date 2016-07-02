@@ -536,7 +536,8 @@ function processEvent(event) {
         if (event.message.text) {
             var text = event.message.text;
             var isURL = common.isUrl(text);
-            if (!isURL) {
+            var isOrdering = sessionManager.isOrdeTrigerStatusInfo(currentSession);
+            if (!isURL && !isOrdering) {
                 var options = {
                     storeid: currentSession.storeid,
                     pageid: receiver,
