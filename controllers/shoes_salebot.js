@@ -189,7 +189,7 @@ function getAvailableColorMsg(show_color, colors, reference) {
             }
             if (matchColorStr === "") {
                 availableColorMessage = "Màu sắc bạn tìm hiện tại không còn.";
-                availableColorMessage += "Bạn vui lòng xem màu còn hàng bên dưới: \n";
+                availableColorMessage += " Bạn vui lòng xem màu còn hàng bên dưới: \n";
                 availableColorMessage += " - " + availableColors.slice(0, -2);
 
             } else {
@@ -421,7 +421,7 @@ function doFillOrderDetails(session, text) {
         session.last_action = common.set_delivery_date;
     } else if (session.last_action == common.set_delivery_date) {
         createAndSendOrderToFB(session, function() {
-            fbMessenger.sendOrderConfirmMessage(session.fbid, "Xác nhận đơ hàng!");
+            fbMessenger.sendOrderConfirmMessage(session.fbid, "Xác nhận đơn hàng!");
         });
     } else {
         logger.info("Unknow action = " + text);
@@ -507,8 +507,8 @@ function processPostbackEvent(session, action_details) {
         sessionManager.setOrderStatusInfo(session, "confirm");
         gModelFactory.update_invoice(session.last_invoice, function(invoice) {
             logger.info(invoice);
-            sessionManager.resetSession(session.fbid);
             fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
+            sessionManager.resetSession(session);
         });
 
     } else if (user_action.indexOf(common.action_cancel_order) >= 0) {
