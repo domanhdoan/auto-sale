@@ -82,6 +82,7 @@ function UserIntentParserRegExp() {
             var color_invn = colorsVn[keys[i]].latinise();
             propertiesClassifier.addDocument(color_invn, color_invn);
         }
+        propertiesClassifier.addDocument("mau", color_invn);
         propertiesClassifier.train();
     }
 
@@ -99,8 +100,8 @@ function UserIntentParserRegExp() {
 
     this.getIntent = function(message) {
         var classifications = intentClassifier.getClassifications(message);
-        logger.info("message = " + message);
-        logger.info("Classification = " + JSON.stringify(classifications));
+        // logger.info("message = " + message);
+        // logger.info("Classification = " + JSON.stringify(classifications));
         return intentClassifier.classify(message);
     }
 
@@ -158,6 +159,7 @@ function UserIntentParserRegExp() {
     this.parseColorInfo = function(userMsg) {
         var productColor = [];
         var classifications = propertiesClassifier.getClassifications(userMsg);
+        logger.info("User message: " + userMsg);
         for (var i = 0, length = classifications.length; i < length; i++) {
             var classification = classifications[i];
             if (classifications[i].value > 0.5) {
@@ -171,18 +173,21 @@ function UserIntentParserRegExp() {
     }
 
     this.parseSizeInfo = function(userMsg) {
-        var productSize = "";
+        var productSizes = [];
         userMsg = userMsg.replaceAll("saiz", "size");
         userMsg = userMsg.replaceAll("sz", "size");
         userMsg = userMsg.replaceAll("co", "size");
         for (var i = 0, length = sizeRegexp.length; i < length; i++) {
-            productSize = common.extractValue(userMsg, sizeRegexp[i]);
-            if (productSize != "") {
-                productSize = productSize.match(/\d+/g);
+            productSizes = common.extractValue(userMsg, sizeRegexp[i]);
+            if (productSizes != "") {
+                productSizes = common.extractValues(userMsg, "\d+");
+                if (productSizes.length === 0) {
+                    productSizes.push("all");
+                }
                 break;
             }
         }
-        return productSize;
+        return productSizes;
     }
 
     this.parseAvailabilityIntentInfo = function(userMsg, options) {
