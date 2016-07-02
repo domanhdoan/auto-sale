@@ -218,30 +218,35 @@ function findCategories(session) {
 }
 
 function getAvailableColorString(show_color, colors, reference) {
-    var available_colors = "";
+    var availableColorMessage = "";
     var referColorsString = reference.toString().replaceAll(" ", '');
     referColorsString = referColorsString.replaceAll(",", '');
     referColorsString = referColorsString.toLowerCase();
 
     if (show_color) {
-        available_colors = "\n - Màu sắc: ";
-        var colorStr = "";
+        availableColorMessage = "\n - Màu sắc: ";
+        var matchColorStr = "";
+        var availableColors = "";
         if (colors != null && colors.length > 0) {
             for (var i = 0; i < colors.length; i++) {
                 if (referColorsString.indexOf(colors[i].name) >= 0) {
-                    colorStr += common.get_color_vn(colors[i].name) + ", ";
+                    matchColorStr += common.get_color_vn(colors[i].name) + ", ";
                 } else {}
+                availableColors += common.get_color_vn(colors[i].name) + ", ";
             }
-            if (colorStr === "") {
-                available_colors = "Màu sắc bạn tìm hiện tại không có trong cửa hàng";
+            if (matchColorStr === "") {
+                availableColorMessage = "Màu sắc bạn tìm hiện tại không còn.";
+                availableColorMessage += "\nBạn vui lòng chọn trong những màu bên dưới nhé: \n";
+                availableColorMessage += " - " + availableColors.slice(0, -1);;
+
             } else {
-                available_colors += colorStr.subString(0, colorStr.length - 2);
+                availableColorMessage += matchColorStr.slice(0, -1);
             }
         } else {
-            available_colors += common.status_updating;
+            availableColorMessage += common.status_updating;
         }
     }
-    return available_colors;
+    return availableColorMessage;
 }
 
 function getAvailableSizeString(show_size, sizes, reference) {
