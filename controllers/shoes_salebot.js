@@ -278,15 +278,12 @@ function showSimilarProductSuggestion(session) {
 function findProductByThumbLink(session, thumbLink) {
     gProductFinder.findProductByThumbnail(gHomepage, thumbLink, function(product) {
         sendProductSearchResultsToFB(session, product);
-        session.last_product.categoryid = product.CategoryId;
-
     });
 }
 
 function findProductByDetailLink(session, link) {
     gProductFinder.findProductByLink(session.storeid, link, function(product) {
         sendProductSearchResultsToFB(session, product);
-        session.last_product.categoryid = product.CategoryId;
     });
 }
 
@@ -299,7 +296,6 @@ function findProductByKeywords(session, keywords) {
 function findProductByCode(session, productCode) {
     gProductFinder.findProductByCode(session.storeid, productCode, function(product) {
         sendProductSearchResultsToFB(session, product);
-        session.last_product.categoryid = product.CategoryId;
     });
 }
 
