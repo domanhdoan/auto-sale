@@ -29,10 +29,11 @@ function UserIntentParserRegExp() {
         "saiz nao", "size nao", "sz nao", "co nao", "mau nao"
     ];
 
-    var keyword_check_ship = ['ship', 've',
-        'den', 've den', 'tu',
+    var keyword_check_ship = [
+        'ship', 've', 'tu',
+        'giao hang',
         'free ship', "COD", "gia ship",
-        "bao lau", " het bao nhieu"
+        "bao lau", "het bao nhieu"
     ];
 
     var keyword_ask_consult = ['do size', 'gia ship'];
@@ -143,7 +144,7 @@ function UserIntentParserRegExp() {
             }
         }
 
-        this.emitter.emit(common.INTENT_CHECK_AVAILABILITY, {
+        this.emitter.emit(common.INTENT_CHECK_PRICE, {
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,
@@ -164,11 +165,12 @@ function UserIntentParserRegExp() {
             var classification = classifications[i];
             if (classifications[i].value > 0.9) {
                 logger.info("High probility = " + JSON.stringify(classification));
-                productColor.push(classification.label.toLowerCase());
+                //productColor.push(classification.label.toLowerCase());
             } else {
                 logger.info("Low probility = " + JSON.stringify(classification));
             }
         }
+        productColor.push(propertiesClassifier.classify(userMsg));
         return productColor;
     }
 

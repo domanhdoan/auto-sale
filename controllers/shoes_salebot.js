@@ -624,21 +624,21 @@ function initWebHook() {
 }
 
 function handlePriceIntent(session, data, product) {
-
-    session.last_product.id = product.id;
-    session.last_product.CategoryId = product.CategoryId;
+    sessionManager.setProductInfo(session, {
+        id: product.id,
+        categoryid: product.CategoryId
+    });
 
     if (Object.keys(product).length) {
         async.series([
             function(callback) {
                 var price = (product.price > product.discount) ? product.discount : product.price;
-                var saleoffmsg = product.price > product.discount ? " (Có KM)" : " (Không KM)";
+                var delta = (product.price - product.discount) / 1000;
+                var saleoffmsg = product.price > product.discount ? " (Có KM " + parseInt(delta) + "K VNĐ)" : " (Không KM)";
                 var message = product.title;
                 fbMessenger.sendTextMessage(data.fbid, message, function() {
                     message = "";
-                    if (data.type.length == 0) {
-                        message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
-                    } else {
+                    if (data.type.length > 0) {
                         for (var i = 0, length = data.type.length; i < length; i++) {
                             var prices = common.extractValues(product.title, "\\d+k");
                             if (product.title.indexOf(data.type[i]) > 0) {
@@ -652,10 +652,11 @@ function handlePriceIntent(session, data, product) {
                             } else {
                                 message = "- Sản phẩm này không có kiểu " + data.type[i] + " bạn đang tìm.";
                             }
-                            fbMessenger.sendTextMessage(data.fbid, message);
                         }
+                    } else {
+                        message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
                     }
-
+                    fbMessenger.sendTextMessage(data.fbid, message);
                     callback(null);
                 });
 
@@ -721,7 +722,7 @@ function setUpUserIntentListener() {
                 handlePriceIntent(session, data, product)
             });
         } else {
-            showSimilarProductSuggestion();
+            showSimilarProductSuggestion(session);
         }
     });
 
@@ -729,8 +730,10 @@ function setUpUserIntentListener() {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         if (data.code != '') {
             gProductFinder.findProductByCode(session.storeid, data.code, function(product) {
-                session.last_product.id = product.id;
-                session.last_product.CategoryId = product.CategoryId;
+                sessionManager.setProductInfo(session, {
+                    id: product.id,
+                    categoryid: product.CategoryId
+                });
                 handleAvailabilityIntent(session, data);
             });
         } else if (data.productid >= 0) {
