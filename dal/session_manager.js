@@ -36,7 +36,7 @@ function SessionManager() {
                 email: "",
                 status: "",
                 creation_date: "",
-                is_ordering: false
+                isOrdering: false
             },
             last_search: ""
         };
@@ -114,6 +114,12 @@ SessionManager.prototype.setProductInfo = function(session, info) {
 SessionManager.prototype.setOrderStatusInfo = function(session, status) {
     this.setOrderInfo(session, {
         is_ordering: status
+    });
+}
+
+SessionManager.prototype.setOrdeTrigerStatusInfo = function(session, isOrdering) {
+    this.setOrderInfo(session, {
+        isOrdering: isOrdering
     });
 }
 
