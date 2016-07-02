@@ -6,7 +6,7 @@
         "request": "launch",
         "program": "${workspaceRoot}/app.js",
         "stopOnEntry": false,
-        "args": ["-c", "--noai"],
+        "args": ["-b", "--noai"],
         "cwd": "${workspaceRoot}",
         "preLaunchTask": null,
         "runtimeExecutable": null,
