@@ -126,7 +126,9 @@ module.exports.isUrl = function(text) {
 
 module.exports.isThumbUrl = function(text) {
     var is_url_flag = false;
-    if (text.endsWith('png') || text.endsWith('jpg') || text.endsWith('jpeg')) {
+    var temp = text.split("?");
+    var link = (temp.length == 2) ? temp[0] : text;
+    if (link.endsWith('png') || link.endsWith('jpg') || link.endsWith('jpeg')) {
         is_url_flag = true;
     }
     return is_url_flag;
