@@ -1,23 +1,26 @@
 {
-    "product_menu": {
+    "category": {
+        "menu": "ul#menu-danh-muc",
         "item": "li.menu-item-object-sanpham_cat"
     },
     "product_info": {
         "link": "ul.list-tax li.img a",
         "details": {
-            "content_area": "content-show",
-            "title": ".title a",
-            "desc": "",
-            "thumbnail": ".img a img",
-            "price": ".gia.gia-hok .gia-moi span",
+            "content_area": ".content-show",
+            "title": "div.t-t-sp a",
+            "thumbnail": ".img-thumb img",
+            "price": ".meta-sp .tt.giax span",
             "discount": "",
             "percent": "",
+            "desc": ".list-do div.entry-content p span",
             "code": "p.masp strong",
             "color": "dd.mausac a",
-            "size": "dd.size span",
-            "brand": "",
+            "size": "dd.size span.size-active",
             "instock": "del",
-            "photo": "div.entry-content p a"
+            "status": ".meta-sp .tt",
+            "photo": ".list-do div.entry-content p a",
+            "brand": "",
+            "headline": ".breadcrumbx span a"
         }
     },
     "paging": {

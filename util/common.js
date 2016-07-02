@@ -302,7 +302,7 @@ module.exports.saveToFile = function(path, content) {
 
 module.exports.saveToHTMLFile = function(url, content) {
     require('fs').writeFile("./temp/" + url.replaceAll("http://", "").replaceAll("/", "#") + ".html",
-        content + "\n",
+        content,
         function(err) {
             if (err) {
                 return console.log(err);
