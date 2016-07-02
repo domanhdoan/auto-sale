@@ -12,6 +12,11 @@ function SessionManager() {
             pageid: pageid,
             fbid: fbid,
             context: {},
+            last_category: {
+                id: -1,
+                title: "",
+            },
+
             last_product: {
                 id: -1,
                 title: "",
@@ -19,6 +24,7 @@ function SessionManager() {
                 size: -1,
                 categoryid: -1
             },
+
             last_action: common.say_greetings,
             timestamp: 0,
             last_invoice: {
