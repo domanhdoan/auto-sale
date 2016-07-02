@@ -37,14 +37,13 @@ module.exports.findAndCreateCategory = function(savedStore, name, link, callback
 }
 
 module.exports.findAndCreateProduct = function(
-    saved_store, saved_category, product_title,
+    saved_store, savedCategory, product_title,
     product_thumbnail, product_desc, product_price,
     product_discount, product_percent, product_detail_link,
-    product_brand, product_code, callback
+    product_brand, product_finger, product_code, callback
 ) {
-    var product_finger = require('crypto').createHmac('sha256', product_detail_link)
-        .digest('hex');
-
+    // var product_finger = require('crypto').createHmac('sha256', product_detail_link)
+    //     .digest('hex');
     gDbManager.Product.findOrCreate({
         where: {
             finger: product_finger
@@ -63,12 +62,27 @@ module.exports.findAndCreateProduct = function(
         }
     }).then(function(product) {
         var savedProduct = product[0];
+
         logger.info("Save new product successfully");
-        savedProduct.setCategory(saved_category);
+        savedProduct.setCategory(savedCategory);
         savedProduct.setStore(saved_store);
-        if (saved_category.cover == null) {
-            saved_category.updateAttributes({
+        if (savedCategory.cover == null) {
+            savedCategory.updateAttributes({
                 cover: savedProduct.thumbnail.replaceAll("%%", "-")
+            });
+        }
+        if (!product[0]) {
+            savedProduct.updateAttributes({
+                title: product_title,
+                thumbnail: product_thumbnail.replaceAll('-', '%%'),
+                desc: product_desc,
+                price: product_price,
+                discount: product_discount,
+                percent: product_percent,
+                link: product_detail_link.replaceAll('-', '%%'),
+                finger: product_finger,
+                brand: product_brand,
+                code: product_code
             });
         }
         callback(savedProduct);

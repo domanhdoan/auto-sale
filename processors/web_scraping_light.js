@@ -91,6 +91,7 @@ function extractProductDetails(savedStore, categoryObjects,
         var categoryNameElement = (length >= 1) ? $(headline[0]) : "";
         var categoryName = categoryNameElement.text();
         var savedCategory = categoryObjects.get(categoryName);
+        var finger = $(headline).text().latinise().toLowerCase();
 
         var title = $(productElememt).find(detailPattern.thumbnail).attr('alt');
         var thumbnailLink = $(productElememt).find(detailPattern.thumbnail).attr('src');
@@ -121,7 +122,7 @@ function extractProductDetails(savedStore, categoryObjects,
                     logger.info("DEFINE categoryName " + categoryName);
                     gModelFactory.findAndCreateProduct(
                         savedStore, savedCategory, title, thumbnailLink,
-                        desc, price, discount, percent, detailLink, "", code,
+                        desc, price, discount, percent, detailLink, "", finger, code,
                         function(savedProduct) {
                             handleProductProperties(savedStore, savedProduct, $, sizeList, colorList, productPhotos);
                             if (!callback) {

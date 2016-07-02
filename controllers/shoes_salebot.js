@@ -798,7 +798,7 @@ function setUpUserIntentListener() {
 
     emitter.on(common.INTENT_GENERAL_SEARCH, function(data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
-        processTextEvent(session, data.msg);
+        findProductByKeywords(session, data.msg);
     });
 }
 
