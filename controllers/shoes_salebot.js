@@ -122,10 +122,6 @@ function sendProductSearchResultsToFB(session, products) {
     if (keys.length > 0) {
         async.series([
             function(callback) {
-                // fbMessenger.sendTextMessage(session.fbid, common.notify_product_found);
-                callback(null);
-            },
-            function(callback) {
                 fbMessenger.sendTextMessage(session.fbid, common.notify_product_search);
                 callback(null);
             },
@@ -138,13 +134,15 @@ function sendProductSearchResultsToFB(session, products) {
                     found_products = [];
                     found_products.push(products);
                 }
-                fbMessenger.sendProductElements(session.fbid, found_products);
                 if (found_products.length == 1) {
                     sessionManager.setProductInfo(session, {
                         id: found_products[0].id,
                         title: found_products[0].title
                     });
                     sessionManager.setCategoryId(session, found_products[0].CategoryId);
+                    showAvailableColorNsize(session, true, true, false);
+                } else {
+                    fbMessenger.sendProductElements(session.fbid, found_products);
                 }
             }
         ]);
@@ -256,15 +254,15 @@ function showSimilarProductSuggestion(session) {
     // send suggestion for products in same category
     async.series([
         function(callback) {
+            fbMessenger.sendTextMessage(session.fbid, common.notify_product_notfound, function() {
+                callback(null);
+            });
+        },
+        function(callback) {
             fbMessenger.sendTextMessage(session.fbid, common.notify_product_similar, function() {
                 callback(null);
             });
         },
-        // function(callback) {
-        //     fbMessenger.sendTextMessage(session.fbid, common.notify_product_similar, function() {
-        //         callback(null);
-        //     });
-        // },
         function(callback) {
             var categoryInfo = sessionManager.getCategoryInfo();
             if (categoryInfo.id >= 0) {
@@ -278,13 +276,13 @@ function showSimilarProductSuggestion(session) {
 
 function findProductByThumbLink(session, thumbLink) {
     gProductFinder.findProductByThumbnail(gHomepage, thumbLink, function(product) {
-        //sendProductSearchResultsToFB(session, product);
+        sendProductSearchResultsToFB(session, product);
     });
 }
 
 function findProductByDetailLink(session, link) {
     gProductFinder.findProductByLink(session.storeid, link, function(product) {
-        //sendProductSearchResultsToFB(session, product);
+        sendProductSearchResultsToFB(session, product);
     });
 }
 
