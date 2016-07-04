@@ -22,7 +22,6 @@ function SessionManager() {
                 title: "",
                 color: -1,
                 size: -1,
-                categoryid: -1
             },
 
             last_action: common.say_greetings,
@@ -95,6 +94,14 @@ SessionManager.prototype.setCategoryId = function(session, categoryid) {
     });
 }
 
+SessionManager.prototype.getCategoryInfo = function(session) {
+    return session.last_category;
+}
+
+SessionManager.prototype.getProductInfo = function(session) {
+    return session.last_product;
+}
+
 SessionManager.prototype.setProductIdNTitle = function(session, productId, title) {
     this.setProductInfo(session, {
         id: productId,
@@ -141,6 +148,10 @@ SessionManager.prototype.setOrderInfo = function(session, info) {
     for (var i = 0; i < keys.length; i++) {
         session.last_invoice[keys[i]] = info[keys[i]];
     }
+}
+
+SessionManager.prototype.getOrderInfo = function(session) {
+    return session.last_invoice;
 }
 
 SessionManager.prototype.setSessionInfo = function(session, info) {

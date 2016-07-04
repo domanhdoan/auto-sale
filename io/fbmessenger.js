@@ -77,7 +77,7 @@ function FBMessenger() {
             "image_url": thumbnail_url,
             "buttons": [{
                 "type": "postback",
-                "title": "Chi tiết sản phẩm",
+                "title": "Xem Ânh SP & Size",
                 "payload": JSON.stringify(payload1)
             }, {
                 "type": "postback",
