@@ -122,7 +122,7 @@ function sendProductSearchResultsToFB(session, products) {
     if (keys.length > 0) {
         async.series([
             function(callback) {
-                fbMessenger.sendTextMessage(session.fbid, common.notify_product_search);
+                // fbMessenger.sendTextMessage(session.fbid, common.notify_product_search);
                 callback(null);
             },
             function sendResultsToFB() {
