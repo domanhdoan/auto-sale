@@ -149,7 +149,7 @@ function sendProductSearchResultsToFB(session, products) {
             }
         ]);
     } else {
-        showSimilarProductSuggestion();
+        showSimilarProductSuggestion(session);
     }
 }
 
