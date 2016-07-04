@@ -115,9 +115,18 @@ function UserIntentParserRegExp() {
 
     this.getIntent = function(message) {
         var classifications = intentClassifier.getClassifications(message);
-        // logger.info("message = " + message);
-        // logger.info("Classification = " + JSON.stringify(classifications));
-        return intentClassifier.classify(message);
+        var intent = common.INTENT_UNKNOWN;
+        for (var i = 0, length = classifications.length; i < length; i++) {
+            var classification = classifications[i];
+            if (classifications[i].value > common.INTENT_ACCURACY) {
+                logger.info("High probility = " + JSON.stringify(classification));
+                intent = classification.label;
+                break;
+            } else {
+                logger.info("Low probility = " + JSON.stringify(classification));
+            }
+        }
+        return intent;
     }
 
     this.parseProductType = function(userMsg) {
@@ -272,6 +281,7 @@ method.setEmitter = function(emitter) {
 
 method.parse = function(userMsg, options) {
     var intent = this.getIntent(userMsg);
+
     if (intent === common.INTENT_CHECK_PRICE) {
         logger.info('parsePriceInfo for customer');
         this.parsePriceIntentInfo(userMsg, options);
@@ -282,13 +292,13 @@ method.parse = function(userMsg, options) {
         logger.info('parseShipInfo for customer');
         this.parseShipIntentInfo(userMsg, options);
     } else {
-        logger.info('not parse message ==> will apply search approach');
-        this.emitter.emit(common.INTENT_GENERAL_SEARCH, {
-            storeid: options.storeid,
-            pageid: options.pageid,
-            fbid: options.fbid,
-            msg: userMsg
-        });
+        logger.info('not parse message ==> will call staff for support');
+        // this.emitter.emit(common.INTENT_GENERAL_SEARCH, {
+        //     storeid: options.storeid,
+        //     pageid: options.pageid,
+        //     fbid: options.fbid,
+        //     msg: userMsg
+        // });
     }
 }
 
