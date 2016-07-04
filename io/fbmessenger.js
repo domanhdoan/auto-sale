@@ -47,7 +47,7 @@ function FBMessenger() {
             "image_url": cover,
             "buttons": [{
                 "type": "postback",
-                "title": "Xem sản phẩm",
+                "title": "Xem danh mục",
                 "payload": JSON.stringify(payload1)
             }]
         };
