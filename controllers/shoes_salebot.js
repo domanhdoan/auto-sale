@@ -278,13 +278,13 @@ function showSimilarProductSuggestion(session) {
 
 function findProductByThumbLink(session, thumbLink) {
     gProductFinder.findProductByThumbnail(gHomepage, thumbLink, function(product) {
-        sendProductSearchResultsToFB(session, product);
+        //sendProductSearchResultsToFB(session, product);
     });
 }
 
 function findProductByDetailLink(session, link) {
     gProductFinder.findProductByLink(session.storeid, link, function(product) {
-        sendProductSearchResultsToFB(session, product);
+        //sendProductSearchResultsToFB(session, product);
     });
 }
 
