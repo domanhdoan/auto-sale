@@ -214,7 +214,6 @@ function UserIntentParserRegExp() {
         var categorySearch = categoryClassifier.classify(userMsg);
         var classifications = categoryClassifier.getClassifications(userMsg);
         var classification = classifications[0];
-        var intent = (classification.value >= 0.8) ? categorySearch : common.INTENT_CHECK_AVAILABILITY;
 
         var data = {
             storeid: options.storeid,
@@ -224,18 +223,22 @@ function UserIntentParserRegExp() {
             msg: userMsg
         };
 
+        var size = this.parseSizeInfo(userMsg);
+        var color = this.parseColorInfo(userMsg);
+        var productCode = common.extractProductCode(userMsg, options.codePattern).code;
+        var trueIntent = (classification.value >= 0.8) ? categorySearch : common.INTENT_CHECK_AVAILABILITY;
+        if (productCode != null && (size.length * color == 0)) {
+            trueIntent = common.INTENT_GENERAL_SEARCH;
+        }
 
-        if (categoryClassifier != common.INTENT_GENERAL_SEARCH) {
-            var productCode = common.extractProductCode(userMsg, options.codePattern).code;
-            var size = this.parseSizeInfo(userMsg);
-            var color = this.parseColorInfo(userMsg);
+        if (trueIntent != common.INTENT_GENERAL_SEARCH) {
             data.code = productCode;
             data.color = color;
             data.size = size;
         }
 
         logger.info("Data sent from intent parser to sale bot" + JSON.stringify(data));
-        this.emitter.emit(intent, data);
+        this.emitter.emit(trueIntent, data);
     }
 
     this.parseShipIntentInfo = function(userMsg, options) {
