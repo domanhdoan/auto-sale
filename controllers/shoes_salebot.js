@@ -140,7 +140,7 @@ function sendProductSearchResultsToFB(session, products) {
                         title: found_products[0].title
                     });
                     sessionManager.setCategoryId(session, found_products[0].CategoryId);
-                    showAvailableColorNsize(session, true, true, false);
+                    showAvailableColorNsize(session, true, true, true);
                 } else {
                     fbMessenger.sendProductElements(session.fbid, found_products);
                 }
