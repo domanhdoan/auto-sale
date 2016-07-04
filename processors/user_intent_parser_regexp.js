@@ -227,7 +227,7 @@ function UserIntentParserRegExp() {
         var color = this.parseColorInfo(userMsg);
         var productCode = common.extractProductCode(userMsg, options.codePattern).code;
         var trueIntent = (classification.value >= 0.8) ? categorySearch : common.INTENT_CHECK_AVAILABILITY;
-        if (productCode != null && (size.length * color == 0)) {
+        if (productCode != "" && (size.length * color == 0)) {
             trueIntent = common.INTENT_GENERAL_SEARCH;
         }
 
