@@ -256,7 +256,7 @@ exports.extractThumbUrl = function(home_page, input_thumb, callback) {
     var encoded_uri = encodeURIComponent(input_thumb);
     var goole_search_image = "https://www.google.com/searchbyimage?&image_url="
     goole_search_image += encoded_uri + "&as_sitesearch=" + home_page;
-    //    request.debug = true;
+    request.debug = true;
     request(goole_search_image, {
         followRedirect: true,
     }, function(error, response, body) {
