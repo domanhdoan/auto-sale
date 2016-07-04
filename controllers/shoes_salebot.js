@@ -167,7 +167,6 @@ function searchAndConfirmAddress(session, destination, callback) {
     //});
 }
 
-
 function getAvailableColorMsg(show_color, colors, reference) {
     var availableColorMessage = "";
     var referColorsString = reference.toString().replaceAll(" ", '');
@@ -237,13 +236,15 @@ function showAvailableColorNsize(session, showColorFlag, showSizeFlag, showPhoto
             var availableColorsMsg = getAvailableColorMsg(showColorFlag, colors, JSON.stringify(colors));
             var availableSizesMsg = getAvailableSizeMsg(showSizeFlag, sizes, JSON.stringify(sizes));
             logger.info("Product id = " + productInfo.id + " \n Details - \n" + availableColorsMsg + availableSizesMsg);
-            if (showPhotoFlag && photos.length > 0) {
-                fbMessenger.sendProductPhotoElements(session.fbid, productInfo.id,
-                    productInfo.title, availableColorsMsg + availableSizesMsg, photos);
-            } else {
-                fbMessenger.sendTextMessage(session.fbid,
-                    productInfo.title + availableColorsMsg + availableSizesMsg);
-            }
+            fbMessenger.sendTextMessage(session.fbid, common.notify_product_found, function() {
+                if (showPhotoFlag && photos.length > 0) {
+                    fbMessenger.sendProductPhotoElements(session.fbid, productInfo.id,
+                        productInfo.title, availableColorsMsg + availableSizesMsg, photos);
+                } else {
+                    fbMessenger.sendTextMessage(session.fbid,
+                        productInfo.title + availableColorsMsg + availableSizesMsg);
+                }
+            });
         });
 }
 
@@ -668,7 +669,11 @@ function extractComboPrice(productTitle, saleoffmsg) {
     } else {
         total = 0;
     }
-    message = "- 1 Combo (Nam + Nữ) " + " giá " + common.toCurrencyString(total * 1000, " VNĐ") + saleoffmsg;
+    if (total != 0) {
+        message = "- 1 Combo (Nam + Nữ) " + " giá " + common.toCurrencyString(total * 1000, " VNĐ") + saleoffmsg;
+    } else {
+        message = "- Sản phẩm này không có Combo";
+    }
     return message;
 }
 
@@ -699,7 +704,7 @@ function handlePriceIntent(session, data, product) {
                             } else if (productTitle.indexOf(data.type[i]) < 0) {
                                 message += "- Sản phẩm này không có kiểu " + data.type[i] + " bạn đang tìm.";
                             } else {
-                                price = common.extractValue(productTitle, data.type[i] + " \\d+");
+                                price = parseInt(price / 1000);
                                 message += "- " + price.toUpperCase() + " K VNĐ" + saleoffmsg + "\n";
                             }
                         }
@@ -816,7 +821,7 @@ function setUpUserIntentListener() {
 
     emitter.on(common.INTENT_GENERAL_SEARCH, function(data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
-        findProductByKeywords(session, data.msg);
+        processTextEvent(session, data.msg);
     });
 }
 
