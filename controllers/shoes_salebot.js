@@ -265,7 +265,7 @@ function showSimilarProductSuggestion(session) {
             });
         },
         function(callback) {
-            var categoryInfo = sessionManager.getCategoryInfo();
+            var categoryInfo = sessionManager.getCategoryInfo(session);
             if (categoryInfo.id >= 0) {
                 findProductByCategory(session);
             } else {
