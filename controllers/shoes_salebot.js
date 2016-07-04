@@ -467,6 +467,7 @@ function doCancelOrder(session) {
 //=====================================================================//
 
 function processTextEvent(session, user_msg) {
+    logger.info("processTextEvent: " + user_msg);
     var user_req_trans = user_msg.latinise().toLowerCase();
     var last_action_key = session.last_action;
     var last_action = common.sale_steps.get(last_action_key);
@@ -489,6 +490,8 @@ function processTextEvent(session, user_msg) {
 
 function processPostbackEvent(session, action_details) {
     var user_action = action_details.action;
+    logger.info("processPostbackEvent: " + JSON.stringify(action_details));
+
     if (user_action === common.action_view_details) {
         sessionManager.setProductIdNTitle(session,
             action_details.id, action_details.title);
