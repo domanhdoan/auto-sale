@@ -237,8 +237,9 @@ function UserIntentParserRegExp() {
             data.color = color;
             data.size = size;
         }
-        this.emitter.emit(intent, data);
 
+        logger.info("Data sent from intent parser to sale bot" + JSON.stringify(data));
+        this.emitter.emit(intent, data);
     }
 
     this.parseShipIntentInfo = function(userMsg, options) {
