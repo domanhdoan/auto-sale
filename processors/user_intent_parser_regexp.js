@@ -138,27 +138,28 @@ function UserIntentParserRegExp() {
         var productQuantity = [];
 
         for (var i = 0, length = quantityRegexp.length; i < length; i++) {
-            productQuantity = common.extractValues(userMsg, quantityRegexp[i]);
-            if (productQuantity.length > 0) {
-                for (var i = 0, length = productQuantity.length; i < length; i++) {
-                    var quantity = productQuantity[i].match(/\d+/)[0];
-                    productQuantity[i] = quantity;
+            var quantities = common.extractValues(userMsg, quantityRegexp[i]);
+            if (quantities.length > 0) {
+                for (var j = 0, length = quantities.length; j < length; j++) {
+                    var quantity = common.extractValue(quantities[j], "\\d+");
+                    if (quantity === "") {
+                        productQuantity.push("1");
+                    } else {
+                        productQuantity.push(quantity);
+                    }
                 }
                 break;
             }
-        }
-
-        if (productQuantity.length == 0) {
-            productQuantity[0] = "1";
         }
 
         if (productType.length > 0) {
             for (var i = 0, length = productType.length; i < (length - 1); i++) {
                 productQuantity[i] = "1";
             }
+        } else {
+            productQuantity[0] = "1";
         }
-
-        this.emitter.emit(common.INTENT_CHECK_PRICE, {
+        var data = {
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,
@@ -167,7 +168,9 @@ function UserIntentParserRegExp() {
             type: productType,
             quantity: productQuantity,
             msg: userMsg
-        });
+        };
+        logger.info("[Check Price] Data sent from intent parser to sale bot" + JSON.stringify(data));
+        this.emitter.emit(common.INTENT_CHECK_PRICE, data);
     }
 
 
@@ -226,7 +229,11 @@ function UserIntentParserRegExp() {
         var size = this.parseSizeInfo(userMsg);
         var color = this.parseColorInfo(userMsg);
         var productCode = common.extractProductCode(userMsg, options.codePattern).code;
+
+        // Decide really user intent from 2 factors (question type and information extracted)
+        // Pass 1: decide by weather question contain a category or not
         var trueIntent = (classification.value >= 0.8) ? categorySearch : common.INTENT_CHECK_AVAILABILITY;
+        // Weather user type size or color information or not
         if (productCode != "" && (size.length * color == 0)) {
             trueIntent = common.INTENT_GENERAL_SEARCH;
         }
@@ -237,7 +244,7 @@ function UserIntentParserRegExp() {
             data.size = size;
         }
 
-        logger.info("Data sent from intent parser to sale bot" + JSON.stringify(data));
+        logger.info("[Check Avai] Data sent from intent parser to sale bot" + JSON.stringify(data));
         this.emitter.emit(trueIntent, data);
     }
 
