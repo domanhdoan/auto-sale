@@ -229,10 +229,6 @@ function UserIntentParserRegExp() {
             var productCode = common.extractProductCode(userMsg, options.codePattern).code;
             var size = this.parseSizeInfo(userMsg);
             var color = this.parseColorInfo(userMsg);
-            if (size.length == 0 && color.length == 0) {
-                size[0] = "all";
-                color[0] = "all";
-            }
             data.code = productCode;
             data.color = color;
             data.size = size;
