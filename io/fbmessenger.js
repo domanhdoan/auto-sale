@@ -40,7 +40,7 @@ function FBMessenger() {
         var payload1 = {};
         payload1.id = id;
         payload1.title = name;
-        payload1.action = common.action_view_catgory;
+        payload1.action = common.action_view_category;
         var element = {
             "title": "Danh mục: " + name,
             "subtitle": "Nhấn nút bên dưới để xem danh sách sản phẩm trong danh mục",
@@ -77,7 +77,7 @@ function FBMessenger() {
             "image_url": thumbnail_url,
             "buttons": [{
                 "type": "postback",
-                "title": "Xem Ânh SP & Size",
+                "title": "Xem Ảnh màu SP & Size",
                 "payload": JSON.stringify(payload1)
             }, {
                 "type": "postback",

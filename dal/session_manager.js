@@ -16,7 +16,6 @@ function SessionManager() {
                 id: -1,
                 title: "",
             },
-
             last_product: {
                 id: -1,
                 title: "",
@@ -90,9 +89,16 @@ SessionManager.prototype.deteleSession = function(sessionId) {
 }
 
 SessionManager.prototype.setCategoryId = function(session, categoryid) {
-    this.setProductInfo(session, {
-        categoryid: categoryid
+    this.setCategoryInfo(session, {
+        id: categoryid
     });
+}
+
+SessionManager.prototype.setCategoryInfo = function(session, info) {
+    var keys = Object.keys(info);
+    for (var i = 0; i < keys.length; i++) {
+        session.last_category[keys[i]] = info[keys[i]];
+    }
 }
 
 SessionManager.prototype.getCategoryInfo = function(session) {
