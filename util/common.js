@@ -60,6 +60,8 @@ module.exports = {
     INTENT_CHECK_AVAILABILITY: 'check_availability',
     INTENT_CHECK_SHIP: 'check_ship',
     INTENT_GENERAL_SEARCH: 'general_search',
+    INTENT_UNKNOWN: 'unknow_intent',
+    UNKNOWN_ACCURACY: 0.9
 }
 
 module.exports.typical_question = {
