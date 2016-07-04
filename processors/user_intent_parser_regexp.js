@@ -75,7 +75,7 @@ function UserIntentParserRegExp() {
 
     this.emitter = null;
 
-    var intentClassifier = new nlpChecker.BayesClassifier();
+    var intentClassifier = new nlpChecker.LogisticRegressionClassifier(); //new nlpChecker.BayesClassifier();
     var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier();
     var categoryClassifier = new nlpChecker.LogisticRegressionClassifier();
 
