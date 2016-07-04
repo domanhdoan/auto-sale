@@ -292,13 +292,13 @@ method.parse = function(userMsg, options) {
         logger.info('parseShipInfo for customer');
         this.parseShipIntentInfo(userMsg, options);
     } else {
-        logger.info('not parse message ==> will call staff for support');
+        logger.info("not parse message " + userMsg + " ==> will call staff for support");
         // this.emitter.emit(common.INTENT_GENERAL_SEARCH, {
         //     storeid: options.storeid,
         //     pageid: options.pageid,
         //     fbid: options.fbid,
         //     msg: userMsg
-        // });
+        // });        
     }
 }
 
