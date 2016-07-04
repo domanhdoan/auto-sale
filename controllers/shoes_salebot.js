@@ -305,7 +305,7 @@ function findProductByCategory(session) {
         function(products) {
             sendProductSearchResultsToFB(session, products);
             if (Object.keys(products).length > 0) {
-                session.last_product.categoryid = categoryid;
+                sessionManager.setCategoryId(session, categoryid);
             }
         });
 }
