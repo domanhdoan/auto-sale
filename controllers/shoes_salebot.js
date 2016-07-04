@@ -300,7 +300,7 @@ function findProductByCode(session, productCode) {
 }
 
 function findProductByCategory(session) {
-    var categoryInfo = sessionManager.getCategoryInfo();
+    var categoryInfo = sessionManager.getCategoryInfo(session);
     gProductFinder.findProductsByCategory(session.storeid,
         categoryInfo.id,
         function(products) {
@@ -489,12 +489,12 @@ function processTextEvent(session, user_msg) {
 
 function processPostbackEvent(session, action_details) {
     var user_action = action_details.action;
-    if (user_action.indexOf(common.action_view_details) >= 0) {
+    if (user_action === common.action_view_details) {
         sessionManager.setProductIdNTitle(session,
             action_details.id, action_details.title);
         showAvailableColorNsize(session, true, true, true);
 
-    } else if (user_action.indexOf(common.action_order) >= 0) {
+    } else if (user_action === common.action_order) {
         sessionManager.setOrdeTrigerStatusInfo(session, true);
         sessionManager.setProductIdNTitle(session,
             action_details.id, action_details.title);
@@ -506,22 +506,22 @@ function processPostbackEvent(session, action_details) {
             });
 
     } else if (session.last_invoice.is_ordering &&
-        (user_action.indexOf(common.action_continue_search) >= 0)) {
+        (user_action === common.action_continue_search)) {
         sessionManager.setUserAction(session, common.say_greetings);
         fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
 
-    } else if (user_action.indexOf(common.action_purchase) >= 0) {
+    } else if (user_action === common.action_purchase) {
         sessionManager.setUserAction(session, common.set_quantity);
         fbMessenger.sendTextMessage(session.fbid, common.pls_enter_name);
 
-    } else if (user_action.indexOf(common.action_confirm_addr) >= 0) {
+    } else if (user_action === common.action_confirm_addr) {
         sessionManager.setUserAction(session, common.set_address);
         fbMessenger.sendTextMessage(session.fbid, common.pls_enter_email);
 
-    } else if (user_action.indexOf(common.action_retype_addr) >= 0) {
+    } else if (user_action === common.action_retype_addr) {
         fbMessenger.sendTextMessage(session.fbid, common.pls_enter_address);
 
-    } else if (user_action.indexOf(common.action_confirm_order) >= 0) {
+    } else if (user_action === common.action_confirm_order) {
         sessionManager.setOrderStatusInfo(session, "confirm");
         gModelFactory.update_invoice(session.last_invoice, function(invoice) {
             logger.info(invoice);
@@ -529,7 +529,7 @@ function processPostbackEvent(session, action_details) {
             sessionManager.resetSession(session);
         });
 
-    } else if (user_action.indexOf(common.action_cancel_order) >= 0) {
+    } else if (user_action === common.action_cancel_order) {
         gModelFactory.cancel_invoice(session.last_invoice.id, "cancel", function(invoice) {
             if (invoice != null) {
                 // user_sessions[session.sessionId] = initSession(session.fbid);
@@ -537,7 +537,7 @@ function processPostbackEvent(session, action_details) {
                 fbMessenger.sendTextMessage(session.fbid, common.say_greetings);
             }
         });
-    } else if (user_action.indexOf(common.action_view_catgory) >= 0) {
+    } else if (user_action === common.action_view_category) {
         sessionManager.setCategoryId(session, action_details.id);
         findProductByCategory(session);
     } else {

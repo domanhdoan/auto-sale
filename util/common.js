@@ -42,7 +42,7 @@ module.exports = {
     notify_product_notfound: "Mình không tìm thấy sản phẩm như mong muốn của bạn.",
     notify_product_similar: "Bạn xem sản phẩm tương tự bên dưới nhé",
 
-    action_view_catgory: "view_cat",
+    action_view_category: "view_cat",
     action_terminate_order: "huy",
     action_continue_search: "search",
     action_view_details: "view",
