@@ -77,7 +77,7 @@ function FBMessenger() {
             "image_url": thumbnail_url,
             "buttons": [{
                 "type": "postback",
-                "title": "Xem Ảnh màu SP & Size",
+                "title": "Xem Ảnh SP & Size",
                 "payload": JSON.stringify(payload1)
             }, {
                 "type": "postback",
