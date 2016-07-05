@@ -6,7 +6,7 @@ var common = require('../util/common.js');
 //===================================================//
 //================= SHOE finding ====================//
 //===================================================//
-var keywords = ['giay', 'mau', 'size'];
+var keywords = ['doi', 'giay', 'mau', 'size'];
 
 function parse_keywords(keywords, word_list) {
     var result = {};
@@ -32,6 +32,10 @@ function parse_keywords(keywords, word_list) {
 function parse_keywords_calibration(keywords, word_list) {
     var results_json = parse_keywords(keywords, word_list);
     var results = [];
+
+    if (results_json['doi'] != null && results_json['doi'] != "") {
+        results_json['giay'] = results_json['doi'].replaceAll(" ", "%%");
+    }
 
     if (results_json['giay'] != null) {
         results_json['giay'] = results_json['giay'].replaceAll(" ", "%%");
