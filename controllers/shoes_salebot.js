@@ -122,7 +122,7 @@ function sendProductSearchResultsToFB(session, products) {
     if (keys.length > 0) {
         async.series([
             function(callback) {
-                // fbMessenger.sendTextMessage(session.fbid, common.notify_product_search);
+                fbMessenger.sendTextMessage(session.fbid, common.notify_product_found);
                 callback(null);
             },
             function sendResultsToFB() {
@@ -185,7 +185,7 @@ function getAvailableColorMsg(show_color, colors, reference) {
                 availableColors += common.get_color_vn(colors[i].name) + ", ";
             }
             if (matchColorStr === "") {
-                availableColorMessage = "Màu sắc bạn tìm hiện tại không còn.";
+                availableColorMessage = "Màu sắc bạn tìm hiện không còn.";
                 availableColorMessage += " Bạn vui lòng xem màu còn hàng bên dưới: \n";
                 availableColorMessage += " - " + availableColors.slice(0, -2);
 
