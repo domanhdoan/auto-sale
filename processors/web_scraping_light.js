@@ -15,9 +15,9 @@ Array.prototype.unique = function() {
     });
 };
 
-function WebScraper(link, crawlPattern) {
-    this.curHomepage = link;
+function WebScraper(crawlPattern) {
     this.gCrawlPattern = crawlPattern;
+    this.curHomepage = crawlPattern.url;
     this.categoryObjects = new HashMap();
     var currentObj = this;
 
