@@ -8,7 +8,7 @@ var common = require('../util/common.js');
 //===================================================//
 var keywords = ['doi', 'giay', 'mau', 'size'];
 
-function parse_keywords(keywords, word_list) {
+function parse_shoes_keywords(keywords, word_list) {
     var result = {};
     var temp = '';
     var last_keyword = null;
@@ -17,11 +17,11 @@ function parse_keywords(keywords, word_list) {
             if (last_keyword != null) {
                 console.log("key = " + last_keyword + " value = " + temp);
                 result[last_keyword] = temp.trim();
-                temp = '';
             } else {
                 result['giay'] = temp.trim();
             }
             last_keyword = word_list[i];
+            temp = '';
         } else {
             temp += " " + word_list[i];
         }
@@ -29,8 +29,8 @@ function parse_keywords(keywords, word_list) {
     return result;
 }
 
-function parse_keywords_calibration(keywords, word_list) {
-    var results_json = parse_keywords(keywords, word_list);
+function calibrateShoesKeyword(keywords, word_list) {
+    var results_json = parse_shoes_keywords(keywords, word_list);
     var results = [];
 
     if (results_json['doi'] != null && results_json['doi'] != "") {
@@ -70,7 +70,7 @@ function generateFindshoesQuery(storeId, keywords) {
     }
     var cat_keywords = keywords[0].replaceAll("%%", ", ");
     //query += " where P.StoreId = '" + storeId + "'and P.link like '%" + keywords[0] + "%'";
-    query += " where P.StoreId = '" + storeId + "'and MATCH(P.link) AGAINST('" + cat_keywords + "' IN NATURAL LANGUAGE MODE)";
+    query += " where P.StoreId = '" + storeId + "'and MATCH(P.finger) AGAINST('" + cat_keywords + "' IN NATURAL LANGUAGE MODE)";
     if (keywords[1].length > 0) {
         query += " and C.name = '" + keywords[1] + "'"
     }
@@ -134,7 +134,7 @@ exports.findInvoiceById = function(invoice_id, callback) {
 exports.findShoesByKeywords = function(storeId, user_message, callback) {
     var products = [];
     var word_list = user_message.split(" ");
-    var keywords_value = parse_keywords_calibration(keywords, word_list);
+    var keywords_value = calibrateShoesKeyword(keywords, word_list);
     var count = Object.keys(keywords_value).length;
     if (count != 0) {
         var query = generateFindshoesQuery(storeId, keywords_value);

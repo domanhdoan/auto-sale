@@ -191,16 +191,16 @@ function UserIntentParserRegExp() {
         var classifications = propertiesClassifier.getClassifications(userMsg);
         logger.info("User message: " + userMsg);
         if (userMsg.indexOf("mau") >= 0) {
-            // for (var i = 0, length = classifications.length; i < length; i++) {
-            //     var classification = classifications[i];
-            //     if (classifications[i].value > 0.9) {
-            //         logger.info("High probility = " + JSON.stringify(classification));
-            //         //productColor.push(classification.label.toLowerCase());
-            //     } else {
-            //         logger.info("Low probility = " + JSON.stringify(classification));
-            //     }
-            // }
-            productColor.push(propertiesClassifier.classify(userMsg));
+            for (var i = 0, length = classifications.length; i < length; i++) {
+                var classification = classifications[i];
+                if (classifications[i].value > common.INTENT_ACCURACY) {
+                    logger.info("High probility = " + JSON.stringify(classification));
+                    productColor.push(classification.label.toLowerCase());
+                } else {
+                    logger.info("Low probility = " + JSON.stringify(classification));
+                }
+            }
+            //productColor.push(propertiesClassifier.classify(userMsg));
         }
         return productColor;
     }
@@ -244,13 +244,11 @@ function UserIntentParserRegExp() {
 
         // Decide really user intent from 2 factors (question type and information extracted)
         // Pass 1: decide by weather question contain a category or not
-        var trueIntent = (classification.value >= 0.8) ? categorySearch : common.INTENT_CHECK_AVAILABILITY;
+        var trueIntent = (classification.value > common.INTENT_ACCURACY_LOW) ? classification.label : common.INTENT_CHECK_AVAILABILITY;
         // Weather user type size or color information or not
         if (productCode != "" && (size.length * color == 0)) {
             trueIntent = common.INTENT_GENERAL_SEARCH;
-        }
-
-        if (trueIntent != common.INTENT_GENERAL_SEARCH) {
+        } else {
             data.code = productCode;
             data.color = color;
             data.size = size;

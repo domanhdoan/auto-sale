@@ -122,8 +122,9 @@ function sendProductSearchResultsToFB(session, products) {
     if (keys.length > 0) {
         async.series([
             function(callback) {
-                fbMessenger.sendTextMessage(session.fbid, common.notify_product_found);
-                callback(null);
+                fbMessenger.sendTextMessage(session.fbid, common.notify_product_found, function() {
+                    callback(null);
+                });
             },
             function sendResultsToFB() {
                 var found_products = null;
@@ -236,16 +237,16 @@ function showAvailableColorNsize(session, showColorFlag, showSizeFlag, showPhoto
             var availableColorsMsg = getAvailableColorMsg(showColorFlag, colors, JSON.stringify(colors));
             var availableSizesMsg = getAvailableSizeMsg(showSizeFlag, sizes, JSON.stringify(sizes));
             logger.info("Product id = " + productInfo.id + " \n Details - \n" + availableColorsMsg + availableSizesMsg);
-            fbMessenger.sendTextMessage(session.fbid, common.notify_product_found, function() {
-                if (showPhotoFlag && photos.length > 0) {
-                    fbMessenger.sendProductPhotoElements(session.fbid, productInfo.id,
-                        productInfo.title, availableColorsMsg + availableSizesMsg, photos);
-                } else {
-                    fbMessenger.sendTextMessage(session.fbid,
-                        productInfo.title + availableColorsMsg + availableSizesMsg);
-                }
-            });
+            //fbMessenger.sendTextMessage(session.fbid, common.notify_product_found, function() {
+            if (showPhotoFlag && photos.length > 0) {
+                fbMessenger.sendProductPhotoElements(session.fbid, productInfo.id,
+                    productInfo.title, availableColorsMsg + availableSizesMsg, photos);
+            } else {
+                fbMessenger.sendTextMessage(session.fbid,
+                    productInfo.title + availableColorsMsg + availableSizesMsg);
+            }
         });
+    //});
 }
 
 // =================================================================
@@ -600,7 +601,7 @@ function processEvent(event) {
 //================= FB webhook ========================================//
 //=====================================================================//
 function initWebHook() {
-    //fbMessenger.doSubscribeRequest();
+    fbMessenger.doSubscribeRequest();
 
     server.use(bodyParser.text({
         type: 'application/json'
