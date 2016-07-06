@@ -112,6 +112,7 @@ SessionManager.prototype.getProductInfo = function(session) {
 SessionManager.prototype.setProductIdNTitle = function(session, productId, title) {
     this.setProductInfo(session, {
         id: productId,
+        title: title
     });
 }
 
