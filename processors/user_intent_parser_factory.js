@@ -1,7 +1,6 @@
 var logger = require('../util/logger.js')
 var common = require('../util/common.js')
 
-var defineContant = require('../util/define_constant.js');
 var UserIntentParserRegExp = require("../processors/user_intent_parser_regexp.js");
 var UserIntentParserAIAPI = require("../processors/user_intent_parser_aiapi.js");
 

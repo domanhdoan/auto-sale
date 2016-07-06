@@ -5,7 +5,8 @@ var config = require("./config/config.js");
 var common = require("./util/common");
 var logger = require("./util/logger");
 
-var scraper = require("./processors/web_scraping_light");
+var WebScraper = require("./processors/web_scraping_light");
+
 var shoes_salebot = require("./controllers/shoes_salebot");
 
 
@@ -51,7 +52,10 @@ if (crawl_source != null) {
 
     if (config.submodule.crawler) {
         for (var i = 0, length = store_config.length; i < length; i++) {
-            scraper.crawlWholeSite(link, store_config[i], function() {});
+            scraper = new WebScraper(link, store_config[i]);
+            scraper.crawlWholeSite(function() {
+
+            });
         }
     }
 

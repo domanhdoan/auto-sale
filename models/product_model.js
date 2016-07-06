@@ -34,7 +34,7 @@ module.exports = function(Sequelize, DataTypes) {
     }, {
         classMethods: {
             addFullTextIndex: function() {
-                var searchFields = ['link', 'finger'];
+                var searchFields = ['finger'];
                 var Product = this;
                 Sequelize
                     .query('ALTER TABLE ' + Product.name + ' ADD FULLTEXT(' + searchFields.toString().replaceAll('[', '').replaceAll(']', '') + ')')
@@ -42,13 +42,16 @@ module.exports = function(Sequelize, DataTypes) {
                         if (results == null) {
                             console.log("Can not create index");
                         } else {
-                            console.log(results);
+                            console.log("Product::addFullTextIndex" + JSON.stringify(results));
                         }
                     });
             },
         }
     }, {
-        freezeTableName: true
+        freezeTableName: true,
+        syncOnAssociation: true,
+        charset: 'utf8',
+        collate: 'utf8_general_ci'
     });
 
     return Product;

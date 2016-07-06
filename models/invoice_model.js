@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function(Sequelize, DataTypes)  {
+module.exports = function(Sequelize, DataTypes) {
     return Sequelize.define('Invoice', {
         fbid: {
             type: DataTypes.STRING,
@@ -45,12 +45,14 @@ module.exports = function(Sequelize, DataTypes)  {
             type: DataTypes.STRING,
             allowNull: true
         },
-        status:{
+        status: {
             type: DataTypes.STRING,
-            allowNull: true 
+            allowNull: true
         }
-    },
-    {
-        freezeTableName: true
+    }, {
+        freezeTableName: true,
+        charset: 'utf8',
+        collate: 'utf8_general_ci'
+
     });
 }

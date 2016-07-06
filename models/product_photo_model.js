@@ -8,7 +8,9 @@ module.exports = function(Sequelize, DataTypes) {
             type: DataTypes.INTEGER
         }
     }, {
-        freezeTableName: true
+        freezeTableName: true,
+        charset: 'utf8',
+        collate: 'utf8_general_ci'
     });
 
     return ProductPhoto;

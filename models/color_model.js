@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function (Sequelize, DataTypes) {
+module.exports = function(Sequelize, DataTypes) {
     return Sequelize.define('Color', {
         name: {
             type: DataTypes.STRING,
@@ -8,8 +8,9 @@ module.exports = function (Sequelize, DataTypes) {
         value: {
             type: DataTypes.STRING,
         }
-    },
-    {
-        freezeTableName: true
+    }, {
+        freezeTableName: true,
+        charset: 'utf8',
+        collate: 'utf8_general_ci'
     });
 }

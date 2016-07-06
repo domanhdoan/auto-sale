@@ -10,6 +10,8 @@ module.exports = function(Sequelize, DataTypes) {
             allowNull: false
         }
     }, {
-        freezeTableName: true
+        freezeTableName: true,
+        charset: 'utf8',
+        collate: 'utf8_general_ci'
     });
 }
