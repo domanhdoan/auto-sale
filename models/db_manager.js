@@ -11,9 +11,14 @@ var sequelize = new Sequelize(
     config.db.db_pass, {
         host: config.db.host,
         dialect: config.db.engine,
-        freezeTableName: true,
         define: {
-            timestamps: false
+            freezeTableName: true,
+            timestamps: false,
+            charset: 'utf8',
+            collate: 'utf8_general_ci'
+        },
+        dialectOptions: {
+            charset: 'utf8mb4'
         },
         pool: {
             max: 20,
@@ -67,14 +72,6 @@ db.Category.hasMany(db.Product, {
 });
 db.Product.belongsTo(db.Category);
 
-//Define relation for ProductDetails
-// db.Product.hasMany(db.FashionProductDetails, { as: "Product", foreignKeyConstraint:true});
-// db.Color.hasMany(db.FashionProductDetails, { as: "Color", foreignKeyConstraint:true});
-// db.Size.hasMany(db.Product, { as: "Size", foreignKeyConstraint:true});
-// db.FashionProductDetails.belongsTo(db.Product);
-// db.FashionProductDetails.belongsTo(db.Color);
-// db.Product.belongsTo(db.Size);
-
 db.Product.hasMany(db.Color, {
     as: "Product",
     foreignKeyConstraint: true
@@ -123,16 +120,14 @@ db.FashionItem.belongsTo(db.Invoice);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-//This piece of code will reset DB each startup time
-// db.sequelize
-//     .sync({ force: true })
-//     .then(function () { 
-//     })
-//     .catch(function (error) {
-//         console.log('Unable to connect to the database: ', error);
-//     });
+
 sequelize.sync().done(function() {
     db.Product.addFullTextIndex();
+    // sequelize
+    //     .query('ALTER DATABASE ' + config.db.db_name + ' CHARACTER SET utf8 COLLATE utf8_general_ci')
+    //     .spread(function(results, metadata) {
+    //         console.log(results);
+    //     });
 });
 
 module.exports = db;

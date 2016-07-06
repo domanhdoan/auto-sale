@@ -46,7 +46,7 @@ module.exports.findAndCreateProduct = function(
     //     .digest('hex');
     gDbManager.Product.findOrCreate({
         where: {
-            finger: product_finger
+            title: product_title
         },
         defaults: {
             title: product_title,
@@ -91,29 +91,17 @@ module.exports.findAndCreateProduct = function(
 
 module.exports.findAndCreateProductColor = function(saved_product, color_name,
     color_value, callback) {
-    gDbManager.Color.findOne({
+    gDbManager.Color.findOrCreate({
         where: {
             name: color_name,
             ProductId: saved_product.dataValues.id
-        }
+        },
+        defaults: {}
     }).then(function(result) {
-        if (result == null) {
-            gDbManager.Color
-                .build({
-                    name: color_name,
-                    value: color_value
-                })
-                .save()
-                .then(function(saved_color) {
-                    saved_color.setProduct(saved_product);
-                    callback(saved_color);
-                }).catch(function(error) {
-                    logger.error(error);
-                });
-
-        } else {
-            callback(result);
-        }
+        var saved_color = result[0];
+        callback(saved_color);
+    }).catch(function(error) {
+        logger.error(error);
     });
 }
 
