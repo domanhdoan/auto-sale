@@ -99,6 +99,9 @@ function UserIntentParserRegExp() {
 
     this.trainPriceClassifier = function() {
         this.initClassifier(intentClassifier, keyword_check_price, common.INTENT_CHECK_PRICE);
+        intentClassifier.save('classifier.json', function(err, classifier) {
+            // the classifier is saved to the classifier.json file!
+        });
     }
 
     this.trainAvailabilityClassifier = function() {
