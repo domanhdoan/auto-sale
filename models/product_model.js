@@ -1,7 +1,7 @@
 'use strict';
-module.exports = function (Sequelize, DataTypes) {
+module.exports = function(Sequelize, DataTypes) {
     var Product = Sequelize.define('Product', {
-        code: { 
+        code: {
             type: DataTypes.STRING,
         },
         title: {
@@ -31,8 +31,23 @@ module.exports = function (Sequelize, DataTypes) {
         finger: {
             type: DataTypes.STRING
         }
-    },
-    {
+    }, {
+        classMethods: {
+            addFullTextIndex: function() {
+                var searchFields = ['link', 'finger'];
+                var Product = this;
+                Sequelize
+                    .query('ALTER TABLE ' + Product.name + ' ADD FULLTEXT(' + searchFields.toString().replaceAll('[', '').replaceAll(']', '') + ')')
+                    .spread(function(results, metadata) {
+                        if (results == null) {
+                            console.log("Can not create index");
+                        } else {
+                            console.log(results);
+                        }
+                    });
+            },
+        }
+    }, {
         freezeTableName: true
     });
 
