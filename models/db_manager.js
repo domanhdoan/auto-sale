@@ -131,4 +131,8 @@ db.Sequelize = Sequelize;
 //     .catch(function (error) {
 //         console.log('Unable to connect to the database: ', error);
 //     });
+sequelize.sync().done(function() {
+    db.Product.addFullTextIndex();
+});
+
 module.exports = db;
