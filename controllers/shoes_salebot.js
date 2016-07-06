@@ -600,7 +600,7 @@ function processEvent(event) {
 //================= FB webhook ========================================//
 //=====================================================================//
 function initWebHook() {
-    fbMessenger.doSubscribeRequest();
+    //fbMessenger.doSubscribeRequest();
 
     server.use(bodyParser.text({
         type: 'application/json'
