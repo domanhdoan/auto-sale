@@ -68,7 +68,9 @@ function generateFindshoesQuery(storeId, keywords) {
     if (keywords[2].length > 0) {
         query += " inner join size as S on P.id = S.ProductId";
     }
-    query += " where P.StoreId = '" + storeId + "'and P.link like '%" + keywords[0] + "%'";
+    var cat_keywords = keywords[0].replaceAll("%%", ", ");
+    //query += " where P.StoreId = '" + storeId + "'and P.link like '%" + keywords[0] + "%'";
+    query += " where P.StoreId = '" + storeId + "'and MATCH(P.link) AGAINST('" + cat_keywords + "' IN NATURAL LANGUAGE MODE)";
     if (keywords[1].length > 0) {
         query += " and C.name = '" + keywords[1] + "'"
     }
