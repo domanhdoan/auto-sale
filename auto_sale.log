@@ -1,3 +1,31 @@
 {"level":"info","message":"Option = -b","timestamp":"2016-07-02T18:25:56.032Z"}
 {"level":"info","message":"Created temp folder successfully","timestamp":"2016-07-02T18:25:56.677Z"}
 {"level":"info","message":"Executing (default): SELECT `id`, `home`, `type` FROM `Store` AS `Store` WHERE `Store`.`home` = 'http://bluewind.vn' LIMIT 1;","timestamp":"2016-07-02T18:25:56.703Z"}
+{"level":"info","message":"Option = -b","timestamp":"2016-07-06T18:19:38.309Z"}
+{"level":"info","message":"Created temp folder successfully","timestamp":"2016-07-06T18:19:38.961Z"}
+{"level":"info","message":"Executing (default): SELECT `id`, `home`, `type` FROM `Store` AS `Store` WHERE `Store`.`home` = 'http://bluewind.vn' LIMIT 1;","timestamp":"2016-07-06T18:19:38.970Z"}
+{"level":"info","message":"Executing (default): ALTER TABLE Product ADD FULLTEXT(finger)","timestamp":"2016-07-06T18:19:39.060Z"}
+{"level":"info","message":"High probility = {\"label\":\"check_availability\",\"value\":0.9837710135046109}","timestamp":"2016-07-06T18:20:15.768Z"}
+{"level":"info","message":"parseAvailabilityIntentData for customer","timestamp":"2016-07-06T18:20:15.769Z"}
+{"level":"info","message":"User message: adidas nam mau xanh lam size 39","timestamp":"2016-07-06T18:20:15.772Z"}
+{"level":"info","message":"High probility = {\"label\":\"Xanh lam\",\"value\":0.9985966255358457}","timestamp":"2016-07-06T18:20:15.772Z"}
+{"level":"info","message":"High probility = {\"label\":\"Xanh Neon\",\"value\":0.9963898130209485}","timestamp":"2016-07-06T18:20:15.773Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Xanh tim than\",\"value\":0.8864079673666412}","timestamp":"2016-07-06T18:20:15.773Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Xanh Da Troi\",\"value\":0.4184192818560892}","timestamp":"2016-07-06T18:20:15.774Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Xanh co ban\",\"value\":0.4184192818560891}","timestamp":"2016-07-06T18:20:15.774Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Hong phan\",\"value\":0.08148967670438598}","timestamp":"2016-07-06T18:20:15.774Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Trang\",\"value\":0.04819455695143988}","timestamp":"2016-07-06T18:20:15.775Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Vang\",\"value\":0.04819455695143988}","timestamp":"2016-07-06T18:20:15.775Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Xam\",\"value\":0.04819455695143988}","timestamp":"2016-07-06T18:20:15.776Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Nau\",\"value\":0.04819455695143988}","timestamp":"2016-07-06T18:20:15.777Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Do Gach\",\"value\":0.04819455695143988}","timestamp":"2016-07-06T18:20:15.777Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Ghi\",\"value\":0.04819455695143988}","timestamp":"2016-07-06T18:20:15.777Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Do Dun\",\"value\":0.04819455695143985}","timestamp":"2016-07-06T18:20:15.778Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Den\",\"value\":0.048194556951439836}","timestamp":"2016-07-06T18:20:15.778Z"}
+{"level":"info","message":"Low probility = {\"label\":\"Tim\",\"value\":0.0028229746177649458}","timestamp":"2016-07-06T18:20:15.779Z"}
+{"level":"info","message":"[Check Avai] Data sent from intent parser to sale bot{\"storeid\":1,\"pageid\":\"1622583457969907\",\"fbid\":\"1027155260703895\",\"productid\":-1,\"msg\":\"adidas nam mau xanh lam size 39\",\"code\":\"\",\"color\":[\"xanh lam\",\"xanh neon\"],\"size\":[\"39\"]}","timestamp":"2016-07-06T18:20:15.779Z"}
+{"level":"info","message":"processTextEvent: adidas nam mau xanh lam size 39","timestamp":"2016-07-06T18:20:15.781Z"}
+{"level":"info","message":"Executing (default): Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link from product as P inner join color as C on P.id = C.ProductId inner join size as S on P.id = S.ProductId where P.StoreId = '1'and MATCH(P.finger) AGAINST('adidas, nam' IN NATURAL LANGUAGE MODE) and C.name = 'xanhlam' and S.value = '39' order by P.id ASC LIMIT 10;","timestamp":"2016-07-06T18:20:15.791Z"}
+{"level":"info","message":"2","timestamp":"2016-07-06T18:20:15.860Z"}
+{"level":"info","message":"Data = {\"text\":\"Bạn xem thông tin SP bên dưới nhé\"}","timestamp":"2016-07-06T18:20:16.861Z"}
+{"level":"info","message":"Data = {\"attachment\":{\"type\":\"template\",\"payload\":{\"template_type\":\"generic\",\"elements\":[{\"title\":\"Giày thể thao đôi BW6874 Nam 420K – Nữ 380K – CB 750k\",\"subtitle\":\"Giá hiện tại: 420,000 VNĐ\",\"image_url\":\"http://bluewind.vn/wp-content/uploads/2016/01/6874-1.png\",\"buttons\":[{\"type\":\"postback\",\"title\":\"Xem Ảnh SP & Size\",\"payload\":\"{\\\"id\\\":11,\\\"title\\\":\\\"Giày thể thao đôi BW6874 Nam 420K – Nữ 380K – CB 750k\\\",\\\"action\\\":\\\"view\\\"}\"},{\"type\":\"postback\",\"title\":\"Cho vào giỏ hàng\",\"payload\":\"{\\\"id\\\":11,\\\"title\\\":\\\"Giày thể thao đôi BW6874 Nam 420K – Nữ 380K – CB 750k\\\",\\\"action\\\":\\\"order\\\"}\"}]},{\"title\":\"Giày thể thao đôi BW6883 Nam 420k, Nữ 380k – CB 720k\",\"subtitle\":\"Giá hiện tại: 420,000 VNĐ\",\"image_url\":\"http://bluewind.vn/wp-content/uploads/2016/04/6883-w.png\",\"buttons\":[{\"type\":\"postback\",\"title\":\"Xem Ảnh SP & Size\",\"payload\":\"{\\\"id\\\":28,\\\"title\\\":\\\"Giày thể thao đôi BW6883 Nam 420k, Nữ 380k – CB 720k\\\",\\\"action\\\":\\\"view\\\"}\"},{\"type\":\"postback\",\"title\":\"Cho vào giỏ hàng\",\"payload\":\"{\\\"id\\\":28,\\\"title\\\":\\\"Giày thể thao đôi BW6883 Nam 420k, Nữ 380k – CB 720k\\\",\\\"action\\\":\\\"order\\\"}\"}]}]}}}","timestamp":"2016-07-06T18:20:18.313Z"}
