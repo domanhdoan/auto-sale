@@ -81,7 +81,7 @@ SessionManager.prototype.resetSession = function(session) {
     var pageid = session.pageid;
     var fbid = session.fbid;
     this.deteleSession(session.sessionId);
-    session = findOrCreateSession(storeid, pageid, fbid);
+    session = this.findOrCreateSession(storeid, pageid, fbid);
 }
 
 SessionManager.prototype.deteleSession = function(sessionId) {
