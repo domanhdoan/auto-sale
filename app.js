@@ -52,7 +52,7 @@ if (crawl_source != null) {
 
     if (config.submodule.crawler) {
         for (var i = 0, length = store_config.length; i < length; i++) {
-            scraper = new WebScraper(link, store_config[i]);
+            scraper = new WebScraper(store_config[i]);
             scraper.crawlWholeSite(function() {
 
             });

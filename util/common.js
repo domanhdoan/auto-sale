@@ -199,6 +199,7 @@ module.exports.loadStoreConfig = function(url) {
     }
     product_pattern = './datasets/' + product_pattern + ".json";
     var pattern = JSON.parse(require('fs').readFileSync(product_pattern, 'utf8'));
+    pattern.url = url;
     return pattern;
 }
 
