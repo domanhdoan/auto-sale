@@ -95,7 +95,7 @@ function WebScraper(crawlPattern) {
             var headline = $(productElememt).find(detailPattern.headline);
             var length = headline.length;
             var finger = "";
-            for (var i = 0; i < length; i++) {
+            for (var i = 1; i < length; i++) {
                 finger += " " + $(headline[i]).text().latinise().toLowerCase();
             }
             logger.info("Finger = " + finger);
