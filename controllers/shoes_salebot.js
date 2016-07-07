@@ -331,72 +331,90 @@ function searchProducts(session, user_msg, user_msg_trans) {
     }
 }
 
+function selectProductColor(session, user_message) {
+    var orderInfo = sessionManager.getOrderInfo(session);
+    var productInfo = sessionManager.getProductInfo(session);
+    if (orderInfo.id == -1) {
+        gModelFactory.createInitialInvoice(session.fbid,
+            function(invoice) {
+                sessionManager.setOrderInfo(session, {
+                    id: invoice.id
+                });
+            });
+    } else {}
+
+    // Remove mua word to get color value
+    var color_keyword = user_message.replaceAll("mau", "").replaceAll(" ", "").trim();
+    gProductFinder.checkProductByColor(productInfo.id,
+        color_keyword,
+        function(color) {
+            if (color != null) {
+                sessionManager.setUserAction(session, common.select_product_color);
+                sessionManager.setProductInfo(session, {
+                    color: color.id
+                });
+                fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_size, function() {
+                    showAvailableColorNsize(session, false, true, false);
+                });
+            } else {
+                fbMessenger.sendTextMessage(session.fbid, common.notify_color_notfound,
+                    function() {
+                        showAvailableColorNsize(session, true, false, false);
+                    });
+            }
+        });
+}
+
+function selectProductSize(session, user_message) {
+    var productInfo = sessionManager.getProductInfo(session);
+    var size = common.extractValue("\\d+", user_message);
+    gProductFinder.checkProductBySize(productInfo.id,
+        size,
+        function(size) {
+            if (size != null) {
+                sessionManager.setUserAction(session, common.select_product_size);
+                sessionManager.setProductInfo(session, {
+                    size: size.id
+                });
+                fbMessenger.sendTextMessage(session.fbid, common.pls_enter_quantity);
+            } else {
+                fbMessenger.sendTextMessage(session.fbid, common.notify_size_notfound,
+                    function() {
+                        showAvailableColorNsize(session, false, true, false);
+                    });
+            }
+        });
+}
+
+function selectProductQuantity(session, user_message) {
+    var productInfo = sessionManager.getProductInfo(session);
+    var orderInfo = sessionManager.getOrderInfo(session);
+    var lastAction = sessionManager.getLastAction(session);
+    logger.debug("Order Quantity: " + user_message);
+    var quantity = common.extractValue("\\d+", user_message);
+    gModelFactory.createFashionOrderItem(quantity,
+        orderInfo.id,
+        productInfo.id,
+        productInfo.color,
+        productInfo.size,
+        function(saved_item) {
+            logger.info("saved_item: " + saved_item);
+        });
+    sessionManager.setUserAction(session, common.say_search_continue_message);
+    fbMessenger.sendPurchaseConfirmMessage(session.fbid, "Bạn muốn tiếp tục chọn sản phẩm hay đặt hàng ngay?");
+}
+
 function putProductToCart(session, text) {
     var user_req_trans = text.latinise().toLowerCase();
     var productInfo = sessionManager.getProductInfo(session);
     var orderInfo = sessionManager.getOrderInfo(session);
-
+    var lastAction = sessionManager.getLastAction(session);
     if (session.last_action == common.select_product) {
-        if (orderInfo.id == -1) {
-            gModelFactory.create_empty_invoice(session.fbid,
-                function(invoice) {
-                    sessionManager.setOrderInfo(session, {
-                        id: invoice.id
-                    });
-                });
-        } else {}
-
-        // Remove mua word to get color value
-        var color_keyword = user_req_trans.replaceAll("mau", "").replaceAll(" ", "").trim();
-        gProductFinder.checkProductByColor(productInfo.id,
-            color_keyword,
-            function(color) {
-                if (color != null) {
-                    session.last_action = common.select_product_color;
-                    sessionManager.setProductInfo(session, {
-                        color: color.id
-                    });
-                    fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_size, function() {
-                        showAvailableColorNsize(session, false, true, false);
-                    });
-                } else {
-                    logger.debug("Product not found");
-                    fbMessenger.sendTextMessage(session.fbid, common.notify_color_notfound,
-                        function() {
-                            showAvailableColorNsize(session, true, false, false);
-                        });
-                }
-            });
+        selectProductColor(session, user_req_trans);
     } else if (session.last_action == common.select_product_color) {
-        gProductFinder.checkProductBySize(productInfo.id,
-            text,
-            function(size) {
-                if (size != null) {
-                    session.last_action = common.select_product_size;
-                    sessionManager.setProductInfo(session, {
-                        size: size.id
-                    });
-                    fbMessenger.sendTextMessage(session.fbid, common.pls_enter_quantity);
-                } else {
-                    fbMessenger.sendTextMessage(session.fbid, common.notify_size_notfound,
-                        function() {
-                            showAvailableColorNsize(session, false, true, false);
-                        });
-                }
-            });
+        selectProductSize(session, text);
     } else if (session.last_action == common.select_product_size) {
-        logger.debug("Order Quantity: " + text);
-        gModelFactory.create_fashion_item(parseInt(text),
-            productInfo.id,
-            productInfo.id,
-            productInfo.color,
-            productInfo.size,
-            function(saved_item) {
-                logger.info("saved_item: " + saved_item);
-            });
-
-        session.last_action = common.say_search_continue_message;
-        fbMessenger.sendPurchaseConfirmMessage(session.fbid, "Bạn muốn tiếp tục chọn sản phẩm hay đặt hàng ngay?");
+        selectProductQuantity(session, text);
     }
 }
 
@@ -454,7 +472,7 @@ function cancelOrder(session) {
     var status = "cancel";
     var orderInfo = sessionManager.getOrderInfo(session);
 
-    gModelFactory.cancel_invoice(orderInfo.id, status,
+    gModelFactory.cancelInvoice(orderInfo.id, status,
         function(invoice) {
             sessionManager.resetSession(session);
         });
