@@ -5,7 +5,7 @@ var config = require("./config/config.js");
 var common = require("./util/common");
 var logger = require("./util/logger");
 
-var WebScraper = require("./processors/web_scraping_light");
+var WebScraper = require("./processors/web_scraping_lite");
 
 var shoes_salebot = require("./controllers/shoes_salebot");
 
