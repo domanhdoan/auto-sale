@@ -99,7 +99,7 @@ function WebScraper(crawlPattern) {
                 finger += " " + $(headline[i]).text().latinise().toLowerCase();
             }
             logger.info("Finger = " + finger);
-            var categoryNameElement = (length >= 1) ? $(headline[0]) : "";
+            var categoryNameElement = (length >= 2) ? $(headline[1]) : "";
             var categoryName = categoryNameElement.text().trim();
             var categoryLink = $(categoryNameElement).attr('href');
 

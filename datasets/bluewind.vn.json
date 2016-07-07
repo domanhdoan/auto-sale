@@ -7,7 +7,7 @@
         "link": "ul.list-tax li.img a",
         "details": {
             "content_area": ".content-show",
-            "title": "div.t-t-sp a",
+            "title": "div.t-t-sp .sp-t",
             "thumbnail": ".img-thumb img",
             "price": ".meta-sp .tt.giax span",
             "discount": "",
@@ -20,7 +20,7 @@
             "status": ".meta-sp .tt",
             "photo": ".list-do div.entry-content p a",
             "brand": "",
-            "headline": ".breadcrumbx span a"
+            "headline": ".breadcrumbx a"
         }
     },
     "paging": {
