@@ -295,7 +295,7 @@ WebScraper.prototype.extractThumbUrl = function(home_page, input_thumb, callback
     var encoded_uri = encodeURIComponent(input_thumb);
     var goole_search_image = "https://www.google.com/searchbyimage?&image_url="
     goole_search_image += encoded_uri + "&as_sitesearch=" + home_page;
-    request.debug = true;
+    //request.debug = true;
     request(goole_search_image, {
         followRedirect: true,
     }, function(error, response, body) {
@@ -309,8 +309,8 @@ WebScraper.prototype.extractThumbUrl = function(home_page, input_thumb, callback
 
         request(options, function(error, response, body) {
             var $ = cheerio.load(body);
+            common.saveToHTMLFile("search", body);
             var search_items = $('div.srg div.g div.rc div.s div div.th._lyb a');
-            // var similar_images_link = "http://google.com" + $('div#rso div.g div._Icb._kk._wI a').attr('href');
             var image_url = "";
             if (search_items.length > 0) {
                 var search_item = search_items[0];

@@ -2,6 +2,10 @@ var gDbManager = require("../models/db_manager.js");
 
 var logger = require("../util/logger.js");
 var common = require('../util/common.js');
+var WebScraper = require('../processors/web_scraping_lite');
+var scraper = new WebScraper({
+    url: ""
+});
 
 //===================================================//
 //================= SHOE finding ====================//
@@ -207,7 +211,7 @@ exports.findProductByLink = function(storeId, link, callback) {
 }
 
 exports.findProductByThumbnail = function(home_page, thumbnail_link, callback) {
-    require('../processors/web_scraping').extractThumbUrl(
+    scraper.extractThumbUrl(
         home_page, thumbnail_link,
         function(real_thumb_url) {
             logger.info("search_item URL = " + real_thumb_url);
