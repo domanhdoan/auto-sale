@@ -93,7 +93,7 @@ function generateFindshoesQuery(storeId, keywords) {
     if (keywords[2].length > 0) {
         query += " and S.value = '" + keywords[2] + "'";
     }
-    query += " order by P.id ASC LIMIT " + common.product_search_max + ";";
+    query += " LIMIT " + common.product_search_max + ";";
 
     return query;
 }
