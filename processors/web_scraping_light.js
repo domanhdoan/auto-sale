@@ -16,9 +16,10 @@ Array.prototype.unique = function() {
 };
 
 function WebScraper(crawlPattern) {
+    var skippedCategory = ['trang chu', 'tat ca san pham'];
     this.gCrawlPattern = crawlPattern;
     this.curHomepage = crawlPattern.url;
-    this.categoryObjects = new HashMap();
+    this.categoryObjects = [];
     var currentObj = this;
 
     function insertLinksWithoutDuplication(source, destination) {
@@ -82,6 +83,10 @@ function WebScraper(crawlPattern) {
     function extractProductDetails(savedStore, categoryObjects,
         link, detailPattern, callback) {
         request(link, function(error, response, body) {
+            if (error) {
+                logger.error("Couldn’t get page " + link + " because of error: " + error);
+                return;
+            }
             var $ = cheerio.load(body);
             var detailLink = response.request.href;
             detailLink = common.insertRootLink(detailLink, currentObj.curHomepage);
@@ -89,20 +94,16 @@ function WebScraper(crawlPattern) {
             var productElememt = $(detailPattern.content_area);
             var headline = $(productElememt).find(detailPattern.headline);
             var length = headline.length;
-            var categoryNameElement = (length >= 1) ? $(headline[0]) : "";
-            var categoryName = categoryNameElement.text();
-            var savedCategory = categoryObjects.get(categoryName);
             var finger = "";
-            for (var i = 0, length = headline.length; i < length; i++) {
+            for (var i = 0; i < length; i++) {
                 finger += " " + $(headline[i]).text().latinise().toLowerCase();
             }
-            var title = $(productElememt).find(detailPattern.thumbnail).attr('alt');
-            finger += " " + title.latinise().toLowerCase();
+            logger.info("Finger = " + finger);
+            var categoryNameElement = (length >= 1) ? $(headline[0]) : "";
+            var categoryName = categoryNameElement.text().trim();
+            var categoryLink = $(categoryNameElement).attr('href');
 
-            finger = finger.split(' ').filter(function(item, i, allItems) {
-                return i == allItems.indexOf(item);
-            }).join(' ');
-
+            var title = $(productElememt).find(detailPattern.title).text();
             var thumbnailLink = $(productElememt).find(detailPattern.thumbnail).attr('src');
             var desc = $(productElememt).find(detailPattern.desc).text();
             var priceStr = $(productElememt).find(detailPattern.price).text();
@@ -123,9 +124,29 @@ function WebScraper(crawlPattern) {
                 discountStr = (discountStr == null || discountStr == "") ? "0" : discountStr;
                 percent = (percent == null || percent == "") ? percent : "0";
 
+                finger += " " + title.latinise().toLowerCase();
+                //finger += " " + desc.latinise().toLowerCase();
+                finger = finger.split(' ').filter(function(item, i, allItems) {
+                    return i == allItems.indexOf(item);
+                }).join(' ');
                 if (price > 0) {
-                    if (savedCategory == undefined) {
-                        logger.info("UNDEFINE categoryName " + categoryName);
+                    var cKey = require('crypto').createHmac('sha256', categoryName)
+                        .digest('hex');
+
+                    // categoryName = categoryName.replace(/[^\w\s]/gi, '');
+                    var savedCategory = categoryObjects[categoryLink];
+                    // console.log("Defined Category Name: " + categoryName + " key " + cKey + " : " + JSON.stringify(savedCategory));
+                    // for (var i = 0, length = Object.keys(categoryObjects).length; i < length; i++) {
+                    //     var key = new String(Object.keys(categoryObjects)[i]);
+                    //     var key2 = new String(categoryLink);
+                    //     if (key.valueOf() === key2.valueOf()) {
+                    //         logger.info(key + " ===Matched=== " + categoryName);
+                    //     } else {
+                    //         logger.info(key.length + " ===vs=== " + categoryName.length);
+                    //         logger.info(key + " ===NotMatched=== " + categoryName);
+                    //     }
+                    // }
+                    if (!savedCategory) {
                         logger.info("UNDEFINE product " + detailLink);
                     } else {
                         logger.info("DEFINE categoryName " + categoryName);
@@ -143,7 +164,7 @@ function WebScraper(crawlPattern) {
                     logger.info("Not save product which not have price\n");
                 }
             } else {
-                logger.info("Skipped this HTML element\n");
+                logger.info("\nSkipped this HTML element: " + detailLink);
             }
         });
     }
@@ -166,17 +187,17 @@ function WebScraper(crawlPattern) {
     function extractAllProductDetailsLink(index, categoryLink, productLinks, callback) {
         request(categoryLink, function(error, response, body) {
             if (error) {
-                logger.error("Couldn’t get page " + link + " because of error: " + error);
+                logger.error("Couldn’t get page " + categoryLink + " because of error: " + error);
                 return;
             }
-
             var $ = cheerio.load(body);
             var productList = $(currentObj.gCrawlPattern.product_info.link);
             // common.saveToHTMLFile(categoryLink, body);
             for (var i = 0, length = productList.length; i < length; i++) {
                 var detailLink = $(productList[i]).attr('href');
                 detailLink = common.insertRootLink(detailLink, currentObj.curHomepage);
-                // logger.info("Product link: " + detailLink);
+                logger.error("Category Link: " + categoryLink);
+                logger.info("Product link: " + detailLink);
                 //insertLinkWithoutDuplication(detailLink, productLinks);
                 productLinks.push(detailLink);
             }
@@ -205,15 +226,23 @@ function WebScraper(crawlPattern) {
         for (var i = 0, len = menuItems.length; i < len; i++) {
             var children = $(menuItems[i]).find('a');
             var link = $(children[0]).attr('href');
-            var name = $(children[0]).text();
-            logger.info("Category: " + name);
-            if (link == undefined || name === "") {
+            var name = $(children[0]).text().trim();
+            if (link === undefined || name === "" || skippedCategory.indexOf(name.latinise().toLowerCase()) >= 0 || (link === currentObj.curHomepage + "/")) {
+                logger.info("Skipped Category Link: " + link);
                 continue;
             }
+            logger.info("OK Category: " + name);
+            logger.info("OK Category Link: " + link);
+
             gModelFactory.findAndCreateCategory(savedStore, name, link,
                 function(savedCategory) {
-                    currentObj.categoryObjects.set(savedCategory.dataValues.name, savedCategory);
-                });
+                    var key = require('crypto').createHmac('sha256', savedCategory.dataValues.name)
+                        .digest('hex');
+                    var categoryName = savedCategory.dataValues.name; //.replace(/[^\w\s]/gi, '');
+                    // currentObj.categoryObjects.set(categoryName, savedCategory);
+                    var categoryLink = savedCategory.dataValues.link;
+                    currentObj.categoryObjects[categoryLink] = savedCategory;
+                });;
             categoryLinks.push(link);
         }
         return categoryLinks;
@@ -222,11 +251,11 @@ function WebScraper(crawlPattern) {
     this.extractAllCategoryLink = function(savedStore, callback) {
         logger.info("Store: " + savedStore.dataValues.home);
         request(savedStore.dataValues.home, function(error, response, body) {
+            var link = savedStore.dataValues.home;
             if (error) {
                 logger.error("Couldn’t get page " + link + " because of error: " + error);
                 return;
             }
-
             var allProductLinks = [];
             var categoryCount = 0;
             var categoryLinks = classifyCategory(savedStore, body);

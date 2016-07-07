@@ -46,7 +46,7 @@ module.exports.findAndCreateProduct = function(
     //     .digest('hex');
     gDbManager.Product.findOrCreate({
         where: {
-            title: product_title
+            link: product_detail_link.replaceAll('-', '%%')
         },
         defaults: {
             title: product_title,
@@ -63,15 +63,14 @@ module.exports.findAndCreateProduct = function(
     }).then(function(product) {
         var savedProduct = product[0];
 
-        logger.info("Save new product successfully");
         savedProduct.setCategory(savedCategory);
         savedProduct.setStore(saved_store);
-        if (savedCategory.cover == null) {
-            savedCategory.updateAttributes({
-                cover: savedProduct.thumbnail.replaceAll("%%", "-")
-            });
-        }
-        if (!product[0]) {
+        if (!product[1]) {
+            if (savedCategory.cover == null) {
+                savedCategory.updateAttributes({
+                    cover: savedProduct.thumbnail.replaceAll("%%", "-")
+                });
+            }
             savedProduct.updateAttributes({
                 title: product_title,
                 thumbnail: product_thumbnail.replaceAll('-', '%%'),
@@ -85,6 +84,7 @@ module.exports.findAndCreateProduct = function(
                 code: product_code
             });
         }
+        logger.info("Save new product successfully");
         callback(savedProduct);
     });
 }
@@ -120,6 +120,7 @@ module.exports.findAndCreateProductPhoto = function(savedStore, savedProduct,
         var savedPhoto = photo[0];
         savedPhoto.setProduct(savedProduct);
         savedPhoto.setStore(savedStore);
+        logger.info(JSON.stringify(savedProduct));
         callback();
     });
 }
