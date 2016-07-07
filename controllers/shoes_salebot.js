@@ -318,7 +318,7 @@ function findCategories(session) {
     });
 }
 
-function doProductSearch(session, user_msg, user_msg_trans) {
+function searchProducts(session, user_msg, user_msg_trans) {
     var result = common.extractValue(user_msg, gStoreConfig.product_code_pattern);
     if (common.isThumbUrl(user_msg)) {
         findProductByThumbLink(session, user_msg);
@@ -331,7 +331,7 @@ function doProductSearch(session, user_msg, user_msg_trans) {
     }
 }
 
-function doProductOrder(session, text) {
+function putProductToCart(session, text) {
     var user_req_trans = text.latinise().toLowerCase();
     var productInfo = sessionManager.getProductInfo(session);
     var orderInfo = sessionManager.getOrderInfo(session);
@@ -400,7 +400,7 @@ function doProductOrder(session, text) {
     }
 }
 
-function doFillOrderDetails(session, text) {
+function makeProductOrder(session, text) {
     if (session.last_action == common.set_quantity) {
         logger.debug("Name: " + text);
         sessionManager.setUserAction(session, common.set_recipient_name);
@@ -449,7 +449,7 @@ function doFillOrderDetails(session, text) {
     }
 }
 
-function doCancelOrder(session) {
+function cancelOrder(session) {
     var invoice_id = session.last_invoice.id;
     var status = "cancel";
     var orderInfo = sessionManager.getOrderInfo(session);
@@ -477,13 +477,13 @@ function processTextEvent(session, user_msg) {
     var selectDeliveryDateAction = common.sale_steps.get(common.set_delivery_date);
 
     if (user_req_trans === common.action_terminate_order) {
-        doCancelOrder(session);
+        cancelOrder(session);
     } else if (last_action_key === common.say_greetings) {
-        doProductSearch(session, user_msg, user_req_trans);
+        searchProducts(session, user_msg, user_req_trans);
     } else if ((last_action >= selectProductAction) && last_action < selectQuantityAction) {
-        doProductOrder(session, user_msg);
+        putProductToCart(session, user_msg);
     } else if ((last_action >= selectQuantityAction) && last_action <= selectDeliveryDateAction) {
-        doFillOrderDetails(session, user_msg);
+        makeProductOrder(session, user_msg);
     } else {
         logger.error("Unknow message: " + user_msg);
     }
