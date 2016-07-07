@@ -24,6 +24,7 @@ module.exports = {
     find_product: "find_product",
     find_details: "find_details", // ask about size, color and in-stock status
     select_product: "select_product",
+    select_type: "select_type",
     select_product_color: "select_product_color",
     select_product_size: "select_product_size",
     set_quantity: "set_quantity",
@@ -51,6 +52,7 @@ module.exports = {
     action_confirm_order: "ok",
     action_cancel_order: "cancel",
     action_confirm_addr: "confirm_addr",
+    action_confirm_type: "confirm_type",
     action_retype_addr: "retype_addr",
 
     status_updating: "Đang cập nhật",
@@ -70,10 +72,10 @@ module.exports.typical_question = {
 
 module.exports.sale_steps = new Enum([
     "say_greetings",
-
     "find_product",
     // Select product with details
     "select_product",
+    "select_type",
     "select_product_color",
     "select_product_size",
     "set_quantity",

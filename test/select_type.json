@@ -10,9 +10,9 @@
             "recipient": {
                 "id": "1622583457969907"
             },
-            "timestamp": 1458692752678,
+            "timestamp": 1458692755778,
             "postback": {
-                "payload": "{\"id\":19,\"title\":\"Giày thể thao BW6309 Nam 350k Nữ 280k\",\"action\":\"order\"}"
+                "payload": "{\"action\":\"confirm_type\",\"type\":\"nu\"}"
             }
         }]
     }]
