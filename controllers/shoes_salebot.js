@@ -331,6 +331,19 @@ function searchProducts(session, user_msg, user_msg_trans) {
     }
 }
 
+function extractProductType(title) {
+    var prices = common.extractValues(title, "\\d+");
+    var types = null;
+    if (prices.length === 3) {
+        types = ['nam', 'nu'];
+    } else if (prices.length === 4) {
+        types = ['nam', 'nu', 'combo'];
+    } else {
+        types = [];
+    }
+    return types;
+}
+
 function selectProductColor(session, user_message) {
     var orderInfo = sessionManager.getOrderInfo(session);
     var productInfo = sessionManager.getProductInfo(session);
@@ -409,7 +422,8 @@ function putProductToCart(session, text) {
     var productInfo = sessionManager.getProductInfo(session);
     var orderInfo = sessionManager.getOrderInfo(session);
     var lastAction = sessionManager.getLastAction(session);
-    if (session.last_action == common.select_product) {
+    if (session.last_action == common.select_type) {
+        // Extract product type
         selectProductColor(session, user_req_trans);
     } else if (session.last_action == common.select_product_color) {
         selectProductSize(session, text);
@@ -509,6 +523,8 @@ function processTextEvent(session, user_msg) {
 
 function processPostbackEvent(session, action_details) {
     var user_action = action_details.action;
+    var productInfo = sessionManager.getProductInfo(session);
+
     logger.info("processPostbackEvent: " + JSON.stringify(action_details));
 
     if (user_action === common.action_view_details) {
@@ -520,13 +536,27 @@ function processPostbackEvent(session, action_details) {
         sessionManager.setOrdeTrigerStatusInfo(session, true);
         sessionManager.setProductIdNTitle(session,
             action_details.id, action_details.title);
-        sessionManager.setUserAction(session, common.select_product);
-        fbMessenger.sendTextMessage(session.fbid, "     Bắt đầu đặt hàng\n" +
-            common.pls_select_product_color,
+        var types = extractProductType(productInfo.title);
+        if (types.length == 0) {
+            fbMessenger.sendTextMessage(session.fbid, "     Bắt đầu đặt hàng        \n" +
+                common.pls_select_product_color,
+                function() {
+                    showAvailableColorNsize(session, true, false, false);
+                });
+            sessionManager.setUserAction(session, common.select_type);
+        } else {
+            fbMessenger.sendProductTypeConfirm(session.fbid, "Bạn vui lòng chọn kiểu giầy",
+                types);
+        }
+    } else if (user_action === common.action_confirm_type) {
+        sessionManager.setUserAction(session, common.select_type);
+        sessionManager.setProductInfo(session, {
+            type: action_details.type
+        });
+        fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_color,
             function() {
                 showAvailableColorNsize(session, true, false, false);
             });
-
     } else if (session.last_invoice.is_ordering &&
         (user_action === common.action_continue_search)) {
         sessionManager.setUserAction(session, common.say_greetings);
@@ -585,7 +615,6 @@ function processEvent(event) {
                     productid: currentSession.last_product.id,
                     codePattern: gStoreConfig.product_code_pattern
                 };
-
                 intentParser.parse(text.latinise().toLowerCase(), options);
             } else {
                 processTextEvent(currentSession, text);
@@ -874,4 +903,5 @@ module.exports = {
             storeId = store.id;
         });
     }
+
 }

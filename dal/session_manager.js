@@ -21,6 +21,7 @@ function SessionManager() {
                 title: "",
                 color: -1,
                 size: -1,
+                type: ""
             },
 
             last_action: common.say_greetings,

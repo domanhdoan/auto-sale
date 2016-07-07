@@ -160,6 +160,27 @@ function FBMessenger() {
         }];
         return template;
     }
+
+    this.createProductTypeConfirmElement = function(types) {
+        var confirm = {};
+        confirm.action = common.action_confirm_type;
+        var template = [];
+        var typeLabel = {
+            nam: ' Kiểu Nam',
+            nu: 'Kiểu Nữ',
+            combo: "Combo"
+        };
+        for (var i = 0; i < types.length; i++) {
+            confirm.type = types[i];
+            var button = {
+                "type": "postback",
+                "title": typeLabel[types[i]],
+                "payload": JSON.stringify(confirm),
+            }
+            template.push(button);
+        }
+        return template;
+    }
 }
 
 // =================================================================
@@ -181,10 +202,11 @@ FBMessenger.prototype.sendProductElements = function(sender, foundProducts) {
             foundProducts[i].id);
         messageData.push(productElement);
     }
-    // if (messageData.length >= 2) {
-    //     this.sendTextMessage(sender, common.notify_product_search2);
-    // }
     this.sendGenericMessage(sender, messageData);
+}
+FBMessenger.prototype.sendProductTypeConfirm = function(sender, message, types) {
+    var buttons = this.createProductTypeConfirmElement(types);
+    this.sendConfirmMessage(sender, message, buttons);
 }
 
 FBMessenger.prototype.sendCategoriesElements = function(sender, foundCategories) {
@@ -393,5 +415,6 @@ FBMessenger.prototype.getUserProfile = function(fbid, callback) {
         }
     });
 }
+
 
 module.exports = FBMessenger;
