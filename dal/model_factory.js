@@ -151,7 +151,7 @@ module.exports.findAndCreateProductSize = function(saved_product, size, callback
     });
 }
 
-module.exports.create_empty_invoice = function(fbid, callback) {
+module.exports.createInitialInvoice = function(fbid, callback) {
     gDbManager.Invoice
         .build({
             fbid: fbid,
@@ -166,7 +166,7 @@ module.exports.create_empty_invoice = function(fbid, callback) {
         });
 }
 
-module.exports.cancel_invoice = function(id, status, callback) {
+module.exports.cancelInvoice = function(id, status, callback) {
     gDbManager.Invoice.findOne({
         where: {
             id: id
@@ -201,7 +201,7 @@ module.exports.update_invoice = function(invoice_info, callback) {
     })
 }
 
-module.exports.create_fashion_item = function(quantity, saved_invoice,
+module.exports.createFashionOrderItem = function(quantity, saved_invoice,
     saved_product, saved_color, saved_size, callback) {
     gDbManager.FashionItem
         .build({

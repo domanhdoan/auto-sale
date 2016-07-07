@@ -162,6 +162,10 @@ SessionManager.prototype.getOrderInfo = function(session) {
     return session.last_invoice;
 }
 
+SessionManager.prototype.getLastAction = function(session) {
+    return session.last_action;
+}
+
 SessionManager.prototype.setSessionInfo = function(session, info) {
     var keys = Object.keys(info);
     for (var i = 0; i < keys.length; i++) {
