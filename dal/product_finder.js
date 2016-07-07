@@ -6,14 +6,24 @@ var common = require('../util/common.js');
 //===================================================//
 //================= SHOE finding ====================//
 //===================================================//
-var keywords = ['doi', 'giay', 'mau', 'size'];
+var sampleData = ['giay', 'mau', 'size'];
 
-function parse_shoes_keywords(keywords, word_list) {
+function extractRawSearchText(sampleData, word_list) {
     var result = {};
     var temp = '';
     var last_keyword = null;
+    var copySampleData = sampleData;
+
+    //1. Remove doi keyword from user message to avoid incorrectly parsing search text
+    var doiIndex = word_list.indexOf('doi');
+    var giayIndex = word_list.indexOf('giay');
+    if ((giayIndex < doiIndex) && (doiIndex >= 0)) {
+        word_list.splice(doiIndex /*start index to remove*/ , 1 /*no of element will be removed*/ );
+    }
+
+    //2. Parsing search text with using keywords
     for (var i = 0; i <= word_list.length; i++) {
-        if (keywords.indexOf(word_list[i]) >= 0 || i == word_list.length) {
+        if (sampleData.indexOf(word_list[i]) >= 0 || i == word_list.length) {
             if (last_keyword != null) {
                 console.log("key = " + last_keyword + " value = " + temp);
                 result[last_keyword] = temp.trim();
@@ -29,35 +39,41 @@ function parse_shoes_keywords(keywords, word_list) {
     return result;
 }
 
-function calibrateShoesKeyword(keywords, word_list) {
-    var results_json = parse_shoes_keywords(keywords, word_list);
-    var results = [];
+function postProcess(rawSearchText) {
+    var finalSearchText = [];
 
-    if (results_json['doi'] != null && results_json['doi'] != "") {
-        results_json['giay'] = results_json['doi'].replaceAll(" ", "%%");
+    if (rawSearchText['doi'] != null && rawSearchText['doi'] != "") {
+        rawSearchText['giay'] = rawSearchText['doi'].replaceAll(" ", "%%");
     }
 
-    if (results_json['giay'] != null) {
-        results_json['giay'] = results_json['giay'].replaceAll(" ", "%%");
+    if (rawSearchText['giay'] != null) {
+        rawSearchText['giay'] = rawSearchText['giay'].replaceAll(" ", "%%");
     } else {
-        results_json['giay'] = "";
+        rawSearchText['giay'] = "";
     }
 
-    if (results_json['mau'] != null) {
-        results_json['mau'] = results_json['mau'].replaceAll(" ", "");
+    if (rawSearchText['mau'] != null) {
+        rawSearchText['mau'] = rawSearchText['mau'].replaceAll(" ", "");
     } else {
-        results_json['mau'] = "";
+        rawSearchText['mau'] = "";
     }
 
-    if (results_json['size'] == null) {
-        results_json['size'] = "";
+    if (rawSearchText['size'] == null) {
+        rawSearchText['size'] = "";
     }
 
-    results.push(results_json['giay']);
-    results.push(results_json['mau']);
-    results.push(common.extract_numeric(results_json['size']));
+    finalSearchText.push(rawSearchText['giay']);
+    finalSearchText.push(rawSearchText['mau']);
+    finalSearchText.push(common.extract_numeric(rawSearchText['size']));
 
-    return results;
+    return finalSearchText;
+}
+
+function extractShoesSearchKeywords(sampleData, user_message) {
+    var word_list = user_message.split(" ");
+    var rawSearchText = extractRawSearchText(sampleData, word_list);
+    var finalSearchText = postProcess(rawSearchText);
+    return finalSearchText;
 }
 
 function generateFindshoesQuery(storeId, keywords) {
@@ -133,8 +149,7 @@ exports.findInvoiceById = function(invoice_id, callback) {
 // Keyword order: shoes -> color -> size
 exports.findShoesByKeywords = function(storeId, user_message, callback) {
     var products = [];
-    var word_list = user_message.split(" ");
-    var keywords_value = calibrateShoesKeyword(keywords, word_list);
+    var keywords_value = extractShoesSearchKeywords(sampleData, user_message);
     var count = Object.keys(keywords_value).length;
     if (count != 0) {
         var query = generateFindshoesQuery(storeId, keywords_value);
