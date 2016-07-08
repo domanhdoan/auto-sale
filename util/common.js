@@ -190,7 +190,7 @@ module.exports.extractProductCode = function(text, pattern) {
     return ret;
 }
 
-module.exports.loadStoreConfig = function(url) {
+module.exports.loadStoreScrapingPattern = function(storeType, url) {
     var product_pattern = url;
     if (product_pattern.startsWith('http://')) {
         product_pattern = product_pattern.replace('http://', '');
@@ -199,9 +199,9 @@ module.exports.loadStoreConfig = function(url) {
     } else {
 
     }
-    product_pattern = './datasets/' + product_pattern + ".json";
-    var pattern = JSON.parse(require('fs').readFileSync(product_pattern, 'utf8'));
-    pattern.url = url;
+    var patternPath = './datasets/' + storeType + "/" + product_pattern;
+    var pattern = JSON.parse(require('fs').readFileSync(patternPath, 'utf8'));
+    pattern.url = url.replace(".json", "");
     return pattern;
 }
 

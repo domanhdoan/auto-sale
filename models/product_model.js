@@ -28,6 +28,10 @@ module.exports = function(Sequelize, DataTypes) {
         brand: {
             type: DataTypes.STRING
         },
+        type: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         finger: {
             type: DataTypes.STRING
         }

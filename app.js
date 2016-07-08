@@ -1,5 +1,6 @@
 require('string.prototype.startswith');
 var mkdirp = require('mkdirp');
+var mkdirp = require('fs');
 
 var config = require("./config/config.js");
 var common = require("./util/common");
@@ -43,11 +44,11 @@ mkdirp(config.crawler.temp_dir, function(err) {
 });
 
 var store_config = [];
-var crawl_source = common.loadJson("./crawl_sources/links.json");
-if (crawl_source != null) {
-    for (var i = 0, length = crawl_source.links.length; i < length; i++) {
-        var link = crawl_source.links[i];
-        store_config[i] = common.loadStoreConfig(link);
+var crawl_sources = fs.readdirSync("./datasets/shoes");
+if (crawl_sources != null) {
+    for (var i = 0, length = crawl_sources.length; i < length; i++) {
+        var link = crawl_sources[i];
+        store_config[i] = common.loadStoreScrapingPattern("shoes", link);
     }
 
     if (config.submodule.crawler) {
@@ -60,8 +61,9 @@ if (crawl_source != null) {
     }
 
     if (config.submodule.salebot) {
+        var storeList = common.loadJson("./crawl_sources/links.json");
         shoes_salebot.enable_ai(config.bots.ai_on);
-        shoes_salebot.start(crawl_source.links[0], store_config[0]);
+        shoes_salebot.start(storeList.links[0], store_config[0]);
     }
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
