@@ -4,6 +4,10 @@ module.exports = function(Sequelize, DataTypes) {
         value: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        quantity: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, {
         freezeTableName: true,
