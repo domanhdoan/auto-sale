@@ -220,8 +220,7 @@ function WebScraper(crawlPattern) {
         var categoryLinks = [];
         var $ = cheerio.load(webcontent);
         var menu = $(currentObj.gCrawlPattern.category.menu);
-        menu = menu[0];
-        var menuItems = menu.children;
+        var menuItems = (!menu && menu.length > 0) ? menu[0].children : [];
 
         for (var i = 0, len = menuItems.length; i < len; i++) {
             var children = $(menuItems[i]).find('a');
