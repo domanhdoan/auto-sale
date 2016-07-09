@@ -1,6 +1,6 @@
 require('string.prototype.startswith');
 var mkdirp = require('mkdirp');
-var mkdirp = require('fs');
+var fs = require('fs');
 
 var config = require("./config/config.js");
 var common = require("./util/common");
@@ -68,11 +68,3 @@ if (crawl_sources != null) {
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
 }
-
-// var string1 = "Giày Oxford - Slip On";
-// var string2 = "Giày Oxford - Slip On";
-// if (string1 === string2) {
-//     console.log("matched");
-// } else {
-//     console.log("not matched");
-// }
