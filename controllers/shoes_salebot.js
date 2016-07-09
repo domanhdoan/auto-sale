@@ -691,27 +691,37 @@ function findLastSelectProduct(session, data, callback) {
         gProductFinder.findProductById(data.productid, function(product) {
             callback(product);
         });
+    } else {
+        callback(null);
     }
 }
 
-function extractComboPrice(productTitle, saleoffmsg) {
+function extractProductPrice(price, title, requestType, saleoffmsg) {
     var message = "";
-    var prices = common.extractValues(productTitle, "\\d+");
-    var malePrice = (prices.length >= 3) ? common.extractValues(prices[1], "\\d+") : 0;
-    var femalePrice = (prices.length >= 3) ? common.extractValues(prices[2], "\\d+") : 0;
-    var total = 0;
-    if (prices.length === 3) {
-        total = parseInt(malePrice) + parseInt(femalePrice);
-    } else if (prices.length === 4) {
-        total = prices[3];
-    } else {
-        total = 0;
+    var maleIndex = title.indexOf('nam');
+    var femaleIndex = title.indexOf('nu');
+    var malePrice = this.extractValue(title, "nam \\d+");
+    var femalePrice = this.extractValue(title, "nu \\d+");
+    var comboPrice = this.extractValue(title.replaceAll("cb", "combo"), "combo \\d+");
+    var types = ['nam', 'nu', 'combo', 'unknown'];
+    var prices = {
+        nam: malePrice,
+        nu: femalePrice,
+        combo: comboPrice
+    };
+    var type = common.extractProductType(title);
+
+    if (comboPrice === "" && (malePrice != "" && femalePrice != "")) {
+        comboPrice = parseInt(malePrice) + parseInt(femalePrice);
     }
-    if (total != 0) {
-        message = "- 1 Combo (Nam + Nữ) " + " giá " + common.toCurrencyString(total * 1000, " VNĐ") + saleoffmsg;
+
+    if (requestType === type) {
+        var price = parseInt(prices[type] / 1000);
+        message += "- " + price.toUpperCase() + " K VNĐ" + saleoffmsg + "\n";
     } else {
-        message = "- Sản phẩm này không có Combo";
+        message += "- Sản phẩm này không có kiểu " + requestType + " bạn đang tìm.";
     }
+
     return message;
 }
 
@@ -735,16 +745,7 @@ function handlePriceIntent(session, data, product) {
                     if (data.type.length > 0) {
                         var productTitle = product.title.latinise().toLowerCase();
                         for (var i = 0, length = data.type.length; i < length; i++) {
-                            var index = data.type[i].indexOf('combo');
-                            var index2 = data.type[i].indexOf('cb');
-                            if ((index >= 0) || (index2 >= 0)) {
-                                message = extractComboPrice(productTitle, saleoffmsg);
-                            } else if (productTitle.indexOf(data.type[i]) < 0) {
-                                message += "- Sản phẩm này không có kiểu " + data.type[i] + " bạn đang tìm.";
-                            } else {
-                                price = parseInt(price / 1000);
-                                message += "- " + price.toUpperCase() + " K VNĐ" + saleoffmsg + "\n";
-                            }
+                            message = extractProductPrice(price, title, data.type[i], saleoffmsg);
                         }
                     } else {
                         message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
