@@ -331,19 +331,6 @@ function searchProducts(session, user_msg, user_msg_trans) {
     }
 }
 
-function extractProductType(title) {
-    var prices = common.extractValues(title, "\\d+");
-    var types = null;
-    if (prices.length === 3) {
-        types = ['nam', 'nu'];
-    } else if (prices.length === 4) {
-        types = ['nam', 'nu', 'combo'];
-    } else {
-        types = [];
-    }
-    return types;
-}
-
 function selectProductColor(session, user_message) {
     var orderInfo = sessionManager.getOrderInfo(session);
     var productInfo = sessionManager.getProductInfo(session);

@@ -39,15 +39,22 @@ module.exports = function(Sequelize, DataTypes) {
         classMethods: {
             addFullTextIndex: function() {
                 var searchFields = ['finger'];
+                searchFields = searchFields.toString().replaceAll('[', '').replaceAll(']', '');
                 var Product = this;
                 Sequelize
-                    .query('ALTER TABLE ' + Product.name + ' ADD FULLTEXT(' + searchFields.toString().replaceAll('[', '').replaceAll(']', '') + ')')
+                    .query("SELECT DISTINCT *" + " FROM INFORMATION_SCHEMA.STATISTICS WHERE(table_schema, table_name) = ('" + require("../config/config.js").db.db_name + "', '" + Product.name + "') AND index_type = 'FULLTEXT'")
                     .spread(function(results, metadata) {
-                        if (results == null) {
-                            console.log("Can not create index");
-                        } else {
-                            console.log("Product::addFullTextIndex" + JSON.stringify(results));
+                        if (results.length == 0) {
+                            Sequelize.query('ALTER TABLE ' + Product.name + ' ADD FULLTEXT(' + searchFields + ')')
+                                .spread(function(results, metadata) {
+                                    if (results == null) {
+                                        console.log("Can not create index");
+                                    } else {
+                                        console.log("Product::addFullTextIndex" + JSON.stringify(results));
+                                    }
+                                });
                         }
+
                     });
             },
         }
