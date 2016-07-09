@@ -8,31 +8,31 @@ function FBMessenger() {
     this.sendDataToFBMessenger = function(sender, data, callback) {
         // Delay 500 ms for typing like human
         setTimeout(function() {
-            logger.info("Data = " + JSON.stringify(data));
-            require('request')({
-                url: 'https://graph.facebook.com/v2.6/me/messages',
-                qs: {
-                    access_token: config.bots.fb_page_token
-                },
-                method: 'POST',
-                json: true,
-                body: {
-                    recipient: {
-                        id: sender
-                    },
-                    message: data
-                }
-            }, function(error, response, body) {
-                if (error) {
-                    logger.error('Error sending message: ' + error.stack);
-                } else if (response.body.error) {
-                    logger.error('Error: ' + JSON.stringify(response.body.error));
-                } else {
-                    if (callback != null) {
-                        callback();
-                    }
-                }
-            });
+            // logger.info("Data = " + JSON.stringify(data));
+            // require('request')({
+            //     url: 'https://graph.facebook.com/v2.6/me/messages',
+            //     qs: {
+            //         access_token: config.bots.fb_page_token
+            //     },
+            //     method: 'POST',
+            //     json: true,
+            //     body: {
+            //         recipient: {
+            //             id: sender
+            //         },
+            //         message: data
+            //     }
+            // }, function(error, response, body) {
+            //     if (error) {
+            //         logger.error('Error sending message: ' + error.stack);
+            //     } else if (response.body.error) {
+            //         logger.error('Error: ' + JSON.stringify(response.body.error));
+            //     } else {
+            //         if (callback != null) {
+            //             callback();
+            //         }
+            //     }
+            // });
         }, 1000);
     }
 
@@ -259,17 +259,17 @@ FBMessenger.prototype.createAIAPIProductsMessage = function(rich_data) {
 }
 
 FBMessenger.prototype.doSubscribeRequest = function() {
-    request({
-            method: 'POST',
-            uri: "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=" + config.bots.fb_page_token
-        },
-        function(error, response, body) {
-            if (error) {
-                console.error('Error while subscription: ', error);
-            } else {
-                console.log('Subscription result: ', response.body);
-            }
-        });
+    // request({
+    //         method: 'POST',
+    //         uri: "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=" + config.bots.fb_page_token
+    //     },
+    //     function(error, response, body) {
+    //         if (error) {
+    //             console.error('Error while subscription: ', error);
+    //         } else {
+    //             console.log('Subscription result: ', response.body);
+    //         }
+    //     });
 }
 
 FBMessenger.prototype.sendTextMessage = function(sender, simple_text, callback) {

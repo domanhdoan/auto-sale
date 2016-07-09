@@ -100,8 +100,8 @@ function WebScraper(crawlPattern) {
             }
             logger.info("Finger = " + finger);
             var categoryNameElement = (length >= 2) ? $(headline[1]) : "";
-            var categoryName = categoryNameElement.text().trim();
-            var categoryLink = $(categoryNameElement).attr('href');
+            var categoryName = (categoryNameElement !== "") ? categoryNameElement.text().trim() : "";
+            var categoryLink = (categoryNameElement !== "") ? $(categoryNameElement).attr('href') : "";
 
             var title = $(productElememt).find(detailPattern.title).text();
             var thumbnailLink = $(productElememt).find(detailPattern.thumbnail).attr('src');
@@ -112,6 +112,7 @@ function WebScraper(crawlPattern) {
             var price = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
             var discount = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
             var code = $(detailPattern.code).text();
+            var type = common.extractProductType(title);
 
             var sizeList = $(detailPattern.size);
             var colorList = $(detailPattern.color);
@@ -152,7 +153,7 @@ function WebScraper(crawlPattern) {
                         logger.info("DEFINE categoryName " + categoryName);
                         gModelFactory.findAndCreateProduct(
                             savedStore, savedCategory, title, thumbnailLink,
-                            desc, price, discount, percent, detailLink, "", finger, code,
+                            desc, price, discount, percent, detailLink, type, finger, code,
                             function(savedProduct) {
                                 handleProductProperties(savedStore, savedProduct, $, sizeList, colorList, productPhotos);
                                 if (!callback) {
@@ -220,7 +221,7 @@ function WebScraper(crawlPattern) {
         var categoryLinks = [];
         var $ = cheerio.load(webcontent);
         var menu = $(currentObj.gCrawlPattern.category.menu);
-        var menuItems = (!menu && menu.length > 0) ? menu[0].children : [];
+        var menuItems = (menu != undefined && menu.length > 0) ? menu[0].children : [];
 
         for (var i = 0, len = menuItems.length; i < len; i++) {
             var children = $(menuItems[i]).find('a');
