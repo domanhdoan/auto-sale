@@ -698,28 +698,37 @@ function findLastSelectProduct(session, data, callback) {
 
 function extractProductPrice(price, title, requestType, saleoffmsg) {
     var message = "";
+    title = title.latinise().toLowerCase();
+
     var maleIndex = title.indexOf('nam');
     var femaleIndex = title.indexOf('nu');
-    var malePrice = this.extractValue(title, "nam \\d+");
-    var femalePrice = this.extractValue(title, "nu \\d+");
-    var comboPrice = this.extractValue(title.replaceAll("cb", "combo"), "combo \\d+");
-    var types = ['nam', 'nu', 'combo', 'unknown'];
-    var prices = {
-        nam: malePrice,
-        nu: femalePrice,
-        combo: comboPrice
-    };
+    var malePrice = common.extractValue(title, "nam \\d+");
+    var femalePrice = common.extractValue(title, "nu \\d+");
+    var comboPrice = common.extractValue(title.replaceAll("cb", "combo"), "combo \\d+");
     var type = common.extractProductType(title);
 
     if (comboPrice === "" && (malePrice != "" && femalePrice != "")) {
         comboPrice = parseInt(malePrice) + parseInt(femalePrice);
     }
 
-    if (requestType === type) {
-        var price = parseInt(prices[type] / 1000);
+    var prices = {
+        nam: malePrice,
+        nu: femalePrice,
+        combo: comboPrice
+    };
+
+    var typeVN = {
+        nam: "nam",
+        nu: "nữ",
+        combo: "combo"
+    };
+
+    prices[type] = price;
+    if (prices[requestType] != "") {
+        var price = parseInt(prices[requestType] / 1000) + "";
         message += "- " + price.toUpperCase() + " K VNĐ" + saleoffmsg + "\n";
     } else {
-        message += "- Sản phẩm này không có kiểu " + requestType + " bạn đang tìm.";
+        message += "- Sản phẩm này không có kiểu " + typeVN[requestType] + " bạn đang tìm.";
     }
 
     return message;
@@ -745,7 +754,7 @@ function handlePriceIntent(session, data, product) {
                     if (data.type.length > 0) {
                         var productTitle = product.title.latinise().toLowerCase();
                         for (var i = 0, length = data.type.length; i < length; i++) {
-                            message = extractProductPrice(price, title, data.type[i], saleoffmsg);
+                            message = extractProductPrice(price, product.title, data.type[i], saleoffmsg);
                         }
                     } else {
                         message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;

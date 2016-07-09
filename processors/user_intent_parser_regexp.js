@@ -168,8 +168,6 @@ function UserIntentParserRegExp() {
             for (var i = 0, length = productType.length; i < (length - 1); i++) {
                 productQuantity[i] = "1";
             }
-        } else {
-            productQuantity[0] = "1";
         }
         var data = {
             storeid: options.storeid,
