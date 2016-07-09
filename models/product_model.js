@@ -30,7 +30,7 @@ module.exports = function(Sequelize, DataTypes) {
         },
         type: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: true
         },
         finger: {
             type: DataTypes.STRING

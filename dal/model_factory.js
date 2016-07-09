@@ -40,7 +40,7 @@ module.exports.findAndCreateProduct = function(
     saved_store, savedCategory, product_title,
     product_thumbnail, product_desc, product_price,
     product_discount, product_percent, product_detail_link,
-    product_brand, product_finger, product_code, callback
+    product_type, product_finger, product_code, callback
 ) {
     // var product_finger = require('crypto').createHmac('sha256', product_detail_link)
     //     .digest('hex');
@@ -57,7 +57,8 @@ module.exports.findAndCreateProduct = function(
             percent: product_percent,
             link: product_detail_link.replaceAll('-', '%%'),
             finger: product_finger,
-            brand: product_brand,
+            brand: "",
+            type: product_type,
             code: product_code,
         }
     }).then(function(product) {
@@ -80,7 +81,8 @@ module.exports.findAndCreateProduct = function(
                 percent: product_percent,
                 link: product_detail_link.replaceAll('-', '%%'),
                 finger: product_finger,
-                brand: product_brand,
+                brand: "",
+                type: product_type,
                 code: product_code
             });
         }
