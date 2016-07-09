@@ -340,6 +340,27 @@ module.exports.isDefined = function(obj) {
     return obj != null;
 }
 
+module.exports.extractProductType = function(title) {
+    var maleIndex = title.indexOf('nam');
+    var femaleIndex = title.indexOf('nu');
+    var malePrice = this.extractValue(title, "nam \\d+");
+    var femalePrice = this.extractValue(title, "nu \\d+");
+    var comboPrice = this.extractValue(title.replaceAll("cb", "combo"), "combo \\d+");
+    var types = ['nam', 'nu', 'combo', 'unknown'];
+    var type = null;
+
+    if ((malePrice != "" && femalePrice != "") || comboPrice != "") {
+        type = types[2];
+    } else if (malePrice != "" || maleIndex >= 0) {
+        type = types[0];
+    } else if (femalePrice != "" || femaleIndex >= 0) {
+        type = types[1];
+    } else {
+        type = types[3];
+    }
+    return type;
+}
+
 module.exports.insertRootLink = function(current_link, home_page) {
     if (current_link != null && !current_link.startsWith('http')) {
         current_link = home_page + current_link;
