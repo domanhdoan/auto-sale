@@ -1,7 +1,7 @@
 var logger = require('../util/logger.js')
 var common = require('../util/common.js')
 
-var UserIntentParserRegExp = require("../processors/user_intent_parser_regexp.js");
+var UserIntentParserRegExp = require("../processors/user_intent_parser_nlp.js");
 var UserIntentParserAIAPI = require("../processors/user_intent_parser_aiapi.js");
 
 function ParserFactory() {}

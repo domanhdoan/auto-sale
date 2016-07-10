@@ -206,6 +206,7 @@ function UserIntentParserRegExp() {
     this.parseSizeInfo = function(userMsg) {
         var productSizes = [];
         userMsg = userMsg.replaceAll("saiz", "size");
+        userMsg = userMsg.replaceAll("sai", "size");
         userMsg = userMsg.replaceAll("sz", "size");
         for (var i = 0, length = sizeRegexp.length; i < length; i++) {
             productSizes = common.extractValue(userMsg, sizeRegexp[i]);
