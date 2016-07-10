@@ -8,8 +8,10 @@ module.exports = {
     say_search_continue_message: "Xin vui lòng tiếp tục tìm kiếm nếu bạn chưa tìm thấy hay tìm kiếm sản phẩm mới",
     pls_select_category: "Xin vui lòng chọn 1 danh mục sản phẩm",
     pls_select_product: "Xin vui lòng chọn sản phẩm (nhập mã sản phẩm hoặc upload ảnh)",
-    pls_select_product_color: "Xin vui lòng chọn màu sản phẩm (xem bên dưới)",
-    pls_select_product_size: "Xin vui lòng chọn size (xem bên dưới)",
+    pls_select_product_color: "Xin vui lòng chọn màu sản phẩm",
+    pls_select_product_color_combo: "(VD chọn màu cho combo: nam màu xanh và nữ màu đỏ)",
+    pls_select_product_size: "Xin vui lòng chọn size",
+    pls_select_product_size_combo: "(VD chọn size cho combo: nam 42 nữ 38)",
     pls_enter_quantity: "Xin vui lòng chọn số lượng",
     pls_enter_name: "Xin vui lòng nhập tên người nhận",
     pls_enter_address: "Xin vui lòng nhập địa chỉ người nhận",
@@ -63,7 +65,12 @@ module.exports = {
     INTENT_GENERAL_SEARCH: 'general_search',
     INTENT_UNKNOWN: 'unknow_intent',
     INTENT_ACCURACY: 0.9,
-    INTENT_ACCURACY_LOW: 0.6
+    INTENT_ACCURACY_LOW: 0.6,
+    PRODUCT_TYPE_MALE: "nam",
+    PRODUCT_TYPE_FEMALE: "nu",
+    PRODUCT_TYPE_COMBO: "combo",
+    SEARCH_KEY_COLOR: "mau",
+    SEARCH_KEY_SIZE: "size"
 }
 
 module.exports.typical_question = {
@@ -340,7 +347,18 @@ module.exports.isDefined = function(obj) {
     return obj != null;
 }
 
+module.exports.getAvailableProductType = function(title) {
+    var type = this.extractProductType(title);
+    var types = [];
+    if (type = this.PRODUCT_TYPE_COMBO) {
+        return ['nam', 'nu', 'combo'];
+    }
+    types[0] = type;
+    return types;
+}
+
 module.exports.extractProductType = function(title) {
+    title = title.latinise();
     var maleIndex = title.indexOf('nam');
     var femaleIndex = title.indexOf('nu');
     var malePrice = this.extractValue(title, "nam \\d+");
