@@ -6,9 +6,9 @@
     "product_info": {
         "link": "li.item a",
         "details": {
-            "content_area": "div.product ",
-            "title": "div#page-meta .product-title",
-            "thumbnail": "div.product div.row .images a img",
+            "content_area": "div.col-main",
+            "title": "div.product-image .product h1",
+            "thumbnail": "div.owl-wrapper-outer .owl-wrapper a img",
             "price": "div.woocommerce-price div p.price span del",
             "discount": "div.woocommerce-price div p.price span ins span",
             "percent": "",
