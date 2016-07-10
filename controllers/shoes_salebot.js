@@ -344,7 +344,8 @@ function selectProductColor(session, user_message) {
     } else {}
 
     // Remove mua word to get color value
-    var color_keyword = user_message.replaceAll("mau", "").replaceAll(" ", "").trim();
+    var color_keyword = user_message.replaceAll(common.SEARCH_KEY_COLOR, "")
+        .replaceAll(" ", "").trim();
     gProductFinder.checkProductByColor(productInfo.id,
         color_keyword,
         function(color) {
@@ -353,7 +354,11 @@ function selectProductColor(session, user_message) {
                 sessionManager.setProductInfo(session, {
                     color: color.id
                 });
+                var type = sessionManager.getProductInfo(session).type;
                 fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_size, function() {
+                    if (type === common.PRODUCT_TYPE_COMBO) {
+                        fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_size_combo);
+                    }
                     showAvailableColorNsize(session, false, true, false);
                 });
             } else {
@@ -523,7 +528,7 @@ function processPostbackEvent(session, action_details) {
         sessionManager.setOrdeTrigerStatusInfo(session, true);
         sessionManager.setProductIdNTitle(session,
             action_details.id, action_details.title);
-        var types = extractProductType(productInfo.title);
+        var types = common.getAvailableProductType(productInfo.title);
         if (types.length == 0) {
             fbMessenger.sendTextMessage(session.fbid, "     Bắt đầu đặt hàng        \n" +
                 common.pls_select_product_color,
@@ -542,6 +547,10 @@ function processPostbackEvent(session, action_details) {
         });
         fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_color,
             function() {
+                var type = sessionManager.getProductInfo(session).type;
+                if (type === common.PRODUCT_TYPE_COMBO) {
+                    fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_color_combo);
+                }
                 showAvailableColorNsize(session, true, false, false);
             });
     } else if (session.last_invoice.is_ordering &&
