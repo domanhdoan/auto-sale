@@ -1,0 +1,32 @@
+{
+    "check_ship": [
+        "ship", "ve", "tu",
+        "giao hang", "toan quoc", "gui hang",
+        "free ship", "COD", "gia ship",
+        "bao lau", "het bao nhieu"
+    ],
+    "check_availability": [
+        "san hang khong", "co san khong",
+        "san hang ko", "co san k0",
+        "san ko", "san k0",
+        "con hang khong", "co hang khong",
+        "con hang kh0ng", "co hang kh0ng",
+        "con hang ko", "co hang ko",
+        "con hang k0", "co hang k0",
+        "con khong", "co khong",
+        "con ko", "co ko",
+        "con du", "co den", "co nhung",
+        "saiz nao", "size nao", "sz nao", "co nao", "mau nao"
+    ],
+    "check_price": [
+        "bao nhieu", "ba0 nhieu", "bao nhjeu",
+        "bnhieu", "bn",
+        "gia the nao", "thi the nao"
+    ],
+    "check_order": ["muon mua",
+        "dat hang"
+    ],
+    "check_saleoff": [],
+    "check_warranty": [],
+    "check_support": []
+}
