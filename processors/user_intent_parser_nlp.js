@@ -41,14 +41,15 @@ function UserIntentParserNLP() {
         "nam size \\d+", "nu size \\d+",
         "size"
     ];
-
     this.emitter = null;
 
     var intentTrainingData = common.loadJson("./datasets/nlp/intent.json");
+    var locationTrainingData = common.loadJson("./datasets/nlp/location.json");
 
-    var intentClassifier = new nlpChecker.LogisticRegressionClassifier(); //new nlpChecker.BayesClassifier();
+    var intentClassifier = new nlpChecker.LogisticRegressionClassifier();
     var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier();
     var categoryClassifier = new nlpChecker.LogisticRegressionClassifier();
+    var locationClassifier = new nlpChecker.BayesClassifier();
 
     this.initClassifier = function(classifier, dataSet, intent) {
         for (var i = 0; i < dataSet.length; i++) {
@@ -85,6 +86,11 @@ function UserIntentParserNLP() {
 
     this.trainCatergoryClassifier = function() {
         this.initClassifier(categoryClassifier, keyword_category, common.INTENT_GENERAL_SEARCH);
+    }
+
+    this.trainLocationClassifier = function() {
+        this.initClassifier(locationClassifier,
+            locationTrainingData[common.SHIP_LOCATION], common.SHIP_LOCATION);
     }
 
     this.getIntent = function(message) {
@@ -229,6 +235,7 @@ function UserIntentParserNLP() {
     }
 
     this.parseShipIntentInfo = function(userMsg, options) {
+        var location = this.locationClassifier.classify(userMsg);
         this.emitter.emit(common.INTENT_CHECK_SHIP, {
             storeid: options.storeid,
             pageid: options.pageid,
@@ -248,6 +255,7 @@ method.setEmitter = function(emitter) {
     this.trainShipClassifier();
     this.trainColorClassifier();
     this.trainCatergoryClassifier();
+    this.trainLocationClassifier();
 }
 
 method.parse = function(userMsg, options) {
@@ -272,5 +280,6 @@ method.parse = function(userMsg, options) {
         });
     }
 }
+
 
 module.exports = UserIntentParserNLP
