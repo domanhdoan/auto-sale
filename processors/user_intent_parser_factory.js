@@ -1,7 +1,7 @@
 var logger = require('../util/logger.js')
 var common = require('../util/common.js')
 
-var UserIntentParserRegExp = require("../processors/user_intent_parser_nlp.js");
+var UserIntentParserNLP = require("../processors/user_intent_parser_nlp.js");
 var UserIntentParserAIAPI = require("../processors/user_intent_parser_aiapi.js");
 
 function ParserFactory() {}
@@ -13,7 +13,7 @@ ParserFactory.prototype.createParser = function(type) {
             parser = new UserIntentParserAIAPI();
             break;
         case ParserFactory.CONSTANT.REGEXP_PARSER:
-            parser = new UserIntentParserRegExp();
+            parser = new UserIntentParserNLP();
             break;
         default:
             logger.error("Can not create new parser");

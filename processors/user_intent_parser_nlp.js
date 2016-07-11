@@ -3,39 +3,7 @@ var common = require('../util/common.js');
 var strSimilarityChecker = require('string-similarity');
 var nlpChecker = require('natural');
 
-function UserIntentParserRegExp() {
-
-    var keyword_type = [
-        "nam", "nu", "combo", "cb"
-    ];
-
-    var keyword_check_price = [
-        'bao nhieu', 'ba0 nhieu', 'bao nhjeu',
-        'bnhieu', 'bn',
-        'gia the nao', 'thi the nao'
-    ];
-
-    var keyword_check_availability = [
-        'san hang khong', 'co san khong',
-        'san hang ko', 'co san k0',
-        'san ko', 'san k0',
-        'con hang khong', 'co hang khong',
-        'con hang kh0ng', 'co hang kh0ng',
-        'con hang ko', 'co hang ko',
-        'con hang k0', 'co hang k0',
-        'con khong', 'co khong',
-        'con ko', 'co ko',
-        'con du', 'co den', "co nhung",
-        "saiz nao", "size nao", "sz nao", "co nao", "mau nao"
-    ];
-
-    var keyword_check_ship = [
-        'ship', 've', 'tu',
-        'giao hang',
-        'free ship', "COD", "gia ship",
-        "bao lau", "het bao nhieu"
-    ];
-
+function UserIntentParserNLP() {
     var keyword_category = [
         "the thao", "the thao doi", "the thao nam", "the thao nu",
         "adidas", "nike", "ked", "slip on", "oxford", "bet", "bup be"
@@ -70,10 +38,13 @@ function UserIntentParserRegExp() {
         "size \\w+ \\d+ \\w+ \\d+",
         "size \\d+",
         "size nam \\d+", "size nu \\d+",
+        "nam size \\d+", "nu size \\d+",
         "size"
     ];
 
     this.emitter = null;
+
+    var intentTrainingData = common.loadJson("./datasets/nlp/intent.json");
 
     var intentClassifier = new nlpChecker.LogisticRegressionClassifier(); //new nlpChecker.BayesClassifier();
     var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier();
@@ -98,18 +69,18 @@ function UserIntentParserRegExp() {
     }
 
     this.trainPriceClassifier = function() {
-        this.initClassifier(intentClassifier, keyword_check_price, common.INTENT_CHECK_PRICE);
-        // intentClassifier.save('classifier.json', function(err, classifier) {
-        //     // the classifier is saved to the classifier.json file!
-        // });
+        this.initClassifier(intentClassifier,
+            intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_PRICE);
     }
 
     this.trainAvailabilityClassifier = function() {
-        this.initClassifier(intentClassifier, keyword_check_availability, common.INTENT_CHECK_AVAILABILITY);
+        this.initClassifier(intentClassifier,
+            intentTrainingData[common.INTENT_CHECK_AVAILABILITY], common.INTENT_CHECK_AVAILABILITY);
     }
 
     this.trainShipClassifier = function() {
-        this.initClassifier(intentClassifier, keyword_check_ship, common.INTENT_CHECK_SHIP);
+        this.initClassifier(intentClassifier,
+            intentTrainingData[common.INTENT_CHECK_SHIP], common.INTENT_CHECK_SHIP);
     }
 
     this.trainCatergoryClassifier = function() {
@@ -268,7 +239,7 @@ function UserIntentParserRegExp() {
     }
 }
 
-var method = UserIntentParserRegExp.prototype;
+var method = UserIntentParserNLP.prototype;
 method.setEmitter = function(emitter) {
     this.emitter = emitter;
 
@@ -302,4 +273,4 @@ method.parse = function(userMsg, options) {
     }
 }
 
-module.exports = UserIntentParserRegExp
+module.exports = UserIntentParserNLP
