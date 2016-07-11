@@ -62,6 +62,7 @@ module.exports = {
     INTENT_CHECK_PRICE: 'check_price',
     INTENT_CHECK_AVAILABILITY: 'check_availability',
     INTENT_CHECK_SHIP: 'check_ship',
+    INTENT_ORDER_PRODUCT: 'order_product',
     INTENT_GENERAL_SEARCH: 'general_search',
     INTENT_UNKNOWN: 'unknow_intent',
     INTENT_ACCURACY: 0.9,
@@ -70,7 +71,8 @@ module.exports = {
     PRODUCT_TYPE_FEMALE: "nu",
     PRODUCT_TYPE_COMBO: "combo",
     SEARCH_KEY_COLOR: "mau",
-    SEARCH_KEY_SIZE: "size"
+    SEARCH_KEY_SIZE: "size",
+    SHIP_LOCATION: "province",
 }
 
 module.exports.typical_question = {
