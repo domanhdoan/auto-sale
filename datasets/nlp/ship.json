@@ -1,0 +1,31 @@
+{
+    "ship": [
+    {
+        "name": "free ship",
+        "value": ["free ship", "ship mien phi", "giao hang mien phi"]
+    }, 
+    {
+        "name": "toan quoc",
+        "value": ["toan quoc"]
+    },
+    {
+        "name": "COD",
+        "value": ["COD", "thanh toan khi nhan hang"]
+    },
+    {
+        "name": "chuyen khoan",
+        "value": ["chuyen khoan"]
+    },
+    {
+        "name": "price",
+        "value": ["bao nhieu"]
+    },
+    {
+        "name": "duration",
+        "value": ["bao lau", "bao nhieu ngay"]
+    },
+    {
+        "name": "gia ship",
+        "value": ["gia ship the nao"]
+    }]
+}

@@ -1,149 +1,223 @@
-var logger = require('../util/logger.js');
-var common = require('../util/common.js');
-var strSimilarityChecker = require('string-similarity');
-var nlpChecker = require('natural');
+var logger = require('../util/logger.js')
+var common = require('../util/common.js')
+var strSimilarityChecker = require('string-similarity')
+var nlpChecker = require('natural')
 
 function UserIntentParserNLP() {
     var keyword_category = [
-        "the thao", "the thao doi", "the thao nam", "the thao nu",
-        "adidas", "nike", "ked", "slip on", "oxford", "bet", "bup be"
-    ];
-    var keyword_ask_consult = ['do size', 'gia ship'];
-    var keyword_ask_location = ['dia chi'];
+        'the thao', 'the thao doi', 'the thao nam', 'the thao nu',
+        'adidas', 'nike', 'ked', 'slip on', 'oxford', 'bet', 'bup be'
+    ]
+    var keyword_ask_consult = ['do size', 'gia ship']
+    var keyword_ask_location = ['dia chi']
 
     var keyword_ask_discount = ['sale off', 'sale-off',
         'giam gia', 'khuyen mai', 'chiet khau'
-    ];
+    ]
 
     var typeRegexp = ['nam', 'nu',
         'combo', 'cb'
-    ];
+    ]
 
     var quantityRegexp = [
-        "\\d+ doi", "\\d+ cap",
-        "doi nay", "cap nay",
-    ];
+        '\\d+ doi', '\\d+ cap',
+        'doi nay', 'cap nay',
+    ]
 
     var sizeRegexp = [
-        "co \\d+ \\w+ co \\d+",
-        "co \\d+ \\w+ \\d+",
-        "co \\d+ \\d+",
-        "co \\d+ - \\d+",
-        "co \\d+-\\d+",
-        "size \\d+ \\w+ size \\d+",
-        "size \\d+ \\w+ \\d+",
-        "size \\d+ \\d+",
-        "size \\d+-\\d+",
-        "size \\d+ - \\d+",
-        "size \\w+ \\d+ \\w+ \\d+",
-        "size \\d+",
-        "size nam \\d+", "size nu \\d+",
-        "nam size \\d+", "nu size \\d+",
-        "size"
-    ];
-    this.emitter = null;
+        'co \\d+ \\w+ co \\d+',
+        'co \\d+ \\w+ \\d+',
+        'co \\d+ \\d+',
+        'co \\d+ - \\d+',
+        'co \\d+-\\d+',
+        'size \\d+ \\w+ size \\d+',
+        'size \\d+ \\w+ \\d+',
+        'size \\d+ \\d+',
+        'size \\d+-\\d+',
+        'size \\d+ - \\d+',
+        'size \\w+ \\d+ \\w+ \\d+',
+        'size \\d+',
+        'size nam \\d+', 'size nu \\d+',
+        'nam size \\d+', 'nu size \\d+',
+        'size'
+    ]
+    this.emitter = null
 
-    var intentTrainingData = common.loadJson("./datasets/nlp/intent.json");
-    var locationTrainingData = common.loadJson("./datasets/nlp/location.json");
+    var intentTrainingData = common.loadJson('./datasets/nlp/intent.json')
+    var locationTrainingData = common.loadJson('./datasets/nlp/location.json')
+    var shipTrainingData = common.loadJson('./datasets/nlp/ship.json')
 
-    var intentClassifier = new nlpChecker.LogisticRegressionClassifier();
-    var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier();
-    var categoryClassifier = new nlpChecker.LogisticRegressionClassifier();
-    var locationClassifier = new nlpChecker.BayesClassifier();
+    var questionClassifier = new nlpChecker.LogisticRegressionClassifier()
 
-    this.initClassifier = function(classifier, dataSet, intent) {
+    var shipClassifier = new nlpChecker.LogisticRegressionClassifier()
+    var locationClassifier = new nlpChecker.BayesClassifier()
+    var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier()
+    var categoryClassifier = new nlpChecker.LogisticRegressionClassifier()
+
+    this.initClassifier = function (classifier, dataSet, intent) {
         for (var i = 0; i < dataSet.length; i++) {
-            classifier.addDocument(dataSet[i], intent);
+            classifier.addDocument(dataSet[i], intent)
         }
-        classifier.train();
+        classifier.train()
     }
 
-    this.trainColorClassifier = function() {
-        var colorsVn = common.getAllcolorVn();
-        var keys = Object.keys(colorsVn);
+    this.trainColorClassifier = function () {
+        var colorsVn = common.getAllcolorVn()
+        var keys = Object.keys(colorsVn)
         for (var i = 0, length = keys.length; i < length; i++) {
-            var color_invn = colorsVn[keys[i]].latinise();
-            propertiesClassifier.addDocument(color_invn, color_invn);
+            var color_invn = colorsVn[keys[i]].latinise()
+            propertiesClassifier.addDocument(color_invn, color_invn)
         }
-        propertiesClassifier.addDocument("mau", color_invn);
-        propertiesClassifier.train();
+        propertiesClassifier.addDocument('mau', color_invn)
+        propertiesClassifier.train()
     }
 
-    this.trainPriceClassifier = function() {
-        this.initClassifier(intentClassifier,
-            intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_PRICE);
+    this.trainPriceClassifier = function () {
+        this.initClassifier(questionClassifier,
+            intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_PRICE)
     }
 
-    this.trainAvailabilityClassifier = function() {
-        this.initClassifier(intentClassifier,
-            intentTrainingData[common.INTENT_CHECK_AVAILABILITY], common.INTENT_CHECK_AVAILABILITY);
+    this.trainAvailabilityClassifier = function () {
+        this.initClassifier(questionClassifier,
+            intentTrainingData[common.INTENT_CHECK_AVAILABILITY], common.INTENT_CHECK_AVAILABILITY)
     }
 
-    this.trainShipClassifier = function() {
-        this.initClassifier(intentClassifier,
-            intentTrainingData[common.INTENT_CHECK_SHIP], common.INTENT_CHECK_SHIP);
+    this.trainShipClassifier = function () {
+        var keys = shipTrainingData.ship;
+        for (var i = 0, length = keys.length; i < length; i++) {
+            var key = keys[i];
+            this.initClassifier(shipClassifier, key.value, key.name);
+        }
     }
 
-    this.trainCatergoryClassifier = function() {
-        this.initClassifier(categoryClassifier, keyword_category, common.INTENT_GENERAL_SEARCH);
+    this.trainCatergoryClassifier = function () {
+        this.initClassifier(categoryClassifier, keyword_category, common.INTENT_GENERAL_SEARCH)
     }
 
-    this.trainLocationClassifier = function() {
-        this.initClassifier(locationClassifier,
-            locationTrainingData[common.SHIP_LOCATION], common.SHIP_LOCATION);
+    this.trainLocationClassifier = function () {
+        var keys = locationTrainingData.province;
+        for (var i = 0, length = keys.length; i < length; i++) {
+            var key = keys[i];
+            this.initClassifier(locationClassifier, key.value, key.name);
+        }
     }
 
-    this.getIntent = function(message) {
-        var classifications = intentClassifier.getClassifications(message);
-        var intent = common.INTENT_UNKNOWN;
+    this.isShipIntent = function (message){
+        var ret = false;
+        var intents = [];
+        var classifications = shipClassifier.getClassifications(message)
         for (var i = 0, length = classifications.length; i < length; i++) {
-            var classification = classifications[i];
             if (classifications[i].value > common.INTENT_ACCURACY) {
-                logger.info("High probility = " + JSON.stringify(classification));
-                intent = classification.label;
+                ret = true;
                 break;
+            }
+        }
+        return ret;
+    }
+
+    this.getIntent = function (message) {
+        var intents = [];
+        var classifications = questionClassifier.getClassifications(message)
+        for (var i = 0, length = classifications.length; i < length; i++) {
+            var classification = classifications[i]
+            if (classifications[i].value > common.INTENT_ACCURACY) {
+                logger.info('High probility = ' + JSON.stringify(classification))
+                if (classification.label === common.INTENT_CHECK_AVAILABILITY) {
+                    if (this.isShipIntent(message)) {
+                        intents.push(common.INTENT_CHECK_SHIP);
+                    } else {
+                        intents.push(classification.label)
+                    }
+                } else {
+                    intents.push(classification.label)
+                }
+
             } else {
-                logger.info("Low probility = " + JSON.stringify(classification));
+                logger.info('Low probility = ' + JSON.stringify(classification))
+                break;
             }
         }
-        return intent;
+        if (intents.length == 0) {
+            intents.push(common.INTENT_UNKNOWN);
+        }
+        return intents
     }
 
-    this.parseProductType = function(userMsg) {
-        var productType = [];
+    this.parseProductType = function (userMsg) {
+        var productType = []
         for (var i = 0, length = typeRegexp.length; i < length; i++) {
-            var type = common.extractValues(userMsg, typeRegexp[i]);
-            if (type != "") {
-                productType.push(type);
+            var type = common.extractValues(userMsg, typeRegexp[i])
+            if (type != '') {
+                productType.push(type)
             }
         }
-        return productType;
+        return productType
     }
 
-    this.parsePriceIntentInfo = function(userMsg, options) {
+    this.parseColorInfo = function (userMsg) {
+        var productColor = []
+        var classifications = propertiesClassifier.getClassifications(userMsg)
+        logger.info('User message: ' + userMsg)
+        if (userMsg.indexOf('mau') >= 0) {
+            for (var i = 0, length = classifications.length; i < length; i++) {
+                var classification = classifications[i]
+                if (classifications[i].value > common.INTENT_ACCURACY) {
+                    logger.info('High probility = ' + JSON.stringify(classification))
+                    productColor.push(classification.label.toLowerCase())
+                } else {
+                    logger.info('Low probility = ' + JSON.stringify(classification))
+                }
+            }
+            // productColor.push(propertiesClassifier.classify(userMsg))
+        }
+        return productColor
+    }
+
+    this.parseSizeInfo = function (userMsg) {
+        var productSizes = []
+        userMsg = userMsg.replaceAll('saiz', 'size')
+        userMsg = userMsg.replaceAll('sai', 'size')
+        userMsg = userMsg.replaceAll('sz', 'size')
+        for (var i = 0, length = sizeRegexp.length; i < length; i++) {
+            productSizes = common.extractValue(userMsg, sizeRegexp[i])
+            if (productSizes != '') {
+                productSizes = common.extractValues(productSizes, '\\d+')
+                if (productSizes.length === 0) {
+                    productSizes.push('all')
+                }
+                break
+            }
+        }
+        if (productSizes === '') {
+            productSizes = []
+        }
+        return productSizes
+    }
+
+    this.parsePriceIntent = function (userMsg, options) {
         var productCode = common.extractProductCode(userMsg,
-            options.codePattern).code;
-        var productType = this.parseProductType(userMsg);
-        var productQuantity = [];
+            options.codePattern).code
+        var productType = this.parseProductType(userMsg)
+        var productQuantity = []
 
         for (var i = 0, length = quantityRegexp.length; i < length; i++) {
-            var quantities = common.extractValues(userMsg, quantityRegexp[i]);
+            var quantities = common.extractValues(userMsg, quantityRegexp[i])
             if (quantities.length > 0) {
                 for (var j = 0, length = quantities.length; j < length; j++) {
-                    var quantity = common.extractValue(quantities[j], "\\d+");
-                    if (quantity === "") {
-                        productQuantity.push("1");
+                    var quantity = common.extractValue(quantities[j], '\\d+')
+                    if (quantity === '') {
+                        productQuantity.push('1')
                     } else {
-                        productQuantity.push(quantity);
+                        productQuantity.push(quantity)
                     }
                 }
-                break;
+                break
             }
         }
 
         if (productType.length > 0) {
             for (var i = 0, length = productType.length; i < (length - 1); i++) {
-                productQuantity[i] = "1";
+                productQuantity[i] = '1'
             }
         }
         var data = {
@@ -155,56 +229,15 @@ function UserIntentParserNLP() {
             type: productType,
             quantity: productQuantity,
             msg: userMsg
-        };
-        logger.info("[Check Price] Data sent from intent parser to sale bot" + JSON.stringify(data));
-        this.emitter.emit(common.INTENT_CHECK_PRICE, data);
+        }
+        logger.info('[Check Price] Data sent from intent parser to sale bot' + JSON.stringify(data))
+        this.emitter.emit(common.INTENT_CHECK_PRICE, data)
     }
 
-
-    this.parseColorInfo = function(userMsg) {
-        var productColor = [];
-        var classifications = propertiesClassifier.getClassifications(userMsg);
-        logger.info("User message: " + userMsg);
-        if (userMsg.indexOf("mau") >= 0) {
-            for (var i = 0, length = classifications.length; i < length; i++) {
-                var classification = classifications[i];
-                if (classifications[i].value > common.INTENT_ACCURACY) {
-                    logger.info("High probility = " + JSON.stringify(classification));
-                    productColor.push(classification.label.toLowerCase());
-                } else {
-                    logger.info("Low probility = " + JSON.stringify(classification));
-                }
-            }
-            //productColor.push(propertiesClassifier.classify(userMsg));
-        }
-        return productColor;
-    }
-
-    this.parseSizeInfo = function(userMsg) {
-        var productSizes = [];
-        userMsg = userMsg.replaceAll("saiz", "size");
-        userMsg = userMsg.replaceAll("sai", "size");
-        userMsg = userMsg.replaceAll("sz", "size");
-        for (var i = 0, length = sizeRegexp.length; i < length; i++) {
-            productSizes = common.extractValue(userMsg, sizeRegexp[i]);
-            if (productSizes != "") {
-                productSizes = common.extractValues(productSizes, "\\d+");
-                if (productSizes.length === 0) {
-                    productSizes.push("all");
-                }
-                break;
-            }
-        }
-        if (productSizes === "") {
-            productSizes = [];
-        }
-        return productSizes;
-    }
-
-    this.parseAvailabilityIntentInfo = function(userMsg, options) {
-        var categorySearch = categoryClassifier.classify(userMsg);
-        var classifications = categoryClassifier.getClassifications(userMsg);
-        var classification = classifications[0];
+    this.parseAvailabilityIntent = function (userMsg, options) {
+        var categorySearch = categoryClassifier.classify(userMsg)
+        var classifications = categoryClassifier.getClassifications(userMsg)
+        var classification = classifications[0]
 
         var data = {
             storeid: options.storeid,
@@ -212,43 +245,39 @@ function UserIntentParserNLP() {
             fbid: options.fbid,
             productid: options.productid,
             msg: userMsg
-        };
+        }
 
-        var size = this.parseSizeInfo(userMsg);
-        var color = this.parseColorInfo(userMsg);
-        var productCode = common.extractProductCode(userMsg, options.codePattern).code;
+        var size = this.parseSizeInfo(userMsg)
+        var color = this.parseColorInfo(userMsg)
+        var productCode = common.extractProductCode(userMsg, options.codePattern).code
 
         // Decide really user intent from 2 factors (question type and information extracted)
         // Pass 1: decide by weather question contain a category or not
-        var trueIntent = (classification.value > common.INTENT_ACCURACY_LOW) ? classification.label : common.INTENT_CHECK_AVAILABILITY;
+        var trueIntent = (classification.value > common.INTENT_ACCURACY_LOW) ? classification.label : common.INTENT_CHECK_AVAILABILITY
         // Weather user type size or color information or not
-        if (productCode != "" && (size.length * color == 0)) {
-            trueIntent = common.INTENT_GENERAL_SEARCH;
+        if (productCode != '' && (size.length * color == 0)) {
+            trueIntent = common.INTENT_GENERAL_SEARCH
         } else {
-            data.code = productCode;
-            data.color = color;
-            data.size = size;
+            data.code = productCode
+            data.color = color
+            data.size = size
         }
 
-        logger.info("[Check Avai] Data sent from intent parser to sale bot" + JSON.stringify(data));
-        this.emitter.emit(trueIntent, data);
+        logger.info('[Check Avai] Data sent from intent parser to sale bot' + JSON.stringify(data))
+        this.emitter.emit(trueIntent, data)
     }
 
-    this.parseShipIntentInfo = function(userMsg, options) {
-        var location = this.locationClassifier.classify(userMsg);
+    this.parseShipIntent = function (userMsg, options) {
+        var location = locationClassifier.classify(userMsg)
         this.emitter.emit(common.INTENT_CHECK_SHIP, {
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,
             productid: options.productid,
-            msg: userMsg
-        });
+            msg: userMsg,
+            location: location
+        })
     }
-}
-
-var method = UserIntentParserNLP.prototype;
-method.setEmitter = function(emitter) {
-    this.emitter = emitter;
 
     this.trainPriceClassifier();
     this.trainAvailabilityClassifier();
@@ -258,28 +287,35 @@ method.setEmitter = function(emitter) {
     this.trainLocationClassifier();
 }
 
-method.parse = function(userMsg, options) {
-    var intent = this.getIntent(userMsg);
-
-    if (intent === common.INTENT_CHECK_PRICE) {
-        logger.info('parsePriceInfo for customer');
-        this.parsePriceIntentInfo(userMsg, options);
-    } else if (intent === common.INTENT_CHECK_AVAILABILITY) {
-        logger.info('parseAvailabilityIntentData for customer');
-        this.parseAvailabilityIntentInfo(userMsg, options);
-    } else if (intent === common.INTENT_CHECK_SHIP) {
-        logger.info('parseShipInfo for customer');
-        this.parseShipIntentInfo(userMsg, options);
-    } else {
-        logger.info("not parse message " + userMsg + " ==> will call staff for support");
-        this.emitter.emit(common.INTENT_GENERAL_SEARCH, {
-            storeid: options.storeid,
-            pageid: options.pageid,
-            fbid: options.fbid,
-            msg: userMsg
-        });
-    }
+var method = UserIntentParserNLP.prototype
+method.setEmitter = function (emitter) {
+    this.emitter = emitter
 }
 
+method.parse = function (userMsg, options) {
+    var intents = this.getIntent(userMsg)
+    for (var i = 0; i < intents.length; i++) {
+        var intent = intents[i];
+        if (intent === common.INTENT_CHECK_PRICE) {
+            logger.info('parsePriceInfo for customer')
+            this.parsePriceIntent(userMsg, options)
+        } else if (intent === common.INTENT_CHECK_AVAILABILITY) {
+            logger.info('parseAvailabilityIntentData for customer')
+            this.parseAvailabilityIntent(userMsg, options)
+        } else if (intent === common.INTENT_CHECK_SHIP) {
+            logger.info('parseShipInfo for customer')
+            this.parseShipIntent(userMsg, options)
+        } else {
+            logger.info('not parse message ' + userMsg + ' ==> will call staff for support')
+            this.emitter.emit(common.INTENT_GENERAL_SEARCH, {
+                storeid: options.storeid,
+                pageid: options.pageid,
+                fbid: options.fbid,
+                msg: userMsg
+            })
+        }
+    }
+
+}
 
 module.exports = UserIntentParserNLP
