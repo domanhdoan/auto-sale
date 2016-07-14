@@ -54,35 +54,34 @@ function UserIntentParserNLP() {
     var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier()
     var categoryClassifier = new nlpChecker.LogisticRegressionClassifier()
 
-    this.initClassifier = function (classifier, dataSet, intent) {
+    this.initClassifier = function(classifier, dataSet, intent) {
         for (var i = 0; i < dataSet.length; i++) {
             classifier.addDocument(dataSet[i], intent)
         }
         classifier.train()
     }
 
-    this.trainColorClassifier = function () {
-        var colorsVn = common.getAllcolorVn()
-        var keys = Object.keys(colorsVn)
+    this.trainColorClassifier = function() {
+        var colorsVn = common.getAllcolorVn();
+        var keys = Object.keys(colorsVn);
         for (var i = 0, length = keys.length; i < length; i++) {
-            var color_invn = colorsVn[keys[i]].latinise()
-            propertiesClassifier.addDocument(color_invn, color_invn)
+            var color_invn = colorsVn[keys[i]].latinise();
+            propertiesClassifier.addDocument(color_invn, color_invn);
         }
-        propertiesClassifier.addDocument('mau', color_invn)
-        propertiesClassifier.train()
+        propertiesClassifier.train();
     }
 
-    this.trainPriceClassifier = function () {
+    this.trainPriceClassifier = function() {
         this.initClassifier(questionClassifier,
             intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_PRICE)
     }
 
-    this.trainAvailabilityClassifier = function () {
+    this.trainAvailabilityClassifier = function() {
         this.initClassifier(questionClassifier,
             intentTrainingData[common.INTENT_CHECK_AVAILABILITY], common.INTENT_CHECK_AVAILABILITY)
     }
 
-    this.trainShipClassifier = function () {
+    this.trainShipClassifier = function() {
         var keys = shipTrainingData.ship;
         for (var i = 0, length = keys.length; i < length; i++) {
             var key = keys[i];
@@ -90,11 +89,11 @@ function UserIntentParserNLP() {
         }
     }
 
-    this.trainCatergoryClassifier = function () {
+    this.trainCatergoryClassifier = function() {
         this.initClassifier(categoryClassifier, keyword_category, common.INTENT_GENERAL_SEARCH)
     }
 
-    this.trainLocationClassifier = function () {
+    this.trainLocationClassifier = function() {
         var keys = locationTrainingData.province;
         for (var i = 0, length = keys.length; i < length; i++) {
             var key = keys[i];
@@ -102,7 +101,7 @@ function UserIntentParserNLP() {
         }
     }
 
-    this.isShipIntent = function (message){
+    this.isShipIntent = function(message) {
         var ret = false;
         var intents = [];
         var classifications = shipClassifier.getClassifications(message)
@@ -115,7 +114,7 @@ function UserIntentParserNLP() {
         return ret;
     }
 
-    this.getIntent = function (message) {
+    this.getIntent = function(message) {
         var intents = [];
         var classifications = questionClassifier.getClassifications(message)
         for (var i = 0, length = classifications.length; i < length; i++) {
@@ -143,7 +142,7 @@ function UserIntentParserNLP() {
         return intents
     }
 
-    this.parseProductType = function (userMsg) {
+    this.parseProductType = function(userMsg) {
         var productType = []
         for (var i = 0, length = typeRegexp.length; i < length; i++) {
             var type = common.extractValues(userMsg, typeRegexp[i])
@@ -154,26 +153,24 @@ function UserIntentParserNLP() {
         return productType
     }
 
-    this.parseColorInfo = function (userMsg) {
+    this.parseColorInfo = function(userMsg) {
         var productColor = []
         var classifications = propertiesClassifier.getClassifications(userMsg)
         logger.info('User message: ' + userMsg)
-        if (userMsg.indexOf('mau') >= 0) {
-            for (var i = 0, length = classifications.length; i < length; i++) {
-                var classification = classifications[i]
-                if (classifications[i].value > common.INTENT_ACCURACY) {
-                    logger.info('High probility = ' + JSON.stringify(classification))
-                    productColor.push(classification.label.toLowerCase())
-                } else {
-                    logger.info('Low probility = ' + JSON.stringify(classification))
-                }
+        for (var i = 0, length = classifications.length; i < length; i++) {
+            var classification = classifications[i]
+            if (classifications[i].value > common.INTENT_ACCURACY) {
+                logger.info('High probility = ' + JSON.stringify(classification))
+                productColor.push(classification.label.toLowerCase())
+            } else {
+                logger.info('Low probility = ' + JSON.stringify(classification))
+                break;
             }
-            // productColor.push(propertiesClassifier.classify(userMsg))
         }
-        return productColor
+        return productColor;
     }
 
-    this.parseSizeInfo = function (userMsg) {
+    this.parseSizeInfo = function(userMsg) {
         var productSizes = []
         userMsg = userMsg.replaceAll('saiz', 'size')
         userMsg = userMsg.replaceAll('sai', 'size')
@@ -194,7 +191,7 @@ function UserIntentParserNLP() {
         return productSizes
     }
 
-    this.parsePriceIntent = function (userMsg, options) {
+    this.parsePriceIntent = function(userMsg, options) {
         var productCode = common.extractProductCode(userMsg,
             options.codePattern).code
         var productType = this.parseProductType(userMsg)
@@ -234,10 +231,10 @@ function UserIntentParserNLP() {
         this.emitter.emit(common.INTENT_CHECK_PRICE, data)
     }
 
-    this.parseAvailabilityIntent = function (userMsg, options) {
-        var categorySearch = categoryClassifier.classify(userMsg)
-        var classifications = categoryClassifier.getClassifications(userMsg)
-        var classification = classifications[0]
+    this.parseAvailabilityIntent = function(userMsg, options) {
+        var categorySearch = categoryClassifier.classify(userMsg);
+        var classifications = categoryClassifier.getClassifications(userMsg);
+        var classification = classifications[0];
 
         var data = {
             storeid: options.storeid,
@@ -254,20 +251,23 @@ function UserIntentParserNLP() {
         // Decide really user intent from 2 factors (question type and information extracted)
         // Pass 1: decide by weather question contain a category or not
         var trueIntent = (classification.value > common.INTENT_ACCURACY_LOW) ? classification.label : common.INTENT_CHECK_AVAILABILITY
-        // Weather user type size or color information or not
-        if (productCode != '' && (size.length * color == 0)) {
-            trueIntent = common.INTENT_GENERAL_SEARCH
+            // Weather user type size or color information or not
+        if (productCode != '') {
+            //trueIntent = common.INTENT_GENERAL_SEARCH;
+            data.category = productCode;
         } else {
-            data.code = productCode
-            data.color = color
-            data.size = size
+            data.code = userMsg;
         }
 
+        data.code = productCode;
+        data.color = color;
+        data.size = size;
+
         logger.info('[Check Avai] Data sent from intent parser to sale bot' + JSON.stringify(data))
-        this.emitter.emit(trueIntent, data)
+        this.emitter.emit(trueIntent, data);
     }
 
-    this.parseShipIntent = function (userMsg, options) {
+    this.parseShipIntent = function(userMsg, options) {
         var location = locationClassifier.classify(userMsg)
         this.emitter.emit(common.INTENT_CHECK_SHIP, {
             storeid: options.storeid,
@@ -288,11 +288,11 @@ function UserIntentParserNLP() {
 }
 
 var method = UserIntentParserNLP.prototype
-method.setEmitter = function (emitter) {
+method.setEmitter = function(emitter) {
     this.emitter = emitter
 }
 
-method.parse = function (userMsg, options) {
+method.parse = function(userMsg, options) {
     var intents = this.getIntent(userMsg)
     for (var i = 0; i < intents.length; i++) {
         var intent = intents[i];
