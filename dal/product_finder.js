@@ -89,13 +89,12 @@ function generateFindshoesQuery(storeId, keywords) {
         query += " inner join size as S on P.id = S.ProductId";
     }
     var cat_keywords = keywords[0].replaceAll("%%", ", ");
-    //query += " where P.StoreId = '" + storeId + "'and P.link like '%" + keywords[0] + "%'";
     query += " where P.StoreId = '" + storeId + "'and MATCH(P.finger) AGAINST('" + cat_keywords + "' IN NATURAL LANGUAGE MODE)";
     if (keywords[1].length > 0) {
-        query += " and C.name = '" + keywords[1] + "'"
+        query += " and C.name IN ('" + keywords[1] + "')"
     }
     if (keywords[2].length > 0) {
-        query += " and S.value = '" + keywords[2] + "'";
+        query += " and S.value IN (" + keywords[2] + ")";
     }
     query += " LIMIT " + common.product_search_max + ";";
 
@@ -171,6 +170,25 @@ exports.findShoesByKeywords = function(storeId, user_message, callback) {
         callback(products);
     }
 
+}
+
+// Keyword order: shoes -> color -> size
+exports.findShoesByKeywordsOpt = function(storeId, querydata, callback) {
+    var keywords = [];
+    keywords[0] = querydata.category;
+    keywords[1] = querydata.colors;
+    keywords[2] = querydata.sizes;
+    var query = generateFindshoesQuery(storeId, keywords);
+    gDbManager.sequelize.query(query)
+        .spread(function(results, metadata) {
+            if (results == null) {
+                logger.error("Product not found");
+                callback([]);
+            } else {
+                logger.info(results.length);
+                callback(results);
+            }
+        });
 }
 
 exports.findProductById = function(id, callback) {

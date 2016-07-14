@@ -597,7 +597,7 @@ function processEvent(event) {
     var sender = event.sender.id.toString();
     var receiver = event.recipient.id.toString();
     var currentSession = sessionManager.findOrCreateSession(storeId, receiver, sender);
-
+    var productInfo = sessionManager.getProductInfo(currentSession);
     if (event.message) {
         if (event.message.text) {
             var text = event.message.text;
@@ -608,7 +608,7 @@ function processEvent(event) {
                     storeid: currentSession.storeid,
                     pageid: receiver,
                     fbid: sender,
-                    productid: currentSession.last_product.id,
+                    productid: productInfo.id,
                     codePattern: gStoreConfig.product_code_pattern
                 };
                 intentParser.parse(text.latinise().toLowerCase(), options);
@@ -783,57 +783,44 @@ function handlePriceIntent(session, data, product) {
 }
 
 function handleAvailabilityIntent(session, data, product) {
-    gProductFinder.getColorsNSizeNPhotos(product.id,
-        function(colors, sizes, photos) {
-            if (colors.length * sizes.length === 0) {
-                fbMessenger.sendTextMessage(session.fbid,
-                    "Sản phẩm hiện tạm thời hết hàng\n",
-                    function() {
-                        showSimilarProductSuggestion(session);
+    var querydata = {
+        category: data.category,
+        colors: data.color.toString().replaceAll("[", "").replaceAll("]", "").replaceAll(" ", "").replaceAll(",", "','"),
+        sizes: data.size.toString().replaceAll("[", "").replaceAll("]", "")
+    };
+    if (product != null) {
+        sessionManager.setProductInfo(session, {
+            id: product.id,
+            title: product.title
+        });
+        sessionManager.setCategoryId(session, product.CategoryId);
+        gProductFinder.findShoesByKeywordsOpt(data.storeid, querydata, function(products) {
+            logger.info(products);
+            if (products.length > 0) {
+                if (data.size.length * data.color.length > 0) {
+                    fbMessenger.sendTextMessage(session.fbid, "Sản phẩm còn hàng. Bạn chọn màu \
+                        và size bên dưới nhé. Shop sẽ check giúp bạn\n", function() {
+                        showAvailableColorNsize(session, true, true, true);
                     });
-            } else {
-                showAvailableColorNsize(session, true, true, true);
-            }
-        });
-}
+                } else if (data.size.length > 0) {
+                    fbMessenger.sendTextMessage(session.fbid, "Sản phẩm còn hàng. Bạn chọn màu \
+                        bên dưới nhé. Shop sẽ check giúp bạn\n", function() {
+                        showAvailableColorNsize(session, true, false, true);
+                    });
+                } else if (data.color.length > 0) {
+                    fbMessenger.sendTextMessage(session.fbid, "Sản phẩm còn hàng. Bạn chọn size bên \
+                        dưới nhé. Shop sẽ check giúp bạn\n", function() {
+                        showAvailableColorNsize(session, false, true, true);
+                    });
+                } else {
 
-function handleAvailabilityColorIntent(session, data) {
-    logger.info("Extracted INTENT: CHECK_AVAILABILITY");
-    logger.info("Extracted INTENT data: " + JSON.stringify(data));
-
-    if (data.color.length > 0) {
-        gProductFinder.getProductColors(session.last_product.id, function(colors) {
-            if (colors.length > 0) {
-                var availableColors = getAvailableColorMsg(true, colors, data.color);
-                fbMessenger.sendTextMessage(session.fbid, availableColors, function() {});
+                }
             } else {
-                // Only show similar but not show product have same color`
-                findProductByKeywords(session, data.msg);
+                showSimilarProductSuggestion(session);
             }
         });
     } else {
-        callback(null, null);
-    }
-}
-
-function handleAvailabilitySizeIntent(session, data) {
-    logger.info("Extracted INTENT: CHECK_AVAILABILITY");
-    logger.info("Extracted INTENT data: " + JSON.stringify(data));
-
-    if (data.size != null && data.size.length > 0) {
-        gProductFinder.getProductSizes(session.last_product.id, function(sizes) {
-            var availableSizes = "";
-            if (data.size.indexOf("all") >= 0) {
-                // Only show similar but not show product have same color`
-                availableSizes = getAvailableSizeMsg(true, sizes, JSON.stringify(sizes));
-            } else {
-                availableSizes = getAvailableSizeMsg(true, sizes, data.size);
-            }
-            fbMessenger.sendTextMessage(session.fbid, availableSizes);
-        });
-        //callback(null, colors, sizes);
-    } else {
-        findProductByKeywords(session, data.msg);
+        // showSimilarProductSuggestion(session);
     }
 }
 
@@ -852,29 +839,13 @@ function setUpUserIntentListener() {
     emitter.on(common.INTENT_CHECK_AVAILABILITY, function(data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         findLastSelectProduct(session, data, function(product) {
-            if (product != null) {
-                sessionManager.setProductInfo(session, {
-                    id: product.id,
-                    title: product.title
-                });
-                sessionManager.setCategoryId(session, product.CategoryId);
-
-                if (data.size.length * data.color.length > 0) {
-                    handleAvailabilityIntent(session, data, product);
-                } else if (data.size.length) {
-                    handleAvailabilitySizeIntent(session, data);
-                } else if (data.color.length > 0) {
-                    handleAvailabilityColorIntent(session, data);
-                } else {
-                    findProductByKeywords(session, data.msg);
-                }
-            } else {
-                showSimilarProductSuggestion(session);
-            }
+            handleAvailabilityIntent(session, data, product);
         });
     });
 
-    emitter.on(common.INTENT_CHECK_SHIP, function(data) {});
+    emitter.on(common.INTENT_CHECK_SHIP, function(data) {
+
+    });
 
     emitter.on(common.INTENT_GENERAL_SEARCH, function(data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
