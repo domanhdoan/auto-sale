@@ -175,7 +175,7 @@ exports.findShoesByKeywords = function(storeId, user_message, callback) {
 // Keyword order: shoes -> color -> size
 exports.findShoesByKeywordsOpt = function(storeId, querydata, callback) {
     var keywords = [];
-    keywords[0] = querydata.category;
+    keywords[0] = querydata.category.toLowerCase();
     keywords[1] = querydata.colors;
     keywords[2] = querydata.sizes;
     var query = generateFindshoesQuery(storeId, keywords);
