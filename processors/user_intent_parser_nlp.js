@@ -90,7 +90,11 @@ function UserIntentParserNLP() {
     }
 
     this.trainCatergoryClassifier = function() {
-        this.initClassifier(categoryClassifier, keyword_category, common.INTENT_GENERAL_SEARCH)
+        for (var i = 0, length = keyword_category.length; i < length; i++) {
+            var key = keyword_category[i];
+            categoryClassifier.addDocument(key, key);
+        }
+        categoryClassifier.train();
     }
 
     this.trainLocationClassifier = function() {
@@ -172,29 +176,26 @@ function UserIntentParserNLP() {
 
     this.parseSizeInfo = function(userMsg) {
         var productSizes = []
-        userMsg = userMsg.replaceAll('saiz', 'size')
-        userMsg = userMsg.replaceAll('sai', 'size')
-        userMsg = userMsg.replaceAll('sz', 'size')
+        userMsg = userMsg.replaceAll('saiz', 'size');
+        userMsg = userMsg.replaceAll('sai', 'size');
+        userMsg = userMsg.replaceAll('sz', 'size');
         for (var i = 0, length = sizeRegexp.length; i < length; i++) {
             productSizes = common.extractValue(userMsg, sizeRegexp[i])
             if (productSizes != '') {
                 productSizes = common.extractValues(productSizes, '\\d+')
                 if (productSizes.length === 0) {
-                    productSizes.push('all')
+                    productSizes.push('all');
                 }
                 break
             }
         }
         if (productSizes === '') {
-            productSizes = []
+            productSizes = [];
         }
-        return productSizes
+        return productSizes;
     }
 
-    this.parsePriceIntent = function(userMsg, options) {
-        var productCode = common.extractProductCode(userMsg,
-            options.codePattern).code
-        var productType = this.parseProductType(userMsg)
+    this.parseQuantity = function(userMsg) {
         var productQuantity = []
 
         for (var i = 0, length = quantityRegexp.length; i < length; i++) {
@@ -203,18 +204,25 @@ function UserIntentParserNLP() {
                 for (var j = 0, length = quantities.length; j < length; j++) {
                     var quantity = common.extractValue(quantities[j], '\\d+')
                     if (quantity === '') {
-                        productQuantity.push('1')
+                        productQuantity.push('1');
                     } else {
-                        productQuantity.push(quantity)
+                        productQuantity.push(quantity);
                     }
                 }
                 break
             }
         }
+        return productQuantity;
+    }
+    this.parsePriceIntent = function(userMsg, options) {
+        var productCode = common.extractProductCode(userMsg,
+            options.codePattern).code
+        var productType = this.parseProductType(userMsg)
+        var productQuantity = this.parseQuantity(userMsg);
 
         if (productType.length > 0) {
             for (var i = 0, length = productType.length; i < (length - 1); i++) {
-                productQuantity[i] = '1'
+                productQuantity[i] = '1';
             }
         }
         var data = {
@@ -232,9 +240,6 @@ function UserIntentParserNLP() {
     }
 
     this.parseAvailabilityIntent = function(userMsg, options) {
-        var categorySearch = categoryClassifier.classify(userMsg);
-        var classifications = categoryClassifier.getClassifications(userMsg);
-        var classification = classifications[0];
 
         var data = {
             storeid: options.storeid,
@@ -250,13 +255,18 @@ function UserIntentParserNLP() {
 
         // Decide really user intent from 2 factors (question type and information extracted)
         // Pass 1: decide by weather question contain a category or not
-        var trueIntent = (classification.value > common.INTENT_ACCURACY_LOW) ? classification.label : common.INTENT_CHECK_AVAILABILITY
-            // Weather user type size or color information or not
         if (productCode != '') {
-            //trueIntent = common.INTENT_GENERAL_SEARCH;
             data.category = productCode;
         } else {
-            data.code = userMsg;
+            var categorySearch = categoryClassifier.classify(userMsg);
+            var classifications = categoryClassifier.getClassifications(userMsg);
+            var classification = classifications[0];
+            var productQuantity = this.parseQuantity(userMsg);
+            if (classifications[0].value > common.INTENT_ACCURACY && productQuantity.length === 0) {
+                data.category = classifications[0].label;
+            } else {
+                data.category = userMsg;
+            }
         }
 
         data.code = productCode;
@@ -264,7 +274,7 @@ function UserIntentParserNLP() {
         data.size = size;
 
         logger.info('[Check Avai] Data sent from intent parser to sale bot' + JSON.stringify(data))
-        this.emitter.emit(trueIntent, data);
+        this.emitter.emit(common.INTENT_CHECK_AVAILABILITY, data);
     }
 
     this.parseShipIntent = function(userMsg, options) {
