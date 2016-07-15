@@ -42,12 +42,12 @@ function UserIntentParserNLP() {
 
     this.trainPriceClassifier = function() {
         this.initClassifier(questionClassifier,
-            intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_PRICE)
+            intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_PRICE);
     }
 
     this.trainAvailabilityClassifier = function() {
         this.initClassifier(questionClassifier,
-            intentTrainingData[common.INTENT_CHECK_AVAILABILITY], common.INTENT_CHECK_AVAILABILITY)
+            intentTrainingData[common.INTENT_CHECK_AVAILABILITY], common.INTENT_CHECK_AVAILABILITY);
     }
 
     this.trainShipClassifier = function() {
@@ -56,6 +56,8 @@ function UserIntentParserNLP() {
             var key = keys[i];
             this.initClassifier(shipClassifier, key.value, key.name);
         }
+        this.initClassifier(questionClassifier,
+            intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_SHIP);
     }
 
     this.trainCatergoryClassifier = function() {
@@ -79,7 +81,7 @@ function UserIntentParserNLP() {
         var intents = [];
         var classifications = shipClassifier.getClassifications(message)
         for (var i = 0, length = classifications.length; i < length; i++) {
-            if (classifications[i].value > common.INTENT_ACCURACY) {
+            if (classifications[i].value > common.INTENT_ACCURACY_LOW) {
                 ret = true;
                 break;
             }
@@ -94,16 +96,16 @@ function UserIntentParserNLP() {
             var classification = classifications[i]
             if (classifications[i].value > common.INTENT_ACCURACY) {
                 logger.info('High probility = ' + JSON.stringify(classification))
-                if (classification.label === common.INTENT_CHECK_AVAILABILITY) {
-                    if (this.isShipIntent(message)) {
+                if (this.isShipIntent(message)) {
+                    var index = intents.indexOf(common.INTENT_CHECK_SHIP);
+                    if (index < 0) {
                         intents.push(common.INTENT_CHECK_SHIP);
                     } else {
-                        intents.push(classification.label)
+                        logger.info("Not add ship intent");
                     }
                 } else {
                     intents.push(classification.label)
                 }
-
             } else {
                 logger.info('Low probility = ' + JSON.stringify(classification))
                 break;
@@ -112,7 +114,7 @@ function UserIntentParserNLP() {
         if (intents.length == 0) {
             intents.push(common.INTENT_UNKNOWN);
         }
-        return intents
+        return intents;
     }
 
     this.parseProductType = function(userMsg) {
@@ -247,7 +249,8 @@ function UserIntentParserNLP() {
     }
 
     this.parseShipIntent = function(userMsg, options) {
-        var location = locationClassifier.classify(userMsg)
+        var location = locationClassifier.classify(userMsg);
+        var shipDuration
         this.emitter.emit(common.INTENT_CHECK_SHIP, {
             storeid: options.storeid,
             pageid: options.pageid,
@@ -268,7 +271,7 @@ function UserIntentParserNLP() {
 
 var method = UserIntentParserNLP.prototype
 method.setEmitter = function(emitter) {
-    this.emitter = emitter
+    this.emitter = emitter;
 }
 
 method.parse = function(userMsg, options) {
