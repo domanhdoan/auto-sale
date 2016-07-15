@@ -848,7 +848,7 @@ function setUpUserIntentListener() {
     });
 
     emitter.on(common.INTENT_CHECK_SHIP, function(data) {
-
+        logger.info("Extracted INTENT CHECK_SHIP: " + JSON.stringify(data));
     });
 
     emitter.on(common.INTENT_GENERAL_SEARCH, function(data) {
