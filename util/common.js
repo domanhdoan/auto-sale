@@ -66,7 +66,7 @@ module.exports = {
     INTENT_GENERAL_SEARCH: 'general_search',
     INTENT_UNKNOWN: 'unknow_intent',
     INTENT_ACCURACY: 0.9,
-    INTENT_ACCURACY_LOW: 0.6,
+    INTENT_ACCURACY_LOW: 0.7,
     PRODUCT_TYPE_MALE: "nam",
     PRODUCT_TYPE_FEMALE: "nu",
     PRODUCT_TYPE_COMBO: "combo",

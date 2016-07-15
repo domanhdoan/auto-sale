@@ -1,7 +1,8 @@
 {
     "check_ship": [
-        "bao lau", "het bao nhieu"
+        "bao lau", "het bao nhieu", "ship", "COD", "toan quoc"
     ],
+
     "check_availability": [
         "san hang khong", "co san khong",
         "san hang ko", "co san k0",
