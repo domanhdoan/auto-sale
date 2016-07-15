@@ -18,7 +18,7 @@ function UserIntentParserNLP() {
     var keyword_category = categoryTrainingData.category;
 
     var questionClassifier = new nlpChecker.LogisticRegressionClassifier();
-    var shipClassifier = new nlpChecker.LogisticRegressionClassifier();
+    var shipClassifier = new nlpChecker.BayesClassifier();
     var locationClassifier = new nlpChecker.LogisticRegressionClassifier();
     var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier();
     var categoryClassifier = new nlpChecker.LogisticRegressionClassifier();
@@ -78,7 +78,7 @@ function UserIntentParserNLP() {
 
     this.isShipIntent = function(message) {
         var ret = false;
-        var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW);
+        var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW / 3);
         if (intent != "") {
             ret = true;
         }
@@ -100,7 +100,7 @@ function UserIntentParserNLP() {
                         logger.info("Not add ship intent");
                     }
                 } else {
-                    intents.push(classification.label)
+                    intents.push(classification.label);
                 }
             } else {
                 logger.info('Low probility = ' + JSON.stringify(classification))
@@ -116,25 +116,25 @@ function UserIntentParserNLP() {
     this.parseProductType = function(userMsg) {
         var productType = []
         for (var i = 0, length = typeRegexp.length; i < length; i++) {
-            var type = common.extractValues(userMsg, typeRegexp[i])
+            var type = common.extractValues(userMsg, typeRegexp[i]);
             if (type != '') {
-                productType.push(type)
+                productType.push(type);
             }
         }
-        return productType
+        return productType;
     }
 
     this.parseColorInfo = function(userMsg) {
         var productColor = []
         var classifications = propertiesClassifier.getClassifications(userMsg)
-        logger.info('User message: ' + userMsg)
+        logger.info('User message: ' + userMsg);
         for (var i = 0, length = classifications.length; i < length; i++) {
-            var classification = classifications[i]
+            var classification = classifications[i];
             if (classifications[i].value > common.INTENT_ACCURACY) {
-                logger.info('High probility = ' + JSON.stringify(classification))
-                productColor.push(classification.label.toLowerCase())
+                logger.info('High probility = ' + JSON.stringify(classification));
+                productColor.push(classification.label.toLowerCase());
             } else {
-                logger.info('Low probility = ' + JSON.stringify(classification))
+                logger.info('Low probility = ' + JSON.stringify(classification));
                 break;
             }
         }
