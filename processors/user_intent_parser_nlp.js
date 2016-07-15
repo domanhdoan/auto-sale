@@ -78,7 +78,7 @@ function UserIntentParserNLP() {
 
     this.isShipIntent = function(message) {
         var ret = false;
-        var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW / 3);
+        var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW / 2);
         if (intent != "") {
             ret = true;
         }
