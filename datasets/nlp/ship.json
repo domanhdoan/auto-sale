@@ -16,7 +16,7 @@
         "value": ["bao nhieu"]
     }, {
         "name": "duration",
-        "value": ["bao lau", "bao nhieu ngay", "Mình ở zzz thì bao lâu nhận được hàng?", ""]
+        "value": ["bao lau nhan duoc hang", "bao nhieu ngay", "Mình ở zzz thì bao lâu nhận được hàng?", ""]
     }, {
         "name": "location",
         "value": ["Có ship đến zzz không?", "Có ship về zzz không?"]

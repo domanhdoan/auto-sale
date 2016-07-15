@@ -73,6 +73,8 @@ module.exports = {
     SEARCH_KEY_COLOR: "mau",
     SEARCH_KEY_SIZE: "size",
     SHIP_LOCATION: "province",
+    SHIP_FEE: "price",
+    SHIP_DURATION: "duration"
 }
 
 module.exports.typical_question = {
