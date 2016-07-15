@@ -1,0 +1,26 @@
+{
+    "typeRegexp": ["nam", "nu",
+        "combo", "cb"
+    ],
+    "quantityRegexp": [
+        "\\d+ doi", "\\d+ cap",
+        "doi nay", "cap nay"
+    ],
+    "sizeRegexp": [
+        "co \\d+ \\w+ co \\d+",
+        "co \\d+ \\w+ \\d+",
+        "co \\d+ \\d+",
+        "co \\d+ - \\d+",
+        "co \\d+-\\d+",
+        "size \\d+ \\w+ size \\d+",
+        "size \\d+ \\w+ \\d+",
+        "size \\d+ \\d+",
+        "size \\d+-\\d+",
+        "size \\d+ - \\d+",
+        "size \\w+ \\d+ \\w+ \\d+",
+        "size \\d+",
+        "size nam \\d+", "size nu \\d+",
+        "nam size \\d+", "nu size \\d+",
+        "size"
+    ]
+}

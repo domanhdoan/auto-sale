@@ -13,26 +13,27 @@
         "con khong", "co khong",
         "con ko", "co ko",
         "con du", "co den", "co nhung",
-        "saiz nao", "size nao", 
+        "saiz nao", "size nao",
         "sz nao", "co nao", "mau nao"
     ],
     "check_price": [
-        "bao nhieu", 
-        "ba0 nhieu", 
+        "bao nhieu",
+        "ba0 nhieu",
         "bao nhjeu",
-        "bnhieu", 
+        "bnhieu",
         "bn",
-        "gia the nao", 
+        "gia the nao",
         "thi the nao"
     ],
     "check_order": ["muon mua",
         "dat hang"
     ],
-    "check_saleoff": [],
-    "check_warranty": [],
-    "check_support": [],
-    "redundant": [
-        "cho minh hoi",
-        ""
-    ]
+    "check_saleoff": ["khuyen mai", "saleoff", "sale-off", "bớt", "giam gia"],
+    "consult": ["Shop tư vấn đôi nào nhẹ, ôm chân", "không quá to được không"],
+    "size_table": ["do size", "đo size", "bảng tính size"],
+    "product_photo": ["ảnh thật của đôi này"],
+    "durability": ["Giày có tốt không?", "Có bền không?"],
+    "shop_location": ["Địa chỉ shop ở đâu?"],
+    "shop_operation": ["Shop ơi bên mình mở cửa đến mấy giờ"],
+    "branch_location": ["Shop co cua hang o SG khong"]
 }
