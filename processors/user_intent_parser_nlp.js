@@ -17,11 +17,11 @@ function UserIntentParserNLP() {
     var sizeRegexp = regExpData.sizeRegexp;
     var keyword_category = categoryTrainingData.category;
 
-    var questionClassifier = new nlpChecker.LogisticRegressionClassifier()
-    var shipClassifier = new nlpChecker.LogisticRegressionClassifier()
-    var locationClassifier = new nlpChecker.BayesClassifier()
-    var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier()
-    var categoryClassifier = new nlpChecker.LogisticRegressionClassifier()
+    var questionClassifier = new nlpChecker.LogisticRegressionClassifier();
+    var shipClassifier = new nlpChecker.LogisticRegressionClassifier();
+    var locationClassifier = new nlpChecker.LogisticRegressionClassifier();
+    var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier();
+    var categoryClassifier = new nlpChecker.LogisticRegressionClassifier();
 
     this.initClassifier = function(classifier, dataSet, intent) {
         for (var i = 0; i < dataSet.length; i++) {
@@ -78,13 +78,9 @@ function UserIntentParserNLP() {
 
     this.isShipIntent = function(message) {
         var ret = false;
-        var intents = [];
-        var classifications = shipClassifier.getClassifications(message)
-        for (var i = 0, length = classifications.length; i < length; i++) {
-            if (classifications[i].value > common.INTENT_ACCURACY_LOW) {
-                ret = true;
-                break;
-            }
+        var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW);
+        if (intent != "") {
+            ret = true;
         }
         return ret;
     }
@@ -229,12 +225,10 @@ function UserIntentParserNLP() {
         if (productCode != '') {
             data.category = productCode;
         } else {
-            var categorySearch = categoryClassifier.classify(userMsg);
-            var classifications = categoryClassifier.getClassifications(userMsg);
-            var classification = classifications[0];
             var productQuantity = this.parseQuantity(userMsg);
-            if (classifications[0].value > common.INTENT_ACCURACY && productQuantity.length === 0) {
-                data.category = classifications[0].label;
+            var category = this.parseInfoWithAccuracy(categoryClassifier, userMsg, common.INTENT_ACCURACY);
+            if (productQuantity.length === 0) {
+                data.category = category;
             } else {
                 data.category = userMsg;
             }
@@ -244,21 +238,35 @@ function UserIntentParserNLP() {
         data.color = color;
         data.size = size;
 
-        logger.info('[Check Avai] Data sent from intent parser to sale bot' + JSON.stringify(data))
+        logger.info('[Check Avai] Data sent from intent parser to sale bot' + JSON.stringify(data));
         this.emitter.emit(common.INTENT_CHECK_AVAILABILITY, data);
     }
 
+    this.parseInfoWithAccuracy = function(classifier, userMsg, accuracy) {
+        var info = "";
+        var classifications = classifier.getClassifications(userMsg);
+        if (classifications.length > 0) {
+            var classification = classifications[0];
+            if (classification.value >= accuracy) {
+                info = classification.label;
+            }
+        }
+        return info;
+    }
+
     this.parseShipIntent = function(userMsg, options) {
-        var location = locationClassifier.classify(userMsg);
-        var shipDuration
+        var location = this.parseInfoWithAccuracy(locationClassifier, userMsg, common.INTENT_ACCURACY_LOW);
+        var shipIntent = this.parseInfoWithAccuracy(shipClassifier, userMsg, common.INTENT_ACCURACY_LOW);
+
         this.emitter.emit(common.INTENT_CHECK_SHIP, {
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,
             productid: options.productid,
             msg: userMsg,
-            location: location
-        })
+            location: location,
+            intent: shipIntent
+        });
     }
 
     this.trainPriceClassifier();
@@ -269,7 +277,7 @@ function UserIntentParserNLP() {
     this.trainLocationClassifier();
 }
 
-var method = UserIntentParserNLP.prototype
+var method = UserIntentParserNLP.prototype;
 method.setEmitter = function(emitter) {
     this.emitter = emitter;
 }
@@ -295,7 +303,7 @@ method.parse = function(userMsg, options) {
                 pageid: options.pageid,
                 fbid: options.fbid,
                 msg: userMsg
-            })
+            });
         }
     }
 
