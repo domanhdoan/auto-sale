@@ -1,30 +1,26 @@
 {
-    "ship": [
-    {
+    "ship": [{
         "name": "free ship",
-        "value": ["free ship", "ship mien phi", "giao hang mien phi"]
-    }, 
-    {
+        "value": ["free ship", "ship mien phi", "giao hang mien phi", "Free ship hả shop?"]
+    }, {
         "name": "toan quoc",
         "value": ["toan quoc"]
-    },
-    {
+    }, {
         "name": "COD",
         "value": ["COD", "thanh toan khi nhan hang"]
-    },
-    {
+    }, {
         "name": "chuyen khoan",
         "value": ["chuyen khoan"]
-    },
-    {
+    }, {
         "name": "price",
         "value": ["bao nhieu"]
-    },
-    {
+    }, {
         "name": "duration",
-        "value": ["bao lau", "bao nhieu ngay"]
-    },
-    {
+        "value": ["bao lau", "bao nhieu ngay", "Mình ở zzz thì bao lâu nhận được hàng?", ""]
+    }, {
+        "name": "location",
+        "value": ["Có ship đến zzz không?", "Có ship về zzz không?"]
+    }, {
         "name": "gia ship",
         "value": ["gia ship the nao"]
     }]

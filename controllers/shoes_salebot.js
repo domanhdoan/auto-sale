@@ -790,8 +790,8 @@ function handleAvailabilityIntent(session, data, product) {
         querydata.category = (data.code === "") ? product.code : data.category;
     }
     gProductFinder.findShoesByKeywordsOpt(data.storeid, querydata, function(products) {
-        var showPhotos = (data.productid != product.id) ? true : false;
         if (products.length === 1) {
+            var showPhotos = (data.productid != products[0].id) ? true : false;
             sessionManager.setProductInfo(session, {
                 id: products[0].id,
                 title: products[0].title

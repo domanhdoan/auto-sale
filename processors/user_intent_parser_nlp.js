@@ -1,54 +1,23 @@
 var logger = require('../util/logger.js')
 var common = require('../util/common.js')
-var strSimilarityChecker = require('string-similarity')
 var nlpChecker = require('natural')
 
 function UserIntentParserNLP() {
-    var keyword_category = [
-        'the thao', 'the thao doi', 'the thao nam', 'the thao nu',
-        'adidas', 'nike', 'ked', 'slip on', 'oxford', 'bet', 'bup be'
-    ]
-    var keyword_ask_consult = ['do size', 'gia ship']
-    var keyword_ask_location = ['dia chi']
 
-    var keyword_ask_discount = ['sale off', 'sale-off',
-        'giam gia', 'khuyen mai', 'chiet khau'
-    ]
-
-    var typeRegexp = ['nam', 'nu',
-        'combo', 'cb'
-    ]
-
-    var quantityRegexp = [
-        '\\d+ doi', '\\d+ cap',
-        'doi nay', 'cap nay',
-    ]
-
-    var sizeRegexp = [
-        'co \\d+ \\w+ co \\d+',
-        'co \\d+ \\w+ \\d+',
-        'co \\d+ \\d+',
-        'co \\d+ - \\d+',
-        'co \\d+-\\d+',
-        'size \\d+ \\w+ size \\d+',
-        'size \\d+ \\w+ \\d+',
-        'size \\d+ \\d+',
-        'size \\d+-\\d+',
-        'size \\d+ - \\d+',
-        'size \\w+ \\d+ \\w+ \\d+',
-        'size \\d+',
-        'size nam \\d+', 'size nu \\d+',
-        'nam size \\d+', 'nu size \\d+',
-        'size'
-    ]
     this.emitter = null
 
-    var intentTrainingData = common.loadJson('./datasets/nlp/intent.json')
-    var locationTrainingData = common.loadJson('./datasets/nlp/location.json')
-    var shipTrainingData = common.loadJson('./datasets/nlp/ship.json')
+    var intentTrainingData = common.loadJson('./datasets/nlp/intent.json');
+    var locationTrainingData = common.loadJson('./datasets/nlp/location.json');
+    var categoryTrainingData = common.loadJson('./datasets/nlp/category.json');
+    var shipTrainingData = common.loadJson('./datasets/nlp/ship.json');
+    var regExpData = common.loadJson('./datasets/nlp/regexp.json');
+
+    var typeRegexp = regExpData.typeRegexp;
+    var quantityRegexp = regExpData.quantityRegexp;
+    var sizeRegexp = regExpData.sizeRegexp;
+    var keyword_category = categoryTrainingData.category;
 
     var questionClassifier = new nlpChecker.LogisticRegressionClassifier()
-
     var shipClassifier = new nlpChecker.LogisticRegressionClassifier()
     var locationClassifier = new nlpChecker.BayesClassifier()
     var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier()
@@ -303,6 +272,7 @@ method.setEmitter = function(emitter) {
 }
 
 method.parse = function(userMsg, options) {
+    logger.info("Parsing: " + userMsg);
     var intents = this.getIntent(userMsg)
     for (var i = 0; i < intents.length; i++) {
         var intent = intents[i];
