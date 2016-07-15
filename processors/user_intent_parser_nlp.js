@@ -90,7 +90,7 @@ function UserIntentParserNLP() {
         var classifications = questionClassifier.getClassifications(message)
         for (var i = 0, length = classifications.length; i < length; i++) {
             var classification = classifications[i]
-            if (classifications[i].value > common.INTENT_ACCURACY) {
+            if (classifications[i].value > common.INTENT_ACCURACY_LOW) {
                 logger.info('High probility = ' + JSON.stringify(classification))
                 if (this.isShipIntent(message)) {
                     var index = intents.indexOf(common.INTENT_CHECK_SHIP);

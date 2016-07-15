@@ -849,6 +849,11 @@ function setUpUserIntentListener() {
 
     emitter.on(common.INTENT_CHECK_SHIP, function(data) {
         logger.info("Extracted INTENT CHECK_SHIP: " + JSON.stringify(data));
+        if (data.intent == common.SHIP_FEE) {
+
+        } else if (data.intent == common.SHIP_DURATION) {
+
+        }
     });
 
     emitter.on(common.INTENT_GENERAL_SEARCH, function(data) {
