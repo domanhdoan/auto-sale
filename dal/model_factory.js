@@ -183,7 +183,7 @@ module.exports.cancelInvoice = function(id, status, callback) {
     })
 }
 
-module.exports.update_invoice = function(invoice_info, callback) {
+module.exports.updateInvoice = function(invoice_info, callback) {
     gDbManager.Invoice.findOne({
         where: {
             id: invoice_info.id
