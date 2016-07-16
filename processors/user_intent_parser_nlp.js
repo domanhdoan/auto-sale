@@ -239,7 +239,7 @@ function UserIntentParserNLP() {
             if (productQuantity.length === 0) {
                 data.category = category;
             } else {
-                data.category = userMsg;
+                data.category = "";
             }
         }
 

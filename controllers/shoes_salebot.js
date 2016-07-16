@@ -700,7 +700,9 @@ function initWebHook() {
 
 function findLastSelectProduct(session, data, callback) {
     var undefineFlag = common.isDefined(data.code); 
-    if (undefineFlag && data.code.length > 0) {
+    if(data.category.length != 0){
+        callback(null);
+    }else if (undefineFlag && data.code.length > 0) {
         gProductFinder.findProductByCode(session.storeid, data.code, function (product) {
             callback(product);
         });
