@@ -366,9 +366,25 @@ FBMessenger.prototype.sendReceiptMessage = function (sender, invoice_items, invo
     };
     // Street, city, province, country
     var temp = invoice_details.address.split(",");
-    fullAddress.street_1 = invoice_details.address.replace("," + temp[temp.length - 2] + "," + temp[temp.length - 1], "");
-    fullAddress.city = temp[temp.length - 2].trim();
-    fullAddress.state = temp[temp.length - 2].trim();
+    switch(temp.length){
+        case 1:
+        break;
+        case 2:
+            fullAddress.street_1 = "";
+            fullAddress.city = temp[0].trim();
+            fullAddress.state = temp[0].trim();
+            break;
+        case 3:
+            fullAddress.street_1 = "";
+            fullAddress.city = temp[1].trim();
+            fullAddress.state = temp[1].trim();
+        case 4:
+            fullAddress.street_1 = temp[0].trim();
+            fullAddress.city = temp[temp.length - 2].trim();
+            fullAddress.state = temp[temp.length - 2].trim();
+            break;
+        default:
+    }
 
     var messageData = {
         "attachment": {
