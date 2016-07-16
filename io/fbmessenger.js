@@ -75,6 +75,7 @@ function FBMessenger() {
         var element = {
             "title": title,
             "subtitle": priceInfo,
+            "item_url":link,
             "image_url": thumbnail_url,
             "buttons": [{
                 "type": "postback",
@@ -113,7 +114,7 @@ function FBMessenger() {
         purchase_action.action = common.action_purchase;
         var template = [{
             "type": "postback",
-            "title": "Thêm sản phẩm khác",
+            "title": "Chọn sản phẩm khác",
             "payload": JSON.stringify(search_action),
         }, {
                 "type": "postback",
