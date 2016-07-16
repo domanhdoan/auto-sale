@@ -881,7 +881,7 @@ function setUpUserIntentListener() {
         //processTextEvent(session, data.msg);
         data.intent = common.INTENT_UNKNOWN;
         common.saveToFile("nlp_log.txt", JSON.stringify(data));
-        fbMessenger.sendTextMessage(session.fbid, "Bạn vui lòng cung cấp thông tin về sản phẩm. Shop sẽ check giúp bạn");
+        fbMessenger.sendTextMessage(session.fbid, "Shop không tìm thấy sản phẩm theo yêu cầu. Bạn vui lòng cung cấp thông tin thêm về sản phẩm. Shop sẽ check giúp bạn");
     });
 }
 
