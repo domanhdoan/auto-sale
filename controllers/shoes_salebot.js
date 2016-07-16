@@ -838,9 +838,6 @@ function handleAvailabilityIntent(session, data, product) {
 
 function setUpUserIntentListener() {
     emitter.on(common.INTENT_CHECK_PRICE, function (data) {
-        data.intent = common.INTENT_CHECK_PRICE;
-        common.saveToFile("nlp_log.txt", JSON.stringify(data));
-
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         findLastSelectProduct(session, data, function (product) {
             if (product != null) {
@@ -852,8 +849,6 @@ function setUpUserIntentListener() {
     });
 
     emitter.on(common.INTENT_CHECK_AVAILABILITY, function (data) {
-        data.intent = common.INTENT_CHECK_AVAILABILITY;
-        common.saveToFile("nlp_log.txt", JSON.stringify(data));
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         findLastSelectProduct(session, data, function (product) {
             handleAvailabilityIntent(session, data, product);
@@ -861,8 +856,6 @@ function setUpUserIntentListener() {
     });
 
     emitter.on(common.INTENT_CHECK_SHIP, function (data) {
-        data.intent = common.INTENT_CHECK_SHIP;
-        common.saveToFile("nlp_log.txt", JSON.stringify(data));
         logger.info("Extracted INTENT CHECK_SHIP: " + JSON.stringify(data));
         if (data.intent == common.SHIP_FEE) {
 
@@ -879,8 +872,6 @@ function setUpUserIntentListener() {
     emitter.on(common.INTENT_UNKNOWN, function (data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         //processTextEvent(session, data.msg);
-        data.intent = common.INTENT_UNKNOWN;
-        common.saveToFile("nlp_log.txt", JSON.stringify(data));
         fbMessenger.sendTextMessage(session.fbid, "Shop không tìm thấy sản phẩm theo yêu cầu. Bạn vui lòng cung cấp thông tin thêm về sản phẩm. Shop sẽ check giúp bạn");
     });
 }
