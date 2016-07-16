@@ -306,7 +306,7 @@ method.parse = function(userMsg, options) {
             this.parseShipIntent(userMsg, options)
         } else {
             logger.info('not parse message ' + userMsg + ' ==> will call staff for support')
-            this.emitter.emit(common.INTENT_GENERAL_SEARCH, {
+            this.emitter.emit(common.INTENT_UNKNOWN, {
                 storeid: options.storeid,
                 pageid: options.pageid,
                 fbid: options.fbid,
