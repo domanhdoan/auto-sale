@@ -55,7 +55,6 @@ if (crawl_sources != null) {
         for (var i = 0, length = store_config.length; i < length; i++) {
             scraper = new WebScraper(store_config[i]);
             scraper.crawlWholeSite(function() {
-
             });
         }
     }

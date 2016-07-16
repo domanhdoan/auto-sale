@@ -65,11 +65,13 @@ module.exports = {
     INTENT_ORDER_PRODUCT: 'order_product',
     INTENT_GENERAL_SEARCH: 'general_search',
     INTENT_UNKNOWN: 'unknow_intent',
+    INTENT_ACCURACY_ABSOLUTE: 1.0,
     INTENT_ACCURACY: 0.9,
     INTENT_ACCURACY_LOW: 0.7,
     PRODUCT_TYPE_MALE: "nam",
     PRODUCT_TYPE_FEMALE: "nu",
     PRODUCT_TYPE_COMBO: "combo",
+    PRODUCT_TYPE_UNKNOW: "unknow",
     SEARCH_KEY_COLOR: "mau",
     SEARCH_KEY_SIZE: "size",
     SHIP_LOCATION: "province",
@@ -354,10 +356,9 @@ module.exports.isDefined = function(obj) {
 module.exports.getAvailableProductType = function(title) {
     var type = this.extractProductType(title);
     var types = [];
-    if (type = this.PRODUCT_TYPE_COMBO) {
-        return ['nam', 'nu', 'combo'];
+    if (type == this.PRODUCT_TYPE_COMBO) {
+        types = ['nam', 'nu', 'combo'];
     }
-    types[0] = type;
     return types;
 }
 

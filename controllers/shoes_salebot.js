@@ -41,32 +41,36 @@ var storeId = -1;
 
 function createAndSendOrderToFB(session, callback) {
     var orderInfo = sessionManager.getOrderInfo(session);
-    gProductFinder.getOrderItems(orderInfo.id, function(items) {
-        var sub_total = 0;
-        var invoice_items = [];
-        var length = items[0].Invoice.dataValues.creation_date.length;
-        var delta = length - 10;
-        if (delta > 0) {
-            session.last_invoice.creation_date = items[0].Invoice.dataValues
-                .creation_date.slice(0, -1 * delta);
-        }
-        for (var i = 0; i < items.length; i++) {
-            var title = items[i].Product.dataValues.title;
-            var price = items[i].Product.dataValues.price;
-            var subtitle = "Mô tả SP: Màu " + common.get_color_vn(items[i].Color.dataValues.name) + " và size " + items[i].Size.dataValues.value;
-            var quantity = items[i].dataValues.quantity;
-            var thumbnail_url = items[i].Product.dataValues.thumbnail;
+    gProductFinder.getOrderItems(orderInfo.id, function (items) {
+        if (items.length > 0) {
+            var sub_total = 0;
+            var invoice_items = [];
+            var length = items[0].Invoice.dataValues.creation_date.length;
+            var delta = length - 10;
+            if (delta > 0) {
+                session.last_invoice.creation_date = items[0].Invoice.dataValues
+                    .creation_date.slice(0, -1 * delta);
+            }
+            for (var i = 0; i < items.length; i++) {
+                var title = items[i].Product.dataValues.title;
+                var price = items[i].Product.dataValues.price;
+                var subtitle = "Mô tả SP: Màu " + common.get_color_vn(items[i].Color.dataValues.name) + " và size " + items[i].Size.dataValues.value;
+                var quantity = items[i].dataValues.quantity;
+                var thumbnail_url = items[i].Product.dataValues.thumbnail;
 
-            var jsonitem = fbMessenger.createOrderItemElement(
-                title, subtitle, price, quantity, thumbnail_url);
-            invoice_items.push(jsonitem);
-            sub_total += (price * quantity);
-        }
+                var jsonitem = fbMessenger.createOrderItemElement(
+                    title, subtitle, price, quantity, thumbnail_url);
+                invoice_items.push(jsonitem);
+                sub_total += (price * quantity);
+            }
 
-        var invoice_summary = fbMessenger.generate_invoice_summary(sub_total / 100, 200);
-        var invoice_adjustments = {};
-        fbMessenger.sendReceiptMessage(session.fbid, invoice_items,
-            orderInfo, invoice_summary, invoice_adjustments, callback);
+            var invoice_summary = fbMessenger.generate_invoice_summary(sub_total / 100, 200);
+            var invoice_adjustments = {};
+            fbMessenger.sendReceiptMessage(session.fbid, invoice_items,
+                orderInfo, invoice_summary, invoice_adjustments, callback);
+        }else{
+            logger.error("Can not find any order item");
+        }
     });
 }
 
@@ -371,11 +375,10 @@ function selectProductColor(session, user_message) {
 
 function selectProductSize(session, user_message) {
     var productInfo = sessionManager.getProductInfo(session);
-    var size = common.extractValue("\\d+", user_message);
+    var size = common.extractValue(user_message, "\\d+$");
     gProductFinder.checkProductBySize(productInfo.id,
-        size,
-        function(size) {
-            if (size != null) {
+        size, function(size) {
+            if (Object.keys(size).length > 0) {
                 sessionManager.setUserAction(session, common.select_product_size);
                 sessionManager.setProductInfo(session, {
                     size: size.id
@@ -403,9 +406,9 @@ function selectProductQuantity(session, user_message) {
         productInfo.size,
         function(saved_item) {
             logger.info("saved_item: " + saved_item);
+            sessionManager.setUserAction(session, common.say_search_continue_message);
+            fbMessenger.sendPurchaseConfirmMessage(session.fbid, "Bạn muốn tiếp tục chọn sản phẩm hay đặt hàng ngay?");
         });
-    sessionManager.setUserAction(session, common.say_search_continue_message);
-    fbMessenger.sendPurchaseConfirmMessage(session.fbid, "Bạn muốn tiếp tục chọn sản phẩm hay đặt hàng ngay?");
 }
 
 function putProductToCart(session, text) {
@@ -453,17 +456,17 @@ function makeProductOrder(session, text) {
             sessionManager.setOrderInfo(session, {
                 email: text
             });
-            fbMessenger.sendTextMessage(session.fbid, common.pls_enter_delivery_date);
+            //fbMessenger.sendTextMessage(session.fbid, common.pls_enter_delivery_date);
         } else {
             fbMessenger.sendTextMessage(session.fbid, common.pls_enter_email);
         }
     } else if (session.last_action == common.set_email) {
-        logger.debug("Delivery: " + text);
-        sessionManager.setUserAction(session, common.set_delivery_date);
-        sessionManager.setOrderInfo(session, {
-            delivery: text
-        });
-    } else if (session.last_action == common.set_delivery_date) {
+    //     logger.debug("Delivery: " + text);
+    //     sessionManager.setUserAction(session, common.set_delivery_date);
+    //     sessionManager.setOrderInfo(session, {
+    //         delivery: text
+    //     });
+    // } else if (session.last_action == common.set_delivery_date) {
         createAndSendOrderToFB(session, function() {
             fbMessenger.sendOrderConfirmMessage(session.fbid, "Xác nhận đơn hàng!");
         });
@@ -515,6 +518,7 @@ function processTextEvent(session, user_msg) {
 function processPostbackEvent(session, action_details) {
     var user_action = action_details.action;
     var productInfo = sessionManager.getProductInfo(session);
+    var orderInfo = sessionManager.getOrderInfo(session);
 
     logger.info("processPostbackEvent: " + JSON.stringify(action_details));
 
@@ -523,20 +527,22 @@ function processPostbackEvent(session, action_details) {
             action_details.id, action_details.title);
         showAvailableColorNsize(session, true, true, true);
 
+    } else if (user_action === common.action_view_category) {
+        sessionManager.setCategoryId(session, action_details.id);
+        findProductByCategory(session);
     } else if (user_action === common.action_order) {
         sessionManager.setOrdeTrigerStatusInfo(session, true);
         sessionManager.setProductIdNTitle(session,
             action_details.id, action_details.title);
         var types = common.getAvailableProductType(productInfo.title);
-        if (types.length == 0) {
-            fbMessenger.sendTextMessage(session.fbid, "     Bắt đầu đặt hàng        \n" +
-                common.pls_select_product_color,
+        if (types.length <= 1 /*Only one type or not determined*/) {
+            fbMessenger.sendTextMessage(session.fbid, common.pls_select_product_color,
                 function() {
                     showAvailableColorNsize(session, true, false, false);
                 });
             sessionManager.setUserAction(session, common.select_type);
         } else {
-            fbMessenger.sendProductTypeConfirm(session.fbid, "Bạn vui lòng chọn kiểu giầy",
+            fbMessenger.sendProductTypeConfirm(session.fbid, "Bạn vui lòng chọn kiểu sản phẩm:",
                 types);
         }
     } else if (user_action === common.action_confirm_type) {
@@ -552,11 +558,14 @@ function processPostbackEvent(session, action_details) {
                 }
                 showAvailableColorNsize(session, true, false, false);
             });
-    } else if (session.last_invoice.is_ordering &&
-        (user_action === common.action_continue_search)) {
-        sessionManager.setUserAction(session, common.say_greetings);
-        fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
-
+    } else if (user_action === common.action_continue_search) {
+        if (!orderInfo.isOrdering) {
+            sessionManager.setUserAction(session, common.say_greetings);
+            sessionManager.setOrdeTrigerStatusInfo(session, false);
+            fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);            
+        } else {
+            logger.info("Not support this action when making order");
+        }
     } else if (user_action === common.action_purchase) {
         sessionManager.setUserAction(session, common.set_quantity);
         fbMessenger.sendTextMessage(session.fbid, common.pls_enter_name);
@@ -584,10 +593,7 @@ function processPostbackEvent(session, action_details) {
                 fbMessenger.sendTextMessage(session.fbid, common.say_greetings);
             }
         });
-    } else if (user_action === common.action_view_category) {
-        sessionManager.setCategoryId(session, action_details.id);
-        findProductByCategory(session);
-    } else {
+    }else {
         logger.error("Unknow action: " + JSON.stringify(action_details));
     }
 }
@@ -887,6 +893,7 @@ module.exports = {
 
         gProductFinder.findStoreByLink(gHomepage, function(store) {
             storeId = store.id;
+            logger.info("Store ID = " + storeId);
         });
     }
 
