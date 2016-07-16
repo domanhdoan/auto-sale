@@ -430,6 +430,7 @@ function putProductToCart(session, text) {
 }
 
 function makeProductOrder(session, text) {
+    logger.info("Filling order information: " + text);
     if (session.last_action == common.set_quantity) {
         logger.debug("Name: " + text);
         sessionManager.setUserAction(session, common.set_recipient_name);
@@ -638,7 +639,7 @@ function processEvent(event) {
     } else if (event.postback) {
         var postback = JSON.parse(event.postback.payload);
         var delta = event.timestamp - currentSession.timestamp;
-        if (delta > 150 /*avoid double click*/) {
+        if (delta > 200 /*avoid double click*/) {
             currentSession.timestamp = event.timestamp;
             processPostbackEvent(currentSession, postback);
         } else {
