@@ -21,7 +21,7 @@ function SessionManager() {
                 title: "",
                 color: -1,
                 size: -1,
-                type: ""
+                type: common.PRODUCT_TYPE_UNKNOW
             },
 
             last_action: common.say_greetings,
