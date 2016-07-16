@@ -1,8 +1,8 @@
 {
     "object": "page",
     "entry": [{
-        "id": 123456788,
-        "time": 1458692752478,
+        "id": "PAGE_ID",
+        "time": 1460245674269,
         "messaging": [{
             "sender": {
                 "id": "1027155260703895"
@@ -10,9 +10,11 @@
             "recipient": {
                 "id": "1622583457969907"
             },
-            "timestamp": 1458692753678,
-            "postback": {
-                "payload": "{\"id\":9,\"title\":\"Giày slip on BW5202\",\"action\":\"order\"}"
+            "timestamp": 1460245672080,
+            "message": {
+                "mid": "mid.1460245671959:dad2ec9421b03d6f78",
+                "seq": 216,
+                "text": "doan@gmail.com"
             }
         }]
     }]

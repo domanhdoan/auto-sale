@@ -167,9 +167,9 @@ function FBMessenger() {
         confirm.action = common.action_confirm_type;
         var template = [];
         var typeLabel = {
-            nam: ' Kiểu Nam',
-            nu: 'Kiểu Nữ',
-            combo: "Combo"
+            nam: 'Giầy Nam',
+            nu: 'Giầy Nữ',
+            combo: "Combo (Nam + Nữ)"
         };
         for (var i = 0; i < types.length; i++) {
             confirm.type = types[i];
