@@ -700,10 +700,9 @@ function initWebHook() {
 }
 
 function findLastSelectProduct(session, data, callback) {
-    var undefineFlag = common.isDefined(data.code); 
-    if(data.category.length != 0){
+    if(common.isDefined(data.category) && data.category != ""){
         callback(null);
-    }else if (undefineFlag && data.code.length > 0) {
+    }else if (common.isDefined(data.code) && data.code.length > 0) {
         gProductFinder.findProductByCode(session.storeid, data.code, function (product) {
             callback(product);
         });
@@ -876,7 +875,11 @@ function setUpUserIntentListener() {
     emitter.on(common.INTENT_UNKNOWN, function (data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         //processTextEvent(session, data.msg);
-        fbMessenger.sendTextMessage(session.fbid, "Shop không tìm thấy sản phẩm theo yêu cầu. Bạn vui lòng cung cấp thông tin thêm về sản phẩm. Shop sẽ check giúp bạn");
+        fbMessenger.sendTextMessage(session.fbid, "Shop không tìm thấy sản phẩm theo yêu cầu", function(){
+           fbMessenger.sendTextMessage(session.fbid, "Bạn vui lòng cung cấp thông tin thêm. Shop sẽ check giúp bạn");
+           fbMessenger.sendTextMessage(session.fbid, "Bạn xem thêm danh mục sản phẩm bên dưới");
+           findCategories(session);
+        });
     });
 }
 
