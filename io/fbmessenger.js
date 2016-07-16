@@ -83,7 +83,7 @@ function FBMessenger() {
                 "payload": JSON.stringify(payload1)
             }, {
                     "type": "postback",
-                    "title": "Cho vào giỏ hàng",
+                    "title": "Chọn sản phẩm",
                     "payload": JSON.stringify(payload2),
                 }]
         };
