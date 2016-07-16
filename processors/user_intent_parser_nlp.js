@@ -192,9 +192,6 @@ function UserIntentParserNLP() {
 
     this.parseCategory = function (userMsg, quantityCount) {
         var category = this.parseInfoWithAccuracy(categoryClassifier, userMsg, common.INTENT_ACCURACY);
-        if (quantityCount > 0) {
-            category = "";
-        }
         return category;
     }
 
@@ -244,7 +241,7 @@ function UserIntentParserNLP() {
             data.category = productCode;
         } else {
             var productQuantity = this.parseQuantity(userMsg);
-            var category = this.parseCategory(userMsg, productQuantity.length);
+            var category = this.parseCategory(userMsg);
             data.category = category;
         }
 
