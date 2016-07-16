@@ -23,14 +23,14 @@ function UserIntentParserNLP() {
     var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier();
     var categoryClassifier = new nlpChecker.LogisticRegressionClassifier();
 
-    this.initClassifier = function(classifier, dataSet, intent) {
+    this.initClassifier = function (classifier, dataSet, intent) {
         for (var i = 0; i < dataSet.length; i++) {
             classifier.addDocument(dataSet[i], intent)
         }
         classifier.train()
     }
 
-    this.trainColorClassifier = function() {
+    this.trainColorClassifier = function () {
         var colorsVn = common.getAllcolorVn();
         var keys = Object.keys(colorsVn);
         for (var i = 0, length = keys.length; i < length; i++) {
@@ -40,17 +40,17 @@ function UserIntentParserNLP() {
         propertiesClassifier.train();
     }
 
-    this.trainPriceClassifier = function() {
+    this.trainPriceClassifier = function () {
         this.initClassifier(questionClassifier,
             intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_PRICE);
     }
 
-    this.trainAvailabilityClassifier = function() {
+    this.trainAvailabilityClassifier = function () {
         this.initClassifier(questionClassifier,
             intentTrainingData[common.INTENT_CHECK_AVAILABILITY], common.INTENT_CHECK_AVAILABILITY);
     }
 
-    this.trainShipClassifier = function() {
+    this.trainShipClassifier = function () {
         var keys = shipTrainingData.ship;
         for (var i = 0, length = keys.length; i < length; i++) {
             var key = keys[i];
@@ -60,7 +60,7 @@ function UserIntentParserNLP() {
             intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_SHIP);
     }
 
-    this.trainCatergoryClassifier = function() {
+    this.trainCatergoryClassifier = function () {
         for (var i = 0, length = keyword_category.length; i < length; i++) {
             var key = keyword_category[i];
             categoryClassifier.addDocument(key, key);
@@ -68,7 +68,7 @@ function UserIntentParserNLP() {
         categoryClassifier.train();
     }
 
-    this.trainLocationClassifier = function() {
+    this.trainLocationClassifier = function () {
         var keys = locationTrainingData.province;
         for (var i = 0, length = keys.length; i < length; i++) {
             var key = keys[i];
@@ -76,7 +76,7 @@ function UserIntentParserNLP() {
         }
     }
 
-    this.isShipIntent = function(message) {
+    this.isShipIntent = function (message) {
         var ret = false;
         var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW / 2);
         if (intent != "") {
@@ -85,7 +85,7 @@ function UserIntentParserNLP() {
         return ret;
     }
 
-    this.getIntent = function(message) {
+    this.getIntent = function (message) {
         var intents = [];
         var classifications = questionClassifier.getClassifications(message)
         for (var i = 0, length = classifications.length; i < length; i++) {
@@ -113,7 +113,7 @@ function UserIntentParserNLP() {
         return intents;
     }
 
-    this.parseProductType = function(userMsg) {
+    this.parseProductType = function (userMsg) {
         var productType = []
         for (var i = 0, length = typeRegexp.length; i < length; i++) {
             var type = common.extractValues(userMsg, typeRegexp[i]);
@@ -132,7 +132,7 @@ function UserIntentParserNLP() {
         return userMsg;
     }
 
-    this.parseColorInfo = function(userMsg) {
+    this.parseColorInfo = function (userMsg) {
         var productColor = []
         var classifications = propertiesClassifier.getClassifications(userMsg)
         logger.info('User message: ' + userMsg);
@@ -149,7 +149,7 @@ function UserIntentParserNLP() {
         return productColor;
     }
 
-    this.parseSizeInfo = function(userMsg) {
+    this.parseSizeInfo = function (userMsg) {
         var productSizes = []
         userMsg = userMsg.replaceAll('saiz', 'size');
         userMsg = userMsg.replaceAll('sai', 'size');
@@ -170,7 +170,7 @@ function UserIntentParserNLP() {
         return productSizes;
     }
 
-    this.parseQuantity = function(userMsg) {
+    this.parseQuantity = function (userMsg) {
         var productQuantity = []
 
         for (var i = 0, length = quantityRegexp.length; i < length; i++) {
@@ -189,7 +189,7 @@ function UserIntentParserNLP() {
         }
         return productQuantity;
     }
-    this.parsePriceIntent = function(userMsg, options) {
+    this.parsePriceIntent = function (userMsg, options) {
         var productCode = common.extractProductCode(userMsg,
             options.codePattern).code
         var productType = this.parseProductType(userMsg)
@@ -201,6 +201,7 @@ function UserIntentParserNLP() {
             }
         }
         var data = {
+            intent: common.INTENT_CHECK_PRICE,
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,
@@ -209,12 +210,12 @@ function UserIntentParserNLP() {
             type: productType,
             quantity: productQuantity,
             msg: userMsg
-        }
+        };
         logger.info('[Check Price] Data sent from intent parser to sale bot' + JSON.stringify(data))
-        this.emitter.emit(common.INTENT_CHECK_PRICE, data)
+        return data;
     }
 
-    this.parseAvailabilityIntent = function(userMsg, options) {
+    this.parseAvailabilityIntent = function (userMsg, options) {
 
         var data = {
             storeid: options.storeid,
@@ -245,12 +246,12 @@ function UserIntentParserNLP() {
         data.code = productCode;
         data.color = color;
         data.size = size;
-
+        data.intent = common.INTENT_CHECK_AVAILABILITY;
         logger.info('[Check Avai] Data sent from intent parser to sale bot' + JSON.stringify(data));
-        this.emitter.emit(common.INTENT_CHECK_AVAILABILITY, data);
+        return data;
     }
 
-    this.parseInfoWithAccuracy = function(classifier, userMsg, accuracy) {
+    this.parseInfoWithAccuracy = function (classifier, userMsg, accuracy) {
         var info = "";
         var classifications = classifier.getClassifications(userMsg);
         if (classifications.length > 0) {
@@ -262,11 +263,11 @@ function UserIntentParserNLP() {
         return info;
     }
 
-    this.parseShipIntent = function(userMsg, options) {
+    this.parseShipIntent = function (userMsg, options) {
         var location = this.parseInfoWithAccuracy(locationClassifier, userMsg, common.INTENT_ACCURACY);
         var shipIntent = this.parseInfoWithAccuracy(shipClassifier, userMsg, common.INTENT_ACCURACY_LOW);
 
-        this.emitter.emit(common.INTENT_CHECK_SHIP, {
+        var data = {
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,
@@ -274,7 +275,9 @@ function UserIntentParserNLP() {
             msg: userMsg,
             location: location,
             intent: shipIntent
-        });
+        };
+        data.intent = common.INTENT_CHECK_AVAILABILITY;
+        return data;
     }
 
     this.trainPriceClassifier();
@@ -286,35 +289,38 @@ function UserIntentParserNLP() {
 }
 
 var method = UserIntentParserNLP.prototype;
-method.setEmitter = function(emitter) {
+method.setEmitter = function (emitter) {
     this.emitter = emitter;
 }
 
-method.parse = function(userMsg, options) {
+method.parse = function (userMsg, options) {
     logger.info("Parsing: " + userMsg);
-    var intents = this.getIntent(userMsg)
+    var intents = this.getIntent(userMsg);
+    var data = null;
     for (var i = 0; i < intents.length; i++) {
         var intent = intents[i];
         if (intent === common.INTENT_CHECK_PRICE) {
             logger.info('parsePriceInfo for customer')
-            this.parsePriceIntent(userMsg, options)
+            data = this.parsePriceIntent(userMsg, options);
         } else if (intent === common.INTENT_CHECK_AVAILABILITY) {
             logger.info('parseAvailabilityIntentData for customer')
-            this.parseAvailabilityIntent(userMsg, options)
+            data = this.parseAvailabilityIntent(userMsg, options);
         } else if (intent === common.INTENT_CHECK_SHIP) {
             logger.info('parseShipInfo for customer')
-            this.parseShipIntent(userMsg, options)
+           data =  this.parseShipIntent(userMsg, options);
         } else {
             logger.info('not parse message ' + userMsg + ' ==> will call staff for support')
-            this.emitter.emit(common.INTENT_UNKNOWN, {
+            data = {
+                intent: common.INTENT_UNKNOWN,
                 storeid: options.storeid,
                 pageid: options.pageid,
                 fbid: options.fbid,
                 msg: userMsg
-            });
+            };
         }
+        this.emitter.emit(data.intent, data);
+        common.saveToFile("nlp_log.txt", JSON.stringify(data));
     }
-
 }
 
 module.exports = UserIntentParserNLP
