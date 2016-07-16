@@ -192,11 +192,11 @@ function UserIntentParserNLP() {
     this.parsePriceIntent = function (userMsg, options) {
         var productCode = common.extractProductCode(userMsg,
             options.codePattern).code
-        var productType = this.parseProductType(userMsg)
+        var productTypes = this.parseProductType(userMsg)
         var productQuantity = this.parseQuantity(userMsg);
 
-        if (productType.length > 0) {
-            for (var i = 0, length = productType.length; i < (length - 1); i++) {
+        if (productTypes.length > 0) {
+            for (var i = 0, length = productTypes.length; i < length; i++) {
                 productQuantity[i] = '1';
             }
         }
@@ -207,7 +207,7 @@ function UserIntentParserNLP() {
             fbid: options.fbid,
             productid: options.productid,
             code: productCode,
-            type: productType,
+            type: productTypes,
             quantity: productQuantity,
             msg: userMsg
         };
@@ -276,7 +276,7 @@ function UserIntentParserNLP() {
             location: location,
             intent: shipIntent
         };
-        data.intent = common.INTENT_CHECK_AVAILABILITY;
+        data.intent = common.INTENT_CHECK_SHIP;
         return data;
     }
 
@@ -307,7 +307,7 @@ method.parse = function (userMsg, options) {
             data = this.parseAvailabilityIntent(userMsg, options);
         } else if (intent === common.INTENT_CHECK_SHIP) {
             logger.info('parseShipInfo for customer')
-           data =  this.parseShipIntent(userMsg, options);
+            data = this.parseShipIntent(userMsg, options);
         } else {
             logger.info('not parse message ' + userMsg + ' ==> will call staff for support')
             data = {
@@ -319,7 +319,7 @@ method.parse = function (userMsg, options) {
             };
         }
         this.emitter.emit(data.intent, data);
-        common.saveToFile("nlp_log.txt", JSON.stringify(data));
+        common.saveToFile("nlp_log.txt", "\n" + JSON.stringify(data));
     }
 }
 

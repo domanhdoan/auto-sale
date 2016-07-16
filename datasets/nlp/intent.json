@@ -1,6 +1,6 @@
 {
     "check_ship": [
-        "bao lau nhan duoc hang", "bao nhieu ngay"
+        "bao lau nhan duoc", "bao nhieu ngay"
     ],
 
     "check_availability": [
@@ -12,9 +12,14 @@
         "con hang ko", "co hang ko",
         "con hang k0", "co hang k0",
         "con khong", "co khong",
-        "con ko", "co ko",
-        "con du", "co den", "co nhung"
+        "con ko",
+        "co ko",
+        "con du",
+        "co den",
+        "co nhung",
+        "the nao"
     ],
+    
 
     "check_price": [
         "bao nhieu",
@@ -22,8 +27,6 @@
         "bao nhjeu",
         "bnhieu",
         "bn",
-        "gia the nao",
-        "thi the nao",
         "giam gia ko",
         "co giam gia khong", "co bot khong",
         "co giam ko", "co bot ko"
