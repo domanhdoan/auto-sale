@@ -189,6 +189,15 @@ function UserIntentParserNLP() {
         }
         return productQuantity;
     }
+
+    this.parseCategory = function (userMsg, quantityCount) {
+        var category = this.parseInfoWithAccuracy(categoryClassifier, userMsg, common.INTENT_ACCURACY);
+        if (quantityCount > 0) {
+            category = "";
+        }
+        return category;
+    }
+
     this.parsePriceIntent = function (userMsg, options) {
         var productCode = common.extractProductCode(userMsg,
             options.codePattern).code
@@ -235,12 +244,8 @@ function UserIntentParserNLP() {
             data.category = productCode;
         } else {
             var productQuantity = this.parseQuantity(userMsg);
-            var category = this.parseInfoWithAccuracy(categoryClassifier, userMsg, common.INTENT_ACCURACY);
-            if (productQuantity.length === 0) {
-                data.category = category;
-            } else {
-                data.category = "";
-            }
+            var category = this.parseCategory(userMsg, productQuantity.length);
+            data.category = category;
         }
 
         data.code = productCode;
@@ -309,18 +314,15 @@ method.parse = function (userMsg, options) {
             logger.info('parseShipInfo for customer')
             data = this.parseShipIntent(userMsg, options);
         } else {
-            logger.info('not parse message ' + userMsg + ' ==> will call staff for support')
-            data = {
-                intent: common.INTENT_UNKNOWN,
-                storeid: options.storeid,
-                pageid: options.pageid,
-                fbid: options.fbid,
-                msg: userMsg
-            };
+            data = this.parseAvailabilityIntent(userMsg, options);
+            if ((data.category === "") && (data.color.length === 0) && (data.size.length === 0)) {
+                logger.info('not parse message ' + userMsg + ' ==> will call staff for support')
+                data.intent = common.INTENT_UNKNOWN;
+            }
         }
         this.emitter.emit(data.intent, data);
         common.saveToFile("nlp_log.txt", "\n" + JSON.stringify(data));
     }
 }
 
-module.exports = UserIntentParserNLP
+module.exports = UserIntentParserNLP;

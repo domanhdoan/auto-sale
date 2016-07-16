@@ -1,6 +1,7 @@
 require('string.prototype.startswith');
 var mkdirp = require('mkdirp');
 var fs = require('fs');
+var schedule = require('node-schedule');
 
 var config = require("./config/config.js");
 var common = require("./util/common");
@@ -45,7 +46,27 @@ mkdirp(config.crawler.temp_dir, function(err) {
 
 var store_config = [];
 var crawl_sources = fs.readdirSync("./datasets/shoes");
+
+function runWebScrapingAsSchedule(datetime) {
+    var store_config = [];
+    var rule = new schedule.RecurrenceRule();
+    rule.dayOfWeek = [0, new schedule.Range(0, 7)];
+    rule.hour = 0;
+    rule.minute = 2;
+    var j = schedule.scheduleJob(rule, function () {
+        console.log('The answer to life, the universe, and everything!');
+        for (var i = 0, length = crawl_sources.length; i < length; i++) {
+            var link = crawl_sources[i];
+            store_config[i] = common.loadStoreScrapingPattern("shoes", link);
+            scraper = new WebScraper(store_config[i]);
+            scraper.crawlWholeSite(function () {});
+        }
+    });
+    return store_config;
+}
+
 if (crawl_sources != null) {
+
     for (var i = 0, length = crawl_sources.length; i < length; i++) {
         var link = crawl_sources[i];
         store_config[i] = common.loadStoreScrapingPattern("shoes", link);
@@ -54,16 +75,19 @@ if (crawl_sources != null) {
     if (config.submodule.crawler) {
         for (var i = 0, length = store_config.length; i < length; i++) {
             scraper = new WebScraper(store_config[i]);
-            scraper.crawlWholeSite(function() {
+            scraper.crawlWholeSite(function () {
             });
         }
     }
+
+    runWebScrapingAsSchedule();
 
     if (config.submodule.salebot) {
         var storeList = common.loadJson("./crawl_sources/links.json");
         shoes_salebot.enable_ai(config.bots.ai_on);
         shoes_salebot.start(storeList.links[0], store_config[3]);
     }
+
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
 }
