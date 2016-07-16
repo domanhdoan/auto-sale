@@ -581,7 +581,7 @@ function processPostbackEvent(session, action_details) {
 
     } else if (user_action === common.action_confirm_order) {
         sessionManager.setOrderStatusInfo(session, "confirm");
-        gModelFactory.update_invoice(session.last_invoice, function (invoice) {
+        gModelFactory.updateInvoice(session.last_invoice, function (invoice) {
             logger.info(invoice);
             fbMessenger.sendTextMessage(session.fbid, common.pls_select_product);
             sessionManager.resetSession(session);
