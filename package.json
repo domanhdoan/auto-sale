@@ -49,6 +49,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "gulp-sequelize": "0.0.2",
-    "mean-cli": "^0.12.13"
+    "mean-cli": "^0.12.13",
+    "node-schedule": "^1.1.1"
   }
 }
