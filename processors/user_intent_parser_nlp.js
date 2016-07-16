@@ -124,6 +124,14 @@ function UserIntentParserNLP() {
         return productType;
     }
 
+    this.removeClassiferFeatures = function (classifier, userMsg) {
+        var wordList = Object.keys(classifier.features);
+        for (var i = 0, length = wordList.length; i < length; i++) {
+            userMsg = userMsg.replace(wordList[i], "");
+        }
+        return userMsg;
+    }
+
     this.parseColorInfo = function(userMsg) {
         var productColor = []
         var classifications = propertiesClassifier.getClassifications(userMsg)
@@ -215,7 +223,7 @@ function UserIntentParserNLP() {
             productid: options.productid,
             msg: userMsg
         }
-
+        userMsg = this.removeClassiferFeatures(questionClassifier, userMsg);
         var size = this.parseSizeInfo(userMsg)
         var color = this.parseColorInfo(userMsg)
         var productCode = common.extractProductCode(userMsg, options.codePattern).code
@@ -255,7 +263,7 @@ function UserIntentParserNLP() {
     }
 
     this.parseShipIntent = function(userMsg, options) {
-        var location = this.parseInfoWithAccuracy(locationClassifier, userMsg, common.INTENT_ACCURACY_LOW);
+        var location = this.parseInfoWithAccuracy(locationClassifier, userMsg, common.INTENT_ACCURACY);
         var shipIntent = this.parseInfoWithAccuracy(shipClassifier, userMsg, common.INTENT_ACCURACY_LOW);
 
         this.emitter.emit(common.INTENT_CHECK_SHIP, {
