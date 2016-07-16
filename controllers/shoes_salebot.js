@@ -430,7 +430,7 @@ function putProductToCart(session, text) {
 }
 
 function makeProductOrder(session, text) {
-    logger.info("Filling order information: " + text);
+    logger.info("Filling order information: " + text + "Start");
     if (session.last_action == common.set_quantity) {
         logger.debug("Name: " + text);
         sessionManager.setUserAction(session, common.set_recipient_name);
@@ -477,6 +477,7 @@ function makeProductOrder(session, text) {
     } else {
         logger.info("Unknow action = " + text);
     }
+    logger.info("Filling order information: " + text + " for " + session.last_action + "END ");
 }
 
 function cancelOrder(session) {
