@@ -478,7 +478,7 @@ function makeProductOrder(session, text) {
         logger.info("Unknow action = " + text);
     }
     logger.info("Filling order information: " + text + " for " + session.last_action + "END ");
-    logger.info("Order ID" + session.getOrderInfo().id + " - Filling order information: " + text + " for " + session.last_action + "END ");
+    logger.info("Order ID" + sessionManager.getOrderInfo(session).id + " - Filling order information: " + text + " for " + session.last_action + "END ");
 }
 
 function cancelOrder(session) {
