@@ -699,7 +699,8 @@ function initWebHook() {
 }
 
 function findLastSelectProduct(session, data, callback) {
-    if (data.code != '') {
+    var undefineFlag = common.isDefined(data.code); 
+    if (undefineFlag && data.code.length > 0) {
         gProductFinder.findProductByCode(session.storeid, data.code, function (product) {
             callback(product);
         });
