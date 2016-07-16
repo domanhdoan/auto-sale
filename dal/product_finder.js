@@ -81,7 +81,7 @@ function extractShoesSearchKeywords(sampleData, user_message) {
 }
 
 function generateFindshoesQuery(storeId, keywords) {
-    var query = " Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link" + " from product as P";
+    var query = " Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link";
     if (keywords[1].length > 0) {
         query += " inner join color as C on P.id = C.ProductId"
     }
@@ -89,15 +89,22 @@ function generateFindshoesQuery(storeId, keywords) {
         query += " inner join size as S on P.id = S.ProductId";
     }
     var cat_keywords = keywords[0].replaceAll("%%", ", ");
-    query += " where P.StoreId = '" + storeId + "'";
+    query += ", Relevance from product as P where P.StoreId = '" + storeId + "'";
     if (cat_keywords.length != 0) {
-        query += " and MATCH(P.finger) AGAINST('" + cat_keywords + "' IN NATURAL LANGUAGE MODE)";
+        var matchExp = "MATCH(P.finger) AGAINST('" + cat_keywords;
+        query = query.replaceAll("Relevance", matchExp + "')" + " as Relevance");
+        query += " and " + matchExp + "' IN NATURAL LANGUAGE MODE)";
+    } else {
+        query = query.replaceAll("Relevance", "");
     }
     if (keywords[1].length > 0) {
-        query += " and C.name IN ('" + keywords[1] + "')"
+        query += " and C.name IN ('" + keywords[1] + "')";
     }
     if (keywords[2].length > 0) {
         query += " and S.value IN (" + keywords[2] + ")";
+    }
+    if (cat_keywords.length != 0) {
+        query += " ORDER BY Relevance DESC";
     }
     query += " LIMIT " + common.product_search_max + ";";
 
