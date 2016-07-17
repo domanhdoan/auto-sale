@@ -1,13 +1,18 @@
 'use strict';
 module.exports = function(Sequelize, DataTypes) {
-    return Sequelize.define('Fanpage', {
+    return Sequelize.define('Page', {
         name: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        page_id: {
-            type: DataTypes.INTEGER,
-        }
+        pageId: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        token: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
     }, {
         freezeTableName: true,
         charset: 'utf8',
