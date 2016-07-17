@@ -100,7 +100,7 @@ function FBMessenger() {
             "image_url": photo.link,
             "buttons": [{
                 "type": "postback",
-                "title": "Cho vào giỏ hàng",
+                "title": "Chọn sản phẩm",
                 "payload": JSON.stringify(payload2),
             }]
         };
@@ -131,7 +131,7 @@ function FBMessenger() {
         cancel_action.action = common.action_cancel_order;
         var template = [{
             "type": "postback",
-            "title": "Hủy mua hàng",
+            "title": "Hủy đặt hàng",
             "payload": JSON.stringify(cancel_action),
         }, {
                 "type": "postback",
@@ -162,16 +162,11 @@ function FBMessenger() {
         var confirm = {};
         confirm.action = common.action_confirm_type;
         var template = [];
-        var typeLabel = {
-            nam: 'Giầy Nam',
-            nu: 'Giầy Nữ',
-            combo: "Combo (Nam + Nữ)"
-        };
         for (var i = 0; i < types.length; i++) {
             confirm.type = types[i];
             var button = {
                 "type": "postback",
-                "title": typeLabel[types[i]],
+                "title": types[i],
                 "payload": JSON.stringify(confirm),
             }
             template.push(button);
@@ -375,9 +370,10 @@ FBMessenger.prototype.sendReceiptMessage = function (sender, invoice_items, invo
             fullAddress.state = temp[0].trim();
             break;
         case 3:
-            fullAddress.street_1 = "";
+            fullAddress.street_1 = temp[0].trim();
             fullAddress.city = temp[1].trim();
             fullAddress.state = temp[1].trim();
+            break;
         case 4:
             fullAddress.street_1 = temp[0].trim();
             fullAddress.city = temp[temp.length - 2].trim();
