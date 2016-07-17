@@ -740,14 +740,14 @@ function findLastSelectProduct(session, data, callback) {
     }
 }
 
-function getProductPriceMessage(price, title, requestType, saleoffmsg) {
+function getProductPriceMessage(quantity, price, title, requestType, saleoffmsg) {
     var prices = common.extractProductPrices(title);
-    prices[type] = price;
     if (prices[requestType] != "") {
         var price = parseInt(prices[requestType] / 1000) + "";
         message += "- " + price.toUpperCase() + " K VNĐ" + saleoffmsg + "\n";
     } else {
-        message += "- Sản phẩm này không có kiểu " + typeVN[requestType] + " bạn đang tìm.";
+        message += "- Sản phẩm này không có kiểu " + typeVN[requestType] + " mà bạn đang tìm\n";
+        message += "- " + quantity + " đôi " + " giá " + common.toCurrencyString(price * quantity, " VNĐ") + saleoffmsg;
     }
     return message;
 }
@@ -771,12 +771,13 @@ function handlePriceIntent(session, data, product) {
                     if (data.type.length > 0) {
                         var productTitle = product.title.latinise().toLowerCase();
                         for (var i = 0, length = data.type.length; i < length; i++) {
-                            message = getProductPriceMessage(price, product.title, data.type[i], saleoffmsg);
+                            message = getProductPriceMessage(data.quantity[i], price, product.title, data.type[i], saleoffmsg);
+                            fbMessenger.sendTextMessage(data.fbid, message);
                         }
                     } else {
                         message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
+                        fbMessenger.sendTextMessage(data.fbid, message);
                     }
-                    fbMessenger.sendTextMessage(data.fbid, message);
                     callback(null);
                 });
 
