@@ -68,7 +68,7 @@ function postProcess(rawSearchText) {
 
     finalSearchText.push(rawSearchText['giay']);
     finalSearchText.push(rawSearchText['mau']);
-    finalSearchText.push(common.extract_numeric(rawSearchText['size']));
+    finalSearchText.push(common.extractNumeric(rawSearchText['size']));
 
     return finalSearchText;
 }
