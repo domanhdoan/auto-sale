@@ -177,6 +177,7 @@ module.exports.extractProductPrices = function(title) {
         nu: femalePrice+"000",
         combo: comboPrice+"000"
     };
+    logger.info(JSON.stringify(prices));
     return prices;
 }
 

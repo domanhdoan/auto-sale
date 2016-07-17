@@ -57,6 +57,7 @@ function createAndSendOrderToFB(session, callback) {
                 var subtitle = "";
                 var type = (common.isDefined(item.dataValues.type)) ? item.dataValues.type : "";
                 var prices = common.extractProductPrices(title);
+                logger.info("Type = " + type + " price = " + prices[type]);
                 var price = (prices.length === 0) ? item.Product.dataValues.price : parseInt(prices[type]);
                 if (type != "") {
                     subtitle += " Kiểu " + common.getProductTypeVN(type) + ", ";
