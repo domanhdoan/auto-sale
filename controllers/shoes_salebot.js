@@ -779,6 +779,10 @@ function handlePriceIntent(session, data, product) {
                         message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
                         fbMessenger.sendTextMessage(data.fbid, message);
                     }
+                    var showPhotos = (data.productid != product.id) ? true : false;
+                    fbMessenger.sendTextMessage(session.fbid, "Bạn xem thêm thông tin về màu và size bên dưới nhé", function () {
+                        showAvailableColorNsize(session, true, true, showPhotos);
+                    });
                     callback(null);
                 });
 

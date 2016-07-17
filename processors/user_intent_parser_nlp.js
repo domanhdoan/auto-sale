@@ -206,7 +206,7 @@ function UserIntentParserNLP() {
             }
         } else if (productQuantity.length === 0) {
             productQuantity[0] = '1';
-        }else{
+        } else {
             logger.info("productQuantity = " + productQuantity);
         }
 
