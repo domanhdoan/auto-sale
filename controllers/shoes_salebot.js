@@ -899,8 +899,10 @@ function setUpUserIntentListener() {
         //processTextEvent(session, data.msg);
         fbMessenger.sendTextMessage(session.fbid, "Shop không tìm thấy sản phẩm theo yêu cầu", function(){
            fbMessenger.sendTextMessage(session.fbid, "Bạn vui lòng cung cấp thông tin thêm. Shop sẽ check giúp bạn");
-           fbMessenger.sendTextMessage(session.fbid, "Bạn xem thêm danh mục sản phẩm bên dưới");
-           findCategories(session);
+           setTimeout(function () {
+               fbMessenger.sendTextMessage(session.fbid, "Bạn xem thêm danh mục sản phẩm bên dưới");
+               findCategories(session);
+           },100);
         });
     });
 }
