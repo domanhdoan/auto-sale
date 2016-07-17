@@ -187,6 +187,15 @@ module.exports.toCurrencyString = function(value, currency) {
 
 }
 
+module.exports.getProductTypeVN = function(type) {
+        var types = {
+        nam: "Nam",
+        nu: "Nữ",
+        combo: "Combo"
+    };
+    return (types[type] != undefined)?types[type]:"không xác định";
+}
+
 module.exports.extractValue = function(text, regExpStr) {
     var ret = "";
     var regExp = new RegExp(regExpStr, "gi");
