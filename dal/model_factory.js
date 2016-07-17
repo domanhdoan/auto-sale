@@ -203,10 +203,11 @@ module.exports.updateInvoice = function(invoice_info, callback) {
     })
 }
 
-module.exports.createFashionOrderItem = function(quantity, saved_invoice,
+module.exports.createFashionOrderItem = function(type, quantity, saved_invoice,
     saved_product, saved_color, saved_size, callback) {
     gDbManager.FashionItem
         .build({
+            type: type,
             quantity: quantity,
             InvoiceId: saved_invoice,
             ProductId: saved_product,

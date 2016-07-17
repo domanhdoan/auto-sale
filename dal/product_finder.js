@@ -365,7 +365,7 @@ exports.checkProductBySize = function (product_id, size, callback) {
 
 exports.getOrderItems = function (invoice_id, callback) {
     gDbManager.FashionItem.findAll({
-        attributes: ['quantity'],
+        attributes: ['quantity', 'type'],
         order: [
             ['id', 'ASC']
         ],

@@ -52,13 +52,20 @@ function createAndSendOrderToFB(session, callback) {
                     .creation_date.slice(0, -1 * delta);
             }
             for (var i = 0; i < items.length; i++) {
-                var title = items[i].Product.dataValues.title;
-                var price = items[i].Product.dataValues.price;
-                var subtitle = "Mô tả SP: Màu " + common.get_color_vn(items[i].Color.dataValues.name) 
-                + " và size " + items[i].Size.dataValues.value;
-                var quantity = items[i].dataValues.quantity;
-                var thumbnail_url = items[i].Product.dataValues.thumbnail;
-
+                var item = items[i];
+                var title = item.Product.dataValues.title;
+                var subtitle = "";
+                var type = (common.isDefined(item.dataValues.type)) ? item.dataValues.type : "";
+                var prices = common.extractProductPrices(title);
+                var price = (prices.length === 0) ? item.Product.dataValues.price : parseInt(prices[type]);
+                if (type != "") {
+                    subtitle += " Kiểu " + type + ", ";
+                }
+                subtitle += "Màu " + common.get_color_vn(item.Color.dataValues.name) 
+                + ", Size " + item.Size.dataValues.value;
+                var quantity = item.dataValues.quantity;
+                var thumbnail_url = item.Product.dataValues.thumbnail;
+``
                 var jsonitem = fbMessenger.createOrderItemElement(
                     title, subtitle, price, quantity, thumbnail_url);
                 invoice_items.push(jsonitem);
@@ -404,7 +411,8 @@ function selectProductQuantity(session, user_message) {
     if(productInfo.type === common.PRODUCT_TYPE_COMBO){
 
     }else{
-        gModelFactory.createFashionOrderItem(quantity,
+        gModelFactory.createFashionOrderItem(productInfo.type,
+            quantity,
             orderInfo.id,
             productInfo.id,
             productInfo.color,
@@ -552,11 +560,11 @@ function processPostbackEvent(session, action_details) {
                 });
             sessionManager.setUserAction(session, common.select_type);
         } else {
-            var typeLabel = {
-                nam: 'Giầy Nam',
-                nu: 'Giầy Nữ',
-                combo: "Combo (Nam + Nữ)"
-            };
+            var typeLabel = [
+                'Giầy Nam',
+                'Giầy Nữ',
+                "Combo (Nam + Nữ)"
+            ];
             fbMessenger.sendProductTypeConfirm(session.fbid, "Bạn vui lòng chọn kiểu sản phẩm:",
                 typeLabel);
         }
@@ -732,33 +740,8 @@ function findLastSelectProduct(session, data, callback) {
     }
 }
 
-function extractProductPrice(price, title, requestType, saleoffmsg) {
-    var message = "";
-    title = title.latinise().toLowerCase();
-
-    var maleIndex = title.indexOf('nam');
-    var femaleIndex = title.indexOf('nu');
-    var malePrice = common.extractValue(title, "nam \\d+");
-    var femalePrice = common.extractValue(title, "nu \\d+");
-    var comboPrice = common.extractValue(title.replaceAll("cb", "combo"), "combo \\d+");
-    var type = common.extractProductType(title);
-
-    if (comboPrice === "" && (malePrice != "" && femalePrice != "")) {
-        comboPrice = parseInt(malePrice) + parseInt(femalePrice);
-    }
-
-    var prices = {
-        nam: malePrice,
-        nu: femalePrice,
-        combo: comboPrice
-    };
-
-    var typeVN = {
-        nam: "nam",
-        nu: "nữ",
-        combo: "combo"
-    };
-
+function getProductPriceMessage(price, title, requestType, saleoffmsg) {
+    var prices = common.extractProductPrices(title);
     prices[type] = price;
     if (prices[requestType] != "") {
         var price = parseInt(prices[requestType] / 1000) + "";
@@ -766,7 +749,6 @@ function extractProductPrice(price, title, requestType, saleoffmsg) {
     } else {
         message += "- Sản phẩm này không có kiểu " + typeVN[requestType] + " bạn đang tìm.";
     }
-
     return message;
 }
 
@@ -789,7 +771,7 @@ function handlePriceIntent(session, data, product) {
                     if (data.type.length > 0) {
                         var productTitle = product.title.latinise().toLowerCase();
                         for (var i = 0, length = data.type.length; i < length; i++) {
-                            message = extractProductPrice(price, product.title, data.type[i], saleoffmsg);
+                            message = getProductPriceMessage(price, product.title, data.type[i], saleoffmsg);
                         }
                     } else {
                         message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
