@@ -19,19 +19,47 @@ module.exports.findAndCreateStore = function(homepage, type, callback) {
     });
 }
 
+module.exports.findAndCreatePage = function(storeObj, name, pageId, token, callback) {
+    gDbManager.Page.findOrCreate({
+        where: {
+            pageId: pageId
+        },
+        defaults: {
+            name:name,
+            pageId: pageId,
+            token: token
+        }
+    }).then(function(results) {
+        var pageObj = results[0];
+        pageObj.setStore(storeObj);
+        if(!results[1]){
+            pageObj.updateAttributes({
+                name: name,
+                token: token
+            });
+        }
+        callback(pageObj.dataValues);
+    });
+}
+
 module.exports.findAndCreateCategory = function(savedStore, name, link, callback) {
     gDbManager.Category.findOrCreate({
         where: {
-            name: name,
+            link: link,
             StoreId: savedStore.id
         },
         defaults: {
             name: name,
             link: link
         }
-    }).then(function(category) {
-        var savedCategory = category[0];
+    }).then(function(results) {
+        var savedCategory = results[0];
         savedCategory.setStore(savedStore);
+        if(!results[1]){
+            savedCategory.updateAttributes({
+                name: name,
+            });
+        }
         callback(savedCategory);
     });
 }

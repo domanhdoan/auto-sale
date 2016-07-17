@@ -135,8 +135,8 @@ exports.findStoreByLink = function (link, callback) {
             home: link
         }
     }).then(function (store) {
-        var jsonObj = converDBObjectToJson(store);
-        callback(jsonObj);
+        // var jsonObj = converDBObjectToJson(store);
+        callback(store);
     });
 }
 
