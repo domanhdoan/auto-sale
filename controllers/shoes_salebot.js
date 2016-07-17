@@ -661,7 +661,7 @@ function processEvent(event) {
     } else if (event.postback) {
         var postback = JSON.parse(event.postback.payload);
         var delta = event.timestamp - currentSession.timestamp;
-        if (delta > 200 /*avoid double click*/) {
+        if (delta > 100 /*avoid double click*/) {
             currentSession.timestamp = event.timestamp;
             processPostbackEvent(currentSession, postback);
         } else {
