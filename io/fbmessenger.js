@@ -365,7 +365,7 @@ FBMessenger.prototype.sendReceiptMessage = function (sender, invoice_items, invo
         case 1:
         break;
         case 2:
-            fullAddress.street_1 = "";
+            fullAddress.street_1 = temp[0].trim();
             fullAddress.city = temp[0].trim();
             fullAddress.state = temp[0].trim();
             break;
