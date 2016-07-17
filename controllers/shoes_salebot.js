@@ -561,11 +561,11 @@ function processPostbackEvent(session, action_details) {
                 });
             sessionManager.setUserAction(session, common.select_type);
         } else {
-            var typeLabel = [
-                'Giầy Nam',
-                'Giầy Nữ',
-                "Combo (Nam + Nữ)"
-            ];
+            var typeLabel = {
+                nam:'Giầy Nam',
+                nu:'Giầy Nữ',
+                combo:"Combo (Nam + Nữ)"
+            };
             fbMessenger.sendProductTypeConfirm(session.fbid, "Bạn vui lòng chọn kiểu sản phẩm:",
                 typeLabel);
         }

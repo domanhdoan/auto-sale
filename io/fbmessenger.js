@@ -170,14 +170,16 @@ function FBMessenger() {
     }
 
     this.createProductTypeConfirmElement = function (types) {
+        var template = [];
         var confirm = {};
         confirm.action = common.action_confirm_type;
-        var template = [];
-        for (var i = 0; i < types.length; i++) {
-            confirm.type = types[i];
+        var keys = Object.keys(types);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            confirm.type = key;
             var button = {
                 "type": "postback",
-                "title": types[i],
+                "title": types[key],
                 "payload": JSON.stringify(confirm),
             }
             template.push(button);
