@@ -6,12 +6,12 @@ function SessionManager() {
     this.getSessions = function() {
         return this.user_sessions;
     };
-    this.createNewSession = function(storeid, pageid, fbid) {
+    this.createNewSession = function(storeid, pageid, fbid, token) {
         return {
             storeid: storeid,
             pageid: pageid,
             fbid: fbid,
-            context: {},
+            token: token,
             last_category: {
                 id: -1,
                 title: "",
@@ -58,7 +58,7 @@ SessionManager.prototype.getFirstMessagingEntry = function(body) {
 };
 
 SessionManager.prototype.findOrCreateSession = function(storeid, pageid, fbid) {
-    let sessionId;
+    var sessionId;
     user_sessions = this.getSessions();
     // Let's see if we already have a session for the user fbid
     Object.keys(user_sessions).forEach(k => {

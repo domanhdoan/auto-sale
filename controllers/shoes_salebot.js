@@ -919,7 +919,7 @@ module.exports = {
         intentParser.setEmitter(emitter);
 
         gProductFinder.findStoreByLink(gHomepage, function (store) {
-            storeId = store.id;
+            storeId = store.dataValues.id;
             logger.info("Store ID = " + storeId);
         });
     }
