@@ -5,9 +5,7 @@ var logger = require('./logger.js');
 module.exports = {
     say_greetings: "Xin kính chào quý khách",
     say_waiting_message: "Hệ thống đang tìm kiếm ...",
-    say_search_continue_message: "Xin vui lòng tiếp tục tìm kiếm nếu bạn chưa tìm thấy hay tìm kiếm sản phẩm mới",
-    pls_select_category: "Xin vui lòng chọn 1 danh mục sản phẩm",
-    pls_select_product: "Xin vui lòng chọn sản phẩm (nhập mã sản phẩm hoặc upload ảnh)",
+    pls_select_product: "Bạn nhập mã sản phẩm hoặc upload ảnh SP để tìm sản phẩm theo mong muốn",
     pls_select_product_color: "Xin vui lòng chọn màu sản phẩm",
     pls_select_product_color_combo: "(VD chọn màu cho combo: nam màu xanh và nữ màu đỏ)",
     pls_select_product_size: "Xin vui lòng chọn size",
@@ -18,8 +16,7 @@ module.exports = {
     pls_enter_phone: "Xin vui lòng nhập số điện thoại",
     pls_enter_email: "Xin vui lòng nhập email người nhận",
     pls_enter_delivery_date: "Xin vui lòng nhập ngày nhận hàng",
-    pls_reset_buying: "Hủy đơn hàng. Xin vui lòng bắt đầu lại quá trình đặt hàng",
-    pls_end_buying: "Kết thúc đặt hàng. Xin vui lòng nhập OK để bắt đầu đơn hàng mới",
+    say_thank_buying: "Cảm ơn bạn đã đặt hàng.\nNV sẽ gọi điện xác nhận ngày giao hàng trong thời gian sớm nhất",
     start_order_process: "Bắt đầu quá trình đặt hàng",
 
     find_categories: "find_categories",
@@ -59,6 +56,7 @@ module.exports = {
 
     status_updating: "Đang cập nhật",
     product_search_max: 10,
+
     INTENT_CHECK_PRICE: 'check_price',
     INTENT_CHECK_AVAILABILITY: 'check_availability',
     INTENT_CHECK_SHIP: 'check_ship',
@@ -151,7 +149,7 @@ module.exports.isThumbUrl = function(text) {
     return is_url_flag;
 }
 
-module.exports.extract_numeric = function(text) {
+module.exports.extractNumeric = function(text) {
     var myRe = new RegExp(/\d{2}/);
     var ret = "";
     var results = text.match(myRe);
@@ -250,7 +248,7 @@ String.prototype.replaceAll = function(token, newToken, ignoreCase) {
     return str;
 };
 
-module.exports.calculate_distance = function(origin, target, callback) {
+module.exports.calculateDistance = function(origin, target, callback) {
     var distance = require('google-distance');
     distance.get({
             origin: origin,
@@ -262,7 +260,6 @@ module.exports.calculate_distance = function(origin, target, callback) {
         });
 }
 
-module.exports.searchAddress = function(origin, callback) {
     var NodeGeocoder = require('node-geocoder');
     var options = {
         provider: config.bots.map_provider,
@@ -274,10 +271,10 @@ module.exports.searchAddress = function(origin, callback) {
         limit: 5,
         formatter: null // 'gpx', 'string', ... 
     };
-
     var geocoder = NodeGeocoder(options);
-    geocoder.geocode(origin, function(err, res) {
-        callback(res);
+module.exports.searchAddress = function(origin, callback) {
+    geocoder.geocode(origin, function(err, result) {
+        callback(result);
     });
 }
 
