@@ -158,6 +158,27 @@ module.exports.extractNumeric = function(text) {
     }
     return ret;
 }
+module.exports.extractProductPrices = function(title) {
+    var message = "";
+    title = title.latinise().toLowerCase();
+    var maleIndex = title.indexOf('nam');
+    var femaleIndex = title.indexOf('nu');
+    var malePrice = this.extractValue(title, "nam \\d+").replace("nam ", "");
+    var femalePrice = this.extractValue(title, "nu \\d+").replace("nu ", "");
+    var comboPrice = this.extractValue(title.replaceAll("cb", "combo"), "combo \\d+").replace("combo ", "");
+    var type = this.extractProductType(title);
+
+    if (comboPrice === "" && (malePrice != "" && femalePrice != "")) {
+        comboPrice = parseInt(malePrice) + parseInt(femalePrice);
+    }
+
+    var prices = {
+        nam: malePrice+"000",
+        nu: femalePrice+"000",
+        combo: comboPrice+"000"
+    };
+    return prices;
+}
 
 module.exports.toCurrencyString = function(value, currency) {
     var priceRegExp = /\B(?=(\d{3})+(?!\d))/g;
