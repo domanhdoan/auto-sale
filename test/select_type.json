@@ -12,7 +12,7 @@
             },
             "timestamp": 1458692755778,
             "postback": {
-                "payload": "{\"action\":\"confirm_type\",\"type\":\"nam\"}"
+                "payload": "{\"action\":\"confirm_type\",\"type\":\"nu\"}"
             }
         }]
     }]

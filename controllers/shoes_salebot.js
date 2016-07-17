@@ -59,7 +59,7 @@ function createAndSendOrderToFB(session, callback) {
                 var prices = common.extractProductPrices(title);
                 var price = (prices.length === 0) ? item.Product.dataValues.price : parseInt(prices[type]);
                 if (type != "") {
-                    subtitle += " Kiểu " + type + ", ";
+                    subtitle += " Kiểu " + common.getProductTypeVN(type) + ", ";
                 }
                 subtitle += "Màu " + common.get_color_vn(item.Color.dataValues.name) 
                 + ", Size " + item.Size.dataValues.value;
