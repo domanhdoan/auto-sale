@@ -202,9 +202,14 @@ function UserIntentParserNLP() {
 
         if (productTypes.length > 0) {
             for (var i = 0, length = productTypes.length; i < length; i++) {
-                productQuantity[i] = '1'
+                productQuantity[i] = '1';
             }
+        } else if (productQuantity.length === 0) {
+            productQuantity[0] = '1';
+        }else{
+            logger.info("productQuantity = " + productQuantity);
         }
+
         var data = {
             intent: common.INTENT_CHECK_PRICE,
             storeid: options.storeid,
