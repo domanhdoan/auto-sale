@@ -140,11 +140,17 @@ function FBMessenger() {
         var cancel_action = {};
         confirm_action.action = common.action_confirm_order;
         cancel_action.action = common.action_cancel_order;
-        var template = [{
-            "type": "postback",
-            "title": "Hủy đặt hàng",
-            "payload": JSON.stringify(cancel_action),
-        }, {
+        var template = [
+            {
+                "type": "postback",
+                "title": "Hủy đặt hàng",
+                "payload": JSON.stringify(cancel_action),
+            }, {
+                "type": "postback",
+                "title": "Thêm SP khác",
+                "payload": "Implemented later",
+            },
+            {
                 "type": "postback",
                 "title": "Xác nhận",
                 "payload": JSON.stringify(confirm_action),
