@@ -140,6 +140,21 @@ exports.findStoreByLink = function (link, callback) {
     });
 }
 
+exports.getAllPages = function (callback) {
+    gDbManager.Page.findAll({
+        include: [{
+            model: gDbManager.Store,
+            attributes: ['home'],
+            where: {
+                id: gDbManager.sequelize.col('Page.StoreId')
+            }
+        }]
+    }).then(function (pages) {
+        var jsonObj = converDBObjectToJson(pages);
+        callback(jsonObj);
+    });
+}
+
 exports.findCategoriesByStoreId = function (storeid, callback) {
     gDbManager.Category.findAll({
         where: {
