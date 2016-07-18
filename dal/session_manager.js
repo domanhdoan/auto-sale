@@ -12,6 +12,7 @@ function SessionManager() {
             pageid: pageid,
             fbid: fbid,
             token: token,
+            storeUrl:"",
             last_category: {
                 id: -1,
                 title: "",
