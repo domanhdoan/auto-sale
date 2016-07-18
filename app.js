@@ -84,8 +84,7 @@ if (crawl_sources != null) {
 
     if (config.submodule.salebot) {
         var storeList = common.loadJson("./crawl_sources/links.json");
-        shoes_salebot.enable_ai(config.bots.ai_on);
-        shoes_salebot.start(storeList.links[0], store_config[3]);
+        shoes_salebot.start(store_config[3]);
     }
 
 } else {

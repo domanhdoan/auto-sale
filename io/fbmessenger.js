@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var lastMessageToSenders = [];
 
 function FBMessenger() {
-    this.sendDataToFBMessenger = function (sender, data, callback) {
+    this.sendDataToFBMessenger = function (sender, token, data, callback) {
         // if (lastMessageToSenders[sender] === undefined
         //     && lastMessageToSenders[sender] != data) {
             // Delay 500 ms for typing like human
@@ -15,7 +15,7 @@ function FBMessenger() {
             require('request')({
                 url: 'https://graph.facebook.com/v2.6/me/messages',
                 qs: {
-                    access_token: config.bots.fb_page_token
+                    access_token: token
                 },
                 method: 'POST',
                 json: true,
@@ -198,7 +198,7 @@ function FBMessenger() {
 // Methods for sending message to target user FB messager
 // =================================================================
 // https://developers.facebook.com/docs/messenger-platform/webhook-reference
-FBMessenger.prototype.sendProductElements = function (sender, foundProducts) {
+FBMessenger.prototype.sendProductElements = function (sender, token, foundProducts) {
     var messageData = [];
     var productCount = (foundProducts.length > common.product_search_max) ?
         common.product_search_max : foundProducts.length;
@@ -213,14 +213,14 @@ FBMessenger.prototype.sendProductElements = function (sender, foundProducts) {
             foundProducts[i].id);
         messageData.push(productElement);
     }
-    this.sendGenericMessage(sender, messageData);
+    this.sendGenericMessage(sender, token, messageData);
 }
-FBMessenger.prototype.sendProductTypeConfirm = function (sender, message, types) {
+FBMessenger.prototype.sendProductTypeConfirm = function (sender, token, message, types) {
     var buttons = this.createProductTypeConfirmElement(types);
-    this.sendConfirmMessage(sender, message, buttons);
+    this.sendConfirmMessage(sender, token, message, buttons);
 }
 
-FBMessenger.prototype.sendCategoriesElements = function (sender, foundCategories) {
+FBMessenger.prototype.sendCategoriesElements = function (sender, token, foundCategories) {
     var messageData = [];
     var categoryCount = (foundCategories.length > common.product_search_max) ?
         common.product_search_max : foundCategories.length;
@@ -235,19 +235,19 @@ FBMessenger.prototype.sendCategoriesElements = function (sender, foundCategories
         }
     }
     if (messageData.length >= 2) {
-        this.sendTextMessage(sender, common.notify_product_search2);
+        this.sendTextMessage(sender, token, common.notify_product_search2);
     }
-    this.sendGenericMessage(sender, messageData);
+    this.sendGenericMessage(sender, token, messageData);
 }
 
-FBMessenger.prototype.sendProductPhotoElements = function (sender, id, title, colorNsize, photoLinks) {
+FBMessenger.prototype.sendProductPhotoElements = function (sender, token, id, title, colorNsize, photoLinks) {
     var photoElements = [];
     var length = (photoLinks.length > common.product_search_max) ? common.product_search_max : photoLinks.length;
     for (var i = 0; i < length; i++) {
         var photoElement = this.createProductPhotoElement(id, title, colorNsize, photoLinks[i]);
         photoElements.push(photoElement);
     }
-    this.sendGenericMessage(sender, photoElements);
+    this.sendGenericMessage(sender, token, photoElements);
 }
 
 FBMessenger.prototype.createAIAPIProductsMessage = function (rich_data) {
@@ -284,15 +284,15 @@ FBMessenger.prototype.doSubscribeRequest = function () {
         });
 }
 
-FBMessenger.prototype.sendTextMessage = function (sender, simple_text, callback) {
+FBMessenger.prototype.sendTextMessage = function (sender, token, simple_text, callback) {
     var messageData = {
         text: simple_text
     }
     console.log("Sender = " + sender + " message: " + simple_text);
-    this.sendDataToFBMessenger(sender, messageData, callback);
+    this.sendDataToFBMessenger(sender, token, messageData, callback);
 }
 
-FBMessenger.prototype.sendGenericMessage = function (sender, rich_data) {
+FBMessenger.prototype.sendGenericMessage = function (sender, token, rich_data) {
     var messageData = {
         "attachment": {
             "type": "template",
@@ -302,25 +302,25 @@ FBMessenger.prototype.sendGenericMessage = function (sender, rich_data) {
             }
         }
     };
-    this.sendDataToFBMessenger(sender, messageData, null);
+    this.sendDataToFBMessenger(sender, token, messageData, null);
 }
 
-FBMessenger.prototype.sendPurchaseConfirmMessage = function (sender, message) {
+FBMessenger.prototype.sendPurchaseConfirmMessage = function (sender, token, message) {
     var buttons = this.createSearchOrPurchaseElement();
-    this.sendConfirmMessage(sender, message, buttons);
+    this.sendConfirmMessage(sender, token, message, buttons);
 }
 
-FBMessenger.prototype.sendAddressConfirmMessage = function (sender, message) {
+FBMessenger.prototype.sendAddressConfirmMessage = function (sender, token, message) {
     var buttons = this.createAddressConfirmElement();
-    this.sendConfirmMessage(sender, message, buttons);
+    this.sendConfirmMessage(sender, token, message, buttons);
 }
 
-FBMessenger.prototype.sendOrderConfirmMessage = function (sender, message) {
+FBMessenger.prototype.sendOrderConfirmMessage = function (sender, token, message) {
     var buttons = this.createConfirmOrCancelElement();
-    this.sendConfirmMessage(sender, message, buttons);
+    this.sendConfirmMessage(sender, token, message, buttons);
 }
 
-FBMessenger.prototype.sendConfirmMessage = function (sender, message, buttons) {
+FBMessenger.prototype.sendConfirmMessage = function (sender, token, message, buttons) {
     var messageData = {
         "attachment": {
             "type": "template",
@@ -331,7 +331,7 @@ FBMessenger.prototype.sendConfirmMessage = function (sender, message, buttons) {
             }
         }
     };
-    this.sendDataToFBMessenger(sender, messageData, null);
+    this.sendDataToFBMessenger(sender, token, messageData, null);
 }
 
 FBMessenger.prototype.createOrderItemElement = function (title, desc, price, quantity, thumbnail_url) {
@@ -369,7 +369,7 @@ FBMessenger.prototype.generate_invoice_adjustment = function () {
     return adjustments;
 }
 
-FBMessenger.prototype.sendReceiptMessage = function (sender, invoice_items, invoice_details,
+FBMessenger.prototype.sendReceiptMessage = function (sender, token, invoice_items, invoice_details,
     summary, adjustments, callback) {
     var fullAddress = {
         street_1: "",
@@ -419,7 +419,7 @@ FBMessenger.prototype.sendReceiptMessage = function (sender, invoice_items, invo
             }
         }
     }
-    this.sendDataToFBMessenger(sender, messageData, callback);
+    this.sendDataToFBMessenger(sender, token, messageData, callback);
 }
 
 FBMessenger.prototype.getUserProfile = function (fbid, callback) {
