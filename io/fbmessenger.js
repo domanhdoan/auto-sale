@@ -33,7 +33,7 @@ function FBMessenger() {
                 } else {
 
                 }
-                if (callback != null) {
+                if (callback != null && common.isDefined(callback)) {
                     callback();
                 }
                 // lastMessageToSenders[sender] = data;
