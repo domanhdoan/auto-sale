@@ -255,7 +255,7 @@ function showAvailableColorNsize(session, showColorFlag, showSizeFlag, showPhoto
                 fbMessenger.sendProductPhotoElements(session.fbid, session.token, productInfo.id,
                     productInfo.title, availableColorsMsg + availableSizesMsg, photos);
             } else {
-                fbMessenger.sendTextMessage(session.fbid,
+                fbMessenger.sendTextMessage(session.fbid, session.token,
                     productInfo.title + availableColorsMsg + availableSizesMsg);
             }
         });
