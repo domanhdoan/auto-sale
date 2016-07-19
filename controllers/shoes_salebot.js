@@ -773,20 +773,22 @@ function handlePriceIntent(session, data, product) {
                 var delta = (product.price - product.discount) / 1000;
                 var saleoffmsg = product.price > product.discount ? " (Có KM " + parseInt(delta) + "K VNĐ)" : " (Không có KM)";
                 var message = product.title;
-                fbMessenger.sendTextMessage(data.fbid, message, function () {
+                fbMessenger.sendTextMessage(data.fbid, session.token, message, function () {
                     message = "";
                     if (data.type.length > 0) {
                         var productTitle = product.title.latinise().toLowerCase();
                         for (var i = 0, length = data.type.length; i < length; i++) {
                             message = getProductPriceMessage(data.quantity[i], price, product.title, data.type[i], saleoffmsg);
-                            fbMessenger.sendTextMessage(data.fbid, message);
+                            fbMessenger.sendTextMessage(data.fbid, session.token, message);
                         }
                     } else {
-                        message = "- " + data.quantity[0] + " đôi " + " giá " + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
-                        fbMessenger.sendTextMessage(data.fbid, message);
+                        message = "- " + data.quantity[0] + " đôi " + " giá " 
+                            + common.toCurrencyString(price * data.quantity[0], " VNĐ") + saleoffmsg;;
+                        fbMessenger.sendTextMessage(data.fbid, session.token, message);
                     }
                     var showPhotos = (data.productid != product.id) ? true : false;
-                    fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn xem thêm thông tin về màu và size bên dưới nhé", function () {
+                    fbMessenger.sendTextMessage(session.fbid, session.token, session.token, 
+                        "Bạn xem thêm thông tin về màu và size bên dưới nhé", function () {
                         showAvailableColorNsize(session, true, true, showPhotos);
                     });
                     callback(null);
