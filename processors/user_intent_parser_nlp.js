@@ -126,7 +126,6 @@ function UserIntentParserNLP() {
     this.removeClassiferFeatures = function (features, userMsg) {
         var wordList = Object.keys(features)
         for (var i = 0, length = wordList.length; i < length; i++) {
-            logger.info(wordList[i])
             userMsg = userMsg.replace(wordList[i], '')
         }
         return userMsg
@@ -134,7 +133,6 @@ function UserIntentParserNLP() {
 
     this.removeRedundant = function (wordList, userMsg) {
         for (var i = 0, length = wordList.length; i < length; i++) {
-            logger.info(wordList[i])
             userMsg = userMsg.replace(wordList[i], '')
         }
         return userMsg
