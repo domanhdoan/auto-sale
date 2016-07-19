@@ -123,8 +123,8 @@ function UserIntentParserNLP() {
         return productType
     }
 
-    this.removeClassiferFeatures = function (classifier, userMsg) {
-        var wordList = Object.keys(classifier.features)
+    this.removeClassiferFeatures = function (features, userMsg) {
+        var wordList = Object.keys(features)
         for (var i = 0, length = wordList.length; i < length; i++) {
             userMsg = userMsg.replace(wordList[i], '')
         }
@@ -233,7 +233,8 @@ function UserIntentParserNLP() {
             productid: options.productid,
             msg: userMsg
         }
-        userMsg = this.removeClassiferFeatures(questionClassifier, userMsg)
+        userMsg = this.removeClassiferFeatures(questionClassifier.features, userMsg)
+        userMsg = this.removeClassiferFeatures(quantityRegexp, userMsg)
         var size = this.parseSizeInfo(userMsg)
         var color = this.parseColorInfo(userMsg)
         var productCode = common.extractProductCode(userMsg, options.codePattern).code
@@ -243,29 +244,29 @@ function UserIntentParserNLP() {
         if (productCode != '') {
             data.category = productCode
         } else {
-            var productQuantity = this.parseQuantity(userMsg)
-            var category = this.parseCategory(userMsg)
-            data.category = category
+            var productQuantity = this.parseQuantity(userMsg);
+            var category = this.parseCategory(userMsg);
+            data.category = category;
         }
 
-        data.code = productCode
-        data.color = color
-        data.size = size
-        data.intent = common.INTENT_CHECK_AVAILABILITY
-        logger.info('[Check Avai] Data sent from intent parser to sale bot' + JSON.stringify(data))
-        return data
+        data.code = productCode;
+        data.color = color;
+        data.size = size;
+        data.intent = common.INTENT_CHECK_AVAILABILITY;
+        logger.info('[Check Avai] Data sent from intent parser to sale bot' + JSON.stringify(data));
+        return data;
     }
 
     this.parseInfoWithAccuracy = function (classifier, userMsg, accuracy) {
         var info = ''
-        var classifications = classifier.getClassifications(userMsg)
+        var classifications = classifier.getClassifications(userMsg);
         if (classifications.length > 0) {
             var classification = classifications[0]
             if (classification.value >= accuracy) {
-                info = classification.label
+                info = classification.label;
             }
         }
-        return info
+        return info;
     }
 
     this.parseShipIntent = function (userMsg, options) {

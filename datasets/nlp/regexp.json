@@ -3,8 +3,8 @@
         "combo", "cb"
     ],
     "quantityRegexp": [
+        "doi nay", "cap nay",
         "\\d+ doi", "\\d+ cap",
-        "doi nay", "cap nay"
     ],
     "sizeRegexp": [
         "co \\d+ \\w+ co \\d+",
