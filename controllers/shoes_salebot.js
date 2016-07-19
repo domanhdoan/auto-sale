@@ -817,33 +817,33 @@ function handleAvailabilityIntent(session, data, product) {
             });
             sessionManager.setCategoryId(session, products[0].CategoryId);
             if (data.size.length > 0) {
-                fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng ^_^. Bạn chọn màu bên dưới nhé", function () {
+                fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng :). Bạn chọn màu bên dưới nhé", function () {
                     fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                     showAvailableColorNsize(session, true, false, showPhotos);
                 });
             } else if (data.color.length > 0) {
-                fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng ^_^. Bạn chọn size bên dưới nhé\n", function () {
+                fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng :). Bạn chọn size bên dưới nhé\n", function () {
                     fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                     showAvailableColorNsize(session, false, true, showPhotos);                    
                 });
             } else {
-                fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng ^_^. Bạn chọn màu và size bên dưới nhé", function () {
+                fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng :). Bạn chọn màu và size bên dưới nhé", function () {
                     fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                     showAvailableColorNsize(session, true, true, showPhotos);
                 });
             }
         } else if (products.length > 1) {
-            fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng  ^_^", function () {
+            fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng  :)", function () {
                 sendProductSearchResultsToFB(session, products);
             });
         } else {
             if (data.size.length > 0) {
-                fbMessenger.sendTextMessage(session.fbid, session.token, "Shop hết size bạn chọn T_T. Bạn chọn size khác bên dưới nhé", function () {
+                fbMessenger.sendTextMessage(session.fbid, session.token, "Shop hết size bạn chọn :(. Bạn chọn size khác bên dưới nhé", function () {
                     fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                     showAvailableColorNsize(session, false, true, true);
                 });
             } else if (data.color.length > 0) {
-                fbMessenger.sendTextMessage(session.fbid, session.token, "Shop hết màu bạn chọn T_T. Bạn chọn màu khác bên dưới nhé", function () {
+                fbMessenger.sendTextMessage(session.fbid, session.token, "Shop hết màu bạn chọn :(. Bạn chọn màu khác bên dưới nhé", function () {
                     fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                     showAvailableColorNsize(session, true, false, true);
                 });
@@ -890,8 +890,8 @@ function setUpUserIntentListener() {
     emitter.on(common.INTENT_UNKNOWN, function (data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         //processTextEvent(session, data.msg);
-        fbMessenger.sendTextMessage(session.fbid, session.token, "Shop không tìm thấy sản phẩm theo yêu cầu T_T", function(){
-           fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn vui lòng thêm thông tin. Shop sẽ check giúp bạn ^_^");
+        fbMessenger.sendTextMessage(session.fbid, session.token, "Shop không tìm thấy sản phẩm theo yêu cầu :(", function(){
+           fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn vui lòng thêm thông tin. Shop sẽ check giúp bạn :)");
            setTimeout(function () {
                fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn xem thêm danh mục sản phẩm bên dưới");
                findCategories(session);
