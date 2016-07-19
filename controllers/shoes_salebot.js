@@ -890,8 +890,8 @@ function setUpUserIntentListener() {
     emitter.on(common.INTENT_UNKNOWN, function (data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         //processTextEvent(session, data.msg);
-        fbMessenger.sendTextMessage(session.fbid, session.token, "Shop không tìm thấy sản phẩm theo yêu cầu", function(){
-           fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn vui lòng cung cấp thông tin thêm. Shop sẽ check giúp bạn");
+        fbMessenger.sendTextMessage(session.fbid, session.token, "Shop không tìm thấy sản phẩm theo yêu cầu:(", function(){
+           fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn vui lòng thêm thông tin. Shop sẽ check giúp bạn:)");
            setTimeout(function () {
                fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn xem thêm danh mục sản phẩm bên dưới");
                findCategories(session);
