@@ -4,7 +4,7 @@
     ],
     "quantityRegexp": [
         "doi nay", "cap nay",
-        "\\d+ doi", "\\d+ cap",
+        "\\d+ doi", "\\d+ cap"
     ],
     "sizeRegexp": [
         "co \\d+ \\w+ co \\d+",
