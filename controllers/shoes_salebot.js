@@ -623,56 +623,60 @@ function processPostbackEvent(session, action_details) {
 }
 
 function processEvent(event) {
-    var sender = event.sender.id.toString();
-    var receiver = event.recipient.id.toString();
-    var pageInfo = gPagesInfo[receiver];
-    if(pageInfo === null){
-        return;
-    }
-    var currentSession = sessionManager.findOrCreateSession(pageInfo.StoreId, receiver, sender);
-    currentSession.token = pageInfo.token;
-    currentSession.storeUrl = pageInfo.Store.dataValues.home;
+    try {
+        var sender = event.sender.id.toString();
+        var receiver = event.recipient.id.toString();
+        var pageInfo = gPagesInfo[receiver];
+        if (pageInfo === null) {
+            return;
+        }
+        var currentSession = sessionManager.findOrCreateSession(pageInfo.StoreId, receiver, sender);
+        currentSession.token = pageInfo.token;
+        currentSession.storeUrl = pageInfo.Store.dataValues.home;
 
-    var productInfo = sessionManager.getProductInfo(currentSession);
-    if (event.message) {
-        if (event.message.text) {
-            var text = event.message.text;
-            var isURL = common.isUrl(text);
-            var isOrdering = sessionManager.isOrdeTrigerStatusInfo(currentSession);
-            if (!isURL && !isOrdering) {
-                var options = {
-                    storeid: currentSession.storeid,
-                    pageid: receiver,
-                    fbid: sender,
-                    productid: productInfo.id,
-                    codePattern: gStoreConfig.product_code_pattern
-                };
-                intentParser.parse(text.latinise().toLowerCase(), options);
-            } else {
-                processTextEvent(currentSession, text);
-            }
-        } else if (event.message.attachments != null) {
-            var attachments = event.message.attachments;
-            // handle the case when user send an image for searching product
-            for (var i = 0; i < attachments.length; i++) {
-                if (attachments[i].type === 'image') {
-                    processTextEvent(currentSession, attachments[i].payload.url);
+        var productInfo = sessionManager.getProductInfo(currentSession);
+        if (event.message) {
+            if (event.message.text) {
+                var text = event.message.text;
+                var isURL = common.isUrl(text);
+                var isOrdering = sessionManager.isOrdeTrigerStatusInfo(currentSession);
+                if (!isURL && !isOrdering) {
+                    var options = {
+                        storeid: currentSession.storeid,
+                        pageid: receiver,
+                        fbid: sender,
+                        productid: productInfo.id,
+                        codePattern: gStoreConfig.product_code_pattern
+                    };
+                    intentParser.parse(text.latinise().toLowerCase(), options);
                 } else {
-                    logger.info("Skipp to handle attachment");
+                    processTextEvent(currentSession, text);
                 }
-            }
-        } else {
+            } else if (event.message.attachments != null) {
+                var attachments = event.message.attachments;
+                // handle the case when user send an image for searching product
+                for (var i = 0; i < attachments.length; i++) {
+                    if (attachments[i].type === 'image') {
+                        processTextEvent(currentSession, attachments[i].payload.url);
+                    } else {
+                        logger.info("Skipp to handle attachment");
+                    }
+                }
+            } else {
 
+            }
+        } else if (event.postback) {
+            var postback = JSON.parse(event.postback.payload);
+            var delta = event.timestamp - currentSession.timestamp;
+            if (delta > 100 /*avoid double click*/) {
+                currentSession.timestamp = event.timestamp;
+                processPostbackEvent(currentSession, postback);
+            } else {
+                logger.info("Skipp to handle double click");
+            }
         }
-    } else if (event.postback) {
-        var postback = JSON.parse(event.postback.payload);
-        var delta = event.timestamp - currentSession.timestamp;
-        if (delta > 100 /*avoid double click*/) {
-            currentSession.timestamp = event.timestamp;
-            processPostbackEvent(currentSession, postback);
-        } else {
-            logger.info("Skipp to handle double click");
-        }
+    } catch (err) {
+        logger.error(err);
     }
 }
 
