@@ -126,6 +126,15 @@ function UserIntentParserNLP() {
     this.removeClassiferFeatures = function (features, userMsg) {
         var wordList = Object.keys(features)
         for (var i = 0, length = wordList.length; i < length; i++) {
+            logger.info(wordList[i])
+            userMsg = userMsg.replace(wordList[i], '')
+        }
+        return userMsg
+    }
+
+    this.removeRedundant = function (wordList, userMsg) {
+        for (var i = 0, length = wordList.length; i < length; i++) {
+            logger.info(wordList[i])
             userMsg = userMsg.replace(wordList[i], '')
         }
         return userMsg
@@ -234,7 +243,7 @@ function UserIntentParserNLP() {
             msg: userMsg
         }
         userMsg = this.removeClassiferFeatures(questionClassifier.features, userMsg)
-        userMsg = this.removeClassiferFeatures(quantityRegexp, userMsg)
+        userMsg = this.removeRedundant(quantityRegexp, userMsg)
         var size = this.parseSizeInfo(userMsg)
         var color = this.parseColorInfo(userMsg)
         var productCode = common.extractProductCode(userMsg, options.codePattern).code
