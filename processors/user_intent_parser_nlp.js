@@ -230,9 +230,12 @@ function UserIntentParserNLP () {
       fbid: options.fbid,
       productid: options.productid,
       code: productCode,
-      type: productTypes,
+      type: [],
       quantity: productQuantity,
       msg: userMsg
+    }
+    for(var i = 0; i < productTypes.length; i++){
+        data.type.push(productTypes[i]);
     }
     logger.info('[Check Price] Data sent from intent parser to sale bot' + JSON.stringify(data))
     return data
