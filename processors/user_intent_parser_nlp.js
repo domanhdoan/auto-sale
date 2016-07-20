@@ -18,7 +18,7 @@ function UserIntentParserNLP () {
   var keyword_category = categoryTrainingData.category
 
   var questionClassifier = new nlpChecker.LogisticRegressionClassifier()
-  var shipClassifier = new nlpChecker.BayesClassifier()
+  var shipClassifier = new nlpChecker.LogisticRegressionClassifier()
   var locationClassifier = new nlpChecker.LogisticRegressionClassifier()
   var propertiesClassifier = new nlpChecker.LogisticRegressionClassifier()
   var categoryClassifier = new nlpChecker.LogisticRegressionClassifier()
@@ -78,7 +78,7 @@ function UserIntentParserNLP () {
 
   this.isShipIntent = function (message) {
     var ret = false
-    var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW / 2)
+    var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW)
     if (intent != '') {
       ret = true
     }
