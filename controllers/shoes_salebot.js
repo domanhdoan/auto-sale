@@ -757,8 +757,8 @@ function getProductPriceMessage(quantity, price, title, requestType, saleoffmsg)
     var typeVN = {nam: "Nam", nu: "Nữ", combo: "Combo"};
     var prices = common.extractProductPrices(title);
     var price = prices[requestType];
-    logger.info("prices[requestType] = " + prices[requestType]);
-    if ((price != undefined) || price != "0") {
+    logger.info("prices[" + requestType + "] = " + price);
+    if ((price != undefined) || price != "000") {
         var price = parseInt(prices[requestType] / 1000) + "";
         message += "- " + price.toUpperCase() + " K VNĐ" + saleoffmsg + "\n";
     } else {
