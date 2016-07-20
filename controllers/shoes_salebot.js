@@ -65,7 +65,7 @@ function createAndSendOrderToFB(session, callback) {
                 + ", Size " + item.Size.dataValues.value;
                 var quantity = item.dataValues.quantity;
                 var thumbnail_url = item.Product.dataValues.thumbnail;
-``
+
                 var jsonitem = fbMessenger.createOrderItemElement(
                     title, subtitle, price, quantity, thumbnail_url);
                 invoice_items.push(jsonitem);
@@ -756,7 +756,9 @@ function getProductPriceMessage(quantity, price, title, requestType, saleoffmsg)
     var message = "";
     var typeVN = {nam: "Nam", nu: "Nữ", combo: "Combo"};
     var prices = common.extractProductPrices(title);
-    if ((prices[requestType] != "") || prices[requestType] != "000") {
+    var price = prices[requestType];
+    logger.info("prices[requestType] = " + prices[requestType]);
+    if ((price != undefined) || price != "0") {
         var price = parseInt(prices[requestType] / 1000) + "";
         message += "- " + price.toUpperCase() + " K VNĐ" + saleoffmsg + "\n";
     } else {
