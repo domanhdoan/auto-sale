@@ -759,11 +759,15 @@ function getProductPriceMessage(quantity, price, title, requestType, saleoffmsg)
     var priceForType = prices[requestType];
     logger.info("prices[" + requestType + "] = " + price);
     if ((priceForType != undefined) && priceForType != "000") {
-        priceForType = parseInt(priceForType / 1000) + "";
-        message += "- " + price.toUpperCase() + " K VNĐ" + saleoffmsg + "\n";
+        priceForType = common.toCurrencyString(price * quantity,"VNĐ");
+        message += "- " + priceForType + saleoffmsg + "\n";
     } else {
-        message += "- Sản phẩm này không có kiểu " + typeVN[requestType] + " mà bạn đang tìm\n";
-        message += "- " + quantity + " đôi " + " giá " + common.toCurrencyString(price * quantity, " VNĐ") + saleoffmsg;
+        if(title.latinise().indexOf(requestType) < 0){
+            message += "- Sản phẩm này không có kiểu " + typeVN[requestType] + " mà bạn đang tìm\n";
+        }else{
+            message += "- Kiểu nữ giá ";
+        }
+        message += quantity + " đôi " + common.toCurrencyString(price * quantity, " VNĐ") + saleoffmsg;
     }
     return message;
 }
