@@ -19,9 +19,6 @@ module.exports = function(Sequelize, DataTypes) {
         discount: {
             type: DataTypes.INTEGER
         },
-        percentage: {
-            type: DataTypes.STRING
-        },
         link: {
             type: DataTypes.STRING
         },
