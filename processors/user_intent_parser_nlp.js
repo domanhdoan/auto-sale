@@ -57,7 +57,7 @@ function UserIntentParserNLP () {
       this.initClassifier(shipClassifier, key.value, key.name)
     }
     this.initClassifier(questionClassifier,
-      intentTrainingData[common.INTENT_CHECK_PRICE], common.INTENT_CHECK_SHIP)
+      intentTrainingData[common.INTENT_CHECK_SHIP], common.INTENT_CHECK_SHIP)
   }
 
   this.trainCatergoryClassifier = function () {
