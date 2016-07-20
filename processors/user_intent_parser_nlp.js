@@ -314,7 +314,7 @@ method.setEmitter = function (emitter) {
 
 method.parse = function (userMsg, options) {
   logger.info('Parsing: ' + userMsg)
-  userMsg = this.removeRedundant(unprocessWordList.unprocess, userMsg)
+  userMsg = this.removeNoMeaningWords(userMsg)
   var intents = this.getIntent(userMsg)
   var data = null
   for (var i = 0; i < intents.length; i++) {
