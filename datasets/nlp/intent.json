@@ -1,6 +1,6 @@
 {
     "check_ship": [
-        "bao lau nhan duoc", "bao nhieu ngay"
+        "bao lau nhan duoc", "ngay"
     ],
 
     "check_availability": [
@@ -29,8 +29,8 @@
         "co giam ko", "co bot ko"
     ],
     
-    "check_order": ["muon mua",
-        "dat hang"
+    "order_product": ["muon mua",
+        "dat hang", "cho em"
     ],
     "check_saleoff": ["khuyen mai", "saleoff", "sale-off", "bớt", "giam gia"],
     "consult": ["Shop tư vấn đôi nào nhẹ, ôm chân", "không quá to được không"],
