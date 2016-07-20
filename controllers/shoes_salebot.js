@@ -624,6 +624,7 @@ function processPostbackEvent(session, action_details) {
 
 function processEvent(event) {
     try {
+        logger.info("Event = " + JSON.stringify(event));
         var sender = event.sender.id.toString();
         var receiver = event.recipient.id.toString();
         var pageInfo = gPagesInfo[receiver];
@@ -677,7 +678,7 @@ function processEvent(event) {
         }
     } catch (err) {
         logger.error(err);
-    }
+    } finally {}
 }
 
 //=====================================================================//
