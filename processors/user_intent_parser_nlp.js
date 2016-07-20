@@ -10,7 +10,7 @@ function UserIntentParserNLP() {
     var categoryTrainingData = common.loadJson('./datasets/nlp/category.json')
     var shipTrainingData = common.loadJson('./datasets/nlp/ship.json')
     var regExpData = common.loadJson('./datasets/nlp/regexp.json')
-    var unprocessWordList = common.loadJson('./datasets/nlp/unprocess.json')
+    var unprocessWordList = common.loadJson('./datasets/nlp/notprocess.json')
 
     var typeRegexp = regExpData.typeRegexp
     var quantityRegexp = regExpData.quantityRegexp
