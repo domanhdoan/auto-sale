@@ -756,10 +756,10 @@ function getProductPriceMessage(quantity, price, title, requestType, saleoffmsg)
     var message = "";
     var typeVN = {nam: "Nam", nu: "Nữ", combo: "Combo"};
     var prices = common.extractProductPrices(title);
-    var price = prices[requestType];
+    var priceForType = prices[requestType];
     logger.info("prices[" + requestType + "] = " + price);
-    if ((price != undefined) || price != "000") {
-        var price = parseInt(prices[requestType] / 1000) + "";
+    if ((priceForType != undefined) && priceForType != "000") {
+        priceForType = parseInt(priceForType / 1000) + "";
         message += "- " + price.toUpperCase() + " K VNĐ" + saleoffmsg + "\n";
     } else {
         message += "- Sản phẩm này không có kiểu " + typeVN[requestType] + " mà bạn đang tìm\n";
