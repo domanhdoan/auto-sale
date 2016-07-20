@@ -140,7 +140,7 @@ function UserIntentParserNLP () {
   }
 
   this.removeNoMeaningWords = function (userMsg) {
-    userMsg = this.removeRedundant(unprocessWordList, userMsg)
+    userMsg = this.removeRedundant(this.unprocessWordList, userMsg)
     return userMsg
   }
 
