@@ -752,6 +752,7 @@ function findLastSelectProduct(session, data, callback) {
 }
 
 function getProductPriceMessage(quantity, price, title, requestType, saleoffmsg) {
+    var message = "";
     var prices = common.extractProductPrices(title);
     if (prices[requestType] != "") {
         var price = parseInt(prices[requestType] / 1000) + "";

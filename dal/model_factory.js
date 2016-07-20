@@ -67,7 +67,7 @@ module.exports.findAndCreateCategory = function(savedStore, name, link, callback
 module.exports.findAndCreateProduct = function(
     saved_store, savedCategory, product_title,
     product_thumbnail, product_desc, product_price,
-    product_discount, product_percent, product_detail_link,
+    product_discount, product_detail_link,
     product_type, product_finger, product_code, callback
 ) {
     // var product_finger = require('crypto').createHmac('sha256', product_detail_link)
@@ -82,7 +82,6 @@ module.exports.findAndCreateProduct = function(
             desc: product_desc,
             price: product_price,
             discount: product_discount,
-            percent: product_percent,
             link: product_detail_link.replaceAll('-', '%%'),
             finger: product_finger,
             brand: "",
@@ -106,7 +105,6 @@ module.exports.findAndCreateProduct = function(
                 desc: product_desc,
                 price: product_price,
                 discount: product_discount,
-                percent: product_percent,
                 link: product_detail_link.replaceAll('-', '%%'),
                 finger: product_finger,
                 brand: "",
