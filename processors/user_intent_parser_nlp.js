@@ -234,8 +234,8 @@ function UserIntentParserNLP () {
       quantity: productQuantity,
       msg: userMsg
     }
-    for(var i = 0; i < productTypes.length; i++){
-        data.type.push(productTypes[i]);
+    for (var i = 0; i < productTypes.length; i++) {
+      data.type.push(productTypes[i])
     }
     logger.info('[Check Price] Data sent from intent parser to sale bot' + JSON.stringify(data))
     return data
@@ -316,8 +316,9 @@ method.setEmitter = function (emitter) {
 }
 
 method.parse = function (userMsg, options) {
-  logger.info('Parsing: ' + userMsg)
-  userMsg = this.removeNoMeaningWords(userMsg)
+  logger.info('Pre-processing: ' + userMsg)
+  userMsg = this.removeNoMeaningWords(userMsg.toLowerCase())
+  logger.info("User  intent parsing: " + userMsg)
   var intents = this.getIntent(userMsg)
   var data = null
   for (var i = 0; i < intents.length; i++) {
@@ -339,6 +340,9 @@ method.parse = function (userMsg, options) {
       }
     }
     this.emitter.emit(data.intent, data)
+    var moment = require('moment');
+    moment.locale('vn');
+    data.timestamp = moment().format('LLLL');
     common.saveToFile('nlp_log.txt', '\n' + JSON.stringify(data))
   }
 }
