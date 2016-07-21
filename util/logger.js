@@ -5,7 +5,7 @@ var logger = new(winston.Logger)({
         new(winston.transports.Console)(),
         new(winston.transports.File)({
             filename: config.develop.log_path,
-            handleExceptions: false,
+            handleExceptions: true,
             humanReadableUnhandledException: true
         })
     ]
