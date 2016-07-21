@@ -10,7 +10,7 @@ function UserIntentParserNLP () {
   var categoryTrainingData = common.loadJson('./datasets/nlp/category.json')
   var shipTrainingData = common.loadJson('./datasets/nlp/ship.json')
   var regExpData = common.loadJson('./datasets/nlp/regexp.json')
-  this.unprocessWordList = common.loadJson('./datasets/nlp/notprocess.json')
+  this.unprocessWordList = common.loadJson('./datasets/nlp/notprocess.json').unprocess;
 
   var typeRegexp = regExpData.typeRegexp
   var quantityRegexp = regExpData.quantityRegexp
@@ -317,32 +317,38 @@ method.setEmitter = function (emitter) {
 
 method.parse = function (userMsg, options) {
   logger.info('Pre-processing: ' + userMsg)
-  userMsg = this.removeNoMeaningWords(userMsg.toLowerCase())
-  logger.info("User  intent parsing: " + userMsg)
-  var intents = this.getIntent(userMsg)
+  userMsgAfterPreprocess = this.removeNoMeaningWords(userMsg.toLowerCase())
+  logger.info("User MSG for intent parsing: " + userMsgAfterPreprocess)
+
+  var intents = this.getIntent(userMsgAfterPreprocess)
   var data = null
   for (var i = 0; i < intents.length; i++) {
     var intent = intents[i]
     if (intent === common.INTENT_CHECK_PRICE) {
       logger.info('parsePriceInfo for customer')
-      data = this.parsePriceIntent(userMsg, options)
+      data = this.parsePriceIntent(userMsgAfterPreprocess, options)
     } else if (intent === common.INTENT_CHECK_AVAILABILITY) {
       logger.info('parseAvailabilityIntentData for customer')
-      data = this.parseAvailabilityIntent(userMsg, options)
+      data = this.parseAvailabilityIntent(userMsgAfterPreprocess, options)
     } else if (intent === common.INTENT_CHECK_SHIP) {
       logger.info('parseShipInfo for customer')
-      data = this.parseShipIntent(userMsg, options)
+      data = this.parseShipIntent(userMsgAfterPreprocess, options)
     } else {
-      data = this.parseAvailabilityIntent(userMsg, options)
+      data = this.parseAvailabilityIntent(userMsgAfterPreprocess, options)
       if ((data.category === '') && (data.color.length === 0) && (data.size.length === 0)) {
-        logger.info('not parse message ' + userMsg + ' ==> will call staff for support')
+        logger.info('not parse message ' + userMsgAfterPreprocess + ' ==> will call staff for support')
         data.intent = common.INTENT_UNKNOWN
       }
     }
-    this.emitter.emit(data.intent, data)
+    if (userMsgAfterPreprocess != "") {
+        this.emitter.emit(data.intent, data)
+
+    }
     var moment = require('moment');
     moment.locale('vn');
     data.timestamp = moment().format('LLLL');
+    data.msg = userMsg;
+    
     common.saveToFile('nlp_log.txt', '\n' + JSON.stringify(data))
   }
 }
