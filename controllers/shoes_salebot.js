@@ -33,11 +33,9 @@ var gAiUsingFlag = false;
 
 var async = require("async");
 
-var shipData = common.loadJson("./datasets/calculation/ship.json");
-
 function createAndSendOrderToFB(session, callback) {
     var orderInfo = sessionManager.getOrderInfo(session);
-    gProductFinder.getOrderItems(orderInfo.id, function(items) {
+    gProductFinder.getOrderItems(orderInfo.id, function (items) {
         if (items.length > 0) {
             var sub_total = 0;
             var invoice_items = [];
@@ -79,13 +77,13 @@ function createAndSendOrderToFB(session, callback) {
 }
 
 function createAndSendOrderToStore(session, callback) {
-    gProductFinder.getOrderItems(session.last_invoice.id, function(items) {
+    gProductFinder.getOrderItems(session.last_invoice.id, function (items) {
         for (var i = 0; i < items.length; i++) {
             var order = gStoreConfig.order_form;
             request({
                 url: gHomepage,
                 method: 'POST',
-            }, function(error, response, body) {
+            }, function (error, response, body) {
                 if (error) {
                     logger.error('Error sending message: ' + error.stack);
                 } else if (response.body.error) {
@@ -103,7 +101,7 @@ function createAndSendOrderToStore(session, callback) {
 function sendCategorySearchResultsToFB(session, categories) {
     if (categories.length > 0) {
         async.series([
-            function(callback) {
+            function (callback) {
                 // fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn xem danh mục sản phẩm bên dưới nhé");
                 callback(null);
             },
@@ -122,15 +120,15 @@ function sendCategorySearchResultsToFB(session, categories) {
                 }
             }
         ]);
-    } else {}
+    } else { }
 }
 
 function sendProductSearchResultsToFB(session, products) {
     var keys = Object.keys(products);
     if (keys.length > 0) {
         async.series([
-            function(callback) {
-                fbMessenger.sendTextMessage(session.fbid, session.token, common.notify_product_found, function() {
+            function (callback) {
+                fbMessenger.sendTextMessage(session.fbid, session.token, common.notify_product_found, function () {
                     callback(null);
                 });
             },
@@ -163,7 +161,7 @@ function sendProductSearchResultsToFB(session, products) {
 function searchAndConfirmAddress(session, destination, callback) {
     // Handle a text message from this sender
     //getUserProfile(sender, function () {
-    common.searchAddress(destination, function(result) {
+    common.searchAddress(destination, function (result) {
         if (result.length > 0) {
             var length = 1; //result.length;
             for (var i = 0; i < length; i++) {
@@ -192,7 +190,7 @@ function getAvailableColorMsg(show_color, colors, reference) {
             for (var i = 0; i < colors.length; i++) {
                 if (referColorsString.indexOf(colors[i].name) >= 0) {
                     matchColorStr += common.get_color_vn(colors[i].name) + ", ";
-                } else {}
+                } else { }
                 availableColors += common.get_color_vn(colors[i].name) + ", ";
             }
             if (matchColorStr === "") {
@@ -223,7 +221,7 @@ function getAvailableSizeMsg(show_size, sizes, reference) {
             for (var i = 0; i < (sizes.length - 1); i++) {
                 if (referSizesString.indexOf(sizes[i].value) >= 0) {
                     matchSizes += sizes[i].value + ", ";
-                } else {}
+                } else { }
                 availableSizes += sizes[i].value + ", ";
             }
             if (matchSizes === "") {
@@ -243,7 +241,7 @@ function getAvailableSizeMsg(show_size, sizes, reference) {
 function showAvailableColorNsize(session, showColorFlag, showSizeFlag, showPhotoFlag) {
     var productInfo = sessionManager.getProductInfo(session);
     gProductFinder.getColorsNSizeNPhotos(productInfo.id,
-        function(colors, sizes, photos) {
+        function (colors, sizes, photos) {
             var availableColorsMsg = getAvailableColorMsg(showColorFlag, colors, JSON.stringify(colors));
             var availableSizesMsg = getAvailableSizeMsg(showSizeFlag, sizes, JSON.stringify(sizes));
             logger.info("Product id = " + productInfo.id + " Details - \n" + availableColorsMsg + availableSizesMsg);
@@ -263,17 +261,17 @@ function showAvailableColorNsize(session, showColorFlag, showSizeFlag, showPhoto
 function showSimilarProductSuggestion(session) {
     // send suggestion for products in same category
     async.series([
-        function(callback) {
-            fbMessenger.sendTextMessage(session.fbid, session.token, common.notify_product_notfound, function() {
+        function (callback) {
+            fbMessenger.sendTextMessage(session.fbid, session.token, common.notify_product_notfound, function () {
                 callback(null);
             });
         },
-        function(callback) {
-            fbMessenger.sendTextMessage(session.fbid, session.token, common.notify_product_similar, function() {
+        function (callback) {
+            fbMessenger.sendTextMessage(session.fbid, session.token, common.notify_product_similar, function () {
                 callback(null);
             });
         },
-        function(callback) {
+        function (callback) {
             var categoryInfo = sessionManager.getCategoryInfo(session);
             if (categoryInfo.id >= 0) {
                 findProductByCategory(session);
@@ -285,25 +283,25 @@ function showSimilarProductSuggestion(session) {
 }
 
 function findProductByThumbLink(session, thumbLink) {
-    gProductFinder.findProductByThumbnail(session.storeUrl, thumbLink, function(product) {
+    gProductFinder.findProductByThumbnail(session.storeUrl, thumbLink, function (product) {
         sendProductSearchResultsToFB(session, product);
     });
 }
 
 function findProductByDetailLink(session, link) {
-    gProductFinder.findProductByLink(session.storeid, link, function(product) {
+    gProductFinder.findProductByLink(session.storeid, link, function (product) {
         sendProductSearchResultsToFB(session, product);
     });
 }
 
 function findProductByKeywords(session, keywords) {
-    gProductFinder.findShoesByKeywords(session.storeid, keywords, function(products) {
+    gProductFinder.findShoesByKeywords(session.storeid, keywords, function (products) {
         sendProductSearchResultsToFB(session, products);
     });
 }
 
 function findProductByCode(session, productCode) {
-    gProductFinder.findProductByCode(session.storeid, productCode, function(product) {
+    gProductFinder.findProductByCode(session.storeid, productCode, function (product) {
         sendProductSearchResultsToFB(session, product);
     });
 }
@@ -312,7 +310,7 @@ function findProductByCategory(session) {
     var categoryInfo = sessionManager.getCategoryInfo(session);
     gProductFinder.findProductsByCategory(session.storeid,
         categoryInfo.id,
-        function(products) {
+        function (products) {
             sendProductSearchResultsToFB(session, products);
             if (Object.keys(products).length > 0) {
                 sessionManager.setCategoryId(session, products[0].CategoryId);
@@ -321,7 +319,7 @@ function findProductByCategory(session) {
 }
 
 function findCategories(session) {
-    gProductFinder.findCategoriesByStoreId(session.storeid, function(categories) {
+    gProductFinder.findCategoriesByStoreId(session.storeid, function (categories) {
         sendCategorySearchResultsToFB(session, categories);
     });
 }
@@ -344,26 +342,26 @@ function selectProductColor(session, user_message) {
     var productInfo = sessionManager.getProductInfo(session);
     if (orderInfo.id == -1) {
         gModelFactory.createInitialInvoice(session.fbid,
-            function(invoice) {
+            function (invoice) {
                 sessionManager.setOrderInfo(session, {
                     id: invoice.id
                 });
             });
-    } else {}
+    } else { }
 
     // Remove mua word to get color value
     var color_keyword = user_message.replaceAll(common.SEARCH_KEY_COLOR, "")
         .replaceAll(" ", "").trim();
     gProductFinder.checkProductByColor(productInfo.id,
         color_keyword,
-        function(color) {
+        function (color) {
             if (color != null) {
                 sessionManager.setUserAction(session, common.select_product_color);
                 sessionManager.setProductInfo(session, {
                     color: color.id
                 });
                 var type = sessionManager.getProductInfo(session).type;
-                fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_select_product_size, function() {
+                fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_select_product_size, function () {
                     if (type === common.PRODUCT_TYPE_COMBO) {
                         fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_select_product_size_combo);
                     }
@@ -371,7 +369,7 @@ function selectProductColor(session, user_message) {
                 });
             } else {
                 fbMessenger.sendTextMessage(session.fbid, session.token, common.notify_color_notfound,
-                    function() {
+                    function () {
                         showAvailableColorNsize(session, true, false, false);
                     });
             }
@@ -383,7 +381,7 @@ function selectProductSize(session, user_message) {
     var size = common.extractValue(user_message, "\\d+$");
     gProductFinder.checkProductBySize(productInfo.id,
         size,
-        function(size) {
+        function (size) {
             if (Object.keys(size).length > 0) {
                 sessionManager.setUserAction(session, common.select_product_size);
                 sessionManager.setProductInfo(session, {
@@ -392,7 +390,7 @@ function selectProductSize(session, user_message) {
                 fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_quantity);
             } else {
                 fbMessenger.sendTextMessage(session.fbid, session.token, common.notify_size_notfound,
-                    function() {
+                    function () {
                         showAvailableColorNsize(session, false, true, false);
                     });
             }
@@ -414,7 +412,7 @@ function selectProductQuantity(session, user_message) {
             productInfo.id,
             productInfo.color,
             productInfo.size,
-            function(saved_item) {
+            function (saved_item) {
                 logger.info("saved_item: " + saved_item);
                 sessionManager.setUserAction(session, common.action_continue_search);
                 fbMessenger.sendPurchaseConfirmMessage(session.fbid, session.token, "Bạn muốn tiếp tục chọn sản phẩm hay đặt hàng ngay?");
@@ -455,7 +453,7 @@ function makeProductOrder(session, text) {
         fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_address);
     } else if (session.last_action == common.set_phone) {
         logger.debug("Address: " + text);
-        searchAndConfirmAddress(session, text, function(result) {
+        searchAndConfirmAddress(session, text, function (result) {
             sessionManager.setOrderInfo(session, {
                 address: result
             });
@@ -469,7 +467,7 @@ function makeProductOrder(session, text) {
                 email: text
             });
             //fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_delivery_date);
-            createAndSendOrderToFB(session, function() {
+            createAndSendOrderToFB(session, function () {
                 fbMessenger.sendOrderConfirmMessage(session.fbid, session.token, "Xác nhận đơn hàng!");
             });
         } else {
@@ -498,7 +496,7 @@ function cancelOrder(session) {
     var orderInfo = sessionManager.getOrderInfo(session);
 
     gModelFactory.cancelInvoice(orderInfo.id, status,
-        function(invoice) {
+        function (invoice) {
             sessionManager.resetSession(session);
         });
     sessionManager.setUserAction(session, common.say_greetings);
@@ -550,9 +548,9 @@ function processPostbackEvent(session, action_details) {
         sessionManager.setProductIdNTitle(session,
             action_details.id, action_details.title);
         var types = common.getAvailableProductType(productInfo.title);
-        if (types.length <= 1 /*Only one type or not determined*/ ) {
+        if (types.length <= 1 /*Only one type or not determined*/) {
             fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_select_product_color,
-                function() {
+                function () {
                     showAvailableColorNsize(session, true, false, false);
                 });
             sessionManager.setUserAction(session, common.select_type);
@@ -571,7 +569,7 @@ function processPostbackEvent(session, action_details) {
             type: action_details.type
         });
         fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_select_product_color,
-            function() {
+            function () {
                 var type = sessionManager.getProductInfo(session).type;
                 if (type === common.PRODUCT_TYPE_COMBO) {
                     fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_select_product_color_combo);
@@ -599,16 +597,16 @@ function processPostbackEvent(session, action_details) {
 
     } else if (user_action === common.action_confirm_order) {
         sessionManager.setOrderStatusInfo(session, "confirm");
-        gModelFactory.updateInvoice(session.last_invoice, function(invoice) {
+        gModelFactory.updateInvoice(session.last_invoice, function (invoice) {
             logger.info(invoice);
-            fbMessenger.sendTextMessage(session.fbid, session.token, common.say_thank_buying, function() {
+            fbMessenger.sendTextMessage(session.fbid, session.token, common.say_thank_buying, function () {
                 fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_select_product);
             });
             sessionManager.resetSession(session);
         });
 
     } else if (user_action === common.action_cancel_order) {
-        gModelFactory.cancelInvoice(session.last_invoice.id, "cancel", function(invoice) {
+        gModelFactory.cancelInvoice(session.last_invoice.id, "cancel", function (invoice) {
             if (invoice != null) {
                 fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_select_product);
                 sessionManager.resetSession(session.fbid);
@@ -666,7 +664,7 @@ function processEvent(event) {
         } else if (event.postback) {
             var postback = JSON.parse(event.postback.payload);
             var delta = event.timestamp - currentSession.timestamp;
-            if (delta > 300 /*avoid double click*/ ) {
+            if (delta > 300 /*avoid double click*/) {
                 currentSession.timestamp = event.timestamp;
                 processPostbackEvent(currentSession, postback);
             } else {
@@ -675,7 +673,7 @@ function processEvent(event) {
         }
     } catch (err) {
         logger.error(err);
-    } finally {}
+    } finally { }
 }
 
 //=====================================================================//
@@ -692,11 +690,11 @@ function initWebHook() {
         extended: true
     }));
 
-    server.get(config.bots.fb_webhook, function(req, res) {
+    server.get(config.bots.fb_webhook, function (req, res) {
         if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
             res.send(req.query['hub.challenge']);
             console.log("call get");
-            setTimeout(function() {
+            setTimeout(function () {
                 fbMessenger.doSubscribeRequest();
             }, 3000);
         } else {
@@ -704,7 +702,7 @@ function initWebHook() {
         }
     });
 
-    server.post(config.bots.fb_webhook, function(req, res) {
+    server.post(config.bots.fb_webhook, function (req, res) {
         try {
             var data = JSONbig.parse(req.body);
             var messaging_events = data.entry[0].messaging;
@@ -724,7 +722,7 @@ function initWebHook() {
         }
     });
 
-    server.listen(config.bots.port, function() {
+    server.listen(config.bots.port, function () {
         console.log('FB BOT ready to go!');
     });
 }
@@ -733,14 +731,14 @@ function findLastSelectProduct(session, data, callback) {
     if (common.isDefined(data.category) && (data.category != "") && (data.code != data.category)) {
         callback(null);
     } else if (common.isDefined(data.code) && data.code.length > 0) {
-        gProductFinder.findProductByCode(session.storeid, data.code, function(product) {
+        gProductFinder.findProductByCode(session.storeid, data.code, function (product) {
             if (Object.keys(product).length > 0) {
                 sessionManager.setProductIdNTitle(session, product.id, product.title);
             }
             callback(product);
         });
     } else if (data.productid >= 0) {
-        gProductFinder.findProductById(data.productid, function(product) {
+        gProductFinder.findProductById(data.productid, function (product) {
             callback(product);
         });
     } else {
@@ -780,7 +778,7 @@ function handlePriceIntent(session, data, product) {
         var delta = (product.price - product.discount) / 1000;
         var saleoffmsg = product.price > product.discount ? " (Có KM " + parseInt(delta) + "K VNĐ)" : " (Không có KM)";
         var message = product.title;
-        fbMessenger.sendTextMessage(data.fbid, session.token, message, function() {
+        fbMessenger.sendTextMessage(data.fbid, session.token, message, function () {
             message = "";
             if (data.type.length > 0) {
                 var productTitle = product.title.latinise().toLowerCase();
@@ -795,7 +793,7 @@ function handlePriceIntent(session, data, product) {
             var showPhotos = (data.productid != product.id) ? true : false;
             fbMessenger.sendTextMessage(session.fbid, session.token,
                 "Bạn xem thêm thông tin về màu và size bên dưới nhé",
-                function() {
+                function () {
                     showAvailableColorNsize(session, true, true, showPhotos);
                 });
         });
@@ -813,7 +811,7 @@ function handleAvailabilityIntent(session, data, product) {
     if (product != null) {
         querydata.category = (data.code === "") ? product.code : data.category;
     }
-    gProductFinder.findShoesByKeywordsOpt(data.storeid, querydata, function(products) {
+    gProductFinder.findShoesByKeywordsOpt(data.storeid, querydata, function (products) {
         if (products.length === 1) {
             var showPhotos = (data.productid != products[0].id) ? true : false;
             sessionManager.setProductInfo(session, {
@@ -824,41 +822,41 @@ function handleAvailabilityIntent(session, data, product) {
             if (data.size.length > 0) {
                 fbMessenger.sendTextMessage(session.fbid, session.token,
                     "Sản phẩm còn hàng :). Bạn chọn thêm màu bên dưới nhé",
-                    function() {
+                    function () {
                         fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                         showAvailableColorNsize(session, true, false, showPhotos);
                     });
             } else if (data.color.length > 0) {
                 fbMessenger.sendTextMessage(session.fbid, session.token,
                     "Sản phẩm còn hàng :). Bạn chọn thêm size bên dưới nhé\n",
-                    function() {
+                    function () {
                         fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                         showAvailableColorNsize(session, false, true, showPhotos);
                     });
             } else {
                 fbMessenger.sendTextMessage(session.fbid, session.token,
                     "Sản phẩm còn hàng :). Bạn chọn màu và size bên dưới nhé",
-                    function() {
+                    function () {
                         fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                         showAvailableColorNsize(session, true, true, showPhotos);
                     });
             }
         } else if (products.length > 1) {
-            fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng :)", function() {
+            fbMessenger.sendTextMessage(session.fbid, session.token, "Sản phẩm còn hàng :)", function () {
                 sendProductSearchResultsToFB(session, products);
             });
         } else {
             if (data.size.length > 0) {
                 fbMessenger.sendTextMessage(session.fbid, session.token,
                     "Shop hết size bạn chọn :(. Bạn chọn size khác bên dưới nhé",
-                    function() {
+                    function () {
                         fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                         showAvailableColorNsize(session, false, true, true);
                     });
             } else if (data.color.length > 0) {
                 fbMessenger.sendTextMessage(session.fbid, session.token,
                     "Shop hết màu bạn chọn :(. Bạn chọn màu khác bên dưới nhé",
-                    function() {
+                    function () {
                         fbMessenger.sendTextMessage(session.fbid, session.token, "Shop sẽ check giúp bạn\n");
                         showAvailableColorNsize(session, true, false, true);
                     });
@@ -869,10 +867,87 @@ function handleAvailabilityIntent(session, data, product) {
     });
 }
 
+function calculateShipFee(data, callback) {
+    gProductFinder.findStoreById(data.storeid, function (store) {
+        var storeSupport = common.loadJson("./datasets/support/"
+            + store.home.replace("http://", "") + ".json");
+        common.calculateDistance(storeSupport.address[0], data.location, function (distance) {
+            var keys = Object.keys(storeSupport.fee);
+            for (var i = 0, length = keys.length; i < length; i++) { 
+                var key = keys[i];
+                var keyInt = parseInt(key);
+                if (keyInt >= distance) {
+                    var fee = storeSupport.fee[key];
+                    callback(fee, storeSupport);
+                    break;
+                }
+            }
+        });
+    });
+}
+
+function calculateShipDuration(data, callback) {
+    gProductFinder.findStoreById(data.storeid, function (store) {
+        var storeSupport = common.loadJson("./datasets/support/"
+            + store.home.replace("http://", "") + ".json");
+        common.calculateDistance(storeSupport.address[0], data.location, function (distance) {
+            var keys = Object.keys(storeSupport.duration);
+            for (var i = 0, length = keys.length; i < length; i++) {
+                var key = keys[i];
+                var keyInt = parseInt(key);
+                if (keyInt >= distance) {
+                    var fee = storeSupport.duration[key];
+                    callback(storeSupport.duration[key]);
+                    break;
+                }
+            }
+        });
+    });
+}
+
+function handleShipIntent(data){
+    var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
+    logger.info("Extracted INTENT CHECK_SHIP: " + JSON.stringify(data));
+    var showShipFee = false;
+    var showShipDuration = false;
+    
+    fbMessenger.sendTextMessage(session.fbid, session.token, "Có ship về "
+        + data.location + " bạn nhé");
+
+    if (data.shipintent == common.SHIP_FEE) {
+        showShipFee = true;
+    } else if (data.shipintent == common.SHIP_DURATION) {
+        showShipDuration = true;
+    } else if (data.shipintent == common.SHIP_RANGE) {
+        showShipFee = true;
+        showShipDuration = true;
+    } else {
+        fbMessenger.sendTextMessage(session.fbid, session.token, 
+            "Shop chưa hiểu ý bạn. Bạn vui lòng gửi lại thông tin");
+    }
+
+    if (showShipFee) {
+        calculateShipFee(data, function (fee, storeSupport) {
+            logger.info("Ship fee = " + fee);
+            fbMessenger.sendTextMessage(session.fbid, session.token, "Giá ship: "
+                + fee / 1000 + "K VND /đôi. Từ đôi thứ 2 thì tính thêm "
+                + storeSupport.fee.more / 1000 + "K VND /đôi");
+        });
+    }
+
+    if (showShipDuration) {
+        calculateShipDuration(data, function (duration) {
+            logger.info("Ship Duration = " + duration);
+            fbMessenger.sendTextMessage(session.fbid, session.token,
+                "Thời gian ship: " + duration);
+        });
+    }
+}
+
 function setUpUserIntentListener() {
-    emitter.on(common.INTENT_CHECK_PRICE, function(data) {
+    emitter.on(common.INTENT_CHECK_PRICE, function (data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
-        findLastSelectProduct(session, data, function(product) {
+        findLastSelectProduct(session, data, function (product) {
             if (product != null) {
                 handlePriceIntent(session, data, product);
             } else {
@@ -881,35 +956,27 @@ function setUpUserIntentListener() {
         });
     });
 
-    emitter.on(common.INTENT_CHECK_AVAILABILITY, function(data) {
+    emitter.on(common.INTENT_CHECK_AVAILABILITY, function (data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
-        findLastSelectProduct(session, data, function(product) {
+        findLastSelectProduct(session, data, function (product) {
             handleAvailabilityIntent(session, data, product);
         });
     });
 
-    emitter.on(common.INTENT_CHECK_SHIP, function(data) {
-        logger.info("Extracted INTENT CHECK_SHIP: " + JSON.stringify(data));
-        if (data.shipintent == common.SHIP_FEE) {
-
-        } else if (data.shipintent == common.SHIP_DURATION) {
-
-        } else {
-
-        }
+    emitter.on(common.INTENT_CHECK_SHIP, function (data) {
+        handleShipIntent(data);
     });
 
-    emitter.on(common.INTENT_GENERAL_SEARCH, function(data) {
+    emitter.on(common.INTENT_GENERAL_SEARCH, function (data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
         processTextEvent(session, data.msg);
     });
 
-    emitter.on(common.INTENT_UNKNOWN, function(data) {
+    emitter.on(common.INTENT_UNKNOWN, function (data) {
         var session = sessionManager.findOrCreateSession(data.storeid, data.pageid, data.fbid);
-        //processTextEvent(session, data.msg);
-        fbMessenger.sendTextMessage(session.fbid, session.token, "Shop không tìm thấy sản phẩm theo yêu cầu :(", function() {
+        fbMessenger.sendTextMessage(session.fbid, session.token, "Shop không tìm thấy sản phẩm theo yêu cầu :(", function () {
             fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn vui lòng thêm thông tin. Shop sẽ check giúp bạn :)");
-            setTimeout(function() {
+            setTimeout(function () {
                 fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn xem thêm danh mục sản phẩm bên dưới");
                 findCategories(session);
             }, 100);
@@ -922,10 +989,10 @@ function setUpUserIntentListener() {
 //=====================================================================//
 
 module.exports = {
-    enable_ai: function(use_ai) {
+    enable_ai: function (use_ai) {
         gAiUsingFlag = use_ai;
     },
-    start: function(storeConfig) {
+    start: function (storeConfig) {
         gStoreConfig = storeConfig;
 
         initWebHook();
@@ -939,8 +1006,8 @@ module.exports = {
         setUpUserIntentListener();
         intentParser.setEmitter(emitter);
 
-        gProductFinder.getAllPages(function(pages) {
-            pages.forEach(function(page) {
+        gProductFinder.getAllPages(function (pages) {
+            pages.forEach(function (page) {
                 gPagesInfo[page.pageId] = page;
             });
         });
