@@ -52,8 +52,8 @@ function createAndSendOrderToFB(session, callback) {
                 var type = (common.isDefined(item.dataValues.type)) ? item.dataValues.type : "";
                 var prices = common.extractProductPrices(title);
                 logger.info("Type = " + type + " price = " + prices[type]);
-                var price = (prices.length === 0) ? item.Product.dataValues.price : parseInt(prices[type]);
-                if (type != "") {
+                var price = (prices[type] != undefined) ? parseInt(prices[type]) : item.Product.dataValues.price;
+                if (prices[type] != undefined) {
                     subtitle += " Kiểu " + common.getProductTypeVN(type) + ", ";
                 }
                 subtitle += "Màu " + common.get_color_vn(item.Color.dataValues.name) + ", Size " + item.Size.dataValues.value;
