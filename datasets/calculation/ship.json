@@ -1,0 +1,20 @@
+{
+    "fee": {
+        "quantity": {
+            "1": 20000,
+            "2": 15000
+        },
+        "distance": {
+            "40": 0,
+            "300": 15000
+        }
+    },
+    "duration": {
+        "urban": " 1 - 2 ngày làm việc",
+        "suban": " 1 - 2 ngày làm việc",
+        "province": " 4 - 6 ngày làm việc"
+    },
+    "range": {
+        "country": "Việt Nam"
+    }
+}
