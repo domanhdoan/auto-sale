@@ -96,7 +96,7 @@ function WebScraper(crawlPattern) {
             var length = headline.length;
             var finger = "";
             for (var i = 1; i < length; i++) {
-                finger += " " + $(headline[i]).text().latinise().toLowerCase();
+                finger += " " + $(headline[i]).text().latinise().toLowerCase().trim();
             }
             logger.info("Finger = " + finger);
             var categoryNameElement = (length >= 2) ? $(headline[1]) : "";
@@ -108,7 +108,6 @@ function WebScraper(crawlPattern) {
             var desc = $(productElememt).find(detailPattern.desc).text();
             var priceStr = $(productElememt).find(detailPattern.price).text();
             var discountStr = $(productElememt).find(detailPattern.discount).text();
-            var percent = $(productElememt).find(detailPattern.percent).text();
             var price = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
             var discount = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
             var code = $(detailPattern.code).text();
@@ -123,7 +122,6 @@ function WebScraper(crawlPattern) {
                 desc = (desc === "") ? title : desc;
                 priceStr = (priceStr == null || priceStr == "") ? discountStr : priceStr;
                 discountStr = (discountStr == null || discountStr == "") ? "0" : discountStr;
-                percent = (percent == null || percent == "") ? percent : "0";
 
                 finger += " " + title.latinise().toLowerCase();
                 //finger += " " + desc.latinise().toLowerCase();
@@ -134,26 +132,14 @@ function WebScraper(crawlPattern) {
                     var cKey = require('crypto').createHmac('sha256', categoryName)
                         .digest('hex');
 
-                    // categoryName = categoryName.replace(/[^\w\s]/gi, '');
                     var savedCategory = categoryObjects[categoryLink];
-                    // console.log("Defined Category Name: " + categoryName + " key " + cKey + " : " + JSON.stringify(savedCategory));
-                    // for (var i = 0, length = Object.keys(categoryObjects).length; i < length; i++) {
-                    //     var key = new String(Object.keys(categoryObjects)[i]);
-                    //     var key2 = new String(categoryLink);
-                    //     if (key.valueOf() === key2.valueOf()) {
-                    //         logger.info(key + " ===Matched=== " + categoryName);
-                    //     } else {
-                    //         logger.info(key.length + " ===vs=== " + categoryName.length);
-                    //         logger.info(key + " ===NotMatched=== " + categoryName);
-                    //     }
-                    // }
                     if (!savedCategory) {
                         logger.info("UNDEFINE product " + detailLink);
                     } else {
                         logger.info("DEFINE categoryName " + categoryName);
                         gModelFactory.findAndCreateProduct(
                             savedStore, savedCategory, title, thumbnailLink,
-                            desc, price, discount, percent, detailLink, type, finger, code,
+                            desc, price, discount, detailLink, type, finger, code,
                             function(savedProduct) {
                                 handleProductProperties(savedStore, savedProduct, $, sizeList, colorList, productPhotos);
                                 if (!callback) {
@@ -173,7 +159,7 @@ function WebScraper(crawlPattern) {
     this.processAllProductLinks = function(savedStore, categoryObjects,
         allProductLinks, detailPattern) {
         async.forEachLimit(allProductLinks, 1, function(link, callback) {
-            // logger.info(link);
+            logger.info(link);
             extractProductDetails(savedStore, categoryObjects,
                 link, detailPattern,
                 function(link) {});
@@ -183,6 +169,18 @@ function WebScraper(crawlPattern) {
                 logger.error(err);
             };
         });
+
+        // async.eachSeries(allProductLinks, function (url, callback) {
+        //     extractProductDetails(savedStore, categoryObjects,
+        //         url, detailPattern,
+        //         function (link) {
+        //             callback();
+        //         });
+        // }, function (err) {
+        //     if (err) {
+        //         logger.error(err);
+        //     };
+        // });
     }
 
     function extractAllProductDetailsLink(index, categoryLink, productLinks, callback) {
@@ -259,15 +257,23 @@ function WebScraper(crawlPattern) {
             var allProductLinks = [];
             var categoryCount = 0;
             var categoryLinks = classifyCategory(savedStore, body);
+            var length = categoryLinks.length;
             for (var i = 0, length = categoryLinks.length; i < length; i++) {
-                extractAllProductDetailsLink(i, categoryLinks[i], allProductLinks, function(index, productLinks) {
+                // async.eachSeries(categoryLinks, function (url, callback2) {
+                // var index = categoryLinks.indexOf(url);
+                var index = i;
+                var url = categoryLinks[i];
+
+                extractAllProductDetailsLink(index, url, allProductLinks, function (index, productLinks) {
                     categoryCount++;
                     logger.info("Category index = " + index);
                     if ((categoryCount == length) && (callback != null)) {
                         allProductLinks = allProductLinks.unique();
                         callback(allProductLinks, currentObj.categoryObjects);
                     }
+                    // callback2();
                 });
+                // });
             }
         });
     }
@@ -309,7 +315,7 @@ WebScraper.prototype.extractThumbUrl = function(home_page, input_thumb, callback
 
         request(options, function(error, response, body) {
             var $ = cheerio.load(body);
-            common.saveToHTMLFile("search", body);
+            // common.saveToHTMLFile("search", body);
             var search_items = $('div.srg div.g div.rc div.s div div.th._lyb a');
             var image_url = "";
             if (search_items.length > 0) {
