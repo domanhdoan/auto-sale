@@ -173,9 +173,9 @@ module.exports.extractProductPrices = function(title) {
     }
 
     var prices = {
-        nam: malePrice+"000",
-        nu: femalePrice+"000",
-        combo: comboPrice+"000"
+        nam: malePrice + "000",
+        nu: femalePrice + "000",
+        combo: comboPrice + "000"
     };
     logger.info(JSON.stringify(prices));
     return prices;
@@ -189,12 +189,12 @@ module.exports.toCurrencyString = function(value, currency) {
 }
 
 module.exports.getProductTypeVN = function(type) {
-        var types = {
+    var types = {
         nam: "Nam",
         nu: "Nữ",
         combo: "Combo"
     };
-    return (types[type] != undefined)?types[type]:"không xác định";
+    return (types[type] != undefined) ? types[type] : "không xác định";
 }
 
 module.exports.extractValue = function(text, regExpStr) {
@@ -291,18 +291,18 @@ module.exports.calculateDistance = function(origin, target, callback) {
         });
 }
 
-    var NodeGeocoder = require('node-geocoder');
-    var options = {
-        provider: config.bots.map_provider,
-        // Optionnal depending of the providers 
-        httpAdapter: 'https', // Default 
-        apiKey: config.bots.map_key,
-        countryCode: 'vn',
-        minConfidence: 0.5,
-        limit: 5,
-        formatter: null // 'gpx', 'string', ... 
-    };
-    var geocoder = NodeGeocoder(options);
+var NodeGeocoder = require('node-geocoder');
+var options = {
+    provider: config.bots.map_provider,
+    // Optionnal depending of the providers 
+    httpAdapter: 'https', // Default 
+    apiKey: config.bots.map_key,
+    countryCode: 'vn',
+    minConfidence: 0.5,
+    limit: 5,
+    formatter: null // 'gpx', 'string', ... 
+};
+var geocoder = NodeGeocoder(options);
 module.exports.searchAddress = function(origin, callback) {
     geocoder.geocode(origin, function(err, result) {
         callback(result);
