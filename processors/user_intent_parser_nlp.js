@@ -92,16 +92,16 @@ function UserIntentParserNLP() {
             var classification = classifications[i]
             if (classifications[i].value > common.INTENT_ACCURACY_LOW) {
                 logger.info('High probility = ' + JSON.stringify(classification))
-                // if (this.isShipIntent(message)) {
-                //     var index = intents.indexOf(common.INTENT_CHECK_SHIP)
-                //     if (index < 0) {
-                //         intents.push(common.INTENT_CHECK_SHIP)
-                //     } else {
-                //         logger.info('Not add ship intent')
-                //     }
-                // } else {
+                if (this.isShipIntent(message)) {
+                    var index = intents.indexOf(common.INTENT_CHECK_SHIP)
+                    if (index < 0) {
+                        intents.push(common.INTENT_CHECK_SHIP)
+                    } else {
+                        logger.info('Not add ship intent')
+                    }
+                } else {
                     intents.push(classification.label)
-                // }
+                }
             } else {
                 logger.info('Low probility = ' + JSON.stringify(classification))
                 break
@@ -301,7 +301,7 @@ function UserIntentParserNLP() {
                 storeid: options.storeid,
                 pageid: options.pageid,
                 fbid: options.fbid,
-                productid: options.productid,
+                //productid: options.productid,
                 msg: userMsg,
                 location: location,
                 shipintent: shipIntent
