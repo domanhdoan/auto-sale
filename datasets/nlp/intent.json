@@ -1,7 +1,14 @@
 {
     "check_ship": [
-        "bao lau nhan duoc", "ngay"
+        "ship ve",
+        "toan quoc",
+        "free ship",
+        "COD",
+        "giao hang",
+        "chuyen phat",
+        "thanh toan"
     ],
+    
 
     "check_availability": [
         "san hang khong", "co san khong",
