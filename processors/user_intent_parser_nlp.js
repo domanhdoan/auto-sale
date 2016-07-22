@@ -284,7 +284,7 @@ function UserIntentParserNLP() {
         var classifications = classifier.getClassifications(userMsg)
         if (classifications.length > 0) {
             var classification = classifications[0]
-            if (classification.value >= accuracy) {
+            if (classification.value > accuracy) {
                 info = classification.label;
                 logger.info("Probability: " + classification.label + " - " + classification.value);
             }
