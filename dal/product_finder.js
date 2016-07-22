@@ -140,6 +140,17 @@ exports.findStoreByLink = function (link, callback) {
     });
 }
 
+exports.findStoreById = function (id, callback) {
+    gDbManager.Store.findOne({
+        where: {
+            id: id
+        }
+    }).then(function (store) {
+        var jsonObj = converDBObjectToJson(store);
+        callback(jsonObj);
+    });
+}
+
 exports.getAllPages = function (callback) {
     gDbManager.Page.findAll({
         include: [{
