@@ -76,7 +76,8 @@ module.exports = {
     SHIP_FEE: 'price',
     SHIP_DURATION: 'duration',
     SHIP_RANGE: 'range',
-    SHIP_COD: 'cod'
+    SHIP_FREE_SHIP: 'free_ship',
+    SHIP_COD: 'COD'
 }
 
 module.exports.typical_question = {
