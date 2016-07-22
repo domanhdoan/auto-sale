@@ -6,21 +6,21 @@
     "product_info": {
         "link": "li.item a",
         "details": {
-            "content_area": "div.col-main",
-            "title": "div.product-image .product h1",
-            "thumbnail": "div.owl-wrapper-outer .owl-wrapper a img",
-            "price": "div.woocommerce-price div p.price span del",
-            "discount": "div.woocommerce-price div p.price span ins span",
+            "content_area": ".main-container",
+            "title": "div.product-image div h1",
+            "thumbnail": ".item a img",
+            "price": ".price-box span .price",
+            "discount": ".price-box special-price .price ",
             "percent": "",
-            "desc": "div div .summary .product-description",
+            "desc": "#desc .std",
             "code": "",
             "color": "",
-            "size": "",
+            "size": ".shoes-size li",
             "instock": "",
             "status": "",
-            "photo": "div div .images .thumbnails div ul li a",
+            "photo": "p > img",
             "brand": "",
-            "headline": "#yit-breadcrumb a"
+            "headline": "div.breadcrumbs.breadcrums > ul > li > a"
         }
     },
     "paging": {
