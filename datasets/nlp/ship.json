@@ -15,12 +15,16 @@
         "value": [
             "ship the nao",
             "bao nhieu",
-            "chi phi",
+            "chi phi"
+        ]
+    }, {
+        "name": "free_ship",
+        "value": [
             "free ship",
             "ship mien phi",
             "giao hang mien phi"
         ]
-    }, {
+    },{
         "name": "duration",
         "value": [
             "bao lau nhan duoc hang",
@@ -31,7 +35,7 @@
     }, {
         "name": "range",
         "value": [
-            "ship dev zzz ko",
+            "ship den zzz ko",
             "ship ve xxx ko"
         ]
     }]
