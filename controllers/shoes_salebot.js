@@ -33,9 +33,6 @@ var gAiUsingFlag = false;
 
 var async = require("async");
 
-// Keyword - results
-var searchMap = {};
-
 var shipData = common.loadJson("./datasets/calculation/ship.json");
 
 function createAndSendOrderToFB(session, callback) {
@@ -649,7 +646,7 @@ function processEvent(event) {
                         productid: productInfo.id,
                         codePattern: gStoreConfig.product_code_pattern
                     };
-                    intentParser.parse(text.latinise().toLowerCase(), options);
+                    intentParser.parse(text, options);
                 } else {
                     processTextEvent(currentSession, text);
                 }
@@ -896,6 +893,8 @@ function setUpUserIntentListener() {
         if (data.shipintent == common.SHIP_FEE) {
 
         } else if (data.shipintent == common.SHIP_DURATION) {
+
+        } else {
 
         }
     });
