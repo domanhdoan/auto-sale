@@ -153,7 +153,7 @@ function WebScraper(crawlPattern) {
                         logger.info("DEFINE categoryName " + categoryName);
                         gModelFactory.findAndCreateProduct(
                             savedStore, savedCategory, title, thumbnailLink,
-                            desc, price, discount, percent, detailLink, type, finger, code,
+                            desc, price, discount, detailLink, type, finger, code,
                             function(savedProduct) {
                                 handleProductProperties(savedStore, savedProduct, $, sizeList, colorList, productPhotos);
                                 if (!callback) {
