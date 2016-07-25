@@ -7,7 +7,7 @@
     }, {
         "name": "COD",
         "value": [
-            "COD",
+            "COD", "cod",
             "thanh toan khi nhan hang"
         ]
     }, {
@@ -33,7 +33,9 @@
         "name": "range",
         "value": [
             "ship den zzz ko",
-            "ship ve xxx ko"
+            "ship ve xxx ko",
+            "ship vao xxx ko",
+            "ship vao xxx thi the nao"
         ]
     }]
 }
