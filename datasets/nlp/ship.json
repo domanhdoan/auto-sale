@@ -20,9 +20,10 @@
         "value": [
             "free ship",
             "ship mien phi",
-            "giao hang mien phi"
+            "giao hang mien phi",
+            "phi ship noi thanh"
         ]
-    },{
+    }, {
         "name": "duration",
         "value": [
             "bao lau nhan hang",
