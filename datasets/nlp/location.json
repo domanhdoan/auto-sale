@@ -34,6 +34,9 @@
         "value": ["Quảng Bình", "quang binh", "Quảng bình"]
     }, {
         "name": "Cần thơ",
-        "value": ["Cần thơ", "Can tho", "can tho "]
+        "value": ["Cần thơ", "Can tho", "can tho"]
+    }, {
+        "name": "Vũng Tàu",
+        "value": ["Vũng Tàu", "vt", "vung tau", "ba ria vung tau"]
     }]
 }
