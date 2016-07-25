@@ -250,6 +250,8 @@ function UserIntentParserNLP() {
     }
 
     this.parseAvailabilityIntent = function(userMsg, options) {
+        userMsg = this.removeClassiferFeatures(questionClassifier.features, userMsg)
+        userMsg = this.removeRedundant(quantityRegexp, userMsg)
         var data = {
             storeid: options.storeid,
             pageid: options.pageid,
@@ -257,7 +259,6 @@ function UserIntentParserNLP() {
             productid: options.productid,
             msg: userMsg
         }
-        userMsg = this.removeRedundant(quantityRegexp, userMsg)
         var size = this.parseSizeInfo(userMsg)
         var color = this.parseColorInfo(userMsg)
         var productCode = common.extractProductCode(userMsg, options.codePattern).code
