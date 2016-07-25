@@ -64,6 +64,7 @@ module.exports = {
     INTENT_GENERAL_SEARCH: 'general_search',
     INTENT_UNKNOWN: 'unknow_intent',
     INTENT_ACCURACY_ABSOLUTE: 1.0,
+    INTENT_ACCURACY_0_98: 0.98,
     INTENT_ACCURACY: 0.9,
     INTENT_ACCURACY_LOW: 0.55,
     PRODUCT_TYPE_MALE: 'nam',
@@ -121,20 +122,20 @@ var color_vn = {
     xanhneon: 'Xanh Neon'
 }
 
-module.exports.get_color_vn = function (value) {
+module.exports.get_color_vn = function(value) {
     return color_vn[value]
 }
 
-module.exports.getAllcolorVn = function () {
+module.exports.getAllcolorVn = function() {
     return color_vn
 }
 
-module.exports.loadJson = function (path) {
+module.exports.loadJson = function(path) {
     var json_object = JSON.parse(require('fs').readFileSync(path, 'utf8'))
     return json_object
 }
 
-module.exports.isUrl = function (text) {
+module.exports.isUrl = function(text) {
     var is_url_flag = false
     if (text.startsWith('http')) {
         is_url_flag = true
@@ -142,7 +143,7 @@ module.exports.isUrl = function (text) {
     return is_url_flag
 }
 
-module.exports.isThumbUrl = function (text) {
+module.exports.isThumbUrl = function(text) {
     var is_url_flag = false
     var temp = text.split('?')
     var link = (temp.length == 2) ? temp[0] : text
@@ -152,7 +153,7 @@ module.exports.isThumbUrl = function (text) {
     return is_url_flag
 }
 
-module.exports.extractNumeric = function (text) {
+module.exports.extractNumeric = function(text) {
     var myRe = new RegExp(/\d{2}/)
     var ret = ''
     var results = text.match(myRe)
@@ -161,7 +162,7 @@ module.exports.extractNumeric = function (text) {
     }
     return ret
 }
-module.exports.extractProductPrices = function (title) {
+module.exports.extractProductPrices = function(title) {
     var message = ''
     title = title.latinise().toLowerCase()
     var maleIndex = title.indexOf('nam')
@@ -184,13 +185,13 @@ module.exports.extractProductPrices = function (title) {
     return prices
 }
 
-module.exports.toCurrencyString = function (value, currency) {
+module.exports.toCurrencyString = function(value, currency) {
     var priceRegExp = /\B(?=(\d{3})+(?!\d))/g
     var string = value.toString().replace(priceRegExp, ',') + currency
     return string
 }
 
-module.exports.getProductTypeVN = function (type) {
+module.exports.getProductTypeVN = function(type) {
     var types = {
         nam: 'Nam',
         nu: 'Nữ',
@@ -199,7 +200,7 @@ module.exports.getProductTypeVN = function (type) {
     return (types[type] != undefined) ? types[type] : 'không xác định'
 }
 
-module.exports.extractValue = function (text, regExpStr) {
+module.exports.extractValue = function(text, regExpStr) {
     var ret = ''
     var regExp = new RegExp(regExpStr, 'gi')
     var results = text.match(regExp)
@@ -209,7 +210,7 @@ module.exports.extractValue = function (text, regExpStr) {
     return ret
 }
 
-module.exports.extractValues = function (text, regExpStr) {
+module.exports.extractValues = function(text, regExpStr) {
     var regExp = new RegExp(regExpStr, 'gi')
     var results = text.match(regExp)
     if (results == null) {
@@ -218,7 +219,7 @@ module.exports.extractValues = function (text, regExpStr) {
     return results
 }
 
-module.exports.extractProductCode = function (text, pattern) {
+module.exports.extractProductCode = function(text, pattern) {
     var upper = text.toUpperCase()
     var ret = {
         isProductCode: false,
@@ -234,14 +235,13 @@ module.exports.extractProductCode = function (text, pattern) {
     return ret
 }
 
-module.exports.loadStoreScrapingPattern = function (storeType, url) {
+module.exports.loadStoreScrapingPattern = function(storeType, url) {
     var product_pattern = url
     if (product_pattern.startsWith('http://')) {
         product_pattern = product_pattern.replace('http://', '')
     } else if (product_pattern.startsWith('https://')) {
         product_pattern = product_pattern.replace('https://', '')
-    } else {
-    }
+    } else {}
     var patternPath = './datasets/' + storeType + '/' + product_pattern
     var pattern = JSON.parse(require('fs').readFileSync(patternPath, 'utf8'))
     pattern.url = url.replace('.json', '')
@@ -252,7 +252,7 @@ module.exports.loadStoreScrapingPattern = function (storeType, url) {
  * ReplaceAll by Fagner Brack (MIT Licensed)
  * Replaces all occurrences of a substring in a string
  */
-String.prototype.replaceAll = function (token, newToken, ignoreCase) {
+String.prototype.replaceAll = function(token, newToken, ignoreCase) {
     var _token
     var str = this + ''
     var i = -1
@@ -262,9 +262,9 @@ String.prototype.replaceAll = function (token, newToken, ignoreCase) {
             _token = token.toLowerCase()
 
             while ((
-                i = str.toLowerCase().indexOf(
-                    _token, i >= 0 ? i + newToken.length : 0
-                )) !== -1) {
+                    i = str.toLowerCase().indexOf(
+                        _token, i >= 0 ? i + newToken.length : 0
+                    )) !== -1) {
                 str = str.substring(0, i) +
                     newToken +
                     str.substring(i + token.length)
@@ -276,13 +276,13 @@ String.prototype.replaceAll = function (token, newToken, ignoreCase) {
     return str
 }
 
-module.exports.calculateDistance = function (origin, target, callback) {
+module.exports.calculateDistance = function(origin, target, callback) {
     var distance = require('google-distance')
     distance.get({
-        origin: origin,
-        destination: target
-    },
-        function (err, data) {
+            origin: origin,
+            destination: target
+        },
+        function(err, data) {
             if (err) return console.log(err);
             var distance = parseFloat(data.distance.replace(",", ""));
             callback(distance);
@@ -301,8 +301,8 @@ var options = {
     formatter: null // 'gpx', 'string', ... 
 }
 var geocoder = NodeGeocoder(options)
-module.exports.searchAddress = function (origin, callback) {
-    geocoder.geocode(origin, function (err, result) {
+module.exports.searchAddress = function(origin, callback) {
+    geocoder.geocode(origin, function(err, result) {
         callback(result)
     })
 }
@@ -335,28 +335,28 @@ function chunkString(s, len) {
     return output
 }
 
-module.exports.saveToFile = function (path, content) {
+module.exports.saveToFile = function(path, content) {
     // require('fs').appendFile("./temp/" + url.replaceAll("http://", "").replaceAll("/", "#") + ".html",
     require('fs').appendFile(path,
         content + '\n',
-        function (err) {
+        function(err) {
             if (err) {
                 return console.log(err)
             }
         })
 }
 
-module.exports.saveToHTMLFile = function (url, content) {
+module.exports.saveToHTMLFile = function(url, content) {
     require('fs').writeFile('./temp/' + url.replaceAll('http://', '').replaceAll('/', '#') + '.html',
         content,
-        function (err) {
+        function(err) {
             if (err) {
                 return console.log(err)
             }
         })
 }
 
-module.exports.splitResponse = function (str) {
+module.exports.splitResponse = function(str) {
     if (str.length <= 320) {
         return [str]
     }
@@ -366,7 +366,7 @@ module.exports.splitResponse = function (str) {
     return result
 }
 
-module.exports.isDefined = function (obj) {
+module.exports.isDefined = function(obj) {
     if (typeof obj == 'undefined') {
         return false
     }
@@ -378,7 +378,7 @@ module.exports.isDefined = function (obj) {
     return obj != null
 }
 
-module.exports.getAvailableProductType = function (title) {
+module.exports.getAvailableProductType = function(title) {
     var type = this.extractProductType(title)
     var types = []
     if (type == this.PRODUCT_TYPE_COMBO) {
@@ -387,7 +387,7 @@ module.exports.getAvailableProductType = function (title) {
     return types
 }
 
-module.exports.extractProductType = function (title) {
+module.exports.extractProductType = function(title) {
     title = title.latinise()
     var maleIndex = title.indexOf('nam')
     var femaleIndex = title.indexOf('nu')
@@ -409,14 +409,14 @@ module.exports.extractProductType = function (title) {
     return type
 }
 
-module.exports.insertRootLink = function (current_link, home_page) {
+module.exports.insertRootLink = function(current_link, home_page) {
     if (current_link != null && !current_link.startsWith('http')) {
         current_link = home_page + current_link
     }
     return current_link
 }
 
-module.exports.insertHttpPrefix = function (current_link) {
+module.exports.insertHttpPrefix = function(current_link) {
     if (current_link != null && !current_link.startsWith('http')) {
         current_link = 'http://' + current_link
     }
@@ -426,10 +426,10 @@ module.exports.insertHttpPrefix = function (current_link) {
 var signedChar = 'ạóèăâđêôơưàảãạáằẳẵặắầẩẫậấèẻẽẹéềểễệếìỉĩịíòỏõọóồổỗộốờởỡợớùủũụúừửữựứỳỷỹỵýĂÂĐÊÔƠƯÀẢÃẠÁẰẲẴẶẮẦẨẪẬẤÈẺẼẸÉỀỂỄỆẾÌỈĨỊÍÒỎÕỌÓỒỔỖỘỐỜỞỠỢỚÙỦŨỤÚỪỬỮỰỨỲỶỸỴÝ'
 var unsignedChar = 'aoeaadeoouaaaaaaaaaaaaaaaeeeeeeeeeeiiiiiooooooooooooooouuuuuuuuuuyyyyyAADEOOUAAAAAAAAAAAAAAAEEEEEEEEEEIIIIIOOOOOOOOOOOOOOOUUUUUUUUUUYYYYYDD'
 
-String.prototype.latinise = function () {
+String.prototype.latinise = function() {
     // return this.replace(/[^A-Za-z0-9\[\] ]/g, function(a) {e
     // Use pattern that in latinse
-    return this.replace(/[^A-Za-z0-9\[\] ]/g, function (a) {
+    return this.replace(/[^A-Za-z0-9\[\] ]/g, function(a) {
         var index = signedChar.indexOf(a)
         var ret = (index >= 0) ? unsignedChar[index] : "";
         // logger.info('char = ' + a + " index = " + index + " to " + ret)
@@ -438,6 +438,6 @@ String.prototype.latinise = function () {
 }
 
 String.prototype.latinize = String.prototype.latinise
-String.prototype.isLatin = function () {
+String.prototype.isLatin = function() {
     return this == this.latinise()
 }
