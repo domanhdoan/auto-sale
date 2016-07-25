@@ -9,6 +9,9 @@
         "name": "Quảng Ninh",
         "value": ["Quảng Ninh", "QN", "Quảng ninh", "Hạ Long", "hạ long"]
     }, {
+        "name": "Bắc Giang",
+        "value": ["Bắc Giang", "BG", "bg", "bac giang"]
+    },{
         "name": "Hưng Yên",
         "value": ["Hưng Yên", "hưng yên", "hung yen"]
     }, {

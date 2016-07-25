@@ -668,7 +668,7 @@ function processEvent(event) {
                 currentSession.timestamp = event.timestamp;
                 processPostbackEvent(currentSession, postback);
             } else {
-                logger.info("Skipp to handle double click");
+                logger.info("Skipp to handle double click within delta = " + delta);
             }
         }
     } catch (err) {
