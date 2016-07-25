@@ -81,7 +81,7 @@ function UserIntentParserNLP () {
     var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW)
     var location = this.parseInfoWithAccuracy(locationClassifier, message, common.INTENT_ACCURACY_0_98)
     var category = this.parseInfoWithAccuracy(categoryClassifier, message, common.INTENT_ACCURACY_0_98)
-    logger.info('Ship intent = ' + intent + ' --- location = ' + Location + ' ---- category = ' + category);
+    logger.info('Ship intent = ' + intent + ' --- location = ' + location + ' ---- category = ' + category);
     if ((intent != '' || location != '') && category != '') {
       ret = true
     }
