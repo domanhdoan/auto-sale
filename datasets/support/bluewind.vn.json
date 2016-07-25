@@ -7,14 +7,15 @@
         "15": 0,
         "30": 20000,
         "800": 30000,
-        "3000": 45000,
+        "2000": 45000,
         "more": 15000
     },
     "free_ship":"FREE ship đối với khách hàng nội thành Hà Nội",
     "duration": {
         "15": "trong 1 ngày làm việc",
         "30": "1 - 2 ngày làm việc",
-        "3000": "4 - 7 ngày làm việc"
+        "800": "3 - 6 ngày làm việc",
+        "2000": "7 ngày làm việc"
     },
     "range": {
         "country": "Việt Nam"
