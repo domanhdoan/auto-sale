@@ -577,7 +577,7 @@ function processPostbackEvent(session, action_details) {
                 showAvailableColorNsize(session, true, false, false);
             });
     } else if (user_action === common.action_continue_search) {
-        if (!orderInfo.isOrdering) {
+        if (!orderInfo.isOrdering || session.last_action == common.set_quantity) {
             sessionManager.setUserAction(session, common.say_greetings);
             sessionManager.setOrdeTrigerStatusInfo(session, false);
             fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_select_product);
