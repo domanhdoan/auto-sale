@@ -19,5 +19,27 @@
     },
     "range": {
         "country": "Việt Nam"
+    },
+    "support":{
+        "do_size": {
+            "summary": "Hướng dẫn chọn size",
+            "link": "http://bluewind.vn/huong-dan-chon-size/"
+        },
+        "doi_hang_quy_dinh": {
+            "summary": "Quy định đổi trả hàng",
+            "link": "http://bluewind.vn/quy-dinh-doi-tra-hang"
+        },
+        "doi_hang_howto": {
+            "summary": "Hướng dẫn đổi trả hàng",
+            "link": "http://bluewind.vn/huong-dan-doi-tra-hang"
+        },
+        "thanh_toan": {
+            "summary": "Cách thức thanh toán",
+            "link": "http://bluewind.vn/cach-thuc-thanh-toan/"
+        },
+        "bao_hanh":{
+            "summary": "Bảo hành",
+            "link": "http://bluewind.vn/bao-hanh"
+        }    
     }
 }
