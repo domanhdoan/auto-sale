@@ -28,6 +28,7 @@ var fbMessenger = new FBMessenger();
 
 var gStoreConfig = {};
 var gPagesInfo = [];
+var gStoreSupport = {};
 
 var gAiUsingFlag = false;
 
@@ -684,10 +685,16 @@ function handleShipIntent(data) {
     var showShipFee = false;
     var showShipDuration = false;
     gProductFinder.findStoreById(data.storeid, function(store) {
-        var storeSupport = common.loadJson("./datasets/support/" + store.home.replace("http://", "") + ".json");
+        var name = store.home.replace("http://", "");
+        var storeSupport = gStoreSupport.name;
+        if (gStoreSupport.name === undefined) {
+            var storeSupport = common.loadJson("./datasets/support/" + name + ".json");
+            gStoreSupport.name = storeSupport;
+        }
 
         if (data.location != "" && data.shipintent != common.SHIP_FREE_SHIP) {
-            fbMessenger.sendTextMessage(session.fbid, session.token, "Có ship về " + data.location + " bạn nhé");
+            fbMessenger.sendTextMessage(session.fbid, session.token, 
+                "Có ship về " + data.location + " bạn nhé");
         }
 
         if (data.shipintent === common.SHIP_FEE) {
@@ -711,7 +718,9 @@ function handleShipIntent(data) {
         if (showShipFee) {
             calculateShipFee(data.location, storeSupport, function(fee) {
                 logger.info("Ship fee = " + fee);
-                fbMessenger.sendTextMessage(session.fbid, session.token, "Giá ship: " + fee / 1000 + "K VND cho đôi đầu tiên.\nTừ đôi thứ 2 thì tính thêm " + storeSupport.fee.more / 1000 + "K VND /đôi");
+                fbMessenger.sendTextMessage(session.fbid, session.token, 
+                "Giá ship: " + fee / 1000 + "K VND cho đôi đầu tiên.\nTừ đôi thứ 2 thì tính thêm " 
+                + storeSupport.fee.more / 1000 + "K VND /đôi");
             });
         }
 
