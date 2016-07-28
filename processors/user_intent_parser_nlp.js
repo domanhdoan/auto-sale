@@ -78,79 +78,79 @@ function UserIntentParserNLP () {
 
   this.isShipIntent = function (message) {
     var ret = false
-    var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY_LOW)
-    var location = this.parseInfoWithAccuracy(locationClassifier, message, common.INTENT_ACCURACY_0_98)
-    var category = this.parseInfoWithAccuracy(categoryClassifier, message, common.INTENT_ACCURACY_0_98)
+    var intent = this.parseInfoWithAccuracy(shipClassifier, message, common.INTENT_ACCURACY);
+    var location = this.parseInfoWithAccuracy(locationClassifier, message, common.INTENT_ACCURACY_0_98);
+    var category = this.parseInfoWithAccuracy(categoryClassifier, message, common.INTENT_ACCURACY_0_98);
     logger.info('Ship intent = ' + intent + ' --- location = ' + location + ' ---- category = ' + category);
-    if ((intent != '' || location != '') && category === '') {
-      ret = true
+    if ((intent !== '' || location !== '') && category === '') {
+      ret = true;
     }
-    return ret
+    return ret;
   }
 
   this.getIntent = function (message) {
-    var intents = []
-    var classifications = questionClassifier.getClassifications(message)
+    var intents = [];
+    var classifications = questionClassifier.getClassifications(message);
     for (var i = 0, length = classifications.length; i < length; i++) {
-      var classification = classifications[i]
+      var classification = classifications[i];
       if (classifications[i].value > common.INTENT_ACCURACY_LOW) {
-        logger.info('High probility = ' + JSON.stringify(classification))
+        logger.info('High probility = ' + JSON.stringify(classification));
         if (this.isShipIntent(message)) {
-          var index = intents.indexOf(common.INTENT_CHECK_SHIP)
+          var index = intents.indexOf(common.INTENT_CHECK_SHIP);
           if (index < 0) {
-            intents.push(common.INTENT_CHECK_SHIP)
+            intents.push(common.INTENT_CHECK_SHIP);
           } else {
-            logger.info('Not add ship intent')
+            logger.info('Not add ship intent');
           }
         } else {
-          intents.push(classification.label)
+          intents.push(classification.label);
         }
       } else {
-        logger.info('Low probility = ' + JSON.stringify(classification))
-        break
+        logger.info('Low probility = ' + JSON.stringify(classification));
+        break;
       }
     }
-    if (intents.length == 0) {
-      intents.push(common.INTENT_UNKNOWN)
+    if (intents.length === 0) {
+      intents.push(common.INTENT_UNKNOWN);
     }
-    return intents
-  }
+    return intents;
+  },
 
   this.parseProductType = function (userMsg) {
-    var productType = []
+    var productType = [];
     for (var i = 0, length = typeRegexp.length; i < length; i++) {
-      var type = common.extractValues(userMsg, typeRegexp[i])
-      if (type != '') {
-        productType.push(type)
+      var type = common.extractValues(userMsg, typeRegexp[i]);
+      if (type !== '') {
+        productType.push(type);
       }
     }
-    return productType
+    return productType;
   }
 
   this.removeClassiferFeatures = function (features, userMsg) {
-    var wordList = Object.keys(features)
+    var wordList = Object.keys(features);
     for (var i = 0, length = wordList.length; i < length; i++) {
-      userMsg = userMsg.replace(wordList[i], '')
+      userMsg = userMsg.replace(wordList[i], '');
     }
-    return userMsg
+    return userMsg;
   }
 
   this.removeRedundant = function (wordList, userMsg) {
-    var words = userMsg.split(' ')
-    var newUserMsg = ''
+    var words = userMsg.split(' ');
+    var newUserMsg = '';
     for (var i = 0, length = words.length; i < length; i++) {
       if (wordList.indexOf(words[i]) < 0) {
-        newUserMsg += words[i] + ' '
+        newUserMsg += words[i] + ' ';
       } else {
-        logger.info('Not handle redundant word: ' + words[i])
+        logger.info('Not handle redundant word: ' + words[i]);
       }
     }
-    return newUserMsg
+    return newUserMsg;
   }
 
   this.removeNoMeaningWords = function (userMsg) {
-    userMsg = this.removeRedundant(this.unprocessWordList, userMsg)
-    return userMsg
+    userMsg = this.removeRedundant(this.unprocessWordList, userMsg);
+    return userMsg;
   }
 
   this.parseColorInfo = function (userMsg) {
@@ -177,7 +177,7 @@ function UserIntentParserNLP () {
     userMsg = userMsg.replaceAll('sz', 'size')
     for (var i = 0, length = sizeRegexp.length; i < length; i++) {
       productSizes = common.extractValue(userMsg, sizeRegexp[i])
-      if (productSizes != '') {
+      if (productSizes !== '') {
         productSizes = common.extractValues(productSizes, '\\d+')
         if (productSizes.length === 0) {
           productSizes.push('all')
@@ -266,7 +266,7 @@ function UserIntentParserNLP () {
 
     // Decide really user intent from 2 factors (question type and information extracted)
     // Pass 1: decide by weather question contain a category or not
-    if (productCode != '') {
+    if (productCode !== '') {
       data.category = productCode
     } else {
       var productQuantity = this.parseQuantity(userMsg)
@@ -308,7 +308,7 @@ function UserIntentParserNLP () {
       location: location
     }
 
-    if (shipIntent != '') {
+    if (shipIntent !== '') {
       data.shipintent = shipIntent
     } else if (priceIntent === common.INTENT_CHECK_PRICE) {
       data.shipintent = common.SHIP_FEE
@@ -357,7 +357,7 @@ method.parse = function (userMsg, options) {
         data.intent = common.INTENT_UNKNOWN
       }
     }
-    if (userMsgAfterPreprocess != '') {
+    if (userMsgAfterPreprocess !== '') {
       this.emitter.emit(data.intent, data)
     }
     var moment = require('moment')
