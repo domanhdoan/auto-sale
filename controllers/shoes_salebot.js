@@ -694,9 +694,8 @@ function initWebHook() {
     }));
 
     server.get(config.bots.fb_webhook, function(req, res) {
-        if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
+        if (req.query['hub.verify_token'] === 'verify_me') {
             res.send(req.query['hub.challenge']);
-            console.log("call get");
             setTimeout(function () {
                 Object.keys(gPagesInfo).forEach(function (key) {
                     fbMessenger.doSubscribeRequest(gPagesInfo[key].token);
