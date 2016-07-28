@@ -9,7 +9,7 @@ var logger = require("./util/logger");
 
 var WebScraper = require("./processors/web_scraping");
 
-var shoes_salebot = require("./controllers/fbwebhook");
+var fbWebhook = require("./controllers/fbwebhook");
 
 
 function show_error() {
@@ -63,27 +63,20 @@ function runWebScrapingAsSchedule(datetime) {
 }
 
 if (crawl_sources != null) {
-
-    for (var i = 0, length = crawl_sources.length; i < length; i++) {
-        var link = crawl_sources[i];
-        store_config[i] = common.loadStoreScrapingPattern("shoes", link);
-    }
-
     if (config.submodule.crawler) {
-        for (var i = 0, length = store_config.length; i < length; i++) {
-            scraper = new WebScraper(store_config[i]);
+        for (var i = 0, length = crawl_sources.length; i < length; i++) {
+            var link = crawl_sources[i];
+            var storeConfig = common.loadStoreScrapingPattern("shoes", link);
+            scraper = new WebScraper(storeConfig);
             scraper.crawlWholeSite(function () {
             });
         }
     }
-
     runWebScrapingAsSchedule();
-
-    if (config.submodule.salebot) {
-        var storeList = common.loadJson("./crawl_sources/links.json");
-        shoes_salebot.start(store_config[3]);
-    }
-
 } else {
     logger.error("Can not load json from " + "./crawl_sources/links.json");
+}
+
+if (config.submodule.salebot) {
+    fbWebhook.start();
 }

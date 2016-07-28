@@ -151,6 +151,14 @@ exports.findStoreById = function (id, callback) {
     });
 }
 
+exports.getAllStores = function (callback) {
+    gDbManager.Store.findAll({
+    }).then(function (stores) {
+        var jsonObj = converDBObjectToJson(stores);
+        callback(jsonObj);
+    });
+}
+
 exports.getAllPages = function (callback) {
     gDbManager.Page.findAll({
         include: [{
