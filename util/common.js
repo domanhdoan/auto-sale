@@ -131,7 +131,13 @@ module.exports.getAllcolorVn = function() {
 }
 
 module.exports.loadJson = function(path) {
-    var json_object = JSON.parse(require('fs').readFileSync(path, 'utf8'))
+    try {
+        var json_object = JSON.parse(require('fs').readFileSync(path, 'utf8'));
+    } catch (err) {
+        logger.info(err);
+    } finally {
+
+    }
     return json_object
 }
 
