@@ -346,17 +346,6 @@ FBMessenger.prototype.createOrderItemElement = function (title, desc, price, qua
     return jsonItem;
 }
 
-FBMessenger.prototype.generate_invoice_summary = function (sub_total, shipping_cost) {
-    var summary = {
-        "subtotal": sub_total,
-        "shipping_cost": shipping_cost,
-        "total_tax": sub_total * 0.05, // 5 % VAT
-        "total_cost": (sub_total + shipping_cost + sub_total * 0.05)
-    };
-
-    return summary;
-}
-
 FBMessenger.prototype.generate_invoice_adjustment = function () {
     var adjustments = [{
         "name": "New Customer Discount",

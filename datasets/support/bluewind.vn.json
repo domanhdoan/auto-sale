@@ -20,6 +20,7 @@
     "range": {
         "country": "Việt Nam"
     },
+    "vat":0,
     "support":{
         "do_size": {
             "summary": "Hướng dẫn chọn size",
