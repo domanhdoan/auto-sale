@@ -2,7 +2,7 @@ var gDbManager = require("../models/db_manager.js");
 
 var logger = require("../util/logger.js");
 var common = require('../util/common.js');
-var WebScraper = require('../processors/web_scraping_lite');
+var WebScraper = require('../processors/web_scraping');
 var scraper = new WebScraper({
     url: ""
 });
