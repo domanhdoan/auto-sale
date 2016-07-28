@@ -270,10 +270,10 @@ FBMessenger.prototype.createAIAPIProductsMessage = function (rich_data) {
     }
 }
 
-FBMessenger.prototype.doSubscribeRequest = function () {
+FBMessenger.prototype.doSubscribeRequest = function (token) {
     request({
         method: 'POST',
-        uri: "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=" + config.bots.fb_page_token
+        uri: "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=" + token
     },
         function (error, response, body) {
             if (error) {
