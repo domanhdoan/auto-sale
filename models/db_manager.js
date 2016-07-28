@@ -126,7 +126,7 @@ sequelize.sync().done(function () {
   var initdata =
   {
     'stores': [
-      'http://giaytot.com',
+      "http://badastore.vn",
       'http://bluewind.vn'
     ],
     'pages': [
@@ -137,9 +137,9 @@ sequelize.sync().done(function () {
         'token': 'EAAPsuaR9aooBAO9S7RJ2yIAdl9EIfVH4HjETVvbjfAnHBF0FCVj9qqp57jpKQ4ZAd48E20QaYWLWsyveBSjVMV5uvjCHQHuJCwavXDSIFW0RHxJoxLCTGgOx0MkuyyI2ZAmHRS4lgTmtGBffH8asfBZBSmc8tLAMY9x6DdCAgZDZD'
       },
       {
-        'url': 'http://giaytot.com',
-        'name': 'Giầy tốt',
-        'pageId': '1622583457969908',
+        'url': 'http://badastore.vn',
+        'name': 'Bada store',
+        'pageId': '1622583457969909',
         'token': 'EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD'
       }
     ]
