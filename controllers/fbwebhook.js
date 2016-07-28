@@ -238,7 +238,8 @@ function getAvailableSizeMsg(show_size, sizes, reference) {
     return availableSizesMesage;
 }
 
-function showAvailableColorNsize(session, showColorFlag, showSizeFlag, showPhotoFlag) {
+function showAvailableColorNsize(session, showColorFlag, 
+    showSizeFlag, showPhotoFlag) {
     var productInfo = sessionManager.getProductInfo(session);
     gProductFinder.getColorsNSizeNPhotos(productInfo.id,
         function(colors, sizes, photos) {
@@ -324,7 +325,7 @@ function findCategories(session) {
     });
 }
 
-function searchProducts(session, user_msg, user_msg_trans, storeconfig) {
+function searchProducts(session, user_msg, storeconfig) {
     var result = common.extractValue(user_msg, storeconfig.product_code_pattern);
     if (common.isThumbUrl(user_msg)) {
         findProductByThumbLink(session, user_msg);
@@ -333,7 +334,7 @@ function searchProducts(session, user_msg, user_msg_trans, storeconfig) {
     } else if (result != "") {
         findProductByCode(session, result);
     } else {
-        findProductByKeywords(session, user_msg_trans);
+        findProductByKeywords(session, user_msg);
     }
 }
 
@@ -780,7 +781,7 @@ function processTextEvent(session, user_msg, storeconfig) {
     if (user_req_trans === common.action_terminate_order) {
         cancelOrder(session);
     } else if (last_action_key === common.say_greetings) {
-        searchProducts(session, user_msg, user_req_trans, storeconfig);
+        searchProducts(session, user_req_trans, storeconfig);
     } else if ((last_action >= selectProductAction) && last_action < selectQuantityAction) {
         putProductToCart(session, user_msg);
     } else if ((last_action >= selectQuantityAction) && last_action <= selectDeliveryDateAction) {
@@ -915,7 +916,7 @@ function processEvent(event) {
                 // handle the case when user send an image for searching product
                 for (var i = 0; i < attachments.length; i++) {
                     if (attachments[i].type === 'image') {
-                        processTextEvent(currentSession, attachments[i].payload.url);
+                        processTextEvent(currentSession, attachments[i].payload.url, storeconfig);
                     } else {
                         logger.info("Skipp to handle attachment");
                     }
