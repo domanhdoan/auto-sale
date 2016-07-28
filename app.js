@@ -7,9 +7,9 @@ var config = require("./config/config.js");
 var common = require("./util/common");
 var logger = require("./util/logger");
 
-var WebScraper = require("./processors/web_scraping_lite");
+var WebScraper = require("./processors/web_scraping");
 
-var shoes_salebot = require("./controllers/shoes_salebot");
+var shoes_salebot = require("./controllers/fbwebhook");
 
 
 function show_error() {
@@ -35,9 +35,6 @@ if (args.length > 0) {
             show_error();
         }
     }
-} else {
-    show_error();
-    exit(0);
 }
 
 mkdirp(config.crawler.temp_dir, function(err) {
