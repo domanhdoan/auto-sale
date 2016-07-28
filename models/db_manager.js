@@ -134,7 +134,7 @@ sequelize.sync().done(function () {
         'url': 'http://bluewind.vn',
         'name': 'Bluewind - giẩy đôi',
         'pageId': '1622583457969907',
-        'token': 'EAAPsuaR9aooBAFHiRys6jXnUX91lt7evfByO7Hc42qcPZBgeA3dHq18C0LvEwjuaXodnliKZAOs0RZAfxgQ6v7Q9SFhvGZCzrHalj3myhjzrtmeKfSXZCvZBaZBla0zrhvZB17Njru2p1xWgkSKmVZB59yXBFaXt9gOr6kFmAZBHukPAZDZD'
+        'token': 'EAAPsuaR9aooBAO9S7RJ2yIAdl9EIfVH4HjETVvbjfAnHBF0FCVj9qqp57jpKQ4ZAd48E20QaYWLWsyveBSjVMV5uvjCHQHuJCwavXDSIFW0RHxJoxLCTGgOx0MkuyyI2ZAmHRS4lgTmtGBffH8asfBZBSmc8tLAMY9x6DdCAgZDZD'
       },
       {
         'url': 'http://giaytot.com',
@@ -147,23 +147,23 @@ sequelize.sync().done(function () {
   var async = require('async')
   var gProductFinder = require('../dal/product_finder')
   var gModelfatory = require('../dal/model_factory')
-  var allStoreInfo = []
+  var allStoreInfo = [];
   async.series([
       function loadAllStoreInfo(callback) {
           var count = 0;
           var callbackFunc = null;
           async.eachSeries(initdata.stores, function (url, callback2) {
               gProductFinder.findStoreByLink(url, function (store) {
-                  var storeId = store.id
-                  logger.info('Store ID = ' + storeId)
-                  allStoreInfo[store.home] = store
+                  var storeId = store.id;
+                  logger.info('Store ID = ' + storeId);
+                  allStoreInfo[store.home] = store;
                   callback2();
                   if (count === (initdata.stores.length - 1)) {
                       callbackFunc(null);
                   }
                   count++;
-              })
-          })
+              });
+          });
           callbackFunc = callback;
       },
       function loadAllPageInfo() {

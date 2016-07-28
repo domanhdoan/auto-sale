@@ -681,8 +681,10 @@ function processEvent(event) {
 //================= FB webhook ========================================//
 //=====================================================================//
 function initWebHook() {
-    fbMessenger.doSubscribeRequest();
 
+    Object.keys(gPagesInfo).forEach(function (key) {
+        fbMessenger.doSubscribeRequest(gPagesInfo[key].token);
+    });
     server.use(bodyParser.text({
         type: 'application/json'
     }));
@@ -695,9 +697,11 @@ function initWebHook() {
         if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
             res.send(req.query['hub.challenge']);
             console.log("call get");
-            setTimeout(function() {
-                fbMessenger.doSubscribeRequest();
-            }, 3000);
+            setTimeout(function () {
+                Object.keys(gPagesInfo).forEach(function (key) {
+                    fbMessenger.doSubscribeRequest(gPagesInfo[key].token);
+                });
+            }, 20000);
         } else {
             res.send('Error, wrong validation token');
         }
@@ -996,8 +1000,6 @@ module.exports = {
     start: function(storeConfig) {
         gStoreConfig = storeConfig;
 
-        initWebHook();
-
         if (gAiUsingFlag) {
             intentParser = parserFactory.createParser(ParserFactory.CONSTANT.AI_PARSER);
         } else {
@@ -1006,11 +1008,11 @@ module.exports = {
 
         setUpUserIntentListener();
         intentParser.setEmitter(emitter);
-
-        gProductFinder.getAllPages(function(pages) {
-            pages.forEach(function(page) {
+        gProductFinder.getAllPages(function (pages) {
+            pages.forEach(function (page) {
                 gPagesInfo[page.pageId] = page;
             });
+            initWebHook();
         });
     }
 
