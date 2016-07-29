@@ -988,13 +988,14 @@ function initWebHook() {
     }));
 
     server.get(config.bots.fb_webhook, function(req, res) {
+        logger.info("Get verification check = " + res);
         if (req.query['hub.verify_token'] === 'verify_me') {
             res.send(req.query['hub.challenge']);
             setTimeout(function () {
                 Object.keys(gPagesInfo).forEach(function (key) {
                     fbMessenger.doSubscribeRequest(gPagesInfo[key].token);
                 });
-            }, 20000);
+            }, 10000);
         } else {
             res.send('Error, wrong validation token');
         }
