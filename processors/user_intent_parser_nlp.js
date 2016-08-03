@@ -119,7 +119,7 @@ function UserIntentParserNLP () {
   this.parseProductType = function (userMsg) {
     var productType = [];
     for (var i = 0, length = typeRegexp.length; i < length; i++) {
-      var type = common.extractValues(userMsg, typeRegexp[i]);
+      var type = common.extractValue(userMsg, typeRegexp[i]);
       if (type !== '') {
         productType.push(type);
       }
