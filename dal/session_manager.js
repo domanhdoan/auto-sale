@@ -82,8 +82,10 @@ SessionManager.prototype.resetSession = function(session) {
     var storeid = session.storeid;
     var pageid = session.pageid;
     var fbid = session.fbid;
+    var timestamp = session.timestamp;
     this.deteleSession(session.sessionId);
     session = this.findOrCreateSession(storeid, pageid, fbid);
+    session.timestamp = timestamp;
 }
 
 SessionManager.prototype.deteleSession = function(sessionId) {
