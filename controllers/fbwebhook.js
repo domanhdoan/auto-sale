@@ -712,7 +712,6 @@ function handleShipIntent(data) {
     var showShipFee = false;
     var showShipDuration = false;
     gProductFinder.findStoreById(data.storeid, function(store) {
-        var name = store.home.replace("http://", "");
         var storeSupport = gStoreSupport[store.id];
 
         if (data.location != "" && data.shipintent != common.SHIP_FREE_SHIP) {
@@ -743,7 +742,7 @@ function handleShipIntent(data) {
                 logger.info("Ship fee = " + fee);
                 fbMessenger.sendTextMessage(session.fbid, session.token, 
                 "Giá ship: " + fee / 1000 + "K VND cho đôi đầu tiên.\nTừ đôi thứ 2 thì tính thêm " 
-                + storeSupport.fee.more / 1000 + "K VND /đôi");
+                + storeSupport.fee.more / 1000 + "K VND /đôi.\nCOD cộng thêm 20 K VNĐ");
             });
         }
 
