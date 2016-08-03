@@ -917,6 +917,10 @@ function processEvent(event) {
         var sender = event.sender.id.toString();
         var receiver = event.recipient.id.toString();
         var pageInfo = gPagesInfo[receiver];
+        if(pageInfo === undefined){
+            logger.error("Not support to handle the message from client to Page");
+            return;
+        }
         var storeconfig = gStoreConfig[pageInfo.StoreId];
         if (pageInfo === null) {
             return;
@@ -963,6 +967,7 @@ function processEvent(event) {
             if (delta > 500 /*avoid double click*/ ) {
                 currentSession.timestamp = event.timestamp;
                 processPostbackEvent(currentSession, postback);
+                logger.info("session info: " + JSON.stringify(currentSession));
             } else {
                 logger.info("Skipp to handle double click within delta = " + delta);
             }
