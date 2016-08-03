@@ -713,7 +713,7 @@ function handleShipIntent(data) {
     var showShipDuration = false;
     gProductFinder.findStoreById(data.storeid, function(store) {
         var name = store.home.replace("http://", "");
-        var storeSupport = gStoreSupport[name];
+        var storeSupport = gStoreSupport[store.id];
 
         if (data.location != "" && data.shipintent != common.SHIP_FREE_SHIP) {
             fbMessenger.sendTextMessage(session.fbid, session.token, 
