@@ -396,6 +396,8 @@ FBMessenger.prototype.sendReceiptMessage = function(sender, token, invoice_items
             for (var i = 0; i < (temp.length - 2); i++) {
                 fullAddress.street_1 += temp[i].trim() + ", ";
             }
+            logger.info("invoice_details.address = " + invoice_details.address);
+            logger.info("fullAddress.street_1 = " + fullAddress.street_1);
             fullAddress.street_1 = fullAddress.street_1.slice(-1, 2);
             fullAddress.city = temp[temp.length - 2].trim();
             fullAddress.state = temp[temp.length - 2].trim();
