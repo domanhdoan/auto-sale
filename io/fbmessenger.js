@@ -31,7 +31,7 @@ function FBMessenger() {
                 } else if (response.body.error) {
                     logger.error('Error: ' + JSON.stringify(response.body.error));
                 } else {
-
+                    logger.info("Send to FB response: " + JSON.stringify(body));
                 }
                 if (callback != null && common.isDefined(callback)) {
                     callback();
