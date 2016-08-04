@@ -34,6 +34,19 @@ var gAiUsingFlag = false;
 
 var async = require("async");
 
+function timeConverter(UNIX_timestamp) {
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+    return time;
+}
+
 function createAndSendOrderToFB(session, callback) {
     var orderInfo = sessionManager.getOrderInfo(session);
     gProductFinder.getOrderItems(orderInfo.id, function(items) {
@@ -43,12 +56,16 @@ function createAndSendOrderToFB(session, callback) {
 
             // change from server time zone to VN time zone
             var timestamp = parseInt(items[0].Invoice.dataValues.creation_date) + 13 * 3600 * 1000;
+            logger.info("Before slicing" + timeConverter(timestamp));
+
             var length = ("" + timestamp).length;
             var delta = length - 10;
             if (delta > 0) {
                 session.last_invoice.creation_date = items[0].Invoice.dataValues
                     .creation_date.slice(0, -1 * delta);
             }
+            logger.info("After slicing" + timeConverter(parseInt(session.last_invoice.creation_date)));
+            
             var productCount = 0;
             for (var i = 0; i < items.length; i++) {
                 var item = items[i];
