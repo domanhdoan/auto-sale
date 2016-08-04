@@ -42,7 +42,7 @@ function createAndSendOrderToFB(session, callback) {
             var invoiceItems = [];
 
             // change from server time zone to VN time zone
-            var timestamp = parseInt(items[0].Invoice.dataValues.creation_date) + 13 * 3600;
+            var timestamp = parseInt(items[0].Invoice.dataValues.creation_date) + 13 * 3600 * 1000;
             var length = ("" + timestamp).length;
             var delta = length - 10;
             if (delta > 0) {
