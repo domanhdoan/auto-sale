@@ -42,7 +42,7 @@ function createAndSendOrderToFB(session, callback) {
             var invoiceItems = [];
 
             // change from server time zone to VN time zone
-            var timestamp = parseInt(items[0].Invoice.dataValues.creation_date) + 13 * 3600; 
+            var timestamp = parseInt(items[0].Invoice.dataValues.creation_date) + 13 * 3600;
             var length = ("" + timestamp).length;
             var delta = length - 10;
             if (delta > 0) {
@@ -73,14 +73,14 @@ function createAndSendOrderToFB(session, callback) {
             }
 
             var storeSupport = gStoreSupport[session.storeid];
-            calculateShipFee(orderInfo.address, storeSupport, function (fee) {
-                var from2ndProductShipFee = (fee === 0)? 0 : storeSupport.fee.more;
+            calculateShipFee(orderInfo.address, storeSupport, function(fee) {
+                var from2ndProductShipFee = (fee === 0) ? 0 : storeSupport.fee.more;
                 var shipFee = (productCount === 0) ? 0 : ((productCount - 1) * from2ndProductShipFee + fee);
                 var invoiceSummary = {
-                    "subtotal": sub_total/100,
-                    "shipping_cost": shipFee/100,
+                    "subtotal": sub_total / 100,
+                    "shipping_cost": shipFee / 100,
                     "total_tax": sub_total * storeSupport.vat / 100,
-                    "total_cost": (sub_total + shipFee + sub_total * storeSupport.vat)/100
+                    "total_cost": (sub_total + shipFee + sub_total * storeSupport.vat) / 100
                 };
 
                 var invoiceAdjustments = {};
@@ -184,13 +184,14 @@ function searchAndConfirmAddress(session, destination, callback) {
             var length = 1; //result.length;
             for (var i = 0; i < length; i++) {
                 logger.info("Full address: " + result[i].formattedAddress);
-                fbMessenger.sendAddressConfirmMessage(session.fbid, 
+                fbMessenger.sendAddressConfirmMessage(session.fbid,
                     session.token, result[i].formattedAddress);
                 callback(result[i].formattedAddress);
             }
         } else {
             fbMessenger.sendTextMessage(session.fbid, session.token,
-                "Không tìm thấy địa chỉ. Bạn nhập lại địa chỉ nhé.", function () {
+                "Không tìm thấy địa chỉ. Bạn nhập lại địa chỉ nhé.",
+                function() {
                     callback(null);
                 });
         }
@@ -259,7 +260,7 @@ function getAvailableSizeMsg(show_size, sizes, reference) {
     return availableSizesMesage;
 }
 
-function showAvailableColorNsize(session, showColorFlag, 
+function showAvailableColorNsize(session, showColorFlag,
     showSizeFlag, showPhotoFlag) {
     var productInfo = sessionManager.getProductInfo(session);
     gProductFinder.getColorsNSizeNPhotos(productInfo.id,
@@ -336,8 +337,8 @@ function findProductByCategory(session) {
             if (Object.keys(products).length > 0) {
                 sendProductSearchResultsToFB(session, products);
                 sessionManager.setCategoryId(session, products[0].CategoryId);
-            }else{
-                fbMessenger.sendTextMessage(session.fbid, session.token, 
+            } else {
+                fbMessenger.sendTextMessage(session.fbid, session.token,
                     "Không tìm thấy sản phẩm nào. Bạn vui lòng chọn danh mục khác");
             }
         });
@@ -358,7 +359,7 @@ function searchProducts(session, user_msg, storeconfig) {
     } else if (result != "") {
         findProductByCode(session, result);
     } else {
-        findProductByKeywords(session, user_msg);
+        findProductByKeywords(session, user_msg.latinise());
     }
 }
 
@@ -440,8 +441,8 @@ function selectProductQuantity(session, user_message) {
             function(saved_item) {
                 logger.info("saved_item: " + JSON.stringify(saved_item));
                 sessionManager.setUserAction(session, common.action_continue_search);
-                fbMessenger.sendPurchaseConfirmMessage(session.fbid, session.token, 
-                "Bạn muốn tiếp tục chọn sản phẩm hay đặt hàng ngay?");
+                fbMessenger.sendPurchaseConfirmMessage(session.fbid, session.token,
+                    "Bạn muốn tiếp tục chọn sản phẩm hay đặt hàng ngay?");
             });
     }
 }
@@ -715,7 +716,7 @@ function handleShipIntent(data) {
         var storeSupport = gStoreSupport[store.id];
 
         if (data.location != "" && data.shipintent != common.SHIP_FREE_SHIP) {
-            fbMessenger.sendTextMessage(session.fbid, session.token, 
+            fbMessenger.sendTextMessage(session.fbid, session.token,
                 "Có ship về " + data.location + " bạn nhé");
         }
 
@@ -740,9 +741,8 @@ function handleShipIntent(data) {
         if (showShipFee) {
             calculateShipFee(data.location, storeSupport, function(fee) {
                 logger.info("Ship fee = " + fee);
-                fbMessenger.sendTextMessage(session.fbid, session.token, 
-                "Giá ship: " + fee / 1000 + "K VND cho đôi đầu tiên.\nTừ đôi thứ 2 thì tính thêm " 
-                + storeSupport.fee.more / 1000 + "K VND /đôi.\nCOD cộng thêm 20 K VNĐ");
+                fbMessenger.sendTextMessage(session.fbid, session.token,
+                    "Giá ship: " + fee / 1000 + "K VND cho đôi đầu tiên.\nTừ đôi thứ 2 thì tính thêm " + storeSupport.fee.more / 1000 + "K VND /đôi.\nCOD cộng thêm 20 K VNĐ");
             });
         }
 
@@ -812,7 +812,7 @@ function processTextEvent(session, user_msg, storeconfig) {
     if (user_req_trans === common.action_terminate_order) {
         cancelOrder(session);
     } else if (last_action_key === common.say_greetings) {
-        searchProducts(session, user_req_trans, storeconfig);
+        searchProducts(session, user_msg, storeconfig);
     } else if ((last_action >= selectProductAction) && last_action < selectQuantityAction) {
         putProductToCart(session, user_msg);
     } else if ((last_action >= selectQuantityAction) && last_action <= selectDeliveryDateAction) {
@@ -916,7 +916,7 @@ function processEvent(event) {
         var sender = event.sender.id.toString();
         var receiver = event.recipient.id.toString();
         var pageInfo = gPagesInfo[receiver];
-        if(pageInfo === undefined){
+        if (pageInfo === undefined) {
             logger.error("Not support to handle the message from client to Page");
             return;
         }
@@ -980,7 +980,7 @@ function processEvent(event) {
 //================= FB webhook ========================================//
 //=====================================================================//
 function initWebHook() {
-    Object.keys(gPagesInfo).forEach(function (key) {
+    Object.keys(gPagesInfo).forEach(function(key) {
         fbMessenger.doSubscribeRequest(gPagesInfo[key].token);
     });
     server.use(bodyParser.text({
@@ -995,8 +995,8 @@ function initWebHook() {
         logger.info("Get verification check = " + res);
         if (req.query['hub.verify_token'] === 'verify_me') {
             res.send(req.query['hub.challenge']);
-            setTimeout(function () {
-                Object.keys(gPagesInfo).forEach(function (key) {
+            setTimeout(function() {
+                Object.keys(gPagesInfo).forEach(function(key) {
                     fbMessenger.doSubscribeRequest(gPagesInfo[key].token);
                 });
             }, 10000);
@@ -1045,8 +1045,8 @@ module.exports = {
         }
         setUpUserIntentListener();
         intentParser.setEmitter(emitter);
-        gProductFinder.getAllStores(function(stores){
-            stores.forEach(function(store){
+        gProductFinder.getAllStores(function(stores) {
+            stores.forEach(function(store) {
                 var name = store.home.replace("http://", "") + ".json";
                 gStoreConfig[store.id] = common.loadStoreScrapingPattern(store.type, name);
                 var storeSupport = common.loadJson("./datasets/support/" + name);
@@ -1054,8 +1054,8 @@ module.exports = {
             });
         });
 
-        gProductFinder.getAllPages(function (pages) {
-            pages.forEach(function (page) {
+        gProductFinder.getAllPages(function(pages) {
+            pages.forEach(function(page) {
                 gPagesInfo[page.pageId] = page;
             });
             initWebHook();
