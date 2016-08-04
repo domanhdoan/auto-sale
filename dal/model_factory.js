@@ -224,8 +224,10 @@ module.exports.updateInvoice = function(invoice_info, callback) {
                 plan_delivery_date: invoice_info.delivery,
                 status: invoice_info.status
             });
-        } else {}
-        callback(callback);
+        } else {
+            logger.info("Add new invoice");
+        }
+        callback(invoice);
     })
 }
 
