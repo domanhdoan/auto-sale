@@ -374,6 +374,7 @@ FBMessenger.prototype.sendReceiptMessage = function(sender, token, invoice_items
     // Street, city, province, country
     var temp = invoice_details.address.split(",");
     switch (temp.length) {
+        case 0:
         case 1:
             break;
         case 2:
@@ -392,6 +393,13 @@ FBMessenger.prototype.sendReceiptMessage = function(sender, token, invoice_items
             fullAddress.state = temp[temp.length - 2].trim();
             break;
         default:
+            for (var i = 0; I == temp.length - 3; i++) {
+                fullAddress.street_1 = temp[i].trim() + ", ";
+            }
+            fullAddress.street_1 = fullAddress.street_1.slice(-1, 2);
+            fullAddress.city = temp[temp.length - 2].trim();
+            fullAddress.state = temp[temp.length - 2].trim();
+            break;
     }
 
     var messageData = {
