@@ -8,11 +8,11 @@
                 "id": "1027155260703895"
             },
             "recipient": {
-                "id": "1622583457969907"
+                "id": "1622583457969909"
             },
             "timestamp": 1458692752778,
             "postback": {
-                "payload": "{\"id\":1,\"title\":\"Giày thể thao Nữ\",\"action\":\"view_cat\"}"
+                "payload": "{\"id\":21,\"title\":\"Giày\",\"action\":\"view_cat\"}"
             }
         }]
     }]

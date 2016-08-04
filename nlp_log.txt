@@ -1,0 +1,474 @@
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"muon xem 1 doi adidas","category":"adidas","code":"","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"con mau xanh neon khong","category":"","code":"","color":["xanh neon","xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh va den khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"intent":"check_price","storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"","type":[],"quantity":["1"],"msg":"doi nay gia bao nhieu"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"doi nay gia bao nhieu","location":"Gia Lai","intent":"check_ship"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"con mau xanh neon khong","category":"","code":"","color":["xanh neon","xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"con mau xanh neon khong","category":"","code":"","color":["xanh neon","xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"con mau xanh neon khong","category":"","code":"","color":["xanh neon","xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"con mau xanh neon khong","category":"","code":"","color":["xanh neon","xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 nam con mau xanh khong","category":"BW6882","code":"BW6882","color":["xanh tim than"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"truong dinh, ha noi","category":"dinh no","code":"","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":15,"msg":"mau den","category":"","code":"","color":["den"],"size":[],"intent":"check_availability"}
+
+{"intent":"check_price","storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"","type":[],"quantity":["2"],"msg":"2 doi giam gia ko"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"2 doi giam gia ko","location":"Gia Lai","intent":"check_ship"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":49,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":15,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 the nao","category":"BW6309","code":"BW6309","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":7,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":" bw6882 con mau do khong","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":" bw6882 con mau do khong","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":" bw6882 con mau do gach khong","category":"BW6882","code":"BW6882","color":["do gach"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":7,"msg":" bw6882 con mau do gach khong","category":"BW6882","code":"BW6882","color":["do gach"],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":-1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":15,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":15,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW688","code":"BW688","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw9882 doi nay nam con size 40 khong","category":"BW9882","code":"BW9882","color":[],"size":["40"],"intent":"check_availability"}
+
+{"intent":"check_price","storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"","type":[],"quantity":["1"],"msg":"doi nay gia bao nhieu"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"doi nay gia bao nhieu","location":"Gia Lai","intent":"check_ship"}
+
+{"intent":"check_price","storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"","type":[],"quantity":["1"],"msg":"doi nay gia bao nhieu"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"doi nay gia bao nhieu","location":"Gia Lai","intent":"check_ship"}
+
+{"intent":"check_price","storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6309","type":[],"quantity":["1"],"msg":"bw6309 doi nay gia bao nhieu"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6309 doi nay gia bao nhieu","location":"Gia Lai","intent":"check_ship"}
+
+{"storeid":1,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":"nam","quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":"[nam]","quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":66,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":66,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko","location":"Hà Nam","intent":"check_ship"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nam"]],"quantity":["1"],"msg":"bw6310 co nam size 30 ko. mua 2 doi co giam gia ko"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[],"quantity":["2"],"msg":"bw6310 co size 30 ko. mua 2 doi co giam gia ko"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":66,"code":"BW6310","type":[],"quantity":["2"],"msg":"bw6310 co size 30 ko. mua 2 doi co giam gia ko"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[],"quantity":["2"],"msg":"bw6310 co size 30 ko. mua 2 doi co giam gia ko"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":66,"code":"BW6310","type":[],"quantity":["2"],"msg":"bw6310 co size 30 ko. mua 2 doi co giam gia ko"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":66,"code":"BW6310","type":[["nu"]],"quantity":["1"],"msg":"bw6310 co size nu 30 ko. mua 2 doi co giam gia ko"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nu"]],"quantity":["1"],"msg":"bw6310 co size nu 30 ko. mua 2 doi co giam gia ko"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"BW6310","type":[["nu"]],"quantity":["1"],"msg":"bw6310 co size nu 30 ko. mua 2 doi co giam gia ko"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"co ship den ha nam khong?","location":"Hà Nam","intent":"check_ship"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co size nu 30 ko. mua 2 doi co giam gia ko","location":"Gia Lai","intent":"check_ship","timestamp":1469113213823}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"bw6310 co size nu 30 ko. mua 2 doi co giam gia ko","location":"Gia Lai","intent":"check_ship","timestamp":"Thursday, July 21, 2016 10:11 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Thursday, July 21, 2016 10:26 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Thursday, July 21, 2016 10:30 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"hello","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Thursday, July 21, 2016 10:32 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"shop con giay nam ko","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Friday, July 22, 2016 9:57 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"shop con giay nam ko","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Friday, July 22, 2016 9:58 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"shop có ship vè hải phòng ko ạ","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 22, 2016 10:18 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"shop có ship vè hải phòng ko ạ","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 22, 2016 10:21 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"Shop có ship về Hải phòng ko ạ","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 22, 2016 10:36 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"Shop có ship về Hải phòng ko ạ","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 22, 2016 10:48 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"Shop có ship về Hải phòng ko ạ","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 22, 2016 11:30 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"Shop có ship về Hải phòng ko ạ","location":"Hải Dương","shipintent":"range","intent":"check_ship","timestamp":"Friday, July 22, 2016 11:34 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"Shop có ship về Hải phòng ko ạ","location":"Hải Dương","shipintent":"range","intent":"check_ship","timestamp":"Friday, July 22, 2016 11:35 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"Shop có ship về Hải phòng ko ạ","location":"Hải Phòng","shipintent":"range","intent":"check_ship","timestamp":"Friday, July 22, 2016 11:37 PM"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"","type":[],"quantity":["1"],"msg":"Shop có ship về Hải phòng bao nhieu","timestamp":"Friday, July 22, 2016 11:46 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Friday, July 22, 2016 11:49 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"Shop có ship về Hải phòng bao lau","location":"Hải Phòng","shipintent":"duration","intent":"check_ship","timestamp":"Friday, July 22, 2016 11:51 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao lau","location":"Hải Phòng","shipintent":"duration","intent":"check_ship","timestamp":"Friday, July 22, 2016 11:52 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao lau","location":"Hải Phòng","shipintent":"duration","intent":"check_ship","timestamp":"Saturday, July 23, 2016 12:37 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 12:39 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 12:41 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 12:43 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 12:47 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 12:51 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 12:52 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 12:52 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:16 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:17 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:22 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:22 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về Hải phòng bao nhieu","location":"Hải Phòng","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:23 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG bao nhieu","location":"Hồ Chí Minh","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:24 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG bao nhieu","location":"Hồ Chí Minh","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:25 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG bao nhieu","location":"Hồ Chí Minh","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:25 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG bao nhieu","location":"Hồ Chí Minh","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:27 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG bao nhieu","location":"Hồ Chí Minh","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:27 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG bao nhieu","location":"Hồ Chí Minh","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:33 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG bao lau","location":"Hồ Chí Minh","shipintent":"duration","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:42 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG bao lau","location":"Hồ Chí Minh","shipintent":"duration","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:43 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG thi the nao","location":"Hồ Chí Minh","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:48 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG thi the nao","location":"Hồ Chí Minh","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:49 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG ko","location":"Hồ Chí Minh","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:50 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG ko","location":"Hồ Chí Minh","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 1:58 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG ko","location":"Hồ Chí Minh","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:01 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG ko","location":"Hồ Chí Minh","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:02 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG ko","location":"Hồ Chí Minh","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:02 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có ship về SG ko","location":"Hồ Chí Minh","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:03 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:04 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Ship đến HCM thì hết bao nhiêu?","location":"Hồ Chí Minh","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:04 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Mình ở Hai duong thì bao lâu nhận được hàng?","location":"Hải Dương","shipintent":"duration","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:04 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Free ship hả shop?","location":"","shipintent":"price","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:07 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Free ship hả shop?","location":"","shipintent":"free_ship","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:19 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Free ship hả shop?","location":"","shipintent":"free_ship","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:21 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Free ship hả shop?","location":"","shipintent":"free_ship","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:22 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"free_ship","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:22 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"free_ship","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:23 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:24 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:25 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:27 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:28 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:28 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:29 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:31 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:32 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:33 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:33 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:34 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:35 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Có ship đến Ha Nam không?","location":"Hà Nam","shipintent":"range","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:35 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có COD không","location":"","shipintent":"COD","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:36 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có COD không","location":"","shipintent":"COD","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:36 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"Shop có COD không","location":"","shipintent":"COD","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:36 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"doi nay gia bao nhieu","location":"Gia Lai","shipintent":"duration","intent":"check_ship","timestamp":"Saturday, July 23, 2016 2:50 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"doi nay gia bao nhieu","location":"Gia Lai","shipintent":"duration","intent":"check_ship","timestamp":"Saturday, July 23, 2016 3:11 AM"}
+
+{"intent":"check_price","storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"code":"","type":[],"quantity":["1"],"msg":"doi nay gia bao nhieu","timestamp":"Saturday, July 23, 2016 3:35 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability","timestamp":"Saturday, July 23, 2016 3:35 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","msg":"BW6882 the nao","location":"","shipintent":"range","intent":"check_ship","timestamp":"Thursday, July 28, 2016 9:22 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 9:28 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6882 the nao","category":"BW6882","code":"BW6882","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 9:30 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 9:33 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 9:37 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 10:21 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 10:31 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 10:33 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 10:36 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:13 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:15 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:18 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:32 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:33 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:35 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:43 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:48 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:49 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:55 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, July 28, 2016 11:58 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Friday, July 29, 2016 12:08 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Friday, July 29, 2016 12:11 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Friday, July 29, 2016 12:12 AM"}
+
+{"storeid":6,"pageid":"1622583457969908","fbid":"1027155260703895","productid":-1,"msg":"giAY NAM","category":"the thao nam","code":"","color":[],"size":[],"intent":"check_availability","timestamp":"Friday, July 29, 2016 12:24 AM"}
+
+{"storeid":6,"pageid":"1622583457969908","fbid":"1027155260703895","productid":-1,"msg":"giAY NAM","category":"the thao nam","code":"","color":[],"size":[],"intent":"check_availability","timestamp":"Friday, July 29, 2016 12:31 AM"}
+
+{"storeid":6,"pageid":"1622583457969908","fbid":"1027155260703895","productid":-1,"msg":"giAY NAM","category":"the thao nam","code":"","color":[],"size":[],"intent":"check_availability","timestamp":"Friday, July 29, 2016 12:33 AM"}
+
+{"storeid":3,"pageid":"1622583457969909","fbid":"1027155260703895","productid":-1,"msg":"giAY NAM","category":"the thao nam","code":"","color":[],"size":[],"intent":"check_availability","timestamp":"Friday, July 29, 2016 12:47 AM"}
+
+{"storeid":3,"pageid":"1622583457969909","fbid":"1027155260703895","productid":-1,"msg":"giAY da","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 29, 2016 12:53 AM"}
+
+{"storeid":3,"pageid":"1622583457969909","fbid":"1027155260703895","productid":-1,"msg":"giAY da","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 29, 2016 12:54 AM"}
+
+{"storeid":3,"pageid":"1622583457969909","fbid":"1027155260703895","productid":-1,"msg":"giAY da","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 29, 2016 1:02 AM"}
+
+{"storeid":3,"pageid":"1622583457969909","fbid":"1027155260703895","productid":-1,"msg":"giAY da","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 29, 2016 1:04 AM"}
+
+{"storeid":3,"pageid":"1622583457969909","fbid":"1027155260703895","productid":-1,"msg":"giAY da","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 29, 2016 1:05 AM"}
+
+{"storeid":3,"pageid":"1622583457969909","fbid":"1027155260703895","productid":-1,"msg":"giAY da","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 29, 2016 1:06 AM"}
+
+{"storeid":3,"pageid":"1622583457969909","fbid":"1027155260703895","productid":-1,"msg":"giAY da","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Friday, July 29, 2016 1:09 AM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Wednesday, August 3, 2016 10:29 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, August 4, 2016 8:39 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":66,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, August 4, 2016 8:39 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, August 4, 2016 8:40 PM"}
+
+{"storeid":3,"pageid":"1622583457969909","fbid":"1027155260703895","productid":-1,"msg":"giAY da","category":"","code":"","color":[],"size":[],"intent":"unknow_intent","timestamp":"Thursday, August 4, 2016 9:29 PM"}
+
+{"storeid":15,"pageid":"1622583457969907","fbid":"1027155260703895","productid":-1,"msg":"BW6310 the nao","category":"BW6310","code":"BW6310","color":[],"size":[],"intent":"check_availability","timestamp":"Thursday, August 4, 2016 9:29 PM"}
