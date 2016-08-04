@@ -56,7 +56,7 @@ function createAndSendOrderToFB(session, callback) {
 
             // change from server time zone to VN time zone
             var timestamp = parseInt(items[0].Invoice.dataValues.creation_date) + 13 * 3600 * 1000;
-            logger.info("Before slicing" + timeConverter(timestamp));
+            logger.info("Before slicing" + timeConverter(timestamp/1000));
 
             var length = ("" + timestamp).length;
             var delta = length - 10;
@@ -65,7 +65,7 @@ function createAndSendOrderToFB(session, callback) {
                     .creation_date.slice(0, -1 * delta);
             }
             logger.info("After slicing" + timeConverter(parseInt(session.last_invoice.creation_date)));
-            
+
             var productCount = 0;
             for (var i = 0; i < items.length; i++) {
                 var item = items[i];
