@@ -264,7 +264,7 @@ function WebScraper(crawlPattern) {
                 var index = i;
                 var url = categoryLinks[i];
 
-                extractAllProductDetailsLink(index, url, allProductLinks, function (index, productLinks) {
+                extractAllProductDetailsLink(index, url, allProductLinks, function(index, productLinks) {
                     categoryCount++;
                     logger.info("Category index = " + index);
                     if ((categoryCount == length) && (callback != null)) {
@@ -309,7 +309,9 @@ WebScraper.prototype.extractThumbUrl = function(home_page, input_thumb, callback
             url: response.req._headers.referer + "&as_sitesearch=" + home_page,
             headers: {
                 followRedirect: true,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0  (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; \
+                .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E; CNS_UA; AD_LOGON=4C47452E4E4554; rv:11.0) like Gecko\
+                 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36'
             }
         };
 
