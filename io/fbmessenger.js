@@ -393,7 +393,7 @@ FBMessenger.prototype.sendReceiptMessage = function(sender, token, invoice_items
             fullAddress.state = temp[temp.length - 2].trim();
             break;
         default:
-            for (var i = 0; I == temp.length - 3; i++) {
+            for (var i = 0; i < (temp.length - 2); i++) {
                 fullAddress.street_1 = temp[i].trim() + ", ";
             }
             fullAddress.street_1 = fullAddress.street_1.slice(-1, 2);
