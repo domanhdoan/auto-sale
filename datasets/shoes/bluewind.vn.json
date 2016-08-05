@@ -27,7 +27,7 @@
         "page_list": "div.wp-pagenavi",
         "page_link": "a.page.larger"
     },
-    "product_code_pattern": "BW(\\d+)",
+    "product_code_pattern": "BW[0-9]{4}|[0-9]{4}|BW\\s[0-9]{4}",
     "keywords": {
         "code": "bw*"
     },

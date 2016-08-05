@@ -226,7 +226,7 @@ module.exports.extractValues = function(text, regExpStr) {
 }
 
 module.exports.extractProductCode = function(text, pattern) {
-    var upper = text.toUpperCase()
+    var upper = text.toUpperCase().replaceAll(/\s/,"");
     var ret = {
         isProductCode: false,
         code: ''
@@ -236,7 +236,7 @@ module.exports.extractProductCode = function(text, pattern) {
 
     if (results != null && results.length > 0) {
         ret.isProductCode = true
-        ret.code = results[0]
+        ret.code = results[0];
     }
     return ret
 }

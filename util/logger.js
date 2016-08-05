@@ -19,13 +19,13 @@ module.exports.info = function(message) {
 
 module.exports.warn = function(message) {
     if (config.develop.debug) {
-        logger.info(message);
+        logger.log('warn', message);
     }
 }
 
 module.exports.error = function(message) {
     if (config.develop.debug) {
-        logger.info(message);
+        logger.log('error', message);
     }
 }
 

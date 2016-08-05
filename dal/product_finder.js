@@ -95,7 +95,7 @@ function generateFindshoesQuery(storeId, keywords) {
     if (cat_keywords.length != 0) {
         var matchExp = "MATCH(P.finger) AGAINST('" + cat_keywords;
         query = query.replaceAll("Relevance", matchExp + "')" + " as Relevance");
-        query += " and " + matchExp + "' IN NATURAL LANGUAGE MODE)";
+        query += " and " + matchExp + "' WITH QUERY EXPANSION) or P.code LIKE '%" + cat_keywords + "%'";
     } else {
         query = query.replaceAll(", Relevance", "");
     }
