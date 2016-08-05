@@ -241,6 +241,14 @@ module.exports.extractProductCode = function(text, pattern) {
     return ret
 }
 
+module.exports.validateVNPhoneNo = function(text) {
+    text = text.replaceAll(/\s|.|-/,"");
+    var pattern = "\(\d{1,2}\)[0-9]{8}|\d{1,2}[0-9]{8}|09[0-9]{8}|\*849[0-9]{8}|(\*84)9[0-9]{8}|08[0-9]{8}|\*848[0-9]{8}|(\*84)8[0-9]{8}|01[0-9]{9}|\*841[0-9]{9}|(\*84)1[0-9]{9}";
+    var ret = (this.extractValue(text, pattern) === "")?false:true;
+    return ret;
+}
+
+
 module.exports.loadStoreScrapingPattern = function(storeType, url) {
     var product_pattern = url
     if (product_pattern.startsWith('http://')) {

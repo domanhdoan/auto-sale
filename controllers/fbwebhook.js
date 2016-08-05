@@ -490,11 +490,17 @@ function makeProductOrder(session, text) {
         fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_phone);
     } else if (session.last_action === common.set_recipient_name) {
         logger.debug("Phone: " + text);
-        sessionManager.setUserAction(session, common.set_phone);
-        sessionManager.setOrderInfo(session, {
-            phone: text
-        });
-        fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_address);
+        if (common.validatePhoneNo(text)) {
+            sessionManager.setUserAction(session, common.set_phone);
+            sessionManager.setOrderInfo(session, {
+                phone: text
+            });
+            fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_address);
+        }else{
+            fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn đã nhập sai định dạng số DT", function () {
+                fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_phone);
+            });
+        }
     } else if (session.last_action === common.set_phone) {
         logger.debug("Address: " + text);
         searchAndConfirmAddress(session, text, function(formattedAddress) {
