@@ -1,34 +1,37 @@
 {
-    "product_menu": {
-        "panel": "ul#menu-danh-muc",
-        "item": "li a"
+    "category": {
+        "menu": "ul#menu-danh-muc",
+        "item": "li.menu-item-object-sanpham_cat"
     },
     "product_info": {
-        "product_list": "ul.list-tax",
-        "title": ".title a",
-        "thumbnail": ".img a img",
-        "desc": "",
-        "price": ".gia.gia-hok .gia-moi span",
-        "discount": "",
-        "percent": "",
-        "detail_link": ".img a",
+        "link": "ul.list-tax li.img a",
         "details": {
+            "content_area": ".content-show",
+            "title": "div.t-t-sp .sp-t",
+            "thumbnail": ".img-thumb img",
+            "price": ".meta-sp .tt.giax span",
+            "discount": "",
+            "percent": "",
+            "desc": ".list-do div.entry-content p span",
             "code": "p.masp strong",
             "color": "dd.mausac a",
-            "size": "dd.size span",
+            "size": "dd.size span.size-active",
+            "instock": "del",
+            "status": ".meta-sp .tt",
+            "photo": ".list-do div.entry-content p a",
             "brand": "",
-            "instock": "del"
-        },
-        "product_paging": {
-            "page_list": "div.wp-pagenavi",
-            "page_link": "a.page.larger"
+            "headline": ".breadcrumbx a"
         }
+    },
+    "paging": {
+        "page_list": "div.wp-pagenavi",
+        "page_link": "a.page.larger"
     },
     "product_code_pattern": "BW(\\d+)",
     "keywords": {
         "code": "bw*"
     },
-    "order_form":{
+    "order_form": {
         "title": "dynamictext-99",
         "color": "menu-760",
         "size": "menu-750",
