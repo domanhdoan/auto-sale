@@ -1,0 +1,42 @@
+{
+    "province": [{
+        "name": "Hà Nội",
+        "value": ["Hà Nội", "Hà nội", "hà nội", "hà Nội", "Hanoi", "Ha Noi", "ha noi", "Hnoi", "Hn0j", "HN", "hn"]
+    }, {
+        "name": "Hồ Chí Minh",
+        "value": ["Hồ Chí Minh", "hồ chí minh", "hồ Chí Minh", "HCM", "hcm", "Sài Gòn", "Sài gòn", "sài gòn", "SG ", "sg"]
+    }, {
+        "name": "Quảng Ninh",
+        "value": ["Quảng Ninh", "QN", "Quảng ninh", "Hạ Long", "hạ long"]
+    }, {
+        "name": "Bắc Giang",
+        "value": ["Bắc Giang", "BG", "bg", "bac giang"]
+    },{
+        "name": "Hưng Yên",
+        "value": ["Hưng Yên", "hưng yên", "hung yen"]
+    }, {
+        "name": "Hải Dương",
+        "value": ["Hải Dương", "hải dương", "hai duong"]
+    }, {
+        "name": "Hải Phòng",
+        "value": ["Hải Phòng", "hải phòng", "hai phong"]
+    },{
+        "name": "Hà Nam",
+        "value": ["Hà Nam", "ha nam", "Ha Nam", "ha Nam", "Ha nam"]
+    }, {
+        "name": "Hà Tĩnh",
+        "value": ["Hà Tĩnh", "Htinh", "hà tĩnh", "ha tinh", "Ha Tinh"]
+    }, {
+        "name": "Gia Lai",
+        "value": ["Gia Lai", "gia lai"]
+    }, {
+        "name": "Quảng Bình",
+        "value": ["Quảng Bình", "quang binh", "Quảng bình"]
+    }, {
+        "name": "Cần thơ",
+        "value": ["Cần thơ", "Can tho", "can tho"]
+    }, {
+        "name": "Vũng Tàu",
+        "value": ["Vũng Tàu", "vt", "vung tau", "ba ria vung tau"]
+    }]
+}

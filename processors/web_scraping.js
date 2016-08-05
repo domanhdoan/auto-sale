@@ -1,209 +1,307 @@
 require('string.prototype.startswith');
-var logger = require("../util/logger.js");
-var common = require("../util/common.js");
-
 var cheerio = require("cheerio");
 var request = require("request");
-var cur_home_page = "";
-var g_crawl_pattern = null;
-var g_orm_manager = null;
+var async = require('async');
+var HashMap = require('hashmap');
 
-var g_model_factory = require("../dal/model_factory.js");
+var logger = require("../util/logger.js");
+var common = require("../util/common.js");
+var gDbManager = require("../models/db_manager.js");
+var gModelFactory = require("../dal/model_factory.js");
 
-function handleNextPages(page_object, saved_store, saved_category,
-    product_pattern) {
-    var $ = page_object;
-    // Extract data from remain pages
-    var page_list = $(product_pattern.product_paging.page_link);
-    if (page_list.length > 0) {
-        page_list.each(function(i, page) {
-            var link = $(this).attr('href');
-            link = common.insertRootLink(link, cur_home_page);
-            var products = extractOneCategory(saved_store, saved_category,
-                link, false);
-        });
-    } else {
-        logger.info("ONLY have ONE page");
-    }
-}
-
-function extractProductDetails(product_pattern, saved_product) {
-    request(saved_product.link.replaceAll("%%", "-"), function(error, response, body) {
-        if (error) {
-            logger.error("Couldn’t get page " + saved_product.link + " because of error: " + error);
-            return;
-        }
-        var $ = cheerio.load(body);
-
-        common.saveToFile(response.request.href, body);
-
-        var size_list = $(product_pattern.details.size);
-        var color_list = $(product_pattern.details.color);
-        var colors = [];
-        var sizes = [];
-        size_list.each(function(i, size) {
-            var size_value = $(size).text().trim();
-            console.log("Size = " + size_value);
-            var instock = $(size).find(product_pattern.details.instock);
-            if (instock.length > 0) {
-                console.log("Size out of stock = " + instock.text().trim());
-            } else {
-                g_model_factory.create_product_size(saved_product, size_value,
-                    function(save_size) {});
-            }
-        });
-
-        color_list.each(function(i, color) {
-            var color_name = $(color).text().trim();
-            var color_value = $(color).text().trim();
-            colors.push($(color).text().trim());
-            g_model_factory.create_product_color(saved_product, color_name,
-                color_value,
-                function(save_size) {});
-        });
-
-        var code = $(product_pattern.details.code);
-        saved_product.updateAttributes({
-            code: code.text().trim()
-        });
+Array.prototype.unique = function() {
+    return this.filter(function(value, index, array) {
+        return array.indexOf(value, index + 1) < 0;
     });
-}
+};
 
-function extractOneCategory(saved_store, saved_category, handle_paging, callback) {
-    var productlist = [];
-    var link = saved_category.dataValues.link;
-    logger.info("Sub-category: " + link);
-    request(link, function(error, response, body) {
-        if (error) {
-            logger.error("Couldn’t get page " + link + " because of error: " + error);
-            return;
+function WebScraper(crawlPattern) {
+    var skippedCategory = ['trang chu', 'tat ca san pham'];
+    this.gCrawlPattern = crawlPattern;
+    this.curHomepage = crawlPattern.url;
+    this.categoryObjects = [];
+    var currentObj = this;
+
+    function insertLinksWithoutDuplication(source, destination) {
+        for (var i = 0, length = source.length; i < length; i++) {
+            if (destination.indexOf(source[i]) < 0) {
+                destination.push(source[i]);
+            } else {
+                logger.info("NOt insert due to duplication: " + source[i]);
+            }
         }
+        return destination;
+    }
 
-        var $ = cheerio.load(body);
+    function insertLinkWithoutDuplication(link, destination) {
+        if (destination.indexOf(link) < 0) {
+            destination.push(link);
+            common.saveToFile("links.txt", "PASS - " + link);
+        } else {
+            logger.info("Duplication: " + link);
+            common.saveToFile("links.txt", "DUP - " + link);
 
-        common.saveToFile(response.request.href, body);
+        }
+    }
 
-        var product_pattern = g_crawl_pattern.product_info;
-        var product_list = $(product_pattern.product_list);
+    function handleProductProperties(savedStore, savedProduct, pageObject, sizeList, colorList, productPhotos) {
+        var $ = pageObject;
+        async.eachSeries(sizeList, function(size, callback) {
+            var value = $(size).text().trim();
+            gModelFactory.findAndCreateProductSize(savedProduct, value,
+                function(size) {
+                    callback();
+                });
+        }, function alert(err) {
+            logger.info("err = " + err);
+        });
 
-        for (var i = 0, len = product_list.length; i < len; i++) {
-            var product_title = $(product_list[i]).find(product_pattern.title).text();
-            var product_thumbnail = $(product_list[i]).find(product_pattern.thumbnail).attr('src');
-            var product_desc = $(product_list[i]).find(product_pattern.desc).text();
+        async.eachSeries(colorList, function(color, callback) {
+            var name = $(color).text().trim();
+            var value = $(color).text().trim();
+            gModelFactory.findAndCreateProductColor(savedProduct,
+                name, value,
+                function(color) {
+                    callback();
+                });
+        }, function alert(err) {
+            logger.info("err = " + err);
+        });
 
-            if (product_thumbnail != undefined && product_thumbnail != "" && product_title != "") {
-                var product_detail_link = $(product_list[i]).find(product_pattern.detail_link).attr('href');
-                product_detail_link = common.insertRootLink(product_detail_link, cur_home_page);
-                product_thumbnail = common.insertRootLink(product_thumbnail, cur_home_page)
+        async.eachSeries(productPhotos, function(photo, callback) {
+            var link = $(photo).attr('href');
+            gModelFactory.findAndCreateProductPhoto(savedStore, savedProduct,
+                link, 0 /*false*/ ,
+                function() {
+                    callback();
+                });
+        }, function alert(err) {
+            logger.info("err = " + err);
+        });
+    }
 
-                if (product_desc == "") {
-                    product_desc = product_title;
-                }
+    function extractProductDetails(savedStore, categoryObjects,
+        link, detailPattern, callback) {
+        request(link, function(error, response, body) {
+            if (error) {
+                logger.error("Couldn’t get page " + link + " because of error: " + error);
+                return;
+            }
+            var $ = cheerio.load(body);
+            var detailLink = response.request.href;
+            detailLink = common.insertRootLink(detailLink, currentObj.curHomepage);
+            // common.saveToHTMLFile(detailLink, body);
+            var productElememt = $(detailPattern.content_area);
+            var headline = $(productElememt).find(detailPattern.headline);
+            var length = headline.length;
+            var finger = "";
+            for (var i = 1; i < length; i++) {
+                finger += " " + $(headline[i]).text().latinise().toLowerCase().trim();
+            }
+            logger.info("Finger = " + finger);
+            var categoryNameElement = (length >= 2) ? $(headline[1]) : "";
+            var categoryName = (categoryNameElement !== "") ? categoryNameElement.text().trim() : "";
+            var categoryLink = (categoryNameElement !== "") ? $(categoryNameElement).attr('href') : "";
 
-                var product_price = $(product_list[i]).find(product_pattern.price).text();
-                var product_discount = $(product_list[i]).find(product_pattern.discount).text();
-                var product_percent = $(product_list[i]).find(product_pattern.percent).text();
+            var title = $(productElememt).find(detailPattern.title).text();
+            var thumbnailLink = $(productElememt).find(detailPattern.thumbnail).attr('src');
+            var desc = $(productElememt).find(detailPattern.desc).text();
+            var priceStr = $(productElememt).find(detailPattern.price).text();
+            var discountStr = $(productElememt).find(detailPattern.discount).text();
+            var price = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
+            var discount = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
+            var code = $(detailPattern.code).text();
+            var type = common.extractProductType(title);
 
-                if (product_price == null || product_price == "") {
-                    product_price = product_discount;
-                }
+            var sizeList = $(detailPattern.size);
+            var colorList = $(detailPattern.color);
+            var productPhotos = $(detailPattern.photo);
 
-                if (product_discount == null || product_discount == "") {
-                    product_discount = "0";
-                }
+            if (thumbnailLink != undefined && thumbnailLink != "" && title != "") {
+                thumbnailLink = common.insertRootLink(thumbnailLink, currentObj.curHomepage)
+                desc = (desc === "") ? title : desc;
+                priceStr = (priceStr == null || priceStr == "") ? discountStr : priceStr;
+                discountStr = (discountStr == null || discountStr == "") ? "0" : discountStr;
 
-                if (product_percent == null || product_percent == "") {
-                    product_percent = "0";
-                }
-                var price = common.extract_price(product_price);
-                var discount = common.extract_price(product_discount);
-
+                finger += " " + title.latinise().toLowerCase();
+                //finger += " " + desc.latinise().toLowerCase();
+                finger = finger.split(' ').filter(function(item, i, allItems) {
+                    return i == allItems.indexOf(item);
+                }).join(' ');
                 if (price > 0) {
-                    logger.info("create_product = " + product_detail_link);
-                    g_model_factory.findAndCreateProduct(
-                        saved_store, saved_category,
-                        product_title, product_thumbnail,
-                        product_desc, price,
-                        discount, product_percent,
-                        product_detail_link, "" /*finger*/ , "",
-                        g_crawl_pattern.product_code_pattern,
-                        function(saved_product) {
-                            extractProductDetails(product_pattern, saved_product);
-                        });
+                    var cKey = require('crypto').createHmac('sha256', categoryName)
+                        .digest('hex');
+
+                    var savedCategory = categoryObjects[categoryLink];
+                    if (!savedCategory) {
+                        logger.info("UNDEFINE product " + detailLink);
+                    } else {
+                        logger.info("DEFINE categoryName " + categoryName);
+                        gModelFactory.findAndCreateProduct(
+                            savedStore, savedCategory, title, thumbnailLink,
+                            desc, price, discount, detailLink, type, finger, code,
+                            function(savedProduct) {
+                                handleProductProperties(savedStore, savedProduct, $, sizeList, colorList, productPhotos);
+                                if (!callback) {
+                                    callback(link);
+                                }
+                            });
+                    }
                 } else if (price == 0) {
                     logger.info("Not save product which not have price\n");
                 }
             } else {
-                logger.info("Skipped this HTML element\n");
+                logger.info("\nSkipped this HTML element: " + detailLink);
             }
-        }
+        });
+    }
 
-        if (handle_paging) {
-            handleNextPages($, saved_store, saved_category, product_pattern);
-        }
-
-        if (callback != null) {
+    this.processAllProductLinks = function(savedStore, categoryObjects,
+        allProductLinks, detailPattern) {
+        async.forEachLimit(allProductLinks, 1, function(link, callback) {
+            logger.info(link);
+            extractProductDetails(savedStore, categoryObjects,
+                link, detailPattern,
+                function(link) {});
             callback();
-        }
-    });
-    return productlist;
-}
+        }, function(err) {
+            if (err) {
+                logger.error(err);
+            };
+        });
 
-function extractCategories(home_page_object, saved_store, callback) {
-    var $ = home_page_object;
-    var menu_items = $(g_crawl_pattern.product_menu.item);
-    logger.info("Store: " + saved_store.dataValues.home);
-    for (var i = 0, len = menu_items.length; i < len; i++) {
-        var item = $(menu_items[i]).find(g_crawl_pattern
-            .product_menu.item_link);
-        var category = item.text();
-        if (menu_items[i].children.length == 1) {
-            logger.info("Category: " + category);
-            // logger.info("\nmenu_items[" + i + "] = " + $(menu_items[i]));
-            var item_link = item.attr("href");
-            item_link = common.insertRootLink(item_link, cur_home_page);
-            g_model_factory.findAndCreateCategory(saved_store, category, item_link,
-                function(saved_category) {
-                    extractOneCategory(saved_store, saved_category, true, callback);
+        // async.eachSeries(allProductLinks, function (url, callback) {
+        //     extractProductDetails(savedStore, categoryObjects,
+        //         url, detailPattern,
+        //         function (link) {
+        //             callback();
+        //         });
+        // }, function (err) {
+        //     if (err) {
+        //         logger.error(err);
+        //     };
+        // });
+    }
+
+    function extractAllProductDetailsLink(index, categoryLink, productLinks, callback) {
+        request(categoryLink, function(error, response, body) {
+            if (error) {
+                logger.error("Couldn’t get page " + categoryLink + " because of error: " + error);
+                return;
+            }
+            var $ = cheerio.load(body);
+            var productList = $(currentObj.gCrawlPattern.product_info.link);
+            // common.saveToHTMLFile(categoryLink, body);
+            for (var i = 0, length = productList.length; i < length; i++) {
+                var detailLink = $(productList[i]).attr('href');
+                detailLink = common.insertRootLink(detailLink, currentObj.curHomepage);
+                logger.error("Category Link: " + categoryLink);
+                logger.info("Product link: " + detailLink);
+                //insertLinkWithoutDuplication(detailLink, productLinks);
+                productLinks.push(detailLink);
+            }
+
+            var nextPageLinks = $(currentObj.gCrawlPattern.paging.page_link);
+            if (nextPageLinks.length > 0) {
+                nextPageLinks.each(function(i, page) {
+                    var pageLink = $(this).attr('href');
+                    pageLink = common.insertRootLink(pageLink, currentObj.curHomepage);
+                    var products = extractAllProductDetailsLink(index,
+                        pageLink, productLinks, callback);
                 });
-        } else {
-            logger.info("Will not extract product list for menu items that contain sub-menu");
+            } else {
+                callback(index, productLinks);
+            }
+        });
+    }
+
+    function classifyCategory(savedStore, webcontent) {
+        var categoryLinks = [];
+        var $ = cheerio.load(webcontent);
+        var menu = $(currentObj.gCrawlPattern.category.menu);
+        var menuItems = (menu != undefined && menu.length > 0) ? menu[0].children : [];
+
+        for (var i = 0, len = menuItems.length; i < len; i++) {
+            var children = $(menuItems[i]).find('a');
+            var link = $(children[0]).attr('href');
+            var name = $(children[0]).text().trim();
+            if (link === undefined || name === "" || skippedCategory.indexOf(name.latinise().toLowerCase()) >= 0 || (link === currentObj.curHomepage + "/")) {
+                logger.info("Skipped Category Link: " + link);
+                continue;
+            }
+            logger.info("OK Category: " + name);
+            logger.info("OK Category Link: " + link);
+
+            gModelFactory.findAndCreateCategory(savedStore, name, link,
+                function(savedCategory) {
+                    var key = require('crypto').createHmac('sha256', savedCategory.dataValues.name)
+                        .digest('hex');
+                    var categoryName = savedCategory.dataValues.name; //.replace(/[^\w\s]/gi, '');
+                    // currentObj.categoryObjects.set(categoryName, savedCategory);
+                    var categoryLink = savedCategory.dataValues.link;
+                    currentObj.categoryObjects[categoryLink] = savedCategory;
+                });;
+            categoryLinks.push(link);
         }
+        return categoryLinks;
+    }
+
+    this.extractAllCategoryLink = function(savedStore, callback) {
+        logger.info("Store: " + savedStore.dataValues.home);
+        request(savedStore.dataValues.home, function(error, response, body) {
+            var link = savedStore.dataValues.home;
+            if (error) {
+                logger.error("Couldn’t get page " + link + " because of error: " + error);
+                return;
+            }
+            var allProductLinks = [];
+            var categoryCount = 0;
+            var categoryLinks = classifyCategory(savedStore, body);
+            var length = categoryLinks.length;
+            for (var i = 0, length = categoryLinks.length; i < length; i++) {
+                // async.eachSeries(categoryLinks, function (url, callback2) {
+                // var index = categoryLinks.indexOf(url);
+                var index = i;
+                var url = categoryLinks[i];
+
+                extractAllProductDetailsLink(index, url, allProductLinks, function(index, productLinks) {
+                    categoryCount++;
+                    logger.info("Category index = " + index);
+                    if ((categoryCount == length) && (callback != null)) {
+                        allProductLinks = allProductLinks.unique();
+                        callback(allProductLinks, currentObj.categoryObjects);
+                    }
+                    // callback2();
+                });
+                // });
+            }
+        });
     }
 }
 
-exports.init = function(orm_manager) {
-    g_orm_manager = orm_manager;
-    g_model_factory.init(g_orm_manager);
-}
+WebScraper.prototype.crawlWholeSite = function(callback) {
 
-exports.crawlWholeSite = function(home_page, crawl_pattern, callback) {
-    g_crawl_pattern = crawl_pattern;
-    cur_home_page = home_page;
-    if (cur_home_page != null && !cur_home_page.startsWith('http')) {
-        cur_home_page = "http://" + cur_home_page;
+    if (this.curHomepage != null && !this.curHomepage.startsWith('http')) {
+        this.curHomepage = "http://" + this.curHomepage;
     }
-    var existing_store = g_model_factory.findAndCreateStore(cur_home_page,
-        g_crawl_pattern.store_type,
+    var currentScope = this;
+    gModelFactory.findAndCreateStore(
+        this.curHomepage, this.gCrawlPattern.store_type,
         function(store) {
-            request(store.dataValues.home, function(error, response, body) {
-                var web_content = body;
-                if (error) {
-                    logger.error("Couldn’t get page because of error: " + error);
-                    return;
-                }
-                // load the web_content of the page into Cheerio so we can traverse the DOM
-                var $ = cheerio.load(web_content);
-                extractCategories($, store, callback);
-                common.saveToFile(response.request.href, web_content);
+            currentScope.extractAllCategoryLink(store, function(allProductLinks) {
+                logger.info("Done extracting product links");
+                currentScope.processAllProductLinks(store, currentScope.categoryObjects,
+                    allProductLinks, currentScope.gCrawlPattern.product_info.details);
             });
         });
+
 }
 
-exports.extract_product_thumb_link = function(home_page, input_thumb, callback) {
+WebScraper.prototype.extractThumbUrl = function(home_page, input_thumb, callback) {
     var encoded_uri = encodeURIComponent(input_thumb);
-    var goole_search_image = "https://www.google.com/searchbyimage?&image_url=" + encoded_uri + "&as_sitesearch=" + home_page;
-    request.debug = true;
+    var goole_search_image = "https://www.google.com/searchbyimage?&image_url="
+    goole_search_image += encoded_uri + "&as_sitesearch=" + home_page;
+    //request.debug = true;
     request(goole_search_image, {
         followRedirect: true,
     }, function(error, response, body) {
@@ -211,14 +309,16 @@ exports.extract_product_thumb_link = function(home_page, input_thumb, callback) 
             url: response.req._headers.referer + "&as_sitesearch=" + home_page,
             headers: {
                 followRedirect: true,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0  (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; \
+                .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E; CNS_UA; AD_LOGON=4C47452E4E4554; rv:11.0) like Gecko\
+                 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36'
             }
         };
 
         request(options, function(error, response, body) {
             var $ = cheerio.load(body);
+            // common.saveToHTMLFile("search", body);
             var search_items = $('div.srg div.g div.rc div.s div div.th._lyb a');
-            // var similar_images_link = "http://google.com" + $('div#rso div.g div._Icb._kk._wI a').attr('href');
             var image_url = "";
             if (search_items.length > 0) {
                 var search_item = search_items[0];
@@ -232,3 +332,5 @@ exports.extract_product_thumb_link = function(home_page, input_thumb, callback) 
         });
     });
 }
+
+module.exports = WebScraper;
