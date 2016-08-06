@@ -11,6 +11,13 @@ var WebScraper = require("./processors/web_scraping");
 
 var fbWebhook = require("./controllers/fbwebhook");
 
+// var text2 = "(.de .de .de.-------)".replace(/\s|\.|\-|\(|\)/g, "");
+// var text = ["(04)33854322", "04.33.854.322", "0977 516 053", "0977516053", "01500000000",
+//     "0433854322", "0433854322", "(+84)977516053", "+84977516053"
+// ];
+// for (var i = 0; i < text.length; i++) {
+//     logger.info(common.validateVNPhoneNo(text[i]));
+// }
 
 function show_error() {
     logger.error("Command: node app.js options");
@@ -50,13 +57,13 @@ function runWebScrapingAsSchedule(datetime) {
     rule.dayOfWeek = [0, new schedule.Range(0, 7)];
     rule.hour = 0;
     rule.minute = 2;
-    var j = schedule.scheduleJob(rule, function () {
+    var j = schedule.scheduleJob(rule, function() {
         console.log('The answer to life, the universe, and everything!');
         for (var i = 0, length = crawl_sources.length; i < length; i++) {
             var link = crawl_sources[i];
             store_config[i] = common.loadStoreScrapingPattern("shoes", link);
             scraper = new WebScraper(store_config[i]);
-            scraper.crawlWholeSite(function () {});
+            scraper.crawlWholeSite(function() {});
         }
     });
     return store_config;
@@ -68,8 +75,7 @@ if (crawl_sources != null) {
             var link = crawl_sources[i];
             var storeConfig = common.loadStoreScrapingPattern("shoes", link);
             scraper = new WebScraper(storeConfig);
-            scraper.crawlWholeSite(function () {
-            });
+            scraper.crawlWholeSite(function() {});
         }
     }
     runWebScrapingAsSchedule();

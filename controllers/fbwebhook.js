@@ -56,7 +56,7 @@ function createAndSendOrderToFB(session, callback) {
 
             // change from server time zone to VN time zone
             var timestamp = parseInt(items[0].Invoice.dataValues.creation_date) + 13 * 3600 * 1000;
-            logger.info("Before slicing" + timeConverter(timestamp/1000));
+            logger.info("Before slicing" + timeConverter(timestamp / 1000));
 
             var length = ("" + timestamp).length;
             var delta = length - 10;
@@ -490,14 +490,14 @@ function makeProductOrder(session, text) {
         fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_phone);
     } else if (session.last_action === common.set_recipient_name) {
         logger.debug("Phone: " + text);
-        if (common.validatePhoneNo(text)) {
+        if (common.validateVNPhoneNo(text)) {
             sessionManager.setUserAction(session, common.set_phone);
             sessionManager.setOrderInfo(session, {
                 phone: text
             });
             fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_address);
-        }else{
-            fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn đã nhập sai định dạng số DT", function () {
+        } else {
+            fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn đã nhập sai định dạng số DT", function() {
                 fbMessenger.sendTextMessage(session.fbid, session.token, common.pls_enter_phone);
             });
         }

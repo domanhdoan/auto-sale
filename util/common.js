@@ -208,7 +208,7 @@ module.exports.getProductTypeVN = function(type) {
 
 module.exports.extractValue = function(text, regExpStr) {
     var ret = ''
-    var regExp = new RegExp(regExpStr, 'gi')
+    var regExp = new RegExp(regExpStr, 'gim')
     var results = text.match(regExp)
     if (results != null && results.length > 0) {
         ret = results[0]
@@ -226,7 +226,7 @@ module.exports.extractValues = function(text, regExpStr) {
 }
 
 module.exports.extractProductCode = function(text, pattern) {
-    var upper = text.toUpperCase().replaceAll(/\s/,"");
+    var upper = text.toUpperCase().replaceAll(/\s/, "");
     var ret = {
         isProductCode: false,
         code: ''
@@ -242,9 +242,10 @@ module.exports.extractProductCode = function(text, pattern) {
 }
 
 module.exports.validateVNPhoneNo = function(text) {
-    text = text.replaceAll(/\s|.|-/,"");
-    var pattern = "\(\d{1,2}\)[0-9]{8}|\d{1,2}[0-9]{8}|09[0-9]{8}|\*849[0-9]{8}|(\*84)9[0-9]{8}|08[0-9]{8}|\*848[0-9]{8}|(\*84)8[0-9]{8}|01[0-9]{9}|\*841[0-9]{9}|(\*84)1[0-9]{9}";
-    var ret = (this.extractValue(text, pattern) === "")?false:true;
+    text = text.replace(/\s|\.|\-|\(|\)/g, "");
+    var pattern = "(\\+?\\d{2,4})?\\s?(\\d{8,12})";
+    logger.info(this.extractValue(text, pattern));
+    var ret = (this.extractValue(text, pattern) === "") ? false : true;
     return ret;
 }
 
