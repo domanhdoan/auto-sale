@@ -1,14 +1,17 @@
 'use strict';
 module.exports = function(Sequelize, DataTypes) {
-    return Sequelize.define('ProductPhoto', {
-        link: {
+    return Sequelize.define('Property', {
+        name: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: false
         },
-        thumbFlag: {
-            type: DataTypes.BOOLEAN,
-			allowNull: true
+        svalue: {
+            type: DataTypes.STRING,
+        },
+        ivalue: {
+            type: DataTypes.INTEGER,
         }
+
     }, {
         freezeTableName: true,
         charset: 'utf8',

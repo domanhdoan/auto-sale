@@ -44,6 +44,7 @@
     "sequelize-cli": "^2.4.0",
     "speakingurl": "9.0.0",
     "string.prototype.startswith": "0.2.0",
+    "tinyurl": "^1.1.2",
     "uri-js": "2.1.1",
     "winston": "2.2.0"
   },

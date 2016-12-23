@@ -5,7 +5,7 @@ var logger = require('./logger.js')
 module.exports = {
     say_greetings: 'Xin kính chào quý khách',
     say_waiting_message: 'Hệ thống đang tìm kiếm ...',
-    pls_select_product: 'Bạn nhập mã sản phẩm hoặc upload ảnh SP để tìm sản phẩm theo mong muốn',
+    pls_select_product: 'Bạn vui lòng nhập text hoặc upload ảnh để tìm kiếm',
     pls_select_product_color: 'Xin vui lòng chọn màu sản phẩm',
     pls_select_product_color_combo: '(VD chọn màu cho combo: nam màu xanh và nữ màu đỏ)',
     pls_select_product_size: 'Xin vui lòng chọn size',
@@ -33,7 +33,7 @@ module.exports = {
     set_email: 'set_email',
     set_delivery_date: 'set_delivery_date',
 
-    notify_product_found: 'Bạn xem thông tin SP bên dưới nhé',
+    notify_product_found: 'Bạn xem thông tin bên dưới nhé',
     notify_product_search: 'Bạn nhấn "Chi tiết sản phẩm" để xem hình ảnh, màu sắc và size của sản phẩm nhé',
     notify_product_search2: '(Bạn trượt sang ngang để xem những sản phẩm khác nhé)',
     notify_color_notfound: 'Không còn màu trong cửa hàng',
@@ -62,11 +62,13 @@ module.exports = {
     INTENT_CHECK_SHIP: 'check_ship',
     INTENT_ORDER_PRODUCT: 'order_product',
     INTENT_GENERAL_SEARCH: 'general_search',
+	INTENT_CHECK_SALEOFF: 'check_saleoff',
     INTENT_UNKNOWN: 'unknow_intent',
     INTENT_ACCURACY_ABSOLUTE: 1.0,
     INTENT_ACCURACY_0_98: 0.98,
     INTENT_ACCURACY: 0.9,
-    INTENT_ACCURACY_LOW: 0.55,
+	INTENT_ACCURACY_MEDIUM: 0.7,
+    INTENT_ACCURACY_LOW: 0.65,
     PRODUCT_TYPE_MALE: 'nam',
     PRODUCT_TYPE_FEMALE: 'nu',
     PRODUCT_TYPE_COMBO: 'combo',
@@ -84,6 +86,11 @@ module.exports = {
 module.exports.typical_question = {
 
 }
+
+module.exports.productProperties = new Enum([
+	// For fashiion products
+	'color', 'size', 'shape', 'country', 'brand', 'material'
+])
 
 module.exports.sale_steps = new Enum([
     'say_greetings',
@@ -208,7 +215,7 @@ module.exports.getProductTypeVN = function(type) {
 
 module.exports.extractValue = function(text, regExpStr) {
     var ret = ''
-    var regExp = new RegExp(regExpStr, 'gi')
+    var regExp = new RegExp(regExpStr, 'gim')
     var results = text.match(regExp)
     if (results != null && results.length > 0) {
         ret = results[0]
@@ -226,7 +233,7 @@ module.exports.extractValues = function(text, regExpStr) {
 }
 
 module.exports.extractProductCode = function(text, pattern) {
-    var upper = text.toUpperCase()
+    var upper = text.toUpperCase().replaceAll(/\s/, "");
     var ret = {
         isProductCode: false,
         code: ''
@@ -236,22 +243,41 @@ module.exports.extractProductCode = function(text, pattern) {
 
     if (results != null && results.length > 0) {
         ret.isProductCode = true
-        ret.code = results[0]
+        ret.code = results[0];
     }
     return ret
 }
 
+module.exports.validateVNPhoneNo = function(text) {
+    text = text.replace(/\s|\.|\-|\(|\)/g, "");
+    var pattern = "(\\+?\\d{2,4})?\\s?(\\d{8,12})";
+    logger.info(this.extractValue(text, pattern));
+    var ret = (this.extractValue(text, pattern) === "") ? false : true;
+    return ret;
+}
+
+
 module.exports.loadStoreScrapingPattern = function(storeType, url) {
-    var product_pattern = url
-    if (product_pattern.startsWith('http://')) {
-        product_pattern = product_pattern.replace('http://', '')
-    } else if (product_pattern.startsWith('https://')) {
-        product_pattern = product_pattern.replace('https://', '')
-    } else {}
-    var patternPath = './datasets/' + storeType + '/' + product_pattern
-    var pattern = JSON.parse(require('fs').readFileSync(patternPath, 'utf8'))
-    pattern.url = url.replace('.json', '')
-    return pattern
+	var pattern = null;
+	try{
+		var product_pattern = url
+		if (product_pattern.startsWith('http://')) {
+			product_pattern = product_pattern.replace('http://', '')
+		} else if (product_pattern.startsWith('https://')) {
+			product_pattern = product_pattern.replace('https://', '')
+		} else {
+			
+		}
+		var patternPath = './datasets/' + storeType + '/' + product_pattern
+		pattern = JSON.parse(require('fs').readFileSync(patternPath, 'utf8'))
+		pattern.url = url.replace('.json', '')
+	//	logger.info("store config = " + JSON.stringify(pattern));
+	}catch(error){
+		logger.error("loading store config error " + error);
+	}finally{
+		
+	}
+    return pattern;
 }
 
 /**
@@ -342,7 +368,6 @@ function chunkString(s, len) {
 }
 
 module.exports.saveToFile = function(path, content) {
-    // require('fs').appendFile("./temp/" + url.replaceAll("http://", "").replaceAll("/", "#") + ".html",
     require('fs').appendFile(path,
         content + '\n',
         function(err) {
@@ -373,15 +398,10 @@ module.exports.splitResponse = function(str) {
 }
 
 module.exports.isDefined = function(obj) {
-    if (typeof obj == 'undefined') {
+    if ((typeof obj == 'undefined') || !obj || ("" === obj) || (null === obj)) {
         return false
     }
-
-    if (!obj) {
-        return false
-    }
-
-    return obj != null
+    return true;
 }
 
 module.exports.getAvailableProductType = function(title) {
@@ -413,6 +433,15 @@ module.exports.extractProductType = function(title) {
         type = types[3]
     }
     return type
+}
+
+var TinyURL = require('tinyurl');
+module.exports.shortenURL = function(longURL, callback){
+	TinyURL.shorten(longURL, function(shortURL) {
+		 //Returns a shorter version of http://google.com - http://tinyurl.com/2tx 
+		console.log(shortURL);
+		callback(shortURL)
+	});	
 }
 
 module.exports.insertRootLink = function(current_link, home_page) {

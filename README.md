@@ -11,3 +11,4 @@
 * Migration
 ** .\node_modules\.bin\sequelize db:migrate
 
+Issue track list: https://github.com/domanhdoan/auto-sale/issues

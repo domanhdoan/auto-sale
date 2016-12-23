@@ -1,16 +1,39 @@
 {
     "check_ship": [
         "ship ve",
-        "toan quoc",
-        "free ship",
-        "COD",
-        "giao hang",
-        "chuyen phat",
-        "thanh toan"
-    ],
-    
+        "co ship toan quoc ko",
+		"co ship toan quoc khong",
+		"co ship toan quoc k0",
+		"co free ship ko",
+		"co free ship khong",
+		"co free ship k0",
+        "co thanh toan COD ko",
+		"co thanh toan COD khong",
+		"co thanh toan COD k0",
+        "co giao hang toan quoc ko",
+		"co giao hang toan quoc k0",
+		"co giao hang ve xxx ko",
+		"co giao hang ve xxx khong",
+		"giao hang ve xxx mat bao lau",
+		"ship ve xxx mat bao lau",
+		"ship noi thanh mat bao lau",
+		"ship ngoai thanh mat bao lau",
+		"giao hang noi thanh mat bao lau",
+		"giao hang ngoai thanh mat bao lau"
+    ],    
 
     "check_availability": [
+		"shop co xxx khong",
+		"shop co xxx ko",
+		"shop co xxx k0",
+		"shop con xxx khong",
+		"shop con xxx ko",
+		"shop con xxx k0",
+		"shop con doi giay ma xxx ko",
+		"shop con doi giay ma xxx k",
+		"shop con doi giay ma xxx khong",
+		"shop con doi giay mau xxx ko",
+		"shop con xxx mau xxx size xxx khong",
         "san hang khong", "co san khong",
         "san hang ko", "co san k0",
         "san ko", "san k0",
@@ -22,29 +45,73 @@
         "con ko", "co ko", "con du", "co nhung", "the nao", "thi sao",
         "muon hoi", "muon tim", "muon chon", "muon xem", "dang tim",
         "dang kiem"
-    ],
-    
+    ],    
 
     "check_price": [
-        "bao nhieu",
-        "ba0 nhieu",
-        "bao nhjeu",
-        "bnhieu",
-        "bn",
+		"doi nay gia bao nhieu",
+		"bao gia cho minh doi nay gia bao nhieu",
+		"shop bao gia giup minh doi nay",
+		"minh muon mua gia ban buon thi gia bao nhieu",
+		"mau nay gia bao nhieu",
+		"mau nay bao nhieu tien",
+		"mau nay bao nhieu xien",
+		"mau nay bao nhieu xeng",
+		"mau nay nhieu tien",
+		"mau nay nhieu xeng",
+		"mau nay nhieu xien",
+		"x doi nay gia bao nhieu",
+		"shop con doi nao duoi 1m ko",
+		"shop con doi nao duoi 1tr ko",
+		"shop con doi nao duoi 1tr500 ko",
+		"shop con doi nao duoi 500k ko",
+        "gia bao nhieu",
+        "gia ba0 nhieu",
+        "gia bao nhjeu",
+        "bnhieu tien", "bn tien",
         "giam gia ko",
-        "co giam gia khong", "co bot khong",
-        "co giam ko", "co bot ko"
+        "giam gia khong", "bot khong",
+        "giam ko", "bot ko"
     ],
     
     "order_product": ["muon mua",
         "dat hang", "cho em"
     ],
-    "check_saleoff": ["khuyen mai", "saleoff", "sale-off", "bớt", "giam gia"],
-    "consult": ["Shop tư vấn đôi nào nhẹ, ôm chân", "không quá to được không"],
+	
+    "check_saleoff": [
+		"khuyen mai", 
+		"saleoff", 
+		"sale-off", 
+		"bớt", 
+		"giam gia",
+		"chuonh trinh giam gia",
+		"chuonh trinh ha gia",
+		"shop co dang khuyen mai gi ko",
+		"thang nay co saleoff ko shop",
+		"co discount ko shop",
+		"uu dai",
+		"chương trình giảm xxx%",
+		"mua doi thu x giam xx%",
+		"Mua hai đôi được tặng một đôi",
+		"mua hai doi duoc tang mot doi",
+		"mua 1 tang 1",
+		"mua 2 tang 1",
+		"mua x tang x"
+	],
+    "consult": [
+		"can tu van",
+		"Shop tư vấn đôi nào nhẹ, ôm chân", 
+		"không quá to được không",
+		"mix do"
+	],
     "size_table": ["do size", "đo size", "bảng tính size"],
     "product_photo": ["ảnh thật của đôi này"],
     "durability": ["Giày có tốt không?", "Có bền không?"],
-    "shop_location": ["Địa chỉ shop ở đâu?"],
+    "shop_location": [
+		"Địa chỉ shop ở đâu?",
+		"Shop co cua hang o SG khong",
+		"shop co mua chua hang o pho xxx ko"
+	],
     "shop_operation": ["Shop ơi bên mình mở cửa đến mấy giờ"],
-    "branch_location": ["Shop co cua hang o SG khong"]
+    "branch_location": [
+		"Shop co cua hang o SG khong"]
 }

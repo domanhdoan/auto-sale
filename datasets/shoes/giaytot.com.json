@@ -6,11 +6,11 @@
     "product_info": {
         "link": "li.item a",
         "details": {
-            "content_area": ".main-container",
+            "content_area": ".main",
             "title": "div.product-image div h1",
             "thumbnail": ".item a img",
-            "price": ".price-box span .price",
-            "discount": ".price-box special-price .price ",
+            "price":    ".details .product-act div.price-box p.old-price span.price",
+            "discount": ".details .product-act div.price-box p.special-price span.price",
             "percent": "",
             "desc": "#desc .std",
             "code": "",
@@ -20,17 +20,17 @@
             "status": "",
             "photo": "p > img",
             "brand": "",
-            "headline": "div.breadcrumbs.breadcrums > ul > li > a"
+            "headline": "div.breadcrumbs ul",
+            "codepattern":"[A-Z]{1,3}-[0-9]{3,4}-[A-Z]{1,3}|[A-Z]{1,3}-[0-9]{1,4}|[0-9]{3,4}|[A-Z]{1,3}[0-9]{,4}"
         }
     },
     "paging": {
-        "page_list": "div.wp-pagenavi",
-        "page_link": "a.page.larger"
+        "page_link": "div.pages > ol > li a"
     },
-    "product_code_pattern": "",
-    "keywords": {
-        "code": "bw*"
-    },
+    "saleoff":"http://www.giaytot.com/thang-ban-hang-khong-loi-nhuan",
+    "newarrival":"http://www.giaytot.com/hang-moi-ve.html/",
+    "bestsale":"http://www.giaytot.com/ban-chay-nhat.html/",
+    "bigsale":"http://www.giaytot.com/dailydeal",
     "order_form": {
         "title": "dynamictext-99",
         "color": "menu-760",
