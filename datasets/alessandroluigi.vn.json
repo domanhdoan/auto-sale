@@ -1,15 +1,15 @@
 {
     "category": {
-        "menu": "ul#menu-menu-chinh",
-        "item": "li.menu-item-object-product_cat"
+        "menu": ".left-navigation ul",
+        "item": "li"
     },
     "product_info": {
-        "link": "div.thumbnail-wrapper a.thumb",
+        "link": "li.item a",
         "details": {
-            "content_area": "div#content-shop.content",
+            "content_area": "div.product ",
             "title": "div#page-meta .product-title",
             "thumbnail": "div.product div.row .images a img",
-            "price": "div.woocommerce-price div p.price span del span",
+            "price": "div.woocommerce-price div p.price span del",
             "discount": "div.woocommerce-price div p.price span ins span",
             "percent": "",
             "desc": "div div .summary .product-description",
@@ -18,14 +18,18 @@
             "size": "",
             "instock": "",
             "status": "",
-            "photo": "div.images .thumbnails ul.yith_magnifier_gallery li a",
+            "photo": "div div .images .thumbnails div ul li a",
             "brand": "",
-            "headline": "#yit-breadcrumb a",
-			"codepattern":"[A-Z]{1,3}-[0-9]{3,4}-[A-Z]{1,3}|[A-Z]{1,3}-[0-9]{1,4}|[0-9]{1,4}|[A-Z]{1,3}[0-9]{1,4}"
+            "headline": "#yit-breadcrumb a"
         }
     },
     "paging": {
+        "page_list": "div.wp-pagenavi",
         "page_link": "a.page.larger"
+    },
+    "product_code_pattern": "",
+    "keywords": {
+        "code": "bw*"
     },
     "order_form": {
         "title": "dynamictext-99",

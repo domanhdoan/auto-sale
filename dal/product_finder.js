@@ -81,24 +81,32 @@ function extractShoesSearchKeywords(sampleData, user_message) {
 }
 
 function generateFindshoesQuery(storeId, keywords) {
-    var query = " Select DISTINCT P.id, P.title, P.price, P.thumbnail, P.code, P.link";
+    var query = " Select DISTINCT P.id, P.title, P.price, P.discount, P.thumbnail, P.code, P.link";
     var cat_keywords = keywords[0].replaceAll("%%", ", ");
-    query += ", Relevance from product as P";
+    query += ", Relevance from Product as P";
+	/*
     if (keywords[1].length > 0) {
         query += " inner join color as C on P.id = C.ProductId"
     }
     if (keywords[2].length > 0) {
         query += " inner join size as S on P.id = S.ProductId";
     }
+	*/
+
+	if((keywords[1].length > 0) || (keywords[2].length > 0)){
+		query += " inner join Property on P.id = Property.ProductId";
+	}
     query += " where P.StoreId = '" + storeId + "'";
 
     if (cat_keywords.length != 0) {
         var matchExp = "MATCH(P.finger) AGAINST('" + cat_keywords;
         query = query.replaceAll("Relevance", matchExp + "')" + " as Relevance");
-        query += " and " + matchExp + "' IN NATURAL LANGUAGE MODE)";
+        //query += " and " + matchExp + "' IN NATURAL LANGUAGE MODE) or P.code LIKE '%" + cat_keywords + "%'";
+		query += " and " + matchExp + "' IN NATURAL LANGUAGE MODE)";
     } else {
         query = query.replaceAll(", Relevance", "");
     }
+/*
     if (keywords[1].length > 0) {
         query += " and C.name IN ('" + keywords[1] + "')";
     }
@@ -107,6 +115,23 @@ function generateFindshoesQuery(storeId, keywords) {
     }
     if (cat_keywords.length != 0) {
         query += " ORDER BY Relevance DESC";
+    }
+*/
+	if((keywords[1].length * keywords[2].length) > 0){
+		query += " and (Property.name='color' and Property.svalue IN ('" + keywords[1] + "'))";
+		query += " or (Property.name='size' and Property.ivalue IN (" + keywords[2] + "))";
+		query += " GROUP BY P.id HAVING count(P.id) = 2";
+	}else if (keywords[1].length > 0) {
+        query += " and Property.name='color' and Property.svalue IN ('" + keywords[1] + "')";
+    }else if (keywords[2].length > 0) {
+        query += " and Property.name='size' and Property.ivalue IN (" + keywords[2] + ")";
+    }else{
+		
+	}
+	
+    if (cat_keywords.length != 0) {
+        //query += " ORDER BY Relevance DESC";
+		query += " ORDER BY P.id ASC";
     }
     query += " LIMIT " + common.product_search_max + ";";
 
@@ -170,6 +195,14 @@ exports.getAllPages = function (callback) {
         }]
     }).then(function (pages) {
         var jsonObj = converDBObjectToJson(pages);
+        callback(jsonObj);
+    });
+}
+
+exports.getAllProperties = function (callback) {
+    gDbManager.Property.findAll({
+    }).then(function (properties) {
+        var jsonObj = converDBObjectToJson(properties);
         callback(jsonObj);
     });
 }
@@ -309,6 +342,23 @@ exports.findProductsByCategory = function (storeId, categoryId, callback) {
     });
 }
 
+exports.findProductByThumbnailOnStore = function(storeId, link, callback) {
+    gDbManager.Product.findAll({
+		include: [{
+            model: gDbManager.Property,
+            attributes: ['svalue'],
+            where: {
+				name:"photo",
+				svalue: link,
+                id: gDbManager.sequelize.col('Property.ProductId')
+            }
+        }]
+    }).then(function(products) {
+        var jsonObj = converDBObjectToJson(products);
+        callback(jsonObj);
+    });
+}
+
 exports.findProductsByPriceRange = function (storeId, priceMin, priceMax, callback) {
     gDbManager.Product.findAll({
         order: [
@@ -369,6 +419,20 @@ exports.getProductSizes = function (product_id, callback) {
         }
     }).then(function (sizes) {
         var jsonSizeObj = converDBObjectToJson(sizes);
+        callback(jsonSizeObj);
+    });
+}
+
+exports.getProductProperties = function (product_id, callback) {
+    gDbManager.Property.findAll({
+        order: [
+            ['name', 'ASC']
+        ],
+        where: {
+            ProductId: product_id
+        }
+    }).then(function (properties) {
+        var jsonSizeObj = converDBObjectToJson(properties);
         callback(jsonSizeObj);
     });
 }

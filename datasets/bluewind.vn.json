@@ -1,0 +1,50 @@
+{
+    "category": {
+        "menu": "ul#menu-danh-muc",
+        "item": "li.menu-item-object-sanpham_cat"
+    },
+    "product_info": {
+        "link": "ul.list-tax li.img a",
+        "details": {
+            "content_area": ".content-show",
+            "title": "div.t-t-sp .sp-t",
+            "thumbnail": ".img-thumb img",
+            "price": ".meta-sp .tt.giax span",
+            "discount": "",
+            "percent": "",
+            "desc": ".list-do div.entry-content p span",
+            "code": "p.masp strong",
+            "color": "dd.mausac a",
+            "size": "dd.size span.size-active",
+            "instock": "del",
+            "status": ".meta-sp .tt",
+            "photo": ".list-do div.entry-content p a",
+            "brand": "",
+            "headline": ".breadcrumbx a"
+        }
+    },
+    "paging": {
+        "page_list": "div.wp-pagenavi",
+        "page_link": "a.page.larger"
+    },
+    "product_code_pattern": "BW[0-9]{4}|[0-9]{4}|BW\\s[0-9]{4}",
+    "keywords": {
+        "code": "bw*"
+    },
+    "order_form": {
+        "title": "dynamictext-99",
+        "color": "menu-760",
+        "size": "menu-750",
+        "quantity": "menu-185",
+        "receipt_name": "your-name",
+        "email": "your-email",
+        "phone": "your-subject",
+        "address": "your-dc",
+        "comments": "your-message",
+        "request_type": "_wpcf7_is_ajax_call",
+        "unit_tag": "_wpcf7_unit_tag",
+        "once": "_wpnonce"
+    },
+    "store_address": "85 Nguyễn Khang,  p.Yên Hòa, q.Cầu Giấy, HN",
+    "store_type": "shoes"
+}
