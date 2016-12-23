@@ -1,1 +1,1 @@
-.\node_modules\.bin\sequelize migration:create --name %1%
+.\node_modules\.bin\sequelize --env %1% migration:create --name %2%

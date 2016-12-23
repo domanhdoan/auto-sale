@@ -8,6 +8,7 @@ var logger = require("../util/logger.js");
 var common = require("../util/common.js");
 var gDbManager = require("../models/db_manager.js");
 var gModelFactory = require("../dal/model_factory.js");
+var lastSavedCategory = null;
 
 Array.prototype.unique = function() {
     return this.filter(function(value, index, array) {
@@ -20,6 +21,7 @@ function WebScraper(crawlPattern) {
     this.gCrawlPattern = crawlPattern;
     this.curHomepage = crawlPattern.url;
     this.categoryObjects = [];
+    this.productNCategoryMapping = [];
     var currentObj = this;
 
     function insertLinksWithoutDuplication(source, destination) {
@@ -44,14 +46,90 @@ function WebScraper(crawlPattern) {
         }
     }
 
+    function extractPropertiesFromDesc(savedStore, savedProduct){
+        // if can not handle color list => handle from desc
+        var desc = savedProduct.dataValues.desc;
+        //logger.info("desc = " + desc);
+        var propertiesArray = desc.trim().split(/\r?\n/);
+        for (var i = 0; i < propertiesArray.length; i++){
+            var property = propertiesArray[i].replace("–", "").trim().toLowerCase();
+            logger.info("property = " + property);
+            if(true === property.startsWith("màu sắc:")){
+                var value  = property.replace("màu sắc:", "").replace("màu ", "").trim();//.split(",");
+                gModelFactory.findAndCreateProductProperty(
+                    savedStore, savedProduct, "color", gDbManager.Sequelize.STRING,
+                    value, function(color) {});
+            }else if(property.indexOf("chất liệu") > -1){
+                var tempArray = property.split("chất liệu");
+                var value  = tempArray[1].replace(":", "").trim();
+                logger.info("Material = " + value);
+                if(common.isDefined()){
+                    gModelFactory.findAndCreateProductProperty(
+                        savedStore, savedProduct, "material", gDbManager.Sequelize.STRING,
+                        value, function(material) {});
+                }else{
+                    logger.info("Not add NULL Photo link");
+                }
+            }else if(true === property.startsWith("kiểu dáng:")){
+                var value  = property.replace("kiểu dáng:", "").trim();
+                logger.info("Shape = " + value);
+                gModelFactory.findAndCreateProductProperty(
+                    savedStore, savedProduct, "shape", gDbManager.Sequelize.STRING,
+                    value, function(shape) {});
+            }else if(true === property.startsWith("xuất xứ:")){
+                var value  = property.replace("xuất xứ:", "").trim();
+                logger.info("Country = " + value);
+                gModelFactory.findAndCreateProductProperty(
+                    savedStore, savedProduct, "country", gDbManager.Sequelize.STRING,
+                    value, function(country) {});
+            }else if(true === property.startsWith("thương hiệu:")){
+                var value  = property.replace("thương hiệu:", "").trim();
+                logger.info("Brand = " + value);
+                gModelFactory.findAndCreateProductProperty(
+                    savedStore, savedProduct, "brand", gDbManager.Sequelize.STRING,
+                    value, function(country) {});
+            }else if(property.indexOf("size") > -1){
+                var minSize = -1;
+                var maxSize = -1;
+                if(property.indexOf("full size") > -1){
+                    minSize = 35;
+                    maxSize = 43;
+                }else{
+                    var values = property.replace("size:", "").trim();//.split(",");
+                    var rePattern = new RegExp(/[0-9]{2}/, "gi");
+                    var arrMatches = values.match(rePattern);
+                    if(arrMatches.length == 1){
+                        minSize = parseInt(arrMatches[0]);
+                        maxSize = parseInt(arrMatches[0]);
+                    }else if(arrMatches.length == 2){
+                        minSize = parseInt(arrMatches[0]);
+                        maxSize = parseInt(arrMatches[1]);
+                    }
+                }
+                logger.info("minSize = " + minSize.toString());
+                logger.info("maxSize = " + maxSize.toString());
+                for(var i = minSize; (i <= maxSize) & (i > 0); i++){
+                    logger.info("Size = " + i.toString());
+                    gModelFactory.findAndCreateProductProperty(
+                        savedStore, savedProduct, "size", gDbManager.Sequelize.INTEGER,
+                        i, function(size) {});
+
+                }
+            }else{
+                logger.info("Not support to handle this property: " + property);
+            }
+        }
+    }
+    
     function handleProductProperties(savedStore, savedProduct, pageObject, sizeList, colorList, productPhotos) {
         var $ = pageObject;
         async.eachSeries(sizeList, function(size, callback) {
             var value = $(size).text().trim();
-            gModelFactory.findAndCreateProductSize(savedProduct, value,
-                function(size) {
-                    callback();
-                });
+            logger.info("handleProductProperties size = " + value);
+            gModelFactory.findAndCreateProductProperty(savedStore, savedProduct, 
+                "size", gDbManager.Sequelize.INTEGER, value, function(size) {
+                 callback();
+            });
         }, function alert(err) {
             logger.info("err = " + err);
         });
@@ -59,25 +137,31 @@ function WebScraper(crawlPattern) {
         async.eachSeries(colorList, function(color, callback) {
             var name = $(color).text().trim();
             var value = $(color).text().trim();
-            gModelFactory.findAndCreateProductColor(savedProduct,
-                name, value,
-                function(color) {
-                    callback();
-                });
+            gModelFactory.findAndCreateProductProperty(savedStore, savedProduct, 
+                "color", gDbManager.Sequelize.STRING, value, function(color) {
+                 callback();
+            });
         }, function alert(err) {
             logger.info("err = " + err);
         });
 
         async.eachSeries(productPhotos, function(photo, callback) {
             var link = $(photo).attr('href');
-            gModelFactory.findAndCreateProductPhoto(savedStore, savedProduct,
-                link, 0 /*false*/ ,
-                function() {
-                    callback();
-                });
+            logger.info("Link = " + link);
+            if(common.isDefined()){
+                gModelFactory.findAndCreateProductProperty(savedStore, savedProduct, 
+                    "photo", gDbManager.Sequelize.STRING, link, function(photo) {
+                     callback();
+                });                
+            }else{
+                logger.info("Not add NULL Photo link");
+            }
         }, function alert(err) {
             logger.info("err = " + err);
         });
+        
+        //logger.info("desc = " + JSON.stringify(savedProduct.dataValues.desc));
+        extractPropertiesFromDesc(savedStore, savedProduct);
     }
 
     function extractProductDetails(savedStore, categoryObjects,
@@ -89,70 +173,106 @@ function WebScraper(crawlPattern) {
             }
             var $ = cheerio.load(body);
             var detailLink = response.request.href;
-            detailLink = common.insertRootLink(detailLink, currentObj.curHomepage);
-            // common.saveToHTMLFile(detailLink, body);
+            detailLink = common.insertRootLink(detailLink.trim(), currentObj.curHomepage);
+            
             var productElememt = $(detailPattern.content_area);
+            
             var headline = $(productElememt).find(detailPattern.headline);
             var length = headline.length;
             var finger = "";
             for (var i = 1; i < length; i++) {
                 finger += " " + $(headline[i]).text().latinise().toLowerCase().trim();
             }
-            logger.info("Finger = " + finger);
+
             var categoryNameElement = (length >= 2) ? $(headline[1]) : "";
-            var categoryName = (categoryNameElement !== "") ? categoryNameElement.text().trim() : "";
             var categoryLink = (categoryNameElement !== "") ? $(categoryNameElement).attr('href') : "";
 
             var title = $(productElememt).find(detailPattern.title).text();
             var thumbnailLink = $(productElememt).find(detailPattern.thumbnail).attr('src');
-            var desc = $(productElememt).find(detailPattern.desc).text();
-            var priceStr = $(productElememt).find(detailPattern.price).text();
-            var discountStr = $(productElememt).find(detailPattern.discount).text();
-            var price = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
-            var discount = common.extractValue(priceStr.replaceAll(',', ''), "\\d+");
-            var code = $(detailPattern.code).text();
-            var type = common.extractProductType(title);
+            
+            common.shortenURL(thumbnailLink, function(shortURL){
+                var desc = $(productElememt).find(detailPattern.desc).text();
+                var priceStr = $(productElememt).find(detailPattern.price).text();
+                var discountStr = $(productElememt).find(detailPattern.discount).text();
 
-            var sizeList = $(detailPattern.size);
-            var colorList = $(detailPattern.color);
-            var productPhotos = $(detailPattern.photo);
-
-            if (thumbnailLink != undefined && thumbnailLink != "" && title != "") {
-                thumbnailLink = common.insertRootLink(thumbnailLink, currentObj.curHomepage)
-                desc = (desc === "") ? title : desc;
-                priceStr = (priceStr == null || priceStr == "") ? discountStr : priceStr;
-                discountStr = (discountStr == null || discountStr == "") ? "0" : discountStr;
-
-                finger += " " + title.latinise().toLowerCase();
-                //finger += " " + desc.latinise().toLowerCase();
-                finger = finger.split(' ').filter(function(item, i, allItems) {
-                    return i == allItems.indexOf(item);
-                }).join(' ');
-                if (price > 0) {
-                    var cKey = require('crypto').createHmac('sha256', categoryName)
-                        .digest('hex');
-
-                    var savedCategory = categoryObjects[categoryLink];
-                    if (!savedCategory) {
-                        logger.info("UNDEFINE product " + detailLink);
-                    } else {
-                        logger.info("DEFINE categoryName " + categoryName);
-                        gModelFactory.findAndCreateProduct(
-                            savedStore, savedCategory, title, thumbnailLink,
-                            desc, price, discount, detailLink, type, finger, code,
-                            function(savedProduct) {
-                                handleProductProperties(savedStore, savedProduct, $, sizeList, colorList, productPhotos);
-                                if (!callback) {
-                                    callback(link);
-                                }
-                            });
-                    }
-                } else if (price == 0) {
-                    logger.info("Not save product which not have price\n");
+                var code = $(detailPattern.code).text();
+                if(!common.isDefined(code)){                
+                    code = common.extractProductCode(title, detailPattern.codepatern).code;
                 }
-            } else {
-                logger.info("\nSkipped this HTML element: " + detailLink);
-            }
+                var type = common.extractProductType(title);
+
+                var sizeList = $(detailPattern.size);
+                var colorList = $(detailPattern.color);
+                var productPhotos = $(detailPattern.photo);
+
+                logger.info("Processing " + detailLink);
+                logger.info("Headline = " + $(headline).text());
+                logger.info("Finger = " + finger);
+                logger.info("code = " + code);
+                logger.info("categoryLink = " + categoryLink);
+
+                if (shortURL != undefined && shortURL != "" && title != "") {
+                    shortURL = common.insertRootLink(shortURL, currentObj.curHomepage)
+
+                    desc = (desc === "") ? title : desc;
+                    priceStr = (priceStr == null || priceStr == "") ? discountStr : priceStr;
+                    discountStr = (discountStr == null || discountStr == "") ? "0" : discountStr;
+                    var price = common.extractValue(priceStr.replaceAll(',', '').replaceAll('.', ''), "\\d+");
+                    var discount = common.extractValue(discountStr.replaceAll(',', '').replaceAll('.', ''), "\\d+");
+                    // logger.info("priceStr = " + priceStr);
+                    // logger.info("discountStr = " + discountStr);
+                    // logger.info("price = " + price);
+                    // logger.info("discount = " + discount);
+                    
+                    finger += " " + title.latinise().toLowerCase();
+                    //finger += " " + desc.latinise().toLowerCase();
+                    finger = finger.split(' ').filter(function(item, i, allItems) {
+                        return i == allItems.indexOf(item);
+                    }).join(' ');
+                    if (price > 0) {
+                        // var cKey = require('crypto').createHmac('sha256', categoryName)
+                            // .digest('hex');
+                        /*
+                        var savedCategory = categoryObjects[categoryLink];
+                        if (!savedCategory) {
+                            logger.info("UNDEFINE category for " + detailLink);
+                            common.saveToFile("scraping_log.txt", "underfined category\t" + categoryLink + "\t" + detailLink);
+                            savedCategory = lastSavedCategory;
+                        } else {
+                            logger.info("DEFINE categoryName for " + detailLink);
+                            lastSavedCategory = savedCategory;
+                        }
+                        */
+                        var savedCategory = currentObj.productNCategoryMapping[detailLink];
+                        if(savedCategory){
+                            gModelFactory.findAndCreateProduct(
+                                savedStore, savedCategory, title, shortURL,
+                                desc, price, discount, detailLink, type, finger, code,
+                                function(savedProduct) {
+                                    handleProductProperties(savedStore, savedProduct, $, 
+                                    sizeList, colorList, productPhotos);
+                                    common.saveToFile("scraping_log.txt", "passed\t" + link);
+                                    // Add thumbnail into photo table
+                                    gModelFactory.findAndCreateProductProperty(savedStore, savedProduct, 
+                                        "photo", gDbManager.Sequelize.STRING, thumbnailLink, function(photo) {
+                                         callback();
+                                    });
+                                    if (!callback) {
+                                        callback(link);
+                                    }
+                                });
+
+                        }
+                    } else if (price == 0) {
+                        logger.info("Not save product which not have price\n");
+                        common.saveToFile("scraping_log.txt", "failed by not have price\t" + link);
+                    }
+                } else {
+					common.saveToFile("scraping_log.txt", "shortURL = " + shortURL + "title = " + title);
+                    logger.info("\nSkipped this HTML element: " + detailLink);
+                    common.saveToFile("scraping_log.txt", "failed by parsing html\t" + link);
+                }                
+            });
         });
     }
 
@@ -192,26 +312,30 @@ function WebScraper(crawlPattern) {
             var $ = cheerio.load(body);
             var productList = $(currentObj.gCrawlPattern.product_info.link);
             // common.saveToHTMLFile(categoryLink, body);
+			var tempArray = categoryLink.split('?');
+			common.saveToFile("scraping_log.txt", "Category link\t" + categoryLink);
+			categoryLink = (tempArray.length == 1)?categoryLink:tempArray[0];
             for (var i = 0, length = productList.length; i < length; i++) {
                 var detailLink = $(productList[i]).attr('href');
                 detailLink = common.insertRootLink(detailLink, currentObj.curHomepage);
-                logger.error("Category Link: " + categoryLink);
-                logger.info("Product link: " + detailLink);
                 //insertLinkWithoutDuplication(detailLink, productLinks);
-                productLinks.push(detailLink);
+                if(productLinks.indexOf(detailLink) < 0){
+                    productLinks.push(detailLink);
+                    common.saveToFile("scraping_log.txt", "product link\t" + detailLink);
+                    currentObj.productNCategoryMapping[detailLink] = currentObj.categoryObjects[categoryLink];
+                }
             }
-
-            var nextPageLinks = $(currentObj.gCrawlPattern.paging.page_link);
-            if (nextPageLinks.length > 0) {
-                nextPageLinks.each(function(i, page) {
-                    var pageLink = $(this).attr('href');
-                    pageLink = common.insertRootLink(pageLink, currentObj.curHomepage);
-                    var products = extractAllProductDetailsLink(index,
-                        pageLink, productLinks, callback);
-                });
-            } else {
-                callback(index, productLinks);
-            }
+			var nextPageLinks = $(currentObj.gCrawlPattern.paging.page_link);
+			if ((nextPageLinks.length > 0) && (tempArray.length == 1)) {
+				nextPageLinks.each(function(i, page) {
+					var pageLink = $(this).attr('href');
+					pageLink = common.insertRootLink(pageLink, currentObj.curHomepage);
+					var products = extractAllProductDetailsLink(index,
+						pageLink, productLinks, callback);
+				});
+			} else {
+				callback(index, productLinks);
+			}
         });
     }
 
@@ -225,13 +349,15 @@ function WebScraper(crawlPattern) {
             var children = $(menuItems[i]).find('a');
             var link = $(children[0]).attr('href');
             var name = $(children[0]).text().trim();
-            if (link === undefined || name === "" || skippedCategory.indexOf(name.latinise().toLowerCase()) >= 0 || (link === currentObj.curHomepage + "/")) {
+            if (link === undefined || name === "" 
+            || (skippedCategory.indexOf(name.latinise().toLowerCase()) >= 0)
+            || (link === currentObj.curHomepage + "/")) {
                 logger.info("Skipped Category Link: " + link);
                 continue;
             }
-            logger.info("OK Category: " + name);
-            logger.info("OK Category Link: " + link);
-
+            
+            common.saveToFile("scraping_log.txt", "category link\t" + link);
+            
             gModelFactory.findAndCreateCategory(savedStore, name, link,
                 function(savedCategory) {
                     var key = require('crypto').createHmac('sha256', savedCategory.dataValues.name)
@@ -266,7 +392,7 @@ function WebScraper(crawlPattern) {
 
                 extractAllProductDetailsLink(index, url, allProductLinks, function(index, productLinks) {
                     categoryCount++;
-                    logger.info("Category index = " + index);
+                    //logger.info("Category index = " + index);
                     if ((categoryCount == length) && (callback != null)) {
                         allProductLinks = allProductLinks.unique();
                         callback(allProductLinks, currentObj.categoryObjects);

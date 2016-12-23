@@ -70,8 +70,6 @@ module.exports.findAndCreateProduct = function(
     product_discount, product_detail_link,
     product_type, product_finger, product_code, callback
 ) {
-    // var product_finger = require('crypto').createHmac('sha256', product_detail_link)
-    //     .digest('hex');
     gDbManager.Product.findOrCreate({
         where: {
             link: product_detail_link.replaceAll('-', '%%')
@@ -90,7 +88,6 @@ module.exports.findAndCreateProduct = function(
         }
     }).then(function(product) {
         var savedProduct = product[0];
-
         savedProduct.setCategory(savedCategory);
         savedProduct.setStore(saved_store);
         if (!product[1]) {
@@ -99,7 +96,8 @@ module.exports.findAndCreateProduct = function(
                     cover: savedProduct.thumbnail.replaceAll("%%", "-")
                 });
             }
-            savedProduct.updateAttributes({
+            //savedProduct.updateAttributes({
+			savedProduct.update({
                 title: product_title,
                 thumbnail: product_thumbnail.replaceAll('-', '%%'),
                 desc: product_desc,
@@ -110,10 +108,11 @@ module.exports.findAndCreateProduct = function(
                 brand: "",
                 type: product_type,
                 code: product_code
-            });
+            }).then(function(){
+				logger.info("Save or update new product successfully");
+				callback(savedProduct);
+			})
         }
-        logger.info("Save new product successfully");
-        callback(savedProduct);
     });
 }
 
@@ -124,7 +123,9 @@ module.exports.findAndCreateProductColor = function(saved_product, color_name,
             name: color_name,
             ProductId: saved_product.dataValues.id
         },
-        defaults: {}
+        defaults: {
+			name: color_name
+		}
     }).then(function(result) {
         var saved_color = result[0];
         callback(saved_color);
@@ -150,6 +151,34 @@ module.exports.findAndCreateProductPhoto = function(savedStore, savedProduct,
         savedPhoto.setStore(savedStore);
         logger.info(JSON.stringify(savedProduct));
         callback();
+    });
+}
+
+module.exports.findAndCreateProductProperty = function(savedStore, 
+	savedProduct, name, type, value, callback) {
+	var ivalue = 0;
+	var svalue = 0;
+	if(type == gDbManager.Sequelize.INTEGER){
+		ivalue = value;
+	}else{		
+		svalue = value;
+	}
+    gDbManager.Property.findOrCreate({
+        where: {
+            name: name,
+            ProductId: savedProduct.dataValues.id,
+			StoreId: savedStore.dataValues.id
+        },
+        defaults: {
+			name: name,
+			ivalue: ivalue,
+			svalue: svalue
+		}
+    }).then(function(results) {
+        var property = results[0];
+		callback(); 		
+    }).catch(function(error) {
+        logger.error(error);
     });
 }
 

@@ -25,12 +25,6 @@ function FBMessenger() {
                 },
                 message: data
             },
-            headers: {
-                followRedirect: true,
-                'User-Agent': 'Mozilla/5.0  (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; \
-                .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E; CNS_UA; AD_LOGON=4C47452E4E4554; rv:11.0) like Gecko\
-                 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36'
-            }
         }, function(error, response, body) {
             if (error) {
                 logger.error('Error sending message: ' + error.stack);
@@ -83,22 +77,34 @@ function FBMessenger() {
         payload2.title = title;
         payload2.action = common.action_order;
         var priceInfo = "";
+        
+        logger.info("price = " + price);
+        logger.info("discount = " + discount);
+        
         if (discount < price) {
             priceInfo = " - Giá KM: " + common.toCurrencyString(discount, " VNĐ");
             priceInfo += "\n - Giá Gốc: " + common.toCurrencyString(price, " VNĐ");
         } else {
             priceInfo = "Giá hiện tại: " + common.toCurrencyString(price, " VNĐ");
         }
+
         var element = {
             "title": title,
             "subtitle": priceInfo,
             "item_url": link,
-            "image_url": thumbnail_url,
-            "buttons": [{
-                "type": "postback",
-                "title": "Nhấn xem Ảnh & Size",
-                "payload": JSON.stringify(payload1)
-            }, {
+            "image_url": thumbnail_url + "_",
+            "buttons": [
+            {
+                "type": "web_url",
+                "url":link,
+                "title":"Xem chi tiết",
+                "webview_height_ratio": "tall"
+            },
+            // {
+                // "type":"element_share",
+                // "title": "Share"
+            // },
+            {
                 "type": "postback",
                 "title": "Chọn sản phẩm",
                 "payload": JSON.stringify(payload2),
@@ -202,23 +208,75 @@ function FBMessenger() {
 // Methods for sending message to target user FB messager
 // =================================================================
 // https://developers.facebook.com/docs/messenger-platform/webhook-reference
+FBMessenger.prototype.showMenu = function(pageId, token){
+    var data = {
+      "setting_type" : "call_to_actions",
+      "thread_state" : "existing_thread",
+      "call_to_actions":[
+        {
+            "title":"Danh mục sản phẩm",
+            "type":"postback",
+            "payload":"{DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER}"
+        },
+        {
+            "title":"Tìm kiếm",
+            "type":"postback",
+            "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
+        },
+        {
+          "type":"postback",
+          "title":"Help",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
+        },
+        {
+          "type":"postback",
+          "title":"Gọi Tư Vấn",
+          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
+        }
+      ]
+    };
+    require('request')({
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+        qs: {
+            access_token: token
+        },
+        method: 'POST',
+        json: true,
+        body: data
+    }, function(error, response, body) {
+        if (error) {
+            logger.error('Error sending message: ' + error.stack);
+        } else if (response.body.error) {
+            logger.error('Error: ' + JSON.stringify(response.body.error));
+        } else {
+            logger.info("Send to FB response: " + JSON.stringify(body));
+        }
+    });
+}
+
 FBMessenger.prototype.sendProductElements = function(sender, token, foundProducts) {
     var messageData = [];
     var productCount = (foundProducts.length > common.product_search_max) ?
         common.product_search_max : foundProducts.length;
     for (var i = 0; i < productCount; i++) {
+        logger.info(JSON.stringify(foundProducts[i]))
         var productElement = this.createProductElement(
-            foundProducts[i].title,
-            foundProducts[i].price,
-            foundProducts[i].discount,
-            foundProducts[i].thumbnail.replaceAll("%%", "-"),
-            foundProducts[i].link.replaceAll("%%", "-"),
-            foundProducts[i].code,
-            foundProducts[i].id);
+        foundProducts[i].title,
+        foundProducts[i].price,
+        foundProducts[i].discount,
+        foundProducts[i].thumbnail.replaceAll("%%", "-"),
+        foundProducts[i].link.replaceAll("%%", "-"),
+        foundProducts[i].code,
+        foundProducts[i].id);
         messageData.push(productElement);
     }
     this.sendGenericMessage(sender, token, messageData);
 }
+
+FBMessenger.prototype.sendLinkMessage = function(sender, token, message) {
+    this.sendTextMessage(sender, token, message);
+}
+
 FBMessenger.prototype.sendProductTypeConfirm = function(sender, token, message, types) {
     var buttons = this.createProductTypeConfirmElement(types);
     this.sendConfirmMessage(sender, token, message, buttons);
@@ -239,7 +297,7 @@ FBMessenger.prototype.sendCategoriesElements = function(sender, token, foundCate
         }
     }
     if (messageData.length >= 2) {
-        this.sendTextMessage(sender, token, common.notify_product_search2);
+        //this.sendTextMessage(sender, token, common.notify_product_search2);
     }
     this.sendGenericMessage(sender, token, messageData);
 }
