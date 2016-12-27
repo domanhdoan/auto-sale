@@ -363,9 +363,9 @@ function showSimilarProductSuggestion(session) {
             function (callback) {
                 var categoryInfo = sessionManager.getCategoryInfo(session);
                 if (categoryInfo.id >= 0) {
-                    findProductByCategory(session);
+                    showProductsByCategoryId(session, categoryInfo.id);
                 } else {
-                    findCategories(session);
+                    showAllCategories(session);
                 }
             }
         ]);
@@ -431,14 +431,14 @@ function findProductByCode(session, productCode) {
     });
 }
 
-function findProductByCategory(session) {
-    var categoryInfo = sessionManager.getCategoryInfo(session);
-    gProductFinder.findProductsByCategory(session.storeid,
-        categoryInfo.id,
+function showProductsByCategoryId(session, categoryId) {
+	logger.info("[showProductsByCategoryId]storeid = " + session.storeid);
+	logger.info("[showProductsByCategoryId]categoryId = " + categoryId);
+    gProductFinder.findProductsByCategoryId(session.storeid, categoryId,
         function (products) {
         if (Object.keys(products).length > 0) {
+			
             sendProductSearchResultsToFB(session, products);
-            sessionManager.setCategoryId(session, products[0].CategoryId);
         } else {
             fbMessenger.sendTextMessage(session.fbid, session.token,
                 "Không tìm thấy sản phẩm nào. Bạn vui lòng chọn danh mục khác");
@@ -446,8 +446,8 @@ function findProductByCategory(session) {
     });
 }
 
-function findCategories(session) {
-    gProductFinder.findCategoriesByStoreId(session.storeid, function (categories) {
+function showAllCategories(session) {
+    gProductFinder.findAllCategoriesByStoreId(session.storeid, function (categories) {
         sendCategorySearchResultsToFB(session, categories);
     });
 }
@@ -937,7 +937,7 @@ function setUpUserIntentListener() {
             //fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn vui lòng xem thêm thông tin. Shop sẽ check giúp bạn :)");
             // setTimeout(function () {
                 // fbMessenger.sendTextMessage(session.fbid, session.token, "Bạn xem thêm danh mục sản phẩm bên dưới");
-                // findCategories(session);
+                // showAllCategories(session);
             // }, 100);
             showProductSearchHelp(session);
         });
@@ -980,10 +980,17 @@ function processPostbackEvent(session, action_details) {
             action_details.id, action_details.title);
         showAvailableColorNsize(session, true, true, true);
     } else if (user_action === common.action_view_category) {
-        findProductByCategory(session);
+		sessionManager.setCategoryInfo(session, {id:action_details.id, title:action_details.title});
+		logger.info("[processPostbackEvent]storeid = " + session.storeid);
+		logger.info("[processPostbackEvent]categoryId = " + action_details.id);
+		showProductsByCategoryId(session, action_details.id);
+     // this is for MENU items
+    } else if (user_action === common.action_show_similar) {
+		var categoryInfo = sessionManager.getCategoryInfo(session);
+		showProductsByCategoryId(session, categoryInfo.id);
      // this is for MENU items
     } else if (user_action === common.action_view_categories) {
-        findCategories(session);
+        showAllCategories(session);
     } else if (user_action === common.action_view_help) {
         showProductSearchHelp(session);
 		showSupportInfoHelp(session);

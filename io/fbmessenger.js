@@ -67,20 +67,20 @@ function FBMessenger() {
     }
 
     this.createProductElement = function(title, price, discount,
-        thumbnail_url, link, code, id) {
-        var payload1 = {};
+        thumbnail_url, link, code, id) {        
+		var payload1 = {};
         payload1.id = id;
         payload1.title = title;
         payload1.action = common.action_view_details;
+		
         var payload2 = {};
         payload2.id = id;
         payload2.title = title;
-        payload2.action = common.action_order;
-        var priceInfo = "";
-        
+        payload2.action = common.action_show_similar;//common.action_order;
+		
+        var priceInfo = "";        
         logger.info("price = " + price);
-        logger.info("discount = " + discount);
-        
+        logger.info("discount = " + discount);        
         if (discount < price) {
             priceInfo = " - Giá KM: " + common.toCurrencyString(discount, " VNĐ");
             priceInfo += "\n - Giá Gốc: " + common.toCurrencyString(price, " VNĐ");
@@ -106,7 +106,7 @@ function FBMessenger() {
             // },
             {
                 "type": "postback",
-                "title": "Chọn sản phẩm",
+                "title": "Sản phẩm tương tự",//"Chọn sản phẩm",
                 "payload": JSON.stringify(payload2),
             }]
         };
