@@ -55,13 +55,13 @@ function WebScraper(crawlPattern) {
             var property = propertiesArray[i].replace("–", "").trim().toLowerCase();
             logger.info("property = " + property);
             if(true === property.startsWith("màu sắc:")){
-                var value  = property.replace("màu sắc:", "").replace("màu ", "").trim();//.split(",");
+                var value  = property.replace("màu sắc:", "").replace("màu ", "").replace(".", "").trim();
                 gModelFactory.findAndCreateProductProperty(
                     savedStore, savedProduct, "color", gDbManager.Sequelize.STRING,
                     value, function(color) {});
             }else if(property.indexOf("chất liệu") > -1){
                 var tempArray = property.split("chất liệu");
-                var value  = tempArray[1].replace(":", "").trim();
+                var value  = tempArray[1].replace(":", "").replace(".", "").trim();
                 logger.info("Material = " + value);
                 if(common.isDefined()){
                     gModelFactory.findAndCreateProductProperty(
@@ -71,19 +71,19 @@ function WebScraper(crawlPattern) {
                     logger.info("Not add NULL Photo link");
                 }
             }else if(true === property.startsWith("kiểu dáng:")){
-                var value  = property.replace("kiểu dáng:", "").trim();
+                var value  = property.replace("kiểu dáng:", "").replace(".", "").trim();
                 logger.info("Shape = " + value);
                 gModelFactory.findAndCreateProductProperty(
                     savedStore, savedProduct, "shape", gDbManager.Sequelize.STRING,
                     value, function(shape) {});
             }else if(true === property.startsWith("xuất xứ:")){
-                var value  = property.replace("xuất xứ:", "").trim();
+                var value  = property.replace("xuất xứ:", "").replace(".", "").trim();
                 logger.info("Country = " + value);
                 gModelFactory.findAndCreateProductProperty(
                     savedStore, savedProduct, "country", gDbManager.Sequelize.STRING,
                     value, function(country) {});
             }else if(true === property.startsWith("thương hiệu:")){
-                var value  = property.replace("thương hiệu:", "").trim();
+                var value  = property.replace("thương hiệu:", "").replace(".", "").trim();
                 logger.info("Brand = " + value);
                 gModelFactory.findAndCreateProductProperty(
                     savedStore, savedProduct, "brand", gDbManager.Sequelize.STRING,
