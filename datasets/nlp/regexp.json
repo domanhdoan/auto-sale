@@ -22,5 +22,36 @@
         "size nam \\d+", "size nu \\d+",
         "nam size \\d+", "nu size \\d+",
         "size"
-    ]
+    ],
+    "priceRegexp": [
+		"[1-9]{1,5}k",
+		"[1-9]{1,5}m",
+		"[1-9]{1,5}.[1-9]{1,5}m",
+		"[1-9]{1,5}tr",
+		"[1-9]{1,5}nghin",
+		"[1-9]{1,5}trieu",
+		"[1-9]{1,5}cu",
+		"[1-9]{1,5}lit"
+    ],
+	"price_intent":[
+		{
+			"name":"price_min",
+			"value": ["re nhat"]
+		},
+		{
+			"name":"price_max",
+			"value": ["dat nhat"]
+		},
+		{
+			"name":"price_range",
+			"value": ["tu xxxk den xxxk","tu xxxM den xxxM"]
+		},
+		{
+			"name":"price_thredhold",
+			"value": [
+				"khoang 500k", "khoang 1trieu","khoang 1tr",
+				"tam 500k", "tam 1trieu","tam 1tr"
+			]
+		}
+	]
 }
