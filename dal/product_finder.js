@@ -210,7 +210,7 @@ exports.getAllProperties = function (callback) {
     });
 }
 
-exports.findCategoriesByStoreId = function (storeid, callback) {
+exports.findAllCategoriesByStoreId = function (storeid, callback) {
     gDbManager.Category.findAll({
         where: {
             StoreId: storeid
@@ -330,7 +330,9 @@ exports.findProductByThumbnail = function (home_page, thumbnail_link, callback) 
         });
 }
 
-exports.findProductsByCategory = function (storeId, categoryId, callback) {
+exports.findProductsByCategoryId = function (storeId, categoryId, callback) {
+	logger.info("storeid = " + storeId);
+	logger.info("categoryId = " + categoryId);
     gDbManager.Product.findAll({
         order: [
             ['id', 'ASC']
@@ -363,11 +365,15 @@ exports.findProductByThumbnailOnStore = function(storeId, link, callback) {
 }
 
 exports.findProductsByPriceRange = function (storeId, priceMin, priceMax, callback) {
+	var priceRange = [priceMin, priceMax];
     gDbManager.Product.findAll({
         order: [
             ['price', 'ASC']
         ],
         where: {
+			price:{
+				$between: priceRange
+			},
             CategoryId: categoryId,
             StoreId: storeId
         }

@@ -45,6 +45,7 @@ module.exports = {
     action_view_category: 'view_cat',
     action_terminate_order: 'huy',
     action_continue_search: 'search',
+	action_show_similar: 'show_similar',
     action_view_details: 'view',
     action_order: 'order',
     action_select: 'select',
