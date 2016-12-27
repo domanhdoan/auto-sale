@@ -40,7 +40,8 @@ module.exports = {
     notify_size_notfound: 'Không còn size trong cửa hàng',
     notify_product_notfound: 'Shop không thấy sản phẩm như mong muốn của bạn :(',
     notify_product_similar: 'Bạn xem sản phẩm tương tự bên dưới nhé :)',
-
+    
+    action_view_categories: 'view_categories',
     action_view_category: 'view_cat',
     action_terminate_order: 'huy',
     action_continue_search: 'search',
@@ -53,7 +54,10 @@ module.exports = {
     action_confirm_addr: 'confirm_addr',
     action_confirm_type: 'confirm_type',
     action_retype_addr: 'retype_addr',
-
+    action_view_help: 'view_help',
+    action_call_staff: 'call_staff',
+    action_talk_bot: 'talk_bot',
+    
     status_updating: 'Đang cập nhật',
     product_search_max: 10,
 
@@ -62,12 +66,12 @@ module.exports = {
     INTENT_CHECK_SHIP: 'check_ship',
     INTENT_ORDER_PRODUCT: 'order_product',
     INTENT_GENERAL_SEARCH: 'general_search',
-	INTENT_CHECK_SALEOFF: 'check_saleoff',
+    INTENT_CHECK_SALEOFF: 'check_saleoff',
     INTENT_UNKNOWN: 'unknow_intent',
     INTENT_ACCURACY_ABSOLUTE: 1.0,
     INTENT_ACCURACY_0_98: 0.98,
     INTENT_ACCURACY: 0.9,
-	INTENT_ACCURACY_MEDIUM: 0.7,
+    INTENT_ACCURACY_MEDIUM: 0.7,
     INTENT_ACCURACY_LOW: 0.65,
     PRODUCT_TYPE_MALE: 'nam',
     PRODUCT_TYPE_FEMALE: 'nu',
@@ -88,8 +92,8 @@ module.exports.typical_question = {
 }
 
 module.exports.productProperties = new Enum([
-	// For fashiion products
-	'color', 'size', 'shape', 'country', 'brand', 'material'
+    // For fashiion products
+    'color', 'size', 'shape', 'country', 'brand', 'material'
 ])
 
 module.exports.sale_steps = new Enum([
@@ -258,25 +262,25 @@ module.exports.validateVNPhoneNo = function(text) {
 
 
 module.exports.loadStoreScrapingPattern = function(storeType, url) {
-	var pattern = null;
-	try{
-		var product_pattern = url
-		if (product_pattern.startsWith('http://')) {
-			product_pattern = product_pattern.replace('http://', '')
-		} else if (product_pattern.startsWith('https://')) {
-			product_pattern = product_pattern.replace('https://', '')
-		} else {
-			
-		}
-		var patternPath = './datasets/' + storeType + '/' + product_pattern
-		pattern = JSON.parse(require('fs').readFileSync(patternPath, 'utf8'))
-		pattern.url = url.replace('.json', '')
-	//	logger.info("store config = " + JSON.stringify(pattern));
-	}catch(error){
-		logger.error("loading store config error " + error);
-	}finally{
-		
-	}
+    var pattern = null;
+    try{
+        var product_pattern = url
+        if (product_pattern.startsWith('http://')) {
+            product_pattern = product_pattern.replace('http://', '')
+        } else if (product_pattern.startsWith('https://')) {
+            product_pattern = product_pattern.replace('https://', '')
+        } else {
+            
+        }
+        var patternPath = './datasets/' + storeType + '/' + product_pattern
+        pattern = JSON.parse(require('fs').readFileSync(patternPath, 'utf8'))
+        pattern.url = url.replace('.json', '')
+    //    logger.info("store config = " + JSON.stringify(pattern));
+    }catch(error){
+        logger.error("loading store config error " + error);
+    }finally{
+        
+    }
     return pattern;
 }
 
@@ -437,11 +441,11 @@ module.exports.extractProductType = function(title) {
 
 var TinyURL = require('tinyurl');
 module.exports.shortenURL = function(longURL, callback){
-	TinyURL.shorten(longURL, function(shortURL) {
-		 //Returns a shorter version of http://google.com - http://tinyurl.com/2tx 
-		console.log(shortURL);
-		callback(shortURL)
-	});	
+    TinyURL.shorten(longURL, function(shortURL) {
+         //Returns a shorter version of http://google.com - http://tinyurl.com/2tx 
+        console.log(shortURL);
+        callback(shortURL)
+    });    
 }
 
 module.exports.insertRootLink = function(current_link, home_page) {

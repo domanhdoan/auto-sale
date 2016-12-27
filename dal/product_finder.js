@@ -84,6 +84,7 @@ function generateFindshoesQuery(storeId, keywords) {
     var query = " Select DISTINCT P.id, P.title, P.price, P.discount, P.thumbnail, P.code, P.link";
     var cat_keywords = keywords[0].replaceAll("%%", ", ");
     query += ", Relevance from Product as P";
+	
 	/*
     if (keywords[1].length > 0) {
         query += " inner join color as C on P.id = C.ProductId"
@@ -93,9 +94,17 @@ function generateFindshoesQuery(storeId, keywords) {
     }
 	*/
 
+/*
 	if((keywords[1].length > 0) || (keywords[2].length > 0)){
 		query += " inner join Property on P.id = Property.ProductId";
 	}
+*/
+    if (keywords[1].length > 0) {
+        query += " inner join Property as Color on P.id = Color.ProductId AND Color.name='color'";
+    }
+    if (keywords[2].length > 0) {
+        query += " inner join Property as Size on P.id = Size.ProductId AND Size.name='size'";
+    }	
     query += " where P.StoreId = '" + storeId + "'";
 
     if (cat_keywords.length != 0) {
@@ -117,21 +126,15 @@ function generateFindshoesQuery(storeId, keywords) {
         query += " ORDER BY Relevance DESC";
     }
 */
-	if((keywords[1].length * keywords[2].length) > 0){
-		query += " and (Property.name='color' and Property.svalue IN ('" + keywords[1] + "'))";
-		query += " or (Property.name='size' and Property.ivalue IN (" + keywords[2] + "))";
-		query += " GROUP BY P.id HAVING count(P.id) = 2";
-	}else if (keywords[1].length > 0) {
-        query += " and Property.name='color' and Property.svalue IN ('" + keywords[1] + "')";
-    }else if (keywords[2].length > 0) {
-        query += " and Property.name='size' and Property.ivalue IN (" + keywords[2] + ")";
-    }else{
-		
-	}
-	
+	if (keywords[1].length > 0) {
+        query += " and Color.svalue IN ('" + keywords[1] + "')";
+    }
+	if (keywords[2].length > 0) {
+        query += " and Size.ivalue IN (" + keywords[2] + ")";
+    }
     if (cat_keywords.length != 0) {
         //query += " ORDER BY Relevance DESC";
-		query += " ORDER BY P.id ASC";
+		query += " ORDER BY Relevance DESC";
     }
     query += " LIMIT " + common.product_search_max + ";";
 
