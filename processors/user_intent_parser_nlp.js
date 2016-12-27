@@ -12,6 +12,7 @@ function UserIntentParserNLP() {
     var shipTrainingData = common.loadJson('./datasets/nlp/ship.json')
     var regExpData = common.loadJson('./datasets/nlp/regexp.json')
     this.unprocessWordList = common.loadJson('./datasets/nlp/notprocess.json').unprocess
+    this.unprocessWordList = common.loadJson('./datasets/nlp/notprocess.json').unprocess
 
     var typeRegexp = regExpData.typeRegexp
     var quantityRegexp = regExpData.quantityRegexp
@@ -207,22 +208,23 @@ function UserIntentParserNLP() {
     this.parseSizeInfo = function (userMsg) {
         var productSizes = []
         userMsg = userMsg.replaceAll('saiz', 'size')
-            userMsg = userMsg.replaceAll('sai', 'size')
-            userMsg = userMsg.replaceAll('sz', 'size')
-            for (var i = 0, length = sizeRegexp.length; i < length; i++) {
-                productSizes = common.extractValue(userMsg, sizeRegexp[i])
-                    if (productSizes !== '') {
-                        productSizes = common.extractValues(productSizes, '\\d+')
-                            if (productSizes.length === 0) {
-                                productSizes.push('all')
-                            }
-                            break
-                    }
-            }
-            if (productSizes === '') {
-                productSizes = []
-            }
-            return productSizes
+		userMsg = userMsg.replaceAll('sai', 'size')
+		userMsg = userMsg.replaceAll('sz', 'size')
+		logger.info("{Size}userMsg " + userMsg);
+		for (var i = 0, length = sizeRegexp.length; i < length; i++) {
+			productSizes = common.extractValue(userMsg, sizeRegexp[i])
+				if (productSizes !== '') {
+					productSizes = common.extractValues(productSizes, '\\d+')
+					if (productSizes.length === 0) {
+						productSizes.push('all')
+					}
+					break
+				}
+		}
+		if (productSizes === '') {
+			productSizes = []
+		}
+		return productSizes
     }
 
     this.parseQuantity = function (userMsg) {
@@ -284,9 +286,11 @@ function UserIntentParserNLP() {
     }
 
     this.parseAvailabilityIntent = function (userMsg, options) {
-        userMsg = this.removeClassiferFeatures(questionClassifier.features, userMsg)
-            userMsg = this.removeRedundant(quantityRegexp, userMsg)
-            var data = {
+        //userMsg = this.removeClassiferFeatures(questionClassifier.features, userMsg)
+		//logger.info("After removeClassiferFeatures, userMsg " + userMsg);
+        userMsg = this.removeRedundant(quantityRegexp, userMsg)
+		logger.info("After removing redundant words, userMsg " + userMsg);
+        var data = {
             storeid: options.storeid,
             pageid: options.pageid,
             fbid: options.fbid,

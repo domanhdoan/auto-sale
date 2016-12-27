@@ -56,7 +56,7 @@ function FBMessenger() {
         var element = {
             "title": "Danh mục: " + name,
             "subtitle": "Nhấn nút bên dưới để xem danh sách sản phẩm trong danh mục",
-            "image_url": cover,
+            "image_url": cover+"_",
             "buttons": [{
                 "type": "postback",
                 "title": "Xem danh mục",
@@ -91,7 +91,7 @@ function FBMessenger() {
         var element = {
             "title": title,
             "subtitle": priceInfo,
-            "item_url": link,
+            "item_url": link+"_",
             "image_url": thumbnail_url + "_",
             "buttons": [
             {
@@ -208,7 +208,7 @@ function FBMessenger() {
 // Methods for sending message to target user FB messager
 // =================================================================
 // https://developers.facebook.com/docs/messenger-platform/webhook-reference
-FBMessenger.prototype.showMenu = function(pageId, token){
+FBMessenger.prototype.showMenu = function(token){
     var data = {
       "setting_type" : "call_to_actions",
       "thread_state" : "existing_thread",
@@ -216,24 +216,48 @@ FBMessenger.prototype.showMenu = function(pageId, token){
         {
             "title":"Danh mục sản phẩm",
             "type":"postback",
-            "payload":"{DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER}"
+            "payload":"{\"action\":\"view_categories\"}"
         },
         {
-            "title":"Tìm kiếm",
+            "title":"Tìm kiếm với Chatbot",
             "type":"postback",
-            "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
+            "payload":"{\"action\":\"talk_bot\"}"
+        },
+		{
+          "type":"postback",
+          "title":"Gọi nhân viên tư vấn",
+          "payload":"{\"action\":\"call_staff\"}"
         },
         {
           "type":"postback",
           "title":"Help",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
-        },
-        {
-          "type":"postback",
-          "title":"Gọi Tư Vấn",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
+           "payload":"{\"action\":\"view_help\"}"
         }
       ]
+    };
+    require('request')({
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+        qs: {
+            access_token: token
+        },
+        method: 'POST',
+        json: true,
+        body: data
+    }, function(error, response, body) {
+        if (error) {
+            logger.error('Error sending message: ' + error.stack);
+        } else if (response.body.error) {
+            logger.error('Error: ' + JSON.stringify(response.body.error));
+        } else {
+            logger.info("Send to FB response: " + JSON.stringify(body));
+        }
+    });
+}
+
+FBMessenger.prototype.removeMenu = function(token){
+    var data = {
+      "setting_type" : "call_to_actions",
+      "thread_state" : "existing_thread"
     };
     require('request')({
         url: 'https://graph.facebook.com/v2.6/me/thread_settings',

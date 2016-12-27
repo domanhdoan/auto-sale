@@ -39,7 +39,8 @@ function SessionManager() {
                 isOrdering: false
             },
             last_user_msg: [],
-            last_product_search: []
+            last_product_search: [],
+			call_staff:false
         };
     }
 }
@@ -184,6 +185,14 @@ SessionManager.prototype.addProductSearch = function(session, productid) {
 
 SessionManager.prototype.addUserMessage = function(session, message) {
     session.last_user_msg.push(message);
+}
+
+SessionManager.prototype.callStaff = function(session, flag) {
+    session.call_staff = flag;
+}
+
+SessionManager.prototype.isTalkingWithStaff = function(session) {
+    return session.call_staff;
 }
 
 module.exports = SessionManager;
